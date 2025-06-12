@@ -32,7 +32,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: k8s-gateway
-    domain: "${SECRET_DOMAIN}"
+    domain: "${D_HS}"
     ttl: 1
     service:
       type: LoadBalancer
