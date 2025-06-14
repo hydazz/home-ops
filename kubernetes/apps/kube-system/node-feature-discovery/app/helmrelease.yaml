@@ -6,9 +6,13 @@ metadata:
   name: node-feature-discovery
 spec:
   interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: node-feature-discovery
+  chart:
+    spec:
+      chart: node-feature-discovery
+      sourceRef:
+        kind: HelmRepository
+        name: node-feature-discovery
+        namespace: kube-system
   install:
     crds: CreateReplace
     remediation:
@@ -20,7 +24,3 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    worker:
-      config:
-        core:
-          sources: ["custom", "pci", "usb"]
