@@ -25,6 +25,14 @@ nodes:
     machineSpec:
       secureboot: false
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.size > 120u * GB
+          maxSize: 128GiB
+        filesystem:
+          type: ext4
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "bc:24:11:74:98:2d"
@@ -37,12 +45,26 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.100"
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:c7:c6:eb"
+        dhcp: false
+        addresses:
+          - "10.0.43.12/16"
+
   - hostname: "k8s-voyager"
     ipAddress: "192.168.42.12"
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.size > 120u * GB
+          maxSize: 128GiB
+        filesystem:
+          type: ext4
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "bc:24:11:3c:06:a2"
@@ -55,6 +77,11 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.100"
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:51:c0:b5"
+        dhcp: false
+        addresses:
+          - "10.0.43.12/16"
 
 # Global patches
 patches:
@@ -69,6 +96,7 @@ controlPlane:
   patches:
     - "@./patches/controller/admission-controller-patch.yaml"
     - "@./patches/controller/cluster.yaml"
+    - "@./patches/controller/mutating-admission-policy.yaml"
   schematic:
     customization:
       systemExtensions:
