@@ -9,6 +9,16 @@ spec:
   blocks:
     - cidr: "192.168.42.0/24"
 ---
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/cilium.io/ciliumloadbalancerippool_v2alpha1.json
+apiVersion: cilium.io/v2alpha1
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: pool-v6
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+    - cidr: "2404:e80:661b:42::/64"
+---
 # yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/cilium.io/ciliuml2announcementpolicy_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
@@ -54,6 +64,19 @@ spec:
         matchLabels:
           advertise: bgp
 ---
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/cilium.io/ciliumbgppeerconfig_v2alpha1.json
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeerConfig
+metadata:
+  name: bgp-peer-config-v6
+spec:
+  families:
+    - afi: ipv6
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: bgp
+---
 # yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/cilium.io/ciliumbgpclusterconfig_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPClusterConfig
@@ -72,3 +95,8 @@ spec:
           peerAddress: 192.168.1.1
           peerConfigRef:
             name: bgp-peer-config-v4
+        - name: peer-64513-v6
+          peerASN: 64513
+          peerAddress: "2404:e80:661b:42::1"
+          peerConfigRef:
+            name: bgp-peer-config-v6

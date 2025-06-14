@@ -5,3 +5,4 @@ machine:
     nodeIP:
       validSubnets:
         - 192.168.42.0/24
+        - 2404:e80:661b:42::/64
