@@ -36,6 +36,9 @@ spec:
               RADARR__SERVER__PORT: &port 80
               RADARR__UPDATE__BRANCH: develop
               TZ: Australia/Melbourne
+            envFrom:
+              - secretRef:
+                  name: radarr-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -81,9 +84,15 @@ spec:
       config:
         existingClaim: radarr
       config-cache:
-        existingClaim: radarr-cache
+        accessMode: ReadWriteOnce
+        storageClass: longhorn
+        size: 2Gi
         globalMounts:
           - path: /config/MediaCover
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
       media:
         type: nfs
         server: 10.0.3.7

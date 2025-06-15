@@ -36,6 +36,9 @@ spec:
               SONARR__SERVER__PORT: &port 80
               SONARR__UPDATE__BRANCH: develop
               TZ: Australia/Melbourne
+            envFrom:
+              - secretRef:
+                  name: sonarr-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -81,9 +84,15 @@ spec:
       config:
         existingClaim: sonarr
       config-cache:
-        existingClaim: sonarr-cache
+        accessMode: ReadWriteOnce
+        storageClass: longhorn
+        size: 512Mi
         globalMounts:
           - path: /config/MediaCover
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
       media:
         type: nfs
         server: 10.0.3.7
