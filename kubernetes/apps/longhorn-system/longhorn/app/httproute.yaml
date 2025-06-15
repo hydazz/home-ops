@@ -5,7 +5,7 @@ kind: HTTPRoute
 metadata:
   name: longhorn-dashboard
 spec:
-  hostnames: ["longhorn.k8s.${D_HS}"]
+  hostnames: ["longhorn.${D_HS}"]
   parentRefs:
     - name: internal
       namespace: kube-system
