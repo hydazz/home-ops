@@ -7,10 +7,10 @@ metadata:
 spec:
   sourcePVC: "${APP}"
   trigger:
-    schedule: "0 1 * * *"
+    schedule: "0 * * * *"
   restic:
     copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
-    pruneIntervalDays: 7
+    pruneIntervalDays: 14
     repository: "${APP}-volsync-secret"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=5Gi}"
@@ -23,4 +23,5 @@ spec:
       runAsGroup: ${VOLSYNC_PGID:=568}
       fsGroup: ${VOLSYNC_PGID:=568}
     retain:
+      hourly: 24
       daily: 7
