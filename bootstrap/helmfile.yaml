@@ -26,10 +26,8 @@ releases:
     values: ['../kubernetes/apps/kube-system/coredns/app/helm/values.yaml']
     needs: ['kube-system/cilium']
 
-
   - name: cert-manager
     namespace: cert-manager
-    atomic: true
     chart: oci://quay.io/jetstack/charts/cert-manager
     version: v1.17.2
     values: ['../kubernetes/apps/cert-manager/cert-manager/app/helm/values.yaml']
