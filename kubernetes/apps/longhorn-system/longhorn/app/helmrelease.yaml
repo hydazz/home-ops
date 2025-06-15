@@ -22,6 +22,11 @@ spec:
     remediation:
       retries: 3
   values:
+    csi:
+      attacherReplicaCount: &replicas 1
+      provisionerReplicaCount: *replicas
+      resizerReplicaCount: *replicas
+      snapshotterReplicaCount: *replicas
     persistence:
       defaultDataLocality: best-effort
     defaultSettings:
@@ -31,6 +36,8 @@ spec:
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       orphanAutoDeletion: true
       replicaAutoBalance: true
+    longhornUI:
+      replicas: *replicas
     ingress:
       enabled: false
     metrics:

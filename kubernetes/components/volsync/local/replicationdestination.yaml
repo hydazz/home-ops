@@ -15,7 +15,7 @@ spec:
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=longhorn-cache}"
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=1Gi}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=5Gi}"
     storageClassName: "${VOLSYNC_STORAGECLASS:=longhorn-snapshot}"
     accessModes: ["${VOLSYNC_ACCESSMODES:=ReadWriteOnce}"]
     capacity: "${VOLSYNC_CAPACITY:=5Gi}"
@@ -25,4 +25,6 @@ spec:
       fsGroup: ${VOLSYNC_PGID:=568}
     enableFileDeletion: true
     cleanupCachePVC: true
-    cleanupTempPVC: true
+    # https://github.com/backube/volsync/issues/1504
+    # https://discord.com/channels/673534664354430999/1173726095921655898/1328753654571728967
+    # cleanupTempPVC: true
