@@ -19,11 +19,11 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     fullnameOverride: *app
-    provider: cloudflare
+    provider:
+      name: cloudflare
     env:
       - name: CF_API_TOKEN
         valueFrom:
@@ -39,8 +39,8 @@ spec:
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]
-    txtPrefix: k8s.
     txtOwnerId: default
+    txtPrefix: k8s.
     domainFilters: ["${D_HS}"]
     serviceMonitor:
       enabled: true
