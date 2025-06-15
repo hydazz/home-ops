@@ -27,6 +27,14 @@ spec:
               repository: ghcr.io/home-operations/radarr
               tag: 5.26.1.10080@sha256:1c85411af158a269592b9ce2c90ec10a59528f3585844b832e38f710e0c89557
             env:
+              RADARR__APP__INSTANCENAME: Radarr
+              RADARR__APP__THEME: dark
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__DBENABLED: "False"
+              RADARR__LOG__LEVEL: info
+              RADARR__SERVER__PORT: &port 80
+              RADARR__UPDATE__BRANCH: develop
               TZ: Australia/Melbourne
             probes:
               liveness: &probes
@@ -35,7 +43,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: &port 7878
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -56,7 +64,7 @@ spec:
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
-        fsGroupChangePolicy: "OnRootMismatch"
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
