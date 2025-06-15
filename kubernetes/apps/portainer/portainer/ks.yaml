@@ -23,8 +23,6 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   interval: 10m
   path: ./kubernetes/apps/portainer/portainer/app
   postBuild:
