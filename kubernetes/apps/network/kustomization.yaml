@@ -10,3 +10,4 @@ resources:
   - ./cloudflare-tunnel/ks.yaml
   - ./echo/ks.yaml
   - ./k8s-gateway/ks.yaml
+  - ./adguard-home/ks.yaml
