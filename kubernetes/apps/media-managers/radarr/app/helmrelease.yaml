@@ -85,14 +85,9 @@ spec:
         existingClaim: radarr
       config-cache:
         accessMode: ReadWriteOnce
-        storageClass: longhorn
         size: 2Gi
         globalMounts:
           - path: /config/MediaCover
-      logs:
-        type: emptyDir
-        globalMounts:
-          - path: /config/logs
       media:
         type: nfs
         server: 10.0.3.7

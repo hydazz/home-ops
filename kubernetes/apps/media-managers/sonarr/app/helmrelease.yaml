@@ -85,7 +85,6 @@ spec:
         existingClaim: sonarr
       config-cache:
         accessMode: ReadWriteOnce
-        storageClass: longhorn
         size: 512Mi
         globalMounts:
           - path: /config/MediaCover
