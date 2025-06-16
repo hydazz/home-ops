@@ -84,14 +84,9 @@ spec:
       config:
         existingClaim: sonarr
       config-cache:
-        accessMode: ReadWriteOnce
-        size: 512Mi
+        existingClaim: sonarr-cache
         globalMounts:
           - path: /config/MediaCover
-      logs:
-        type: emptyDir
-        globalMounts:
-          - path: /config/logs
       media:
         type: nfs
         server: 10.0.3.7

@@ -84,8 +84,7 @@ spec:
       config:
         existingClaim: radarr
       config-cache:
-        accessMode: ReadWriteOnce
-        size: 2Gi
+        existingClaim: radarr-cache
         globalMounts:
           - path: /config/MediaCover
       media:
