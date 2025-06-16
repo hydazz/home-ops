@@ -2,11 +2,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: media-managers
-components:
-  - ../../components/common
 resources:
-  - ./radarr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./bazarr/ks.yaml
+  - ./helmrelease.yaml

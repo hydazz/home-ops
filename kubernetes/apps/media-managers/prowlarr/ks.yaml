@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app sonarr
+  name: &app prowlarr
   namespace: &namespace media-managers
 spec:
   commonMetadata:
@@ -19,7 +19,7 @@ spec:
     - name: longhorn
       namespace: longhorn-system
   interval: 1h
-  path: ./kubernetes/apps/media-managers/sonarr/app
+  path: ./kubernetes/apps/media-managers/prowlarr/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets

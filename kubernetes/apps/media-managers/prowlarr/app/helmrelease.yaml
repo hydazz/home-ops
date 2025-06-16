@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sonarr
+  name: prowlarr
 spec:
   interval: 1h
   chartRef:
@@ -18,27 +18,27 @@ spec:
       retries: 3
   values:
     controllers:
-      sonarr:
+      prowlarr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/sonarr
-              tag: 4.0.15.2940@sha256:ca6c735014bdfb04ce043bf1323a068ab1d1228eea5bab8305ca0722df7baf78
+              repository: ghcr.io/home-operations/prowlarr
+              tag: 1.37.0.5076@sha256:aab0bfd4e96bdca19cca280a2bbf8ac60b9251dcae13459856b724a2dd3ae020
             env:
-              SONARR__APP__INSTANCENAME: Sonarr
-              SONARR__APP__THEME: dark
-              SONARR__AUTH__METHOD: External
-              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
-              SONARR__LOG__DBENABLED: "False"
-              SONARR__LOG__LEVEL: info
-              SONARR__SERVER__PORT: &port 80
-              SONARR__UPDATE__BRANCH: develop
+              PROWLARR__APP__INSTANCENAME: Prowlarr
+              PROWLARR__APP__THEME: dark
+              PROWLARR__AUTH__METHOD: External
+              PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              PROWLARR__LOG__DBENABLED: "False"
+              PROWLARR__LOG__LEVEL: info
+              PROWLARR__SERVER__PORT: &port 80
+              PROWLARR__UPDATE__BRANCH: develop
               TZ: Australia/Melbourne
             envFrom:
               - secretRef:
-                  name: sonarr-secret
+                  name: prowlarr-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -58,8 +58,8 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
-                memory: 256Mi
+                cpu: 10m
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -81,16 +81,6 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: sonarr
-      config-cache:
-        existingClaim: sonarr-cache
-        globalMounts:
-          - path: /config/MediaCover
-      media:
-        type: nfs
-        server: 10.0.3.7
-        path: /mnt/Slow/Media
-        globalMounts:
-          - path: /data
+        existingClaim: prowlarr
       tmp:
         type: emptyDir
