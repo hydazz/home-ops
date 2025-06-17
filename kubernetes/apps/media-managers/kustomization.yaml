@@ -11,3 +11,4 @@ resources:
   - ./prowlarr/ks.yaml
   - ./bazarr/ks.yaml
   - ./overseerr/ks.yaml
+  - ./flaresolverr/ks.yaml
