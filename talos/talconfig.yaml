@@ -62,7 +62,7 @@ nodes:
           hardwareAddr: "bc:24:11:c7:c6:eb"
         dhcp: false
         addresses:
-          - "10.0.43.12/16"
+          - "10.0.43.10/16"
 
   - hostname: "voyager"
     ipAddress: "192.168.42.12"
