@@ -19,12 +19,12 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "k8s-discovery"
+  - hostname: "discovery"
     ipAddress: "192.168.42.10"
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    #talosImageURL: factory.talos.dev/installer/e187c9b90f773cd8c84e5a3265c5554ee787b2fe67b508d9f955e90e7ae8c96c
+    #talosImageURL: factory.talos.dev/installer/c35d5bd14fd96abc839f9f44f5effd00c48f654edb8a42648f4b2eb6051d1dd6
     controlPlane: true
     patches:
       - "@./patches/global/machine-nvidia.yaml"
@@ -64,12 +64,12 @@ nodes:
         addresses:
           - "10.0.43.12/16"
 
-  - hostname: "k8s-voyager"
+  - hostname: "voyager"
     ipAddress: "192.168.42.12"
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    #talosImageURL: factory.talos.dev/installer/e187c9b90f773cd8c84e5a3265c5554ee787b2fe67b508d9f955e90e7ae8c96c
+    #talosImageURL: factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b
     controlPlane: true
     schematic:
       customization:
