@@ -50,7 +50,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: &port 5454
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
