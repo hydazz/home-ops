@@ -1,0 +1,140 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      qbittorrent:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            dependsOn: vuetorrent
+            image:
+              repository: ghcr.io/home-operations/qbittorrent
+              tag: 5.1.0@sha256:37aefd713ba31d51255995261616f1144378887bc5f21665a0ebf851fb85f69a
+            env:
+              TZ: Australia/Melbourne
+              QBT_WEBUI_PORT: &port 80
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsUser: 1001
+              runAsGroup: 1001
+              runAsNonRoot: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 250m
+                memory: 256Mi
+              #limits:
+              #  cpu: 8
+              #  memory: 2Gi
+          vuetorrent:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.1
+            args:
+              - --repo=https://github.com/VueTorrent/VueTorrent.git
+              - --ref=latest-release
+              - --period=6h
+              - --root=/addons
+              - --link=vuetorrent
+            securityContext:
+              runAsUser: 1001
+              runAsGroup: 1001
+              runAsNonRoot: true
+              capabilities: { drop: ["ALL"] }
+          #gluetun:
+          #  dependsOn: app
+          #  image:
+          #    repository: ghcr.io/qdm12/gluetun
+          #    tag: v3.40.0
+          #  env:
+          #    DNS_ADDRESS: 1.1.1.1
+          #    VPN_SERVICE_PROVIDER: custom
+          #    VPN_TYPE: wireguard
+          #    VPN_INTERFACE: wg0
+          #    WIREGUARD_ENDPOINT_PORT: 1443
+          #    FIREWALL_VPN_INPUT_PORTS: 54913
+          #    FIREWALL_INPUT_PORTS: 8080,54913
+          #    FIREWALL_OUTBOUND_SUBNETS: 10.233.64.0/18,10.233.0.0/18
+          #  envFrom:
+          #    - secretRef:
+          #        name: qbittorrent-secret
+          #  securityContext:
+          #    privileged: true
+          #    #capabilities:
+          #    #  add:
+          #    #    - NET_ADMIN
+    defaultPodOptions:
+      #nodeSelector:
+      #  kubernetes.io/hostname: "discovery"
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: qbittorrent
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /config
+      media:
+        type: nfs
+        server: 10.0.3.7
+        path: /mnt/Slow/Media
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /data
+      addons:
+        type: emptyDir
+        globalMounts:
+          - path: /addons
+      tmp:
+        type: emptyDir
