@@ -1,0 +1,62 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: restrict-overseerr
+  namespace: media-managers
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: overseerr
+  policyTypes:
+    - Egress
+  egress:
+    # Allow HTTP/HTTPS to public internet
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/8
+              - 172.16.0.0/12
+              - 192.168.0.0/16
+      ports:
+        - protocol: TCP
+          port: 80
+        - protocol: TCP
+          port: 443
+    # Allow DNS
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    # Allow Sonarr
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: sonarr
+      ports:
+        - protocol: TCP
+          port: 8989
+    # Allow Radarr
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: radarr
+      ports:
+        - protocol: TCP
+          port: 7878
+    # Allow Plex
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: media-servers
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: plex
+      ports:
+        - protocol: TCP
+          port: 32400
+    # BLOCK ALL (implicit deny for all other egress traffic)
