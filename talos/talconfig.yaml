@@ -24,7 +24,19 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
+    #talosImageURL: factory.talos.dev/installer/e187c9b90f773cd8c84e5a3265c5554ee787b2fe67b508d9f955e90e7ae8c96c
     controlPlane: true
+    patches:
+      - "@./patches/global/machine-nvidia.yaml"
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-container-toolkit-production
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
     userVolumes:
       - name: longhorn
         provisioning:
@@ -57,7 +69,15 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
+    #talosImageURL: factory.talos.dev/installer/e187c9b90f773cd8c84e5a3265c5554ee787b2fe67b508d9f955e90e7ae8c96c
     controlPlane: true
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
     userVolumes:
       - name: longhorn
         provisioning:
@@ -99,10 +119,3 @@ controlPlane:
     - "@./patches/controller/admission-controller-patch.yaml"
     - "@./patches/controller/cluster.yaml"
     - "@./patches/controller/mutating-admission-policy.yaml"
-  schematic:
-    customization:
-      systemExtensions:
-        officialExtensions:
-          - siderolabs/iscsi-tools
-          - siderolabs/util-linux-tools
-          - siderolabs/qemu-guest-agent
