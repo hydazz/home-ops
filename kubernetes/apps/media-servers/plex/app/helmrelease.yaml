@@ -80,8 +80,7 @@ spec:
       config:
         existingClaim: plex
       config-cache:
-        accessMode: ReadWriteOnce
-        size: 8Gi
+        existingClaim: plex-cache
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server/Cache
       media:
