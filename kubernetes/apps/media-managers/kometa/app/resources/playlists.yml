@@ -1,0 +1,7 @@
+playlists:
+  Alien and Predator (Chronological Order):
+    sync_mode: sync
+    libraries: Movies, TV Shows
+    sync_to_users: all
+    trakt_list: https://trakt.tv/users/mr-clements/lists/alien-and-predator-chronological-order?sort=rank,asc
+    summary: Alien and Predator In Chronological Order
