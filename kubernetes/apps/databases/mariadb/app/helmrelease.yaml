@@ -1,43 +1,42 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1.json
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
   name: mariadb
 spec:
-  interval: 1h
+  interval: 5m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
     tag: 20.5.9
   url: oci://registry-1.docker.io/bitnamicharts/mariadb
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 ---
-# yaml-language-server: $schema=https://cluster-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app mariadb
+  name: mariadb
 spec:
-  interval: 30m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: mariadb
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
-  values:
-    auth:
-      existingSecret: mariadb-secrets
-      usePasswordFiles: false
     image:
       repository: bitnami/mariadb
       tag: 11.7.2-debian-12-r0
+    auth:
+      existingSecret: mariadb-secret
+      usePasswordFiles: false
     metrics:
       enabled: true
       resourcesPreset: small
@@ -46,4 +45,4 @@ spec:
     primary:
       persistence:
         enabled: true
-        existingClaim: *app
+        existingClaim: mariadb
