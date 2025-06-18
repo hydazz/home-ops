@@ -95,6 +95,10 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
+        rules:
+          - backendRefs:
+              - name: adguard-home-app
+                port: 80
     persistence:
       config:
         type: emptyDir
