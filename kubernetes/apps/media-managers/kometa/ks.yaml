@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -20,10 +18,6 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-    substitute:
-      APP: *app
-      VOLSYNC_CAPACITY: 512Mi
-      VOLSYNC_CACHE_CAPACITY: 102Mi
   prune: true
   retryInterval: 2m
   sourceRef:
