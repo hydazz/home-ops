@@ -23,24 +23,51 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            dependsOn: vuetorrent
+            dependsOn: gluetun
             image:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.0@sha256:37aefd713ba31d51255995261616f1144378887bc5f21665a0ebf851fb85f69a
             env:
               TZ: Australia/Melbourne
               QBT_WEBUI_PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 54913
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.42.0.0/16, 10.43.0.0/16
+              QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_BitTorrent__Session__Interface: wg0
+              QBT_BitTorrent__Session__InterfaceAddress:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
+              QBT_BitTorrent__Session__InterfaceName: wg0
             probes:
-              liveness:
+              liveness: &probes
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
+              readiness: *probes
+              startup:
                 enabled: true
-              readiness:
-                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               runAsUser: 1001
               runAsGroup: 1001
+              fsGroup: 1001
+              fsGroupChangePolicy: OnRootMismatch
               runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -65,7 +92,7 @@ spec:
               runAsNonRoot: true
               capabilities: { drop: ["ALL"] }
           gluetun:
-            dependsOn: app
+            dependsOn: vuetorrent
             image:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.40.0
@@ -75,9 +102,9 @@ spec:
               VPN_TYPE: wireguard
               VPN_INTERFACE: wg0
               WIREGUARD_ENDPOINT_PORT: 1443
-              FIREWALL_VPN_INPUT_PORTS: 54913
-              FIREWALL_INPUT_PORTS: 8080,54913
-              FIREWALL_OUTBOUND_SUBNETS: 10.233.64.0/18,10.233.0.0/18
+              FIREWALL_VPN_INPUT_PORTS: *bittorrentPort
+              FIREWALL_INPUT_PORTS: *port
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
