@@ -21,16 +21,37 @@ spec:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.40.0
+            env:
+              DNS_ADDRESS: 1.1.1.1
+              VPN_SERVICE_PROVIDER: custom
+              VPN_TYPE: wireguard
+              VPN_INTERFACE: wg0
+              WIREGUARD_ENDPOINT_PORT: 1443
+              FIREWALL_VPN_INPUT_PORTS: &bittorrentPort 54913
+              FIREWALL_INPUT_PORTS: &port 80
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
+            restartPolicy: Always
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
+            securityContext:
+              #capabilities: { add: ["NET_ADMIN"] }
+              #allowPrivilegeEscalation: false
+              privileged: true
         containers:
           app:
-            dependsOn: gluetun
             image:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.0@sha256:37aefd713ba31d51255995261616f1144378887bc5f21665a0ebf851fb85f69a
             env:
               TZ: Australia/Melbourne
-              QBT_WEBUI_PORT: &port 80
-              QBITTORRENT__BT_PORT: &bittorrentPort 54913
+              QBT_WEBUI_PORT: *port
+              QBITTORRENT__BT_PORT: *bittorrentPort
               QBT_Preferences__WebUI__AlternativeUIEnabled: false
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
@@ -63,8 +84,6 @@ spec:
             securityContext:
               runAsUser: 1001
               runAsGroup: 1001
-              fsGroup: 1001
-              fsGroupChangePolicy: OnRootMismatch
               runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -76,43 +95,6 @@ spec:
               #limits:
               #  cpu: 8
               #  memory: 2Gi
-          vuetorrent:
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.4.1
-            args:
-              - --repo=https://github.com/VueTorrent/VueTorrent.git
-              - --ref=latest-release
-              - --period=6h
-              - --root=/addons
-              - --link=vuetorrent
-            securityContext:
-              runAsUser: 1001
-              runAsGroup: 1001
-              runAsNonRoot: true
-              capabilities: { drop: ["ALL"] }
-          gluetun:
-            dependsOn: vuetorrent
-            image:
-              repository: ghcr.io/qdm12/gluetun
-              tag: v3.40.0
-            env:
-              DNS_ADDRESS: 1.1.1.1
-              VPN_SERVICE_PROVIDER: custom
-              VPN_TYPE: wireguard
-              VPN_INTERFACE: wg0
-              WIREGUARD_ENDPOINT_PORT: 1443
-              FIREWALL_VPN_INPUT_PORTS: *bittorrentPort
-              FIREWALL_INPUT_PORTS: *port
-              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
-            envFrom:
-              - secretRef:
-                  name: qbittorrent-secret
-            securityContext:
-              privileged: true
-              #capabilities:
-              #  add:
-              #    - NET_ADMIN
     defaultPodOptions:
       #nodeSelector:
       #  kubernetes.io/hostname: "discovery"
@@ -146,9 +128,5 @@ spec:
           qbittorrent:
             app:
               - path: /data
-      addons:
-        type: emptyDir
-        globalMounts:
-          - path: /addons
       tmp:
         type: emptyDir
