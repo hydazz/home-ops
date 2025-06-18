@@ -12,7 +12,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./overseerr/ks.yaml
   - ./flaresolverr/ks.yaml
+  - ./tdarr/ks.yaml
   # TO-DO
   #- ./notifiarr/ks.yaml # cbf
-  #- ./tdarr/ks.yaml # cuda
   #- ./kometa/ks.yaml # plex

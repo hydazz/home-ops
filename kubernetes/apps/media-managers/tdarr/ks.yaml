@@ -11,8 +11,13 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
+    - ../../../../components/keda/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
+    - name: nvidia-device-plugin
+      namespace: kube-system
+    - name: keda
+      namespace: observability
     - name: longhorn
       namespace: longhorn-system
   interval: 1h

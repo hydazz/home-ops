@@ -19,7 +19,8 @@ spec:
   values:
     controllers:
       tdarr:
-        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -36,10 +37,10 @@ spec:
               inContainer: true
               nodeName: Internal
             probes:
-              liveness: &probe
+              liveness:
                 enabled: true
-              readiness: *probe
-              startup: *probe
+              readiness:
+                enabled: true
             resources:
               requests:
                 cpu: 10m
@@ -50,32 +51,18 @@ spec:
                 nvidia.com/gpu: 1
     defaultPodOptions:
       runtimeClassName: nvidia
-      nodeSelector:
-        nvidia.com/gpu.present: "true"
     service:
       app:
-        controller: tdarr
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: internal-nginx
-        annotations:
-          nginx.ingress.kubernetes.io/proxy-body-size: 64m
-          gatus.io/enabled: "true"
-          gatus.io/path: /
-        hosts:
-          - host: tdarr.k8s.hyde.services
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *port
-        tls:
-          - secretName: wildcard.hyde.services
-            hosts:
-              - tdarr.k8s.hyde.services
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
     persistence:
       config:
         existingClaim: tdarr
