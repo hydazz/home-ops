@@ -13,6 +13,6 @@ resources:
   - ./overseerr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./tdarr/ks.yaml
+  - ./kometa/ks.yaml
   # TO-DO
   #- ./notifiarr/ks.yaml # cbf
-  #- ./kometa/ks.yaml # plex
