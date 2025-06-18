@@ -64,28 +64,28 @@ spec:
               runAsGroup: 1001
               runAsNonRoot: true
               capabilities: { drop: ["ALL"] }
-          #gluetun:
-          #  dependsOn: app
-          #  image:
-          #    repository: ghcr.io/qdm12/gluetun
-          #    tag: v3.40.0
-          #  env:
-          #    DNS_ADDRESS: 1.1.1.1
-          #    VPN_SERVICE_PROVIDER: custom
-          #    VPN_TYPE: wireguard
-          #    VPN_INTERFACE: wg0
-          #    WIREGUARD_ENDPOINT_PORT: 1443
-          #    FIREWALL_VPN_INPUT_PORTS: 54913
-          #    FIREWALL_INPUT_PORTS: 8080,54913
-          #    FIREWALL_OUTBOUND_SUBNETS: 10.233.64.0/18,10.233.0.0/18
-          #  envFrom:
-          #    - secretRef:
-          #        name: qbittorrent-secret
-          #  securityContext:
-          #    privileged: true
-          #    #capabilities:
-          #    #  add:
-          #    #    - NET_ADMIN
+          gluetun:
+            dependsOn: app
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.40.0
+            env:
+              DNS_ADDRESS: 1.1.1.1
+              VPN_SERVICE_PROVIDER: custom
+              VPN_TYPE: wireguard
+              VPN_INTERFACE: wg0
+              WIREGUARD_ENDPOINT_PORT: 1443
+              FIREWALL_VPN_INPUT_PORTS: 54913
+              FIREWALL_INPUT_PORTS: 8080,54913
+              FIREWALL_OUTBOUND_SUBNETS: 10.233.64.0/18,10.233.0.0/18
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
+            securityContext:
+              privileged: true
+              #capabilities:
+              #  add:
+              #    - NET_ADMIN
     defaultPodOptions:
       #nodeSelector:
       #  kubernetes.io/hostname: "discovery"
