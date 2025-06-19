@@ -25,7 +25,7 @@ spec:
           gluetun:
             image:
               repository: ghcr.io/qdm12/gluetun
-              tag: v3.40.0
+              tag: v3.40.0@sha256:2b42bfa046757145a5155acece417b65b4443c8033fb88661a8e9dcf7fda5a00
             env:
               DNS_ADDRESS: 1.1.1.1
               VPN_SERVICE_PROVIDER: custom
@@ -52,17 +52,6 @@ spec:
               TZ: Australia/Melbourne
               QBT_WEBUI_PORT: *port
               QBITTORRENT__BT_PORT: *bittorrentPort
-              QBT_Preferences__WebUI__AlternativeUIEnabled: false
-              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
-              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
-                10.42.0.0/16, 10.43.0.0/16
-              QBT_Preferences__WebUI__LocalHostAuth: false
-              QBT_BitTorrent__Session__Interface: wg0
-              QBT_BitTorrent__Session__InterfaceAddress:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.podIP
-              QBT_BitTorrent__Session__InterfaceName: wg0
             probes:
               liveness: &probes
                 enabled: false
@@ -96,8 +85,8 @@ spec:
               #  cpu: 8
               #  memory: 2Gi
     defaultPodOptions:
-      #nodeSelector:
-      #  kubernetes.io/hostname: "discovery"
+      nodeSelector:
+        kubernetes.io/hostname: "discovery"
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch

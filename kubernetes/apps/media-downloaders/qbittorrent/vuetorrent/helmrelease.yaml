@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: vuetorrent
 spec:
   interval: 1h
   chartRef:
@@ -18,51 +18,37 @@ spec:
       retries: 3
   values:
     controllers:
-      sabnzbd:
+      vuetorrent:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/sabnzbd
-              tag: 4.5.1@sha256:d57f89bf771f2236a22643482d5a80736cb6c2944c7f7d4168a15332a5a26f83
+              repository: ghcr.io/vuetorrent/vuetorrent-backend
+              tag: 2.5.1@sha256:bd7cb19459a664073a05e8c4c8482888a2f41f307aa2fce2b1d329e35db7b358
             env:
-              SABNZBD__PORT: &port 80
-              SABNZBD__HOST_WHITELIST_ENTRIES: >-
-                sabnzbd,
-                sabnzbd.media-downloaders,
-                sabnzbd.media-downloaders.svc,
-                sabnzbd.media-downloaders.svc.cluster,
-                sabnzbd.media-downloaders.svc.cluster.local,
-                sabnzbd.${D_HS}
-              TZ: Australia/Melbourne
+              # renovate: datasource=github-releases depName=VueTorrent/VueTorrent
+              RELEASE_TYPE: v2.26.0
+              PORT: &port 80
+              QBIT_BASE: http://qbittorrent.media-downloaders.svc.cluster.local
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api?mode=version
+                    path: /backend/ping
                     port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 250m
-                memory: 256Mi
-              limits:
-                cpu: 8
-                memory: 2Gi
+                cpu: 10m
+                memory: 20Mi
     defaultPodOptions:
-      nodeSelector:
-        kubernetes.io/hostname: "discovery"
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
@@ -81,14 +67,3 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-    persistence:
-      config:
-        existingClaim: sabnzbd
-      media:
-        type: nfs
-        server: 10.0.3.7
-        path: /mnt/Slow/Media
-        globalMounts:
-          - path: /data
-      tmp:
-        type: emptyDir

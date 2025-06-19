@@ -59,8 +59,8 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
-      #nodeSelector:
-      #  kubernetes.io/hostname: discovery
+      nodeSelector:
+        kubernetes.io/hostname: discovery
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
