@@ -31,6 +31,7 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  values:
     image:
       repository: bitnami/mariadb
       tag: 11.7.2-debian-12-r0
