@@ -3,9 +3,9 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_HS/./-}-production"
+  name: "${D_HS//./-}-production"
 spec:
-  secretName: "${D_HS/./-}-production-tls"
+  secretName: "${D_HS//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -15,9 +15,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_HCA/./-}-production"
+  name: "${D_HCA//./-}-production"
 spec:
-  secretName: "${D_HCA/./-}-production-tls"
+  secretName: "${D_HCA//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -27,9 +27,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_IGI/./-}-production"
+  name: "${D_IGI//./-}-production"
 spec:
-  secretName: "${D_IGI/./-}-production-tls"
+  secretName: "${D_IGI//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -39,9 +39,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_SN/./-}-production"
+  name: "${D_SN//./-}-production"
 spec:
-  secretName: "${D_SN/./-}-production-tls"
+  secretName: "${D_SN//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -51,9 +51,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_TACA/./-}-production"
+  name: "${D_TACA//./-}-production"
 spec:
-  secretName: "${D_TACA/./-}-production-tls"
+  secretName: "${D_TACA//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -63,9 +63,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_TAN/./-}-production"
+  name: "${D_TAN//./-}-production"
 spec:
-  secretName: "${D_TAN/./-}-production-tls"
+  secretName: "${D_TAN//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -75,9 +75,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_LMVCA/./-}-production"
+  name: "${D_LMVCA//./-}-production"
 spec:
-  secretName: "${D_LMVCA/./-}-production-tls"
+  secretName: "${D_LMVCA//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer

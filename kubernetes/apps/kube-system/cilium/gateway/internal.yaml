@@ -32,4 +32,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_HS/./-}-production-tls
+            name: ${D_HS//./-}-production-tls
