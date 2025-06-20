@@ -42,6 +42,8 @@ spec:
   dependsOn:
     - name: immich-database
       namespace: media-servers
+    - name: dragonfly-cluster
+      namespace: databases
     - name: keda
       namespace: observability
     - name: longhorn
