@@ -33,7 +33,7 @@ spec:
       retries: 3
   values:
     serviceMonitor:
-      enabled: true
+      enabled: false
     grafanaDashboard:
       enabled: true
       folder: Data
