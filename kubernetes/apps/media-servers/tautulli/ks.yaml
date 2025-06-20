@@ -23,8 +23,8 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 128Mi
-      VOLSYNC_CACHE_CAPACITY: 25Mi
+      VOLSYNC_CAPACITY: 256Mi
+      VOLSYNC_CACHE_CAPACITY: 51Mi
   prune: true
   retryInterval: 2m
   sourceRef:
