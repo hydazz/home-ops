@@ -9,7 +9,7 @@ spec:
   instances: 1
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 1Gi
+    size: 2Gi
     storageClass: longhorn
   enableSuperuserAccess: true
   superuserSecret:
