@@ -1,13 +1,13 @@
 endpoints:
   - name: "${APP}"
-    group: guarded
+    group: "${GATUS_GROUP:=guarded}"
     url: 1.1.1.1
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
     dns:
-      query-name: "${GATUS_SUBDOMAIN:=${APP}}.${D_HS}"
+      query-name: "${GATUS_SUBDOMAIN:=${APP}}.${GATUS_DOMAIN:=${D_HS}}"
       query-type: A
     conditions:
       - "len([BODY]) == 0"

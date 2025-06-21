@@ -23,6 +23,7 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 256Mi
       VOLSYNC_CACHE_CAPACITY: 64Mi
   prune: true

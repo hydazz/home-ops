@@ -45,19 +45,60 @@ convert_from_bytes() {
     fi
 }
 
-# Function to calculate 20% cache capacity
+# Function to round up to the nearest power of 2
+round_to_power_of_2() {
+    local value="$1"
+    local power=1
+
+    # Find the smallest power of 2 that is >= value
+    while [ "$power" -lt "$value" ]; do
+        power=$((power * 2))
+    done
+
+    echo "$power"
+}
+
+# Function to calculate 20% cache capacity, rounded up to power of 2
 calculate_cache_capacity() {
     local capacity="$1"
     local bytes=$(convert_to_bytes "$capacity")
     local cache_bytes=$((bytes / 5))  # 20% = 1/5
 
-    # Ensure minimum cache size of 1Mi (reasonable minimum)
-    local min_cache_bytes=$((1 * 1024 * 1024))
-    if [ "$cache_bytes" -lt "$min_cache_bytes" ]; then
-        cache_bytes="$min_cache_bytes"
+    # Convert to appropriate unit for rounding
+    local cache_value
+    local cache_unit
+
+    if [ "$cache_bytes" -ge $((1024 * 1024 * 1024)) ]; then
+        # Work in Gi
+        cache_value=$((cache_bytes / (1024 * 1024 * 1024)))
+        cache_unit="Gi"
+    elif [ "$cache_bytes" -ge $((1024 * 1024)) ]; then
+        # Work in Mi
+        cache_value=$((cache_bytes / (1024 * 1024)))
+        cache_unit="Mi"
+    else
+        # Work in Mi with minimum of 1Mi
+        cache_value=1
+        cache_unit="Mi"
     fi
 
-    convert_from_bytes "$cache_bytes"
+    # Ensure minimum cache size of 8Mi (reasonable minimum for power of 2)
+    if [ "$cache_value" -lt 8 ] && [ "$cache_unit" = "Mi" ]; then
+        cache_value=8
+    elif [ "$cache_value" -lt 1 ] && [ "$cache_unit" = "Gi" ]; then
+        # If less than 1Gi, convert to Mi and ensure minimum
+        cache_value=$((cache_bytes / (1024 * 1024)))
+        cache_unit="Mi"
+        if [ "$cache_value" -lt 8 ]; then
+            cache_value=8
+        fi
+        cache_value=$(round_to_power_of_2 "$cache_value")
+    else
+        # Round up to nearest power of 2
+        cache_value=$(round_to_power_of_2 "$cache_value")
+    fi
+
+    echo "${cache_value}${cache_unit}"
 }
 
 # Function to process a single ks.yaml file

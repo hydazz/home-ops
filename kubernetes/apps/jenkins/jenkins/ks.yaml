@@ -28,6 +28,7 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_GROUP: *namespace
       GATUS_SUBDOMAIN: ci
       GATUS_DOMAIN: "${D_IGI}"
       VOLSYNC_CAPACITY: 2Gi
