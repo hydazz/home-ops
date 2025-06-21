@@ -46,5 +46,14 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
+    {
+      description: "Immich Group",
+      groupName: "Immich",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/immich-app/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
   ],
 }
