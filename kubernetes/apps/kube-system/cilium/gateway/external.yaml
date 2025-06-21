@@ -15,13 +15,6 @@ spec:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: "external.${D_HS}"
   listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
-      hostname: "*.${D_HS}"
-      allowedRoutes:
-        namespaces:
-          from: Same
     - name: https
       protocol: HTTPS
       port: 443
@@ -33,3 +26,69 @@ spec:
         certificateRefs:
           - kind: Secret
             name: ${D_HS//./-}-production-tls
+    - name: https-hca
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${D_HCA}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${D_HCA//./-}-production-tls
+    - name: https-igi
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${D_IGI}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${D_IGI//./-}-production-tls
+    - name: https-sn
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${D_SN}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${D_SN//./-}-production-tls
+    - name: https-taca
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${D_TACA}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${D_TACA//./-}-production-tls
+    - name: https-tan
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${D_TAN}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${D_TAN//./-}-production-tls
+    - name: https-lmvca
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${D_LMVCA}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${D_LMVCA//./-}-production-tls
