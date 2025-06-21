@@ -29,7 +29,7 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_CACHE_CAPACITY: 409Mi
+      VOLSYNC_CACHE_CAPACITY: 512Mi
   prune: true
   retryInterval: 2m
   sourceRef:

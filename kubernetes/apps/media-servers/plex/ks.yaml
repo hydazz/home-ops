@@ -29,7 +29,7 @@ spec:
     substitute:
       APP: *app
       GATUS_PATH: /web/index.html
-      VOLSYNC_CACHE_CAPACITY: 3Gi
+      VOLSYNC_CACHE_CAPACITY: 4Gi
       VOLSYNC_CAPACITY: 16Gi
   prune: true
   retryInterval: 2m
