@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.6
+  instances: 2
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 8Gi
+    storageClass: longhorn
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: cloudnative-pg-secret
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      memory: 4Gi
+  monitoring:
+    enablePodMonitor: true
