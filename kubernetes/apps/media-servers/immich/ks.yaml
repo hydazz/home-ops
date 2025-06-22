@@ -37,7 +37,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-#    - ../../../../components/gatus/external add later
+    - ../../../../components/gatus/external
     - ../../../../components/keda/nfs-scaler
   dependsOn:
     - name: immich-database
@@ -54,6 +54,9 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+    substitute:
+      APP: *app
+      GATUS_GROUP: *namespace
   prune: true
   retryInterval: 2m
   sourceRef:
