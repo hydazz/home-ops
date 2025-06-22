@@ -55,8 +55,10 @@ spec:
       - name: cluster-secrets
         kind: Secret
     substitute:
-      APP: *app
+      APP: immich-server
       GATUS_GROUP: *namespace
+      GATUS_APP: immich
+      GATUS_SUBDOMAIN: immich
   prune: true
   retryInterval: 2m
   sourceRef:
