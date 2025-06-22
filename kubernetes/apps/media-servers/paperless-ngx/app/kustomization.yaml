@@ -3,10 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: media-servers
-components:
-  - ../../components/common
 resources:
-  - ./immich/ks.yaml
-  - ./paperless-ngx/ks.yaml
-  - ./plex/ks.yaml
-  - ./tautulli/ks.yaml
+  - externalsecret.yaml
+  - helmrelease.yaml
