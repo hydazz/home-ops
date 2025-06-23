@@ -58,12 +58,12 @@ spec:
                 memory: 256M
               limits:
                 memory: 512M
-#    defaultPodOptions:
-#      securityContext:
-#        runAsUser: 33
-#        runAsGroup: 33
-#        fsGroup: 33
-#        fsGroupChangePolicy: OnRootMismatch
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 33
+        runAsGroup: 33
+        fsGroup: 33
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:

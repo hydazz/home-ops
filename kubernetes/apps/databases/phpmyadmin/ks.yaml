@@ -9,13 +9,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/volsync
   dependsOn:
-    - name: mariadb-operator
+    - name: mariadb-cluster
       namespace: databases
-    - name: longhorn
-      namespace: longhorn-system
   interval: 1h
   path: ./kubernetes/apps/databases/phpmyadmin/app
   postBuild:
