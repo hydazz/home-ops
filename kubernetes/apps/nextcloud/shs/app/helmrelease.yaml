@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nextcloud-shs
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: nextcloud
+      version: 6.6.10
+      interval: 1h
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    image:
+      flavor: fpm-alpine
+      # renovate: datasource=docker depName=nextcloud
+      tag: 30.0.12-fpm-alpine
+    nginx:
+      enabled: true
+    fullnameOverride: *app
+    extraInitContainers:
+      - name: init-db
+        image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
+        envFrom:
+          - secretRef:
+              name: nextcloud-shs-secret
+    nextcloud:
+      host: storage.${D_HS}
+      existingSecret:
+        enabled: true
+        secretName: nextcloud-shs-secret
+        usernameKey: ADMIN_USER
+        passwordKey: ADMIN_PASSWORD
+      configs:
+        custom.config.php: |-
+          <?php
+          $CONFIG = array(
+            'overwriteprotocol' => 'https',
+            'overwrite.cli.url' => 'https://storage.${D_HS}',
+            'overwritehost' => 'storage.${D_HS}',
+            'check_data_directory_permissions' => false,
+            'default_phone_region' => 'AU',
+            'enable_previews' => false,
+            'trusted_proxies' => array(
+              0 => '127.0.0.1',
+              1 => '10.0.0.0/8',
+            ),
+            'trusted_domains' => array(
+              0 => '127.0.0.1',
+              1 => 'storage.${D_HS}',
+            ),
+            'filesystem_check_changes' => 1,
+            'simpleSignUpLink.shown' => false,
+            'cache_path' => '/cache',
+            'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
+          );
+      phpConfigs:
+        uploadLimit.ini: |
+          upload_max_filesize = 16G
+          post_max_size = 16G
+          max_input_time = 3600
+          max_execution_time = 3600
+    internalDatabase:
+      enabled: false
+    externalDatabase:
+      enabled: true
+      type: postgresql
+      existingSecret:
+        enabled: true
+        secretName: nextcloud-shs-secret
+        usernameKey: DB_USERNAME
+        passwordKey: DB_PASSWORD
+        hostKey: DB_HOSTNAME
+        databaseKey: DB_DATABASE_NAME
+    persistence:
+      enabled: true
+      existingClaim: nextcloud-shs
+    cronjob:
+      enabled: true
+
+  valuesFrom:
+    - kind: ConfigMap
+      name: nextcloud-shs-mounts
+      valuesKey: mounts
