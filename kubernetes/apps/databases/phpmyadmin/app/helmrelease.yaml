@@ -28,7 +28,6 @@ spec:
               tag: 5.2.2
             env:
               TZ: Australia/Melbourne
-              PMA_USER: "root"
               PMA_HOST: mariadb.databases.svc.cluster.local
               PMA_PORT: "3306"
               PMA_ABSOLUTE_URI: https://phpmyadmin.${D_HS}
