@@ -13,5 +13,8 @@ spec:
   storage:
     size: 8Gi
     storageClassName: longhorn
+  myCnf: |
+    [mariadb]
+    ignore-db-dir=lost+found
   metrics:
     enabled: true
