@@ -3,6 +3,10 @@ creation_rules:
   - path_regex: talos/.*\.sops\.ya?ml
     mac_only_encrypted: true
     age: "age1umudqfh963mmhgkgatylwh9jgez7qh4twpaqy3ea3nlcarhm09hq5er32r"
+  - path_regex: kubernetes/apps/nextcloud/.*\.sops\.ya?ml
+    encrypted_regex: "^(data|stringData|nextcloud)$"
+    mac_only_encrypted: true
+    age: "age1umudqfh963mmhgkgatylwh9jgez7qh4twpaqy3ea3nlcarhm09hq5er32r"
   - path_regex: (bootstrap|kubernetes)/.*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     mac_only_encrypted: true

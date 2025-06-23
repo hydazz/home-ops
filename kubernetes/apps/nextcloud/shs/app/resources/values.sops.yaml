@@ -1,0 +1,28 @@
+nextcloud:
+    extraVolumes:
+        - name: ENC[AES256_GCM,data:/6xvlYcgBks=,iv:+DQgArgbLtfxyqnXyXV8MH7TbLL+VMaizW9cKCmxg4M=,tag:hxlryEiWW6FIhsRXKAtz0A==,type:str]
+          nfs:
+            server: ENC[AES256_GCM,data:MY8BxvlgDDo=,iv:a9cujfqjF/IrOKjUq4brb0OediodS7D4UOKeXQOZets=,tag:mN4a1eXmbFw8J7oTCqF6RA==,type:str]
+            path: ENC[AES256_GCM,data:C83BFQgSuYV2ZH/mruU=,iv:N4uAnVNpmkEFJvOyK49PPfHPgQA/tINDx7DCL28EEmI=,tag:e6aC2RMogcIBGrCr7K37MQ==,type:str]
+        - name: ENC[AES256_GCM,data:h2lAFys=,iv:sevc9Zo6Cks9BoX2tYr/Hf9Fu6vbTD/ryWLDqzV1Hyo=,tag:f6qNGJ1j1v0QvwsjHCMBog==,type:str]
+          emptyDir: {}
+    extraVolumeMounts:
+        - name: ENC[AES256_GCM,data:a7RoqDzk34I=,iv:6x9vq86xR6DJ8u9LvMJEaCv9HToikWzlqUNG6RJphEc=,tag:LXTBz1HXbjh42U20PmhKZw==,type:str]
+          mountPath: ENC[AES256_GCM,data:Fe3GfY4HhSmkFadVrt7V0c4Ciz4C2dRs/UMI3CE=,iv:eh3JCWGJl503N4e1Eg1/qb0Bhsd98aKkTtdB521PFVo=,tag:+ui84mC5D0MXiOSVgtdGJA==,type:str]
+        - name: ENC[AES256_GCM,data:Le1HE3g=,iv:PvxhFaMuA78rREj32DtShPDbr7RCViZYjNgfRSuTl9w=,tag:BkAaSWSZUR7uGBrhC94VNA==,type:str]
+          mountPath: ENC[AES256_GCM,data:2PYt4TQd,iv:5kWSusDxzthB9TWU/tpypHZSx09RU+9z6RPqZe4S/oU=,tag:kOg9A1L9bQNXsXigNkhHrA==,type:str]
+sops:
+    age:
+        - recipient: age1umudqfh963mmhgkgatylwh9jgez7qh4twpaqy3ea3nlcarhm09hq5er32r
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBGNE1ITzlET0tsK0ZFaDJo
+            c3JZV1pUd0Y3TlovUGpjT2tnWHZZRjlraFRvCnZZUi9nWlJ4eEZ1WDEyS0JjUU5V
+            d1JMU1U3TDhLV3lsbHNXcmhoOTYyamsKLS0tIGQrQ2I1YWtHNHdxRlV0eVNpclN1
+            b3F0Q0JaNUczWTE5YmZscTM1cEFjSWsKV7LMrWsga3VXVwbmu5dxyzIs1T7ig076
+            W4p0Rr7Qhf90+WiJoteRpfFZkte3ojuCdGi5s55Jx6pq+X8NoklToQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-06-23T04:42:58Z"
+    mac: ENC[AES256_GCM,data:WDoHDyHOJrKT60w8oTry8MC75fsp1tCt3ncicFEBNO6zrtmtnCj/sty2jlgDMwS/sf/s+kaEW1WoMN29QC/h1VBR8OZ3JkO9k7R7DZnTKv0MStBu0zf3d8LYiuqdE0YQfEUi+QcZ1BqqMWcmtkgfUKNPDIOFCoNwcGYhZEH8CUY=,iv:lmb+HEjr5fPfAktsftMAna3vlMddfoSScgrj+6I35zw=,tag:+5edvnzAM7iKp7UkAS/Wpg==,type:str]
+    encrypted_regex: ^(nextcloud)$
+    version: 3.10.2
