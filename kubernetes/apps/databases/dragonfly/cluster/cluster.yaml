@@ -8,7 +8,7 @@ spec:
   labels:
     dragonflydb.io/cluster: dragonfly
   image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.31.0@sha256:32b1f065a8ba99842b4ffe6d854a9a50fc0e47e65b5cdd7f5d6244b0f3b4c9c8
-  replicas: 3
+  replicas: 1
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
