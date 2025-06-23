@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: phpmyadmin
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      phpmyadmin:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: phpmyadmin/phpmyadmin
+              tag: 5.2.2
+            env:
+              TZ: Australia/Melbourne
+              PMA_HOST: mariadb.databases.svc.cluster.local
+              PMA_PORT: "3306"
+              PMA_ABSOLUTE_URI: https://phpmyadmin.${D_HS}
+              UPLOAD_LIMIT: 128M
+            envFrom:
+              - secretRef:
+                  name: phpmyadmin-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 15m
+                memory: 256M
+              limits:
+                memory: 512M
+#    defaultPodOptions:
+#      securityContext:
+#        runAsUser: 33
+#        runAsGroup: 33
+#        fsGroup: 33
+#        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+    persistence:
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /sessions
+            subPath: sessions
