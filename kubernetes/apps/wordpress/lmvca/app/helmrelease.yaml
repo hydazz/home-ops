@@ -109,3 +109,12 @@ spec:
           lmvca:
             nginx:
               - path: /var/run
+      php-config:
+        type: configMap
+        name: wordpress-php-config
+        advancedMounts:
+          lmvca:
+            app:
+              - path: /usr/local/etc/php/conf.d/wordpress-custom.ini
+                subPath: wordpress-custom.ini
+                readOnly: true
