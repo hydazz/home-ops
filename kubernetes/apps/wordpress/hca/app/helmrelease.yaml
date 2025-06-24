@@ -27,6 +27,10 @@ spec:
       enabled: false
     memcached:
       enabled: false
+    # https://github.com/bitnami/containers/issues/79080
+    externalCache:
+      host: memcached.wordpress.svc.cluster.local
+      port: 11211
     externalDatabase:
       host: mariadb.databases.svc.cluster.local
       port: 3306
