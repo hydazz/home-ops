@@ -21,13 +21,30 @@ spec:
       lmvca:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-wp:
+            image:
+              repository: wordpress
+              tag: 6.8.1-fpm-alpine
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "Initialising WordPress files..."
+                if [ ! -f /var/www/html/wp-config-sample.php ]; then
+                  echo "Copying WordPress core files (excluding wp-content)..."
+                  cd /usr/src/wordpress
+                  find . -maxdepth 1 ! -name wp-content ! -name . -exec cp -rL {} /var/www/html/ \; 2>/dev/null || true
+                  mkdir -p /var/www/html/wp-content/uploads 2>/dev/null || true
+                fi
+                echo "WordPress initialization completed"
         containers:
           app:
             image:
               repository: wordpress
               tag: 6.8.1-fpm-alpine
             env:
-              WORDPRESS_MEMORY_LIMIT: 512M
+              WORDPRESS_MEMORY_LIMIT: 256M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
             envFrom:
               - secretRef:
@@ -59,9 +76,9 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 33
-        runAsGroup: 33
-        fsGroup: 33
+        runAsUser: 82
+        runAsGroup: 82
+        fsGroup: 82
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
@@ -88,6 +105,15 @@ spec:
         existingClaim: wordpress-lmvca
         globalMounts:
           - path: /var/www/html/wp-content
+      php-config:
+        type: configMap
+        name: wordpress-php-config
+        advancedMounts:
+          lmvca:
+            app:
+              - path: /usr/local/etc/php/conf.d/wordpress-custom.ini
+                subPath: wordpress-custom.ini
+                readOnly: true
       nginx-config:
         type: configMap
         name: wordpress-nginx-config
@@ -109,12 +135,3 @@ spec:
           lmvca:
             nginx:
               - path: /var/run
-      php-config:
-        type: configMap
-        name: wordpress-php-config
-        advancedMounts:
-          lmvca:
-            app:
-              - path: /usr/local/etc/php/conf.d/wordpress-custom.ini
-                subPath: wordpress-custom.ini
-                readOnly: true
