@@ -7,8 +7,6 @@ components:
   - ../../components/common
 resources:
   - ./cloudflare-dns/ks.yaml
-  - ./cloudflare-tunnel/ks.yaml
-  - ./echo/ks.yaml
   - ./k8s-gateway/ks.yaml
   - ./adguard-home/ks.yaml
   - ./adguard-dns/ks.yaml
