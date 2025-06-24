@@ -83,7 +83,7 @@ trakt:
     created_at: <<TRAKT_CREATED_AT>>
 # Can be individually specified per library as well
 radarr:
-  url: http://radarr.media-managers.svc.cluster.local:7878
+  url: http://radarr.media-managers.svc.cluster.local
   token: <<RADARR_API_KEY>>
   version: v3
   add: false
@@ -98,7 +98,7 @@ radarr:
   monitor_existing: false
 # Can be individually specified per library as well
 sonarr:
-  url: http://sonarr.media-managers.svc.cluster.local:8989
+  url: http://sonarr.media-managers.svc.cluster.local
   token: <<SONARR_API_KEY>>
   version: v3
   add: false
