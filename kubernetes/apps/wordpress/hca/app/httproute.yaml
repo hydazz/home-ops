@@ -9,9 +9,9 @@ spec:
   parentRefs:
     - name: external
       namespace: kube-system
-      sectionName: https-hca
+      sectionName: https-hca-apex
   rules:
     - backendRefs:
         - name: wordpress-hca
           namespace: wordpress
-          port: 8080
+          port: 80
