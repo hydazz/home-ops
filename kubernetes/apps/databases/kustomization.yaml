@@ -9,5 +9,6 @@ resources:
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
   - ./mariadb/ks.yaml
+  - ./memcached/ks.yaml
   - ./pgadmin/ks.yaml
   - ./phpmyadmin/ks.yaml
