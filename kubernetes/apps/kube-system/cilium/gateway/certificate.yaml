@@ -6,6 +6,11 @@ metadata:
   name: "${D_HS//./-}-production"
 spec:
   secretName: "${D_HS//./-}-production-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: mailserver
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
