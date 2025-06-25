@@ -62,7 +62,7 @@ spec:
           nginx:
             image:
               repository: nginx
-              tag: alpine
+              tag: 1.29.0-alpine
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
