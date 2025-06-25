@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: wordpress
+    name: app-template
   install:
     remediation:
       retries: -1
@@ -17,37 +17,121 @@ spec:
     remediation:
       retries: 3
   values:
-    updateStrategy:
-      type: Recreate
-    fullnameOverride: *app
-    image:
-      repository: bitnami/wordpress
-      tag: 6.8.1-debian-12-r6
-    mariadb:
-      enabled: false
-    memcached:
-      enabled: false
-    # https://github.com/bitnami/containers/issues/79080
-    externalCache:
-      host: memcached.wordpress.svc.cluster.local
-      port: 11211
-    externalDatabase:
-      host: mariadb.databases.svc.cluster.local
-      port: 3306
-      user: &db wordpress-hca
-      database: *db
-      existingSecret: wordpress-hca-secrets
-    overrideDatabaseSettings: true
-    wordpressScheme: https
-    allowEmptyPassword: false
-    #htaccessPersistenceEnabled: true
+    controllers:
+      hca:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-wp:
+            image:
+              repository: wordpress
+              tag: 6.8.1-fpm-alpine
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "Initialising WordPress files..."
+                if [ ! -f /var/www/html/wp-config-sample.php ]; then
+                  echo "Copying WordPress core files (excluding wp-content)..."
+                  cd /usr/src/wordpress
+                  find . -maxdepth 1 ! -name wp-content ! -name . -exec cp -rL {} /var/www/html/ \; 2>/dev/null || true
+                  mkdir -p /var/www/html/wp-content/uploads 2>/dev/null || true
+                fi
+                echo "WordPress initialization completed"
+        containers:
+          app:
+            image:
+              repository: wordpress
+              tag: 6.8.1-fpm-alpine
+            env:
+              WORDPRESS_MEMORY_LIMIT: 256M
+              WORDPRESS_AUTO_UPDATE_CORE: "false"
+            envFrom:
+              - secretRef:
+                  name: wordpress-hca-secrets
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+          nginx:
+            image:
+              repository: nginx
+              tag: alpine
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 82
+        runAsGroup: 82
+        fsGroup: 82
+        fsGroupChangePolicy: OnRootMismatch
     service:
-      type: ClusterIP
-    resourcesPreset: medium
+      app:
+        ports:
+          http:
+            port: 8080
+    route:
+      app:
+        hostnames: ["${D_HCA}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https-hca-apex
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 8080
     persistence:
-      existingClaim: *app
-    readinessProbe:
-      httpGet:
-        path: /
-    networkPolicy:
-      enabled: false
+      html:
+        type: emptyDir
+        globalMounts:
+          - path: /var/www/html
+      wp-content:
+        existingClaim: wordpress-hca
+        globalMounts:
+          - path: /var/www/html/wp-content
+      php-config:
+        type: configMap
+        name: wordpress-php-config
+        advancedMounts:
+          hca:
+            app:
+              - path: /usr/local/etc/php/conf.d/wordpress-custom.ini
+                subPath: wordpress-custom.ini
+                readOnly: true
+      nginx-config:
+        type: configMap
+        name: wordpress-nginx-config
+        advancedMounts:
+          hca:
+            nginx:
+              - path: /etc/nginx/nginx.conf
+                subPath: nginx.conf
+                readOnly: true
+      nginx-cache:
+        type: emptyDir
+        advancedMounts:
+          hca:
+            nginx:
+              - path: /var/cache/nginx
+      nginx-run:
+        type: emptyDir
+        advancedMounts:
+          hca:
+            nginx:
+              - path: /var/run
