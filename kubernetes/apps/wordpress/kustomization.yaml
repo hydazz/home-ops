@@ -6,7 +6,6 @@ namespace: wordpress
 components:
   - ../../components/common
 resources:
-  - ./ocirepository.yaml
   - ./hca/ks.yaml
   - ./lmvca/ks.yaml
 configMapGenerator:
