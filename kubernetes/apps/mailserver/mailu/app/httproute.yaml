@@ -18,4 +18,4 @@ spec:
       backendRefs:
         - name: mailu-front
           namespace: mailserver
-          port: 443
+          port: 80
