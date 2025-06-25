@@ -30,6 +30,7 @@ spec:
               TZ: "Australia/Melbourne"
               MINIO_UPDATE: "off"
               MINIO_API_REQUESTS_MAX: "1600"
+              MINIO_DOMAIN: "${D_IGI}"
             envFrom:
               - secretRef:
                   name: minio-secret
@@ -103,8 +104,16 @@ spec:
           - backendRefs:
               - name: *app
                 port: 9000
-      # bucket routes
-      # TO:DO ?
+      buckets:
+        hostnames: ["packages.${D_IGI}", "ci-tests.${D_IGI}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https-igi
+        rules:
+          - backendRefs:
+              - name: *app
+                port: 9000
     persistence:
       data:
         enabled: true
@@ -112,3 +121,8 @@ spec:
         accessMode: ReadWriteOnce
         globalMounts:
           - path: /data
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
