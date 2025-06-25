@@ -30,10 +30,11 @@ spec:
       VOLSYNC_CAPACITY: 128Mi
       VOLSYNC_CACHE_CAPACITY: 32Mi
   prune: true
-  retryInterval: 1m
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
