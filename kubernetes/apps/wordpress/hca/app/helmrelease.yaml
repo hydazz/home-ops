@@ -24,7 +24,7 @@ spec:
         initContainers:
           init-wp:
             image:
-              repository: wordpress
+              repository: ghcr.io/hydazz/docker-wordpress
               tag: 6.8.1-fpm-alpine
             command:
               - /bin/sh
@@ -41,7 +41,7 @@ spec:
         containers:
           app:
             image:
-              repository: wordpress
+              repository: ghcr.io/hydazz/docker-wordpress
               tag: 6.8.1-fpm-alpine
             env:
               WORDPRESS_MEMORY_LIMIT: 256M
