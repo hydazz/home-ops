@@ -1,0 +1,247 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: mailu
+spec:
+  interval: 1h
+  url: https://mailu.github.io/helm-charts
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mailu
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: mailu
+      version: 2.2.2
+      sourceRef:
+        kind: HelmRepository
+        name: mailu
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          # Overwrite default PVCs with our volsync PVC
+          - target:
+              version: v1
+              kind: Deployment
+              name: mailu-admin
+            patch: &pvcpatch |
+              - op: replace
+                path: /spec/template/spec/volumes/0
+                value:
+                  name: data
+                  persistentVolumeClaim:
+                    claimName: mailu
+          - target:
+              version: v1
+              kind: Deployment
+              name: mailu-dovecot
+            patch: *pvcpatch
+          # Fix DNS resolver for admin pod (use IPv4 DNS instead of IPv6)
+          - target:
+              version: v1
+              kind: Deployment
+              name: mailu-admin
+            patch: |
+              - op: add
+                path: /spec/template/spec/dnsPolicy
+                value: "None"
+              - op: add
+                path: /spec/template/spec/dnsConfig
+                value:
+                  nameservers:
+                    - "10.43.0.10"
+          # Use cert-manager TLS secret in front pod
+          - target:
+              version: v1
+              kind: Deployment
+              name: mailu-front
+            patch: |
+              - op: replace
+                path: /spec/template/spec/volumes/0/secret/secretName
+                value: ${D_HS//./-}-production-tls
+          # Delete default PVCs
+          - patch: |
+              $patch: delete
+              apiVersion: v1
+              kind: PersistentVolumeClaim
+              metadata:
+                name: mailu-admin
+                namespace: mailserver
+          - patch: |
+              $patch: delete
+              apiVersion: v1
+              kind: PersistentVolumeClaim
+              metadata:
+                name: mailu-dovecot
+                namespace: mailserver
+  values:
+    # renovate: datasource=github-releases depName=Mailu/Mailu
+    mailuVersion: "2024.06.36"
+    global:
+      database:
+        roundcube:
+          database: roundcube
+          username: roundcube
+          existingSecret: mailu-webmail-secret
+          existingSecretPasswordKey: ROUNDCUBE_DB_PASS
+    hostnames:
+      - mail.${D_HS}
+    domain: &domain ${D_HS}
+    existingSecret: &secret mailu-secret
+    timezone: Australia/Melbourne
+    initialAccount:
+      enabled: true
+      username: alex
+      domain: *domain
+      existingSecret: *secret
+      existingSecretPasswordKey: INITIAL_ADMIN_PW
+      mode: ifmissing
+    subnet: 10.42.0.0/16
+    subnet6: fd42::/48
+    dmarc:
+      rua: ""
+      ruf: ""
+    limits:
+      messageSizeLimitInMegabytes: 64
+      authRatelimit:
+        ip: 60/hour
+        ipv4Mask: 24
+        ipv6Mask: 56
+        user: 100/day
+        exemptionLength: 86400
+        exemption: ""
+      messageRatelimit:
+        value: 200/day
+        exemption: ""
+    customization:
+      siteName: Mailu
+      website: https://mail.${D_HS}
+      logoUrl: none
+      logoBackground: none
+    externalDatabase:
+      enabled: true
+      type: postgresql
+      host: postgres-rw.databases.svc.cluster.local
+      port: 5432
+      existingSecret: *secret
+      existingSecretDatabaseKey: MAILU_DB
+      existingSecretUsernameKey: MAILU_DB_USER
+      existingSecretPasswordKey: MAILU_DB_PASS
+    externalRedis:
+      enabled: true
+      host: dragonfly.databases.svc.cluster.local
+      port: 6379
+    persistence:
+      single_pvc: false
+    ingress:
+      enabled: false
+    front:
+      kind: Deployment
+      replicaCount: 1
+      updateStrategy:
+        type: Recreate
+      hostPort:
+        enabled: false
+      externalService:
+        enabled: true
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        annotations:
+          lbipam.cilium.io/ips: 192.168.42.150
+        ports:
+          pop3: true
+          pop3s: true
+          imap: true
+          imaps: true
+          smtp: true
+          smtps: true
+          submission: true
+          manageSieve: true
+    admin:
+      enabled: true
+      initContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
+          envFrom:
+            - secretRef:
+                name: mailu-secret
+      uri: /admin
+      updateStrategy:
+        type: Recreate
+    postfix:
+      updateStrategy:
+        type: Recreate
+      persistence:
+        size: 128Mi
+    dovecot:
+      enabled: true
+      updateStrategy:
+        type: Recreate
+      compression: lz4
+      compressionLevel: 6
+    webmail:
+      enabled: true
+      initContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
+          envFrom:
+            - secretRef:
+                name: mailu-webmail-secret
+      type: roundcube
+      uri: /webmail
+      updateStrategy:
+        type: Recreate
+      roundcubePlugins:
+        - archive
+        - zipdownload
+        - markasjunk
+        - managesieve
+        - enigma
+        - carddav
+        - vcard_attachments
+        - mailu
+      persistence:
+        size: 128Mi
+    # Disabled services
+    redis:
+      enabled: false
+    rspamd:
+      enabled: false
+      updateStrategy:
+        type: Recreate
+      persistence:
+        size: 1Gi
+    clamav:
+      enabled: false
+      persistence:
+        size: 2Gi
+    webdav:
+      enabled: false
+      updateStrategy:
+        type: Recreate
+    fetchmail:
+      enabled: false
+      updateStrategy:
+        type: Recreate
+      delay: 600
+      persistence:
+        size: 512Mi
+    tika:
+      enabled: false
+      languages:
+        - en
+    oletools:
+      enabled: false
