@@ -27,6 +27,9 @@ spec:
       tag: 31.0.6-fpm-alpine
     nginx:
       enabled: true
+      image:
+        repository: nextcloud
+        tag: 1.29.0-alpine
     fullnameOverride: *app
     nextcloud:
       extraInitContainers:
