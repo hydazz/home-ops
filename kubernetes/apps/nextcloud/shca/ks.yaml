@@ -13,7 +13,7 @@ spec:
     - ../../../../components/keda/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-    - name: cloudnative-pg
+    - name: cloudnative-pg-cluster
       namespace: databases
     - name: keda
       namespace: observability
