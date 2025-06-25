@@ -88,7 +88,7 @@ spec:
                 name: mailu-dovecot
                 namespace: mailserver
   values:
-    # renovate: datasource=github-releases depName=Mailu/Mailu
+    # renovate: datasource=github-releases depName=Mailu/Mailu versioning=calver
     mailuVersion: "2024.06.36"
     global:
       database:
