@@ -44,7 +44,7 @@ spec:
               repository: ghcr.io/hydazz/docker-wordpress
               tag: 6.8.1-fpm-alpine
             env:
-              WORDPRESS_MEMORY_LIMIT: 256M
+              WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
             envFrom:
               - secretRef:
