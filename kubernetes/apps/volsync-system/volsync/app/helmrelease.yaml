@@ -39,3 +39,9 @@ spec:
       runAsNonRoot: true
       runAsUser: 1000
       runAsGroup: 1000
+    # until 0.13.0 is released with arm64 support
+    image: &image
+      repository: ghcr.io/home-operations/volsync
+      tag: 0.12.1
+    restic: *image
+    rclone: *image
