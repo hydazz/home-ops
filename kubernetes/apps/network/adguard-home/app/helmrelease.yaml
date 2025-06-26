@@ -28,9 +28,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                if [ ! -f /opt/adguardhome/conf/AdGuardHome.yaml ]; then
-                  cp /tmp/config/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
-                fi
+                cp -f /tmp/config/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
         containers:
           app:
             image:
@@ -75,7 +73,7 @@ spec:
       dns:
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 192.168.42.17,2404:e80:661b:42::17
+          lbipam.cilium.io/ips: 192.168.42.152,2404:e80:661b:42::152
         externalTrafficPolicy: Local
         ipFamilyPolicy: PreferDualStack
         ipFamilies:
