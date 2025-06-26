@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: ollama/ollama
-              tag: 0.9.2
+              tag: 0.9.3
             env:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_PORT: &port 11434
