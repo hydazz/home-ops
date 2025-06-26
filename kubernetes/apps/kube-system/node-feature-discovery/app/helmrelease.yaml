@@ -1,12 +1,17 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: node-feature-discovery
 spec:
   interval: 5m
-  url: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.17.3
+  url: oci://ghcr.io/home-operations/charts-mirror/node-feature-discovery
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -15,21 +20,13 @@ metadata:
   name: node-feature-discovery
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: node-feature-discovery
-      sourceRef:
-        kind: HelmRepository
-        name: node-feature-discovery
-        namespace: kube-system
+  chartRef:
+    kind: OCIRepository
+    name: node-feature-discovery
   install:
-    crds: CreateReplace
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
     remediation:
-      strategy: rollback
       retries: 3
-  values:
