@@ -14,4 +14,4 @@ spec:
     - backendRefs:
         - name: portainer
           namespace: portainer
-          port: 9443
+          port: 9000
