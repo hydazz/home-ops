@@ -46,7 +46,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["ollama.${D_HS}"]
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
         parentRefs:
           - name: internal
             namespace: kube-system
