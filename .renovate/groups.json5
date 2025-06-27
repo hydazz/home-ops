@@ -47,6 +47,15 @@
       },
     },
     {
+      description: "Spegel Group",
+      groupName: "Spegel",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/spegel/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Immich Group",
       groupName: "Immich",
       matchDatasources: ["docker"],
