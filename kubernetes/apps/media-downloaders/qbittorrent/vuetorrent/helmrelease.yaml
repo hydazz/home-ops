@@ -49,6 +49,8 @@ spec:
                 cpu: 10m
                 memory: 20Mi
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/arch: amd64
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001

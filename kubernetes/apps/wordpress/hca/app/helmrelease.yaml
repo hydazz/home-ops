@@ -74,6 +74,8 @@ spec:
               limits:
                 memory: 128Mi
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/arch: amd64
       securityContext:
         runAsNonRoot: true
         runAsUser: 82
