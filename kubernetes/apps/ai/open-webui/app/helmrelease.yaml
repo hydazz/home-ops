@@ -47,13 +47,16 @@ spec:
                   name: open-webui-secret
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              # Read-only file system: '/app/backend/open_webui/static/'
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
                 memory: 512Mi
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/arch: amd64
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
@@ -80,5 +83,3 @@ spec:
         globalMounts:
           - path: /app/backend/data/
             subPath: data
-          - path: /tmp
-            subPath: tmp
