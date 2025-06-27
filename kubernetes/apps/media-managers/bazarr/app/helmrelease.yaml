@@ -79,12 +79,10 @@ spec:
           - path: /data
       tmpfs:
         type: emptyDir
-        advancedMounts:
-          bazarr:
-            app:
-              - path: /config/cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp
+        globalMounts:
+          - path: /config/cache
+            subPath: cache
+          - path: /config/log
+            subPath: log
+          - path: /tmp
+            subPath: tmp
