@@ -14,5 +14,4 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./tdarr/ks.yaml
   - ./kometa/ks.yaml
-  # TO-DO
-  #- ./notifiarr/ks.yaml # cbf
+  - ./notifiarr/ks.yaml

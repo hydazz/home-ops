@@ -19,6 +19,8 @@ spec:
   values:
     controllers:
       notifiarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -26,6 +28,12 @@ spec:
               tag: v0.8.3@sha256:1798fc4236e75c5601b747e367f66a3dd25b412fb834552d2517aced36792be1
             env:
               TZ: Australia/Melbourne
+              TMPDIR: /tmp
+              DN_RADARR_0_URL: http://radarr.media-managers.svc.cluster.local
+              DN_SONARR_0_URL: http://sonarr.media-managers.svc.cluster.local
+            envFrom:
+              - secretRef:
+                  name: notifiarr-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -50,7 +58,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 5454
+            port: 5454
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
@@ -60,12 +68,6 @@ spec:
             sectionName: https
     persistence:
       config:
-        type: emptyDir
-      machine-id:
-        type: secret
-        name: notifiarr-secret
-        globalMounts:
-          - path: /etc/machine-id
-            subPath: machine-id
+        existingClaim: notifiarr
       tmp:
         type: emptyDir
