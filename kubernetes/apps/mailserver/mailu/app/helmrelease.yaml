@@ -154,6 +154,8 @@ spec:
       replicaCount: 1
       updateStrategy:
         type: Recreate
+      nodeSelector: &amd64
+        kubernetes.io/arch: amd64
       podAnnotations: &reloader
         reloader.stakater.com/auto: "true"
       hostPort:
@@ -185,6 +187,7 @@ spec:
       uri: /admin
       updateStrategy:
         type: Recreate
+      nodeSelector: *amd64
     postfix:
       podAnnotations: *reloader
       updateStrategy:
@@ -196,6 +199,7 @@ spec:
       podAnnotations: *reloader
       updateStrategy:
         type: Recreate
+      nodeSelector: *amd64
       compression: lz4
       compressionLevel: 6
     rspamd:
@@ -203,6 +207,7 @@ spec:
       podAnnotations: *reloader
       updateStrategy:
         type: Recreate
+      nodeSelector: *amd64
       persistence:
         size: 1Gi
     webmail:
@@ -218,6 +223,7 @@ spec:
       uri: /webmail
       updateStrategy:
         type: Recreate
+      nodeSelector: *amd64
       roundcubePlugins:
         - archive
         - zipdownload
