@@ -88,8 +88,6 @@ spec:
                 name: mailu-dovecot
                 namespace: mailserver
   values:
-    # renovate: datasource=github-releases depName=Mailu/Mailu
-    mailuVersion: "2024.06.36"
     global:
       database:
         roundcube:
