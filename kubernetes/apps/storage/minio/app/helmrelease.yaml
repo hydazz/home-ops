@@ -30,7 +30,6 @@ spec:
               TZ: "Australia/Melbourne"
               MINIO_UPDATE: "off"
               MINIO_API_REQUESTS_MAX: "1600"
-              MINIO_DOMAIN: "${D_IGI}"
             envFrom:
               - secretRef:
                   name: minio-secret
@@ -90,26 +89,6 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: 9000
-      s3-igi:
-        hostnames: ["s3.${D_IGI}"]
-        parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https-igi
-        rules:
-          - backendRefs:
-              - name: *app
-                port: 9000
-      buckets:
-        hostnames: ["packages.${D_IGI}", "ci-tests.${D_IGI}"]
-        parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https-igi
         rules:
           - backendRefs:
               - name: *app
