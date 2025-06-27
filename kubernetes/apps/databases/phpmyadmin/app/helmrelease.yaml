@@ -56,6 +56,8 @@ spec:
               limits:
                 memory: 512M
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/arch: amd64
       securityContext:
         runAsUser: 33
         runAsGroup: 33
