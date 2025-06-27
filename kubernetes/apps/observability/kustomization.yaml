@@ -13,3 +13,4 @@ resources:
   - ./keda/ks.yaml
   - ./blackbox-exporter/ks.yaml
   - ./gatus/ks.yaml
+  - ./unpoller/ks.yaml
