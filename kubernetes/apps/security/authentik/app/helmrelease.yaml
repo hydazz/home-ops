@@ -36,9 +36,6 @@ spec:
         port: "6379"
         db: "2"
     global:
-      image:
-        repository: ghcr.io/goauthentik/server
-        tag: 2025.6.3@sha256:334354d11e015037cc1b030a9710e564f6e3545369d28789db823e86171d3fdc
       deploymentStrategy:
         type: Recreate
       envFrom:

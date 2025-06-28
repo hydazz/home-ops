@@ -24,12 +24,12 @@ spec:
     image:
       flavor: fpm-alpine
       # renovate: datasource=docker depName=nextcloud
-      tag: 31.0.6-fpm-alpine
+      tag: 31.0.6-fpm-alpine@sha256:e80b83febbc5aba4c04d201b0d1ada744d1119d510248954f8d4105891cf5ddd
     nginx:
       enabled: true
       image:
-        repository: nextcloud
-        tag: 1.29.0-alpine
+        repository: nginx
+        tag: 1.29.0-alpine@sha256:b2e814d28359e77bd0aa5fed1939620075e4ffa0eb20423cc557b375bd5c14ad
     fullnameOverride: *app
     nextcloud:
       extraInitContainers:

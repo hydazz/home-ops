@@ -32,9 +32,6 @@ spec:
       retries: 3
   values:
     controller:
-      image:
-        repository: jenkins/jenkins
-        tag: 2.516
       sidecars:
         configAutoReload:
           enabled: false

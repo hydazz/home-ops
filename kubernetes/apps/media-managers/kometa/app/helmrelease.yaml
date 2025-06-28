@@ -22,7 +22,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "0 3 * * *"
-          timeZone: &timeZone Australia/Melbourne
+          timeZone: &timezone Australia/Melbourne
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
@@ -30,9 +30,9 @@ spec:
           app:
             image:
               repository: kometateam/kometa
-              tag: v2.2.0
+              tag: v2.2.0@sha256:e8bf350bcdf7e16fc3ab0f128e2ef43a447bd1c4d3352a2f521fcf2b3b421d39
             env:
-              TZ: *timeZone
+              TZ: *timezone
               KOMETA_RUN: true
               KOMETA_READ_ONLY_CONFIG: true
             envFrom:
