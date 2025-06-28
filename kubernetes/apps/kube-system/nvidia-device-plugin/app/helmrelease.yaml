@@ -25,10 +25,12 @@ spec:
         kind: HelmRepository
         name: nvidia
   install:
+    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       retries: 3
   values:
