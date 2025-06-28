@@ -35,6 +35,13 @@ spec:
       retries: 3
   values:
     runtimeClassName: nvidia
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: extensions.talos.dev/nvidia-container-toolkit-production
+              operator: Exists
     config:
       map:
         default: |-
