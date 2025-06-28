@@ -2,10 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: ai
-components:
-  - ../../components/common
 resources:
-  - ./ollama/ks.yaml
-  - ./paperless-ai/ks.yaml
-# - ./open-webui/ks.yaml # pulls slows as balls
+  - externalsecret.yaml
+  - helmrelease.yaml
