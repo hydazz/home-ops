@@ -34,9 +34,6 @@ spec:
   values:
     fullnameOverride: reloader
     reloader:
-      deployment:
-        nodeSelector:
-          kubernetes.io/arch: amd64
       readOnlyRootFileSystem: true
       podMonitor:
         enabled: true
