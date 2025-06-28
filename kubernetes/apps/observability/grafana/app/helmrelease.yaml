@@ -93,6 +93,38 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/default
+          - name: kubernetes
+            orgId: 1
+            folder: "Kubernetes"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/kubernetes
+          - name: infrastructure
+            orgId: 1
+            folder: "Infrastructure"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/infrastructure
+          - name: databases
+            orgId: 1
+            folder: "Databases"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/databases
+          - name: network
+            orgId: 1
+            folder: "Network"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/network
     dashboards:
       kubernetes:
         kubernetes-api-server:
@@ -174,11 +206,11 @@ spec:
           gnetId: 7371
           revision: 1
           datasource: Prometheus
-        mariadb-galera:
-          # renovate: depName="Galera/MariaDB - Overview"
-          gnetId: 13106
-          revision: 3
-          datasource: Prometheus
+        #mariadb-galera:
+        #  # renovate: depName="Galera/MariaDB - Overview"
+        #  gnetId: 13106
+        #  revision: 3
+        #  datasource: Prometheus
         mysql-quickstart:
           # renovate: depName="MySQL Exporter Quickstart and Dashboard"
           gnetId: 14057
