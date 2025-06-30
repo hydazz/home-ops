@@ -1,0 +1,23 @@
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Backup
+metadata:
+  name: mariadb-backup
+spec:
+  mariaDbRef:
+    name: mariadb
+  timeZone: "Australia/Melbourne"
+  schedule:
+    cron: "0 * * * *"
+    suspend: false
+  storage:
+    s3:
+      endpoint: https://s3.us-east-005.backblazeb2.com
+      bucket: b2backup-k8s
+      prefix: mariadb
+      accessKeyIdSecretKeyRef:
+        name: mariadb-secret
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKeySecretKeyRef:
+        name: mariadb-secret
+        key: AWS_SECRET_ACCESS_KEY
