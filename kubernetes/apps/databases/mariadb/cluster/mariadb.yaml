@@ -13,6 +13,9 @@ spec:
   storage:
     size: 8Gi
     storageClassName: longhorn
+  # bootstrapFrom:
+  #   backupRef:
+  #     name: mariadb-backup
   myCnf: |
     [mariadb]
     ignore-db-dir=lost+found
