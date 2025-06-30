@@ -16,3 +16,7 @@ spec:
       secretAccessKey:
         name: cloudnative-pg-secret
         key: AWS_SECRET_ACCESS_KEY
+    data:
+      compression: gzip
+    wal:
+      compression: gzip
