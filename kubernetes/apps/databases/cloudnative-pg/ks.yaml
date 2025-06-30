@@ -1,4 +1,67 @@
 ---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: cnpg-barman-cloud-crds
+spec:
+  interval: 30m
+  url: https://github.com/cloudnative-pg/plugin-barman-cloud.git
+  ref:
+    tag: v0.4.0
+  ignore: |
+    # exclude
+    /*
+    # include
+    !config/crd/bases/barmancloud.cnpg.io_objectstores.yaml
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &name cnpg-barman-cloud-crds
+  namespace: &namespace database
+spec:
+  targetNamespace: *namespace
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: *name
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  healthChecks:
+    - &crds
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      name: objectstores.barmancloud.cnpg.io
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &name cnpg-crds
+  namespace: &namespace database
+spec:
+  targetNamespace: *namespace
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: ./kubernetes/apps/databases/cloudnative-pg/crds
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  healthChecks:
+    - &crds
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      name: clusters.postgresql.cnpg.io
+    - <<: *crds
+      apiVersion: apiextensions.k8s.io/v1
+      name: objectstores.barmancloud.cnpg.io
+---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -20,7 +83,28 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
-
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cloudnative-pg-barman
+  namespace: &namespace databases
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/databases/cloudnative-pg/barman-cloud
+  interval: 1h
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -35,8 +119,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: databases
-    - name: longhorn
-      namespace: longhorn-system
+    - name: cloudnative-pg-barman
+      namespace: databases
   path: ./kubernetes/apps/databases/cloudnative-pg/cluster
   interval: 1h
   prune: true

@@ -15,3 +15,10 @@ spec:
             apiTokenSecretRef:
               name: cloudflare-issuer-secret
               key: CLOUDFLARE_DNS_TOKEN
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned
+spec:
+  selfSigned: {}
