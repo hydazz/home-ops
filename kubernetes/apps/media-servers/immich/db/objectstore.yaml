@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: immich
+spec:
+  retentionPolicy: 7d
+  configuration:
+    destinationPath: s3://b2backup-k8s/cnpg/immich/
+    endpointURL: https://s3.us-east-005.backblazeb2.com
+    s3Credentials:
+      accessKeyId:
+        name: immich-db-secret
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: immich-db-secret
+        key: AWS_SECRET_ACCESS_KEY
