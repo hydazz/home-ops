@@ -11,7 +11,6 @@ spec:
   storage:
     size: 8Gi
     storageClass: longhorn
-  enableSuperuserAccess: true
   superuserSecret:
     name: cloudnative-pg-secret
   postgresql:
@@ -27,4 +26,32 @@ spec:
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
-
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cnpg/v16/
+      endpointURL: https://s3.us-east-005.backblazeb2.com
+      # Note: serverName version needs to be incremented
+      # when recovering from an existing cnpg cluster
+      serverName: postgres-v1
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  #bootstrap:
+  #  recovery:
+  #    source: &previousCluster postgres-v0
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: &previousCluster postgres-v0
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
