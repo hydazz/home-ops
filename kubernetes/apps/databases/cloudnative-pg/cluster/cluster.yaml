@@ -32,7 +32,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://cnpg/v16/
+      destinationPath: s3://b2backup-k8s/cnpg/v16/
       endpointURL: https://s3.us-east-005.backblazeb2.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
