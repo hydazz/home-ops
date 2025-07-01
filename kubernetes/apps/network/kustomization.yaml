@@ -10,4 +10,4 @@ resources:
   - ./k8s-gateway/ks.yaml
   - ./adguard-home/ks.yaml
   - ./adguard-dns/ks.yaml
-#  - ./reverse-proxy/ks.yaml
+  - ./reverse-proxy/ks.yaml
