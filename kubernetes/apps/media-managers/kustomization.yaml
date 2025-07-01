@@ -5,13 +5,13 @@ kind: Kustomization
 namespace: media-managers
 components:
   - ../../components/common
-resources:
-  - ./radarr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./bazarr/ks.yaml
-  - ./overseerr/ks.yaml
-  - ./flaresolverr/ks.yaml
-  - ./tdarr/ks.yaml
-  - ./kometa/ks.yaml
-  - ./notifiarr/ks.yaml
+resources: []
+#  - ./radarr/ks.yaml
+#  - ./sonarr/ks.yaml
+#  - ./prowlarr/ks.yaml
+#  - ./bazarr/ks.yaml
+#  - ./overseerr/ks.yaml
+#  - ./flaresolverr/ks.yaml
+#  - ./tdarr/ks.yaml
+#  - ./kometa/ks.yaml
+#  - ./notifiarr/ks.yaml

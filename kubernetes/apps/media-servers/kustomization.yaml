@@ -5,8 +5,8 @@ kind: Kustomization
 namespace: media-servers
 components:
   - ../../components/common
-resources:
-  - ./immich/ks.yaml
-  - ./paperless-ngx/ks.yaml
-  - ./plex/ks.yaml
-  - ./tautulli/ks.yaml
+resources: []
+#  - ./immich/ks.yaml
+#  - ./paperless-ngx/ks.yaml
+#  - ./plex/ks.yaml
+#  - ./tautulli/ks.yaml

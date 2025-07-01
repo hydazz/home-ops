@@ -12,19 +12,15 @@ spec:
     copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
     pruneIntervalDays: 1
     repository: "${APP}-volsync-secret"
-    # storage parameters
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
-    storageClassName: "${VOLSYNC_STORAGECLASS:=longhorn}"
-    accessModes:
-      - "${VOLSYNC_ACCESSMODES:=ReadWriteOnce}"
-    # cache parameters
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=1Gi}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=longhorn}"
-    cacheAccessModes:
-      - "${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=openebs-hostpath}"
+    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
+    storageClassName: "${VOLSYNC_STORAGECLASS:=ceph-block}"
+    accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}"]
     moverSecurityContext:
-      runAsUser: ${VOLSYNC_PUID:=568}
-      runAsGroup: ${VOLSYNC_PGID:=568}
-      fsGroup: ${VOLSYNC_PGID:=568}
+      runAsUser: ${VOLSYNC_PUID:=1000}
+      runAsGroup: ${VOLSYNC_PGID:=1000}
+      fsGroup: ${VOLSYNC_PGID:=1000}
     retain:
       daily: 7

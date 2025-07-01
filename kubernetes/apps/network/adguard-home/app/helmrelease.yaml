@@ -36,6 +36,7 @@ spec:
               tag: v0.107.63@sha256:320ab49bd5f55091c7da7d1232ed3875f687769d6bb5e55eb891471528e2e18f
             env:
               TZ: Australia/Melbourne
+              foo: bar
             probes:
               liveness: &probes
                 enabled: true
@@ -103,11 +104,9 @@ spec:
         globalMounts:
           - path: /opt/adguardhome/conf
       data:
+        existingClaim: adguard-home
         globalMounts:
           - path: /opt/adguardhome/work
-        accessMode: ReadWriteOnce
-        storageClass: longhorn
-        size: 2Gi
       config-source:
         type: secret
         name: adguard-home-config

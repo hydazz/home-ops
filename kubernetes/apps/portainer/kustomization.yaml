@@ -5,5 +5,5 @@ kind: Kustomization
 namespace: portainer
 components:
   - ../../components/common
-resources:
-  - ./portainer/ks.yaml
+resources: []
+ # - ./portainer/ks.yaml

@@ -5,5 +5,5 @@ kind: Kustomization
 namespace: jenkins
 components:
   - ../../components/common
-resources:
-  - jenkins/ks.yaml
+resources: []
+#  - jenkins/ks.yaml

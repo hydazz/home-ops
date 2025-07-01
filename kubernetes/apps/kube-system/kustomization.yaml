@@ -15,4 +15,4 @@ resources:
   - ./snapshot-controller/ks.yaml
   - ./nvidia-device-plugin/ks.yaml
   - ./reflector/ks.yaml
-  - ./spegel/ks.yaml
+# - ./spegel/ks.yaml
