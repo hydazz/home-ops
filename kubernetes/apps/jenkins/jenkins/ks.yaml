@@ -18,8 +18,8 @@ spec:
       name: *app
       namespace: *namespace
   dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 10m
   path: ./kubernetes/apps/jenkins/jenkins/app
   postBuild:

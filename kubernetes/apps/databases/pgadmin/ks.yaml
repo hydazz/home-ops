@@ -14,8 +14,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: databases
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/databases/pgadmin/app
   postBuild:

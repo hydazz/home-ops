@@ -54,9 +54,9 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
@@ -80,7 +80,7 @@ spec:
         globalMounts:
           - path: /app/config/logs
             subPath: logs
-          - path: app/config/cache
+          - path: /app/config/cache
             subPath: cache
           - path: /tmp
             subPath: tmp

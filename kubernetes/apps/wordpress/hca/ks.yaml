@@ -14,8 +14,8 @@ spec:
   dependsOn:
     - name: mariadb-cluster
       namespace: databases
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/wordpress/hca/app
   postBuild:

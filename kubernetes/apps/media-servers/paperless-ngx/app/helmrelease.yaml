@@ -45,8 +45,8 @@ spec:
               PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
               PAPERLESS_TIME_ZONE: Australia/Melbourne
               PAPERLESS_URL: https://paperless.${D_HS}
-              USERMAP_GID: "1001"
-              USERMAP_UID: "1001"
+              USERMAP_GID: "1000"
+              USERMAP_UID: "1000"
             envFrom:
               - secretRef:
                   name: paperless-ngx-secret
@@ -104,7 +104,7 @@ spec:
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
-        fsGroup: 1001
+        fsGroup: 1000
         fsGroupChangePolicy: "OnRootMismatch"
     service:
       app:

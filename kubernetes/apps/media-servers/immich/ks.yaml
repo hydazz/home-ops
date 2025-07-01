@@ -12,8 +12,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: databases
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media-servers/immich/db
   prune: true
@@ -46,8 +46,8 @@ spec:
       namespace: databases
     - name: keda
       namespace: observability
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media-servers/immich/app
   postBuild:

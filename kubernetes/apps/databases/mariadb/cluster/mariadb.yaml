@@ -10,9 +10,22 @@ spec:
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: root-password
+  bootstrapFrom:
+    s3:
+      endpoint: s3.us-east-005.backblazeb2.com
+      bucket: b2backup-k8s
+      prefix: mariadb
+      tls:
+        enabled: true
+      accessKeyIdSecretKeyRef:
+        name: mariadb-secret
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKeySecretKeyRef:
+        name: mariadb-secret
+        key: AWS_SECRET_ACCESS_KEY
   storage:
     size: 8Gi
-    storageClassName: longhorn
+    storageClassName: ceph-block
   myCnf: |
     [mariadb]
     ignore-db-dir=lost+found

@@ -48,19 +48,17 @@ spec:
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
+        runAsUser: 1000
+        runAsGroup: 1000
         runAsNonRoot: true
-        fsGroup: 1001
+        fsGroup: 1000
         fsGroupChangePolicy: "OnRootMismatch"
     service:
       app:
         enabled: false
     persistence:
       config:
-        accessMode: ReadWriteOnce
-        size: 512Mi
-        storageClass: longhorn
+        existingClaim: kometa
       files:
         type: configMap
         name: kometa-configmap
