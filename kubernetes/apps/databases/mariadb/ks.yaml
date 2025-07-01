@@ -20,7 +20,6 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -46,7 +45,6 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -61,8 +59,8 @@ spec:
   dependsOn:
     - name: mariadb-operator
       namespace: databases
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   path: ./kubernetes/apps/databases/mariadb/cluster
   interval: 1h
   prune: true

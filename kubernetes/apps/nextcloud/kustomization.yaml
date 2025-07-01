@@ -6,6 +6,6 @@ namespace: nextcloud
 components:
   - ../../components/common
 resources:
-#  - ./shs/ks.yaml
-#  - ./shca/ks.yaml
+  - ./shs/ks.yaml
+  - ./shca/ks.yaml
   - ./helmrepository.yaml

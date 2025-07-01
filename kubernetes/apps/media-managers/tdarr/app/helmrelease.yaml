@@ -28,8 +28,8 @@ spec:
               tag: 2.45.01@sha256:69d28aff66318ecc1c9496717c1731fbdbbfb8c0c4664a90bbb36747fbf279fe
             env:
               TZ: Australia/Melbourne
-              PUID: 1001
-              PGID: 1001
+              PUID: 1000
+              PGID: 1000
               serverIP: 0.0.0.0
               serverPort: 8266
               webUIPort: &port 8265

@@ -18,8 +18,8 @@ spec:
       namespace: kube-system
     - name: keda
       namespace: observability
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media-managers/tdarr/app
   postBuild:

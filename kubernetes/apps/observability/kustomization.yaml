@@ -5,12 +5,13 @@ kind: Kustomization
 namespace: observability
 components:
   - ../../components/common
-resources: []
-#  - ./grafana/ks.yaml
-#  - ./kube-prometheus-stack/ks.yaml
-#  - ./loki/ks.yaml
-#  - ./promtail/ks.yaml
-#  - ./keda/ks.yaml
-#  - ./blackbox-exporter/ks.yaml
-#  - ./gatus/ks.yaml
-#  - ./unpoller/ks.yaml
+resources:
+  - ./blackbox-exporter/ks.yaml
+  - ./gatus/ks.yaml
+  - ./grafana/ks.yaml
+  - ./keda/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
+  - ./loki/ks.yaml
+  - ./promtail/ks.yaml
+  - ./silence-operator/ks.yaml
+  - ./unpoller/ks.yaml
