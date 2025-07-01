@@ -25,7 +25,7 @@ spec:
           init-wp:
             image:
               repository: wordpress
-              tag: 6.8.1-fpm-alpine@sha256:2ce2d6666ea936fb61bdcaed6caf03e45bb058b7db742f4b4652813b57c92d05
+              tag: 6.8.1-fpm-alpine@sha256:f7b5b9baabd89bbd484d07bd78cfe68ff99053374c590e34218a870508489c96
             command:
               - /bin/sh
               - -c
@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: wordpress
-              tag: 6.8.1-fpm-alpine@sha256:2ce2d6666ea936fb61bdcaed6caf03e45bb058b7db742f4b4652813b57c92d05
+              tag: 6.8.1-fpm-alpine@sha256:f7b5b9baabd89bbd484d07bd78cfe68ff99053374c590e34218a870508489c96
             env:
               WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
