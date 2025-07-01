@@ -52,7 +52,19 @@ spec:
           enabled: false
           keep: false
     zfs-localpv:
-      enabled: false
+      enabled: true
+      analytics:
+        enabled: false
+      zfs:
+        bin: /usr/local/sbin/zfs
+      zfsNode:
+        encrKeysDir: /var/openebs/keys
+        nodeSelector:
+          kubernetes.io/hostname: voyager
+      crds:
+        csi:
+          volumeSnapshots:
+            enabled: false
     lvm-localpv:
       enabled: false
     mayastor:
@@ -62,7 +74,7 @@ spec:
         lvm:
           enabled: false
         zfs:
-          enabled: false
+          enabled: true
       replicated:
         mayastor:
           enabled: false
