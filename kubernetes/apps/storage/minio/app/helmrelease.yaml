@@ -95,9 +95,7 @@ spec:
                 port: 9000
     persistence:
       data:
-        enabled: true
-        size: 2Gi # just until openebs is setup
-        accessMode: ReadWriteOnce
+        existingClaim: minio
         globalMounts:
           - path: /data
       tmpfs:
