@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: ai
 components:
   - ../../components/common
-resources: []
-#  - ./ollama/ks.yaml
-#  - ./paperless-ai/ks.yaml
-# - ./open-webui/ks.yaml # pulls slows as balls
+resources:
+  - ./ollama/ks.yaml
+  - ./paperless-ai/ks.yaml
+  - ./open-webui/ks.yaml

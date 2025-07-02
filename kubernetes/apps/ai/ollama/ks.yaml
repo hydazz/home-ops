@@ -12,8 +12,8 @@ spec:
   dependsOn:
     - name: nvidia-device-plugin
       namespace: kube-system
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/ai/ollama/app
   postBuild:
