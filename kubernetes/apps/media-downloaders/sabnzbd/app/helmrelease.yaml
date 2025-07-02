@@ -62,7 +62,7 @@ spec:
                 memory: 2Gi
     defaultPodOptions:
       nodeSelector:
-        kubernetes.io/hostname: "discovery"
+        kubernetes.io/hostname: discovery
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
