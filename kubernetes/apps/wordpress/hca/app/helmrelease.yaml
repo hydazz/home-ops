@@ -25,7 +25,7 @@ spec:
           init-wp:
             image:
               repository: ghcr.io/hydazz/docker-wordpress
-              tag: 6.8.1-fpm-alpine@sha256:a72ff2327dafd44d50a3bfe917a60841da864db719b80ae141983d05b502917d
+              tag: 6.8.1-fpm-alpine@sha256:ff0c5ee228aeaf2607f122303fbe828a84e2e48e815a28d18b794535c57ae19d
             command:
               - /bin/sh
               - -c
@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hydazz/docker-wordpress
-              tag: 6.8.1-fpm-alpine@sha256:a72ff2327dafd44d50a3bfe917a60841da864db719b80ae141983d05b502917d
+              tag: 6.8.1-fpm-alpine@sha256:ff0c5ee228aeaf2607f122303fbe828a84e2e48e815a28d18b794535c57ae19d
             env:
               WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
