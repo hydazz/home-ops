@@ -73,7 +73,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: /dev/disk/by-id/nvme-(SAMSUNG_MZVLW1T0HMLH-000H1_.*|Samsung_SSD_970_EVO_Plus_500GB_.*|Samsung_SSD_970_EVO_Plus_1TB_.*)_.*
+        devicePathFilter: /dev/disk/by-id/nvme-(SAMSUNG_MZVLW1T0HMLH-000H1_.*|Samsung_SSD_970_EVO_Plus_1TB_.*)_.*
         config:
           osdsPerDevice: "1"
     cephBlockPools:
