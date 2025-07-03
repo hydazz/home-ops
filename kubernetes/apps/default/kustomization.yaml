@@ -7,3 +7,4 @@ components:
   - ../../components/common
 resources:
   - ./unifi-protect-backup/ks.yaml
+# - ./portainer/ks.yaml # unused
