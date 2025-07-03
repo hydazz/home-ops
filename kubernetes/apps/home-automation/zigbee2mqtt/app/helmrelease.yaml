@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zigbee2mqtt
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      zigbee2mqtt:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/koenkk/zigbee2mqtt
+              tag: 2.5.1@sha256:1e639d3144960f246dcecc21d993169fd6844b5817e939bca498b2abf2c23159
+            env:
+              TZ: Australia/Melbourne
+              ZIGBEE2MQTT_DATA: /config
+              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_ENABLED: "true"
+              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
+              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: debug
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
+              ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 15
+              ZIGBEE2MQTT_CONFIG_ADVANCED_TRANSMIT_POWER: 15
+              ZIGBEE2MQTT_CONFIG_AVAILABILITY_ENABLED: "true"
+              ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 10
+              ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 1500
+              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 8080
+              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://{{ .Release.Name }}.${D_HS}
+              ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+              ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_BASE_TOPIC: home_zigbee2mqtt
+              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://emqx-listeners.home-automation.svc.cluster.local:1883
+              ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
+              ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "true"
+              ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ember
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: &serialPort /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_0e799ed75441ed1190af7ca7ccf2b06c-if00-port0
+            envFrom:
+              - secretRef:
+                  name: zigbee2mqtt-secret
+            securityContext:
+              privileged: true
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      nodeSelector:
+        feature.node.kubernetes.io/usb-ff_10c4_ea60.present: "true"
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: zigbee2mqtt
+        globalMounts:
+          - path: /config
+      usb:
+        type: hostPath
+        hostPath: *serialPort
+        hostPathType: CharDevice
+        globalMounts:
+          - path: *serialPort
