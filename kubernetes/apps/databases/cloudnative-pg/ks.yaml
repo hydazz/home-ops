@@ -56,8 +56,6 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: databases
-    - name: cloudnative-pg-barman
-      namespace: databases
   path: ./kubernetes/apps/databases/cloudnative-pg/cluster
   interval: 1h
   prune: true
