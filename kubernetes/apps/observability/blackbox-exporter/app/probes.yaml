@@ -11,4 +11,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - 10.0.3.7:2049
+        - 192.168.42.20:2049

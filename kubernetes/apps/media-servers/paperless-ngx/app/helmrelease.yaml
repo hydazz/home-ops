@@ -131,7 +131,7 @@ spec:
               - path: /usr/src/paperless/data
       media:
         type: nfs
-        server: 10.0.3.7
+        server: 192.168.42.20
         path: /mnt/Fast/Public/Paperless/media
         advancedMounts:
           paperless-ngx:

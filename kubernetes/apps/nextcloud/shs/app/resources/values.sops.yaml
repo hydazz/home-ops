@@ -2,7 +2,7 @@ nextcloud:
     extraVolumes:
         - name: ENC[AES256_GCM,data:/6xvlYcgBks=,iv:+DQgArgbLtfxyqnXyXV8MH7TbLL+VMaizW9cKCmxg4M=,tag:hxlryEiWW6FIhsRXKAtz0A==,type:str]
           nfs:
-            server: ENC[AES256_GCM,data:MY8BxvlgDDo=,iv:a9cujfqjF/IrOKjUq4brb0OediodS7D4UOKeXQOZets=,tag:mN4a1eXmbFw8J7oTCqF6RA==,type:str]
+            server: ENC[AES256_GCM,data:qodu5DyBT9MBONvrmQ==,iv:qYBgZ9s8vLdqOCmmo1ioRAN3P6E7gxPiJ9TCgye1kdQ=,tag:nAabDyit24RnuzbRJOclSQ==,type:str]
             path: ENC[AES256_GCM,data:C83BFQgSuYV2ZH/mruU=,iv:N4uAnVNpmkEFJvOyK49PPfHPgQA/tINDx7DCL28EEmI=,tag:e6aC2RMogcIBGrCr7K37MQ==,type:str]
         - name: ENC[AES256_GCM,data:h2lAFys=,iv:sevc9Zo6Cks9BoX2tYr/Hf9Fu6vbTD/ryWLDqzV1Hyo=,tag:f6qNGJ1j1v0QvwsjHCMBog==,type:str]
           emptyDir: {}
@@ -22,7 +22,7 @@ sops:
             b3F0Q0JaNUczWTE5YmZscTM1cEFjSWsKV7LMrWsga3VXVwbmu5dxyzIs1T7ig076
             W4p0Rr7Qhf90+WiJoteRpfFZkte3ojuCdGi5s55Jx6pq+X8NoklToQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-23T04:42:58Z"
-    mac: ENC[AES256_GCM,data:WDoHDyHOJrKT60w8oTry8MC75fsp1tCt3ncicFEBNO6zrtmtnCj/sty2jlgDMwS/sf/s+kaEW1WoMN29QC/h1VBR8OZ3JkO9k7R7DZnTKv0MStBu0zf3d8LYiuqdE0YQfEUi+QcZ1BqqMWcmtkgfUKNPDIOFCoNwcGYhZEH8CUY=,iv:lmb+HEjr5fPfAktsftMAna3vlMddfoSScgrj+6I35zw=,tag:+5edvnzAM7iKp7UkAS/Wpg==,type:str]
+    lastmodified: "2025-07-03T07:32:56Z"
+    mac: ENC[AES256_GCM,data:E+XUeXaYygDl06RImfMugsHcFNQpS+r002CxdHnUJrRbWXO9/fx+Ergsg8kwZO1jmP9/PntbMzZmhBy+jFrJ2fFagK++D9jioXeOpTinVxCGaxS8Dk6PCgJH3Ab5gdeaEGVGvno4D+jXvDqdbTdU6X1yblBPXFHySkm7nYHS6z0=,iv:+20d4UP17ax2pFn2MhPY5Gz6ozIjKgbQXuhkFi6MVdU=,tag:BV6YtSthF2k04Lwg3OFO7Q==,type:str]
     encrypted_regex: ^(nextcloud)$
     version: 3.10.2
