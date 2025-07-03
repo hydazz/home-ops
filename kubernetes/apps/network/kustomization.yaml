@@ -6,8 +6,9 @@ namespace: network
 components:
   - ../../components/common
 resources:
+  - ./adguard-dns/ks.yaml
+  - ./adguard-home/ks.yaml
   - ./cloudflare-dns/ks.yaml
   - ./k8s-gateway/ks.yaml
-  - ./adguard-home/ks.yaml
-  - ./adguard-dns/ks.yaml
+  - ./multus/ks.yaml
   - ./reverse-proxy/ks.yaml
