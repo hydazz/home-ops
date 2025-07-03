@@ -91,23 +91,36 @@ spec:
       app:
         hostnames: ["homeassistant.${D_HS}"]
         parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: home-assistant
-                port: *port
-      code-server:
-        hostnames: ["code-hass.${D_HS}"]
-        parentRefs:
           - name: internal
             namespace: kube-system
             sectionName: https
         rules:
           - backendRefs:
-              - name: home-assistant
+              - identifier: app
+                port: *port
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /code/
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - identifier: code-server
                 port: *codePort
+      app-external:
+        hostnames: ["homeassistant.${D_HS}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: home-assistant
