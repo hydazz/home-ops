@@ -69,7 +69,7 @@ spec:
           [{
             "name":"multus-iot",
             "namespace": "network",
-            "ips": ["192.168.2.3/24"],
+            "ips": ["192.168.2.2/24"],
             "mac": "80:17:cd:ca:16:50"
           }]
       securityContext:
@@ -89,7 +89,7 @@ spec:
             port: &codePort 12321
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames: ["homeassistant.${D_HS}"]
         parentRefs:
           - name: external
             namespace: kube-system
@@ -99,7 +99,7 @@ spec:
               - name: home-assistant
                 port: *port
     code-server:
-      hostnames: ["{{ .Release.Name }}-code.${D_HS}"]
+      hostnames: ["code-hass.${D_HS}"]
       parentRefs:
         - name: internal
           namespace: kube-system

@@ -11,4 +11,3 @@ resources:
   - ./cloudflare-dns/ks.yaml
   - ./k8s-gateway/ks.yaml
   - ./multus/ks.yaml
-  - ./reverse-proxy/ks.yaml

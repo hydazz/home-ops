@@ -7,3 +7,5 @@ components:
   - ../../components/common
 resources:
   - ./home-assistant/ks.yaml
+  - ./emqx/ks.yaml # https://github.com/blackjid/home-ops
+#  - ./zigbee2mqtt/ks.yaml
