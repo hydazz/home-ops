@@ -45,3 +45,9 @@ spec:
         - name: init-user
           secret:
             secretName: emqx-init-user-secret
+  listenersServiceTemplate:
+    metadata:
+      annotations:
+        lbipam.cilium.io/ips: 192.168.42.153
+    spec:
+      type: LoadBalancer
