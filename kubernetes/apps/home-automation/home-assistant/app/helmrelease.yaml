@@ -91,17 +91,24 @@ spec:
       app:
         hostnames: ["homeassistant.${D_HS}"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
           - backendRefs:
               - identifier: app
                 port: *port
+      code-server:
+        hostnames: ["code.${D_HS}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
           - matches:
               - path:
                   type: PathPrefix
-                  value: /code/
+                  value: /homeassistant
             filters:
               - type: URLRewrite
                 urlRewrite:
@@ -111,16 +118,6 @@ spec:
             backendRefs:
               - identifier: code-server
                 port: *codePort
-      app-external:
-        hostnames: ["homeassistant.${D_HS}"]
-        parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
     persistence:
       config:
         existingClaim: home-assistant
