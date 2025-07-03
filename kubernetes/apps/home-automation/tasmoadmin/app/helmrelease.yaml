@@ -28,8 +28,6 @@ spec:
               tag: v4.3.0@sha256:9e18fc87a061b5f0eb78d0f255e98815a61959a4e1c5d8706a7537e047930ea1
             env:
               TZ: Australia/Melbourne
-              PGID: "1000"
-              PUID: "1000"
             probes:
               liveness: &probes
                 enabled: true
@@ -62,13 +60,13 @@ spec:
             "namespace": "network",
             "ips": ["192.168.2.3/24"]
           }]
-      securityContext:
-        # s6-bullshit
+      # s6-bullshit
+      # securityContext:
         # runAsNonRoot: true
         # runAsUser: 1000
         # runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
+        # fsGroup: 1000
+        # fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:

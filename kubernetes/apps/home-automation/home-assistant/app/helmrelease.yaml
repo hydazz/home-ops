@@ -98,16 +98,16 @@ spec:
           - backendRefs:
               - name: home-assistant
                 port: *port
-    code-server:
-      hostnames: ["code-hass.${D_HS}"]
-      parentRefs:
-        - name: internal
-          namespace: kube-system
-          sectionName: https
-      rules:
-        - backendRefs:
-            - name: home-assistant
-              port: *codePort
+      code-server:
+        hostnames: ["code-hass.${D_HS}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: home-assistant
+                port: *codePort
     persistence:
       config:
         existingClaim: home-assistant
