@@ -8,7 +8,7 @@ kubernetesVersion: "${kubernetesVersion}"
 endpoint: https://192.168.42.100:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - "192.168.42.100"
+  - &talosControlplaneVip "192.168.42.100"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16", "fd42::/48"]
@@ -24,25 +24,18 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/6103ffcce96d64a5e8d996851c402eced971aac6e8bfd6a69e610c53e7273826
+    #talosImageURL: factory.talos.dev/installer/6103ffcce96d64a5e8d996851c402eced971aac6e8bfd6a69e610c53e7273826
     controlPlane: true
     patches:
       - "@./patches/discovery/machine-nvidia.yaml"
     schematic:
       customization:
-        extraKernelArgs: &extraKernelArgs
-          - -init_on_alloc # Disables zeroing of memory on allocation
-          - -init_on_free # Disables zeroing of memory on free
-          - init_on_alloc=0 # Explicitly disables memory zeroing on allocation
-          - init_on_free=0 # Explicitly disables memory zeroing on free
-          - -selinux=0 # Disables SELinux security module
-          - apparmor=0 # Disables AppArmor security module
-          - talos.auditd.disabled=1
         systemExtensions:
           officialExtensions:
             - siderolabs/nonfree-kmod-nvidia-production
             - siderolabs/nvidia-container-toolkit-production
             - siderolabs/qemu-guest-agent
+    # TODO: switch to bonds once I figure it out
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "bc:24:11:74:98:2d"
@@ -50,17 +43,12 @@ nodes:
         addresses:
           - "192.168.42.10/24"
           - "2404:e80:661b:42::10/64"
-        routes:
+        routes: &routes
           - network: "0.0.0.0/0"
             gateway: "192.168.42.1"
         mtu: 1500
         vip:
-          ip: "192.168.42.100"
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:c7:c6:eb"
-        dhcp: false
-        addresses:
-          - "10.0.43.10/16"
+          ip: *talosControlplaneVip
 
   - hostname: "voyager"
     ipAddress: "192.168.42.12"
@@ -68,36 +56,37 @@ nodes:
       model: "Samsung SSD 970 EVO Plus 500GB"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/188f044ca6ab08b92d01f942231a2bb20b78704cb3d17938afca9b70e53ee1aa
+    #talosImageURL: factory.talos.dev/installer/188f044ca6ab08b92d01f942231a2bb20b78704cb3d17938afca9b70e53ee1aa
     controlPlane: true
     kernelModules:
       - name: zfs
+      # unsure if these do anything
+      - name: mlx4_en
+      - name: mlx4_core
     schematic:
       customization:
-        extraKernelArgs: *extraKernelArgs
         systemExtensions:
           officialExtensions:
             - siderolabs/zfs
             - siderolabs/intel-ucode
     networkInterfaces:
-      - deviceSelector:
-          physical: true
-          hardwareAddr: "e4:1d:2d:7e:65:70"
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: e4:1d:2d:7e:65:70
+              driver: mlx4_core
         dhcp: false
         addresses:
           - "192.168.42.12/24"
           - "2404:e80:661b:42::12/64"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.42.1"
-        mtu: 1500
+        routes: *routes
         vip:
-          ip: "192.168.42.100"
+          ip: *talosControlplaneVip
         vlans:
-          - vlanId: 125
+          - &vlan2
+            vlanId: 2
             dhcp: false
-            addresses:
-              - "10.0.43.12/16"
 
   - hostname: "titan"
     ipAddress: "192.168.42.13"
@@ -105,33 +94,29 @@ nodes:
       model: "SAMSUNG HM500JI"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/8b54cca4fd80b92e006fe5a01af44712aec1036c07b3255836f43e51990c5035
+    #talosImageURL: factory.talos.dev/installer/8b54cca4fd80b92e006fe5a01af44712aec1036c07b3255836f43e51990c5035
     controlPlane: true
     schematic:
       customization:
-        extraKernelArgs: *extraKernelArgs
         systemExtensions:
           officialExtensions:
             - siderolabs/intel-ucode
     networkInterfaces:
-      - deviceSelector:
-          physical: true
-          hardwareAddr: "00:4e:01:a1:49:a4"
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: 00:4e:01:a1:49:a4
+              driver: e1000e
         dhcp: false
         addresses:
           - "192.168.42.13/24"
           - "2404:e80:661b:42::13/64"
-        routes:
-          - network: "0.0.0.0/0"
-            gateway: "192.168.42.1"
-        mtu: 1500
+        routes: *routes
         vip:
-          ip: "192.168.42.100"
+          ip: *talosControlplaneVip
         vlans:
-          - vlanId: 125
-            dhcp: false
-            addresses:
-              - "10.0.43.13/16"
+          - *vlan2
 
 # Global patches
 patches:
