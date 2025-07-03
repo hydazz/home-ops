@@ -8,5 +8,6 @@ components:
 resources:
   - ./home-assistant/ks.yaml
   - ./emqx/ks.yaml # https://github.com/blackjid/home-ops
+  - ./esphome/ks.yaml
   - ./zigbee2mqtt/ks.yaml
   - ./tasmoadmin/ks.yaml
