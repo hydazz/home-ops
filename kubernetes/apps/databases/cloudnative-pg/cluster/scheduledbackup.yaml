@@ -6,7 +6,6 @@ metadata:
   name: &name postgres
 spec:
   schedule: "0 2 * * *"
-  immediate: true
   backupOwnerReference: self
   cluster:
     name: *name

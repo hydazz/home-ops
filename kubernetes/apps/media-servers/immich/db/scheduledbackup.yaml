@@ -6,7 +6,6 @@ metadata:
   name: &name immich
 spec:
   schedule: "0 2 * * *"
-  immediate: true
   backupOwnerReference: self
   cluster:
     name: *name
