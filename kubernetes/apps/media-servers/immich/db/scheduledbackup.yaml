@@ -5,7 +5,8 @@ kind: ScheduledBackup
 metadata:
   name: &name immich
 spec:
-  schedule: "0 2 * * *"
+  schedule: "@daily"
+  immediate: true
   backupOwnerReference: self
   cluster:
     name: *name
