@@ -6,7 +6,7 @@ metadata:
 spec:
   # renovate: datasource=docker depName=docker.io/library/mariadb
   image: docker.io/library/mariadb:11.8.2@sha256:1e4ec03d1b73af8e7a63137b8ef4820ac7d54c654a1e99eb76235f210f7f0a06
-  replicas: 1
+  replicas: 3
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: root-password
@@ -25,9 +25,8 @@ spec:
         key: AWS_SECRET_ACCESS_KEY
   storage:
     size: 8Gi
-    storageClassName: ceph-block
-  myCnf: |
-    [mariadb]
-    ignore-db-dir=lost+found
+    storageClassName: openebs-hostpath
+  galera:
+    enabled: true
   metrics:
     enabled: true
