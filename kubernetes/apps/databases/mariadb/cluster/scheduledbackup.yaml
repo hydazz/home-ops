@@ -23,5 +23,5 @@ spec:
       secretAccessKeySecretKeyRef:
         name: mariadb-secret
         key: AWS_SECRET_ACCESS_KEY
-  compression: gzip
+  compression: bzip2
   maxRetention: 168h # 7 days

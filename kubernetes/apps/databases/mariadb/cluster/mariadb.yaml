@@ -10,6 +10,9 @@ spec:
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: root-password
+  storage:
+    size: 8Gi
+    storageClassName: openebs-hostpath
   bootstrapFrom:
     s3:
       endpoint: s3.us-east-005.backblazeb2.com
@@ -23,9 +26,6 @@ spec:
       secretAccessKeySecretKeyRef:
         name: mariadb-secret
         key: AWS_SECRET_ACCESS_KEY
-  storage:
-    size: 8Gi
-    storageClassName: openebs-hostpath
   galera:
     enabled: true
   metrics:
