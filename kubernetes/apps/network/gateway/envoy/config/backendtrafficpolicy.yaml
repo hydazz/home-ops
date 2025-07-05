@@ -9,8 +9,6 @@ spec:
     - &target
       group: gateway.networking.k8s.io
       kind: Gateway
-      name: internal-root
-    - <<: *target
       name: internal
     - <<: *target
       name: external
