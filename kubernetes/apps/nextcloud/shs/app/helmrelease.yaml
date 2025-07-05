@@ -56,9 +56,7 @@ spec:
             'overwriteprotocol' => 'https',
             'overwrite.cli.url' => 'https://storage.${D_HS}',
             'overwritehost' => 'storage.${D_HS}',
-            'check_data_directory_permissions' => false,
             'default_phone_region' => 'AU',
-            'enable_previews' => false,
             'trusted_proxies' => array(
               0 => '127.0.0.1',
               1 => '10.0.0.0/8',
@@ -67,7 +65,6 @@ spec:
               0 => '127.0.0.1',
               1 => 'storage.${D_HS}',
             ),
-            'filesystem_check_changes' => 1,
             'simpleSignUpLink.shown' => false,
             'cache_path' => '/cache',
             'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
@@ -78,6 +75,12 @@ spec:
           post_max_size = 16G
           max_input_time = 3600
           max_execution_time = 3600
+      extraVolumes:
+        - name: cache
+          emptyDir: {}
+      extraVolumeMounts:
+        - name: cache
+          mountPath: /cache
     internalDatabase:
       enabled: false
     externalDatabase:
@@ -95,7 +98,3 @@ spec:
       existingClaim: nextcloud-shs
     cronjob:
       enabled: true
-
-  valuesFrom:
-    - kind: Secret
-      name: nextcloud-shs-values
