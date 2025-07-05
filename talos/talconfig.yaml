@@ -24,7 +24,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    #talosImageURL: factory.talos.dev/installer/6103ffcce96d64a5e8d996851c402eced971aac6e8bfd6a69e610c53e7273826
+    talosImageURL: factory.talos.dev/installer/990731763242a6b3cf735e49d0f550ce4068b4d0e7f4dfbb49a31799b698877e
     controlPlane: true
     patches:
       - "@./patches/discovery/machine-nvidia.yaml"
@@ -56,13 +56,10 @@ nodes:
       model: "Samsung SSD 970 EVO Plus 500GB"
     machineSpec:
       secureboot: false
-    #talosImageURL: factory.talos.dev/installer/188f044ca6ab08b92d01f942231a2bb20b78704cb3d17938afca9b70e53ee1aa
+    talosImageURL: factory.talos.dev/installer/3d8e0d5adc2bffbc359800802c58a68301a006558cb18be0715ffcc93b30e8aa
     controlPlane: true
     kernelModules:
       - name: zfs
-      # unsure if these do anything
-      - name: mlx4_en
-      - name: mlx4_core
     schematic:
       customization:
         systemExtensions:
@@ -70,12 +67,9 @@ nodes:
             - siderolabs/zfs
             - siderolabs/intel-ucode
     networkInterfaces:
-      - interface: bond0
-        bond:
-          mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: e4:1d:2d:7e:65:70
-              driver: mlx4_core
+      - deviceSelector:
+          hardwareAddr: e4:1d:2d:7e:65:70
+          driver: mlx4_core
         dhcp: false
         addresses:
           - "192.168.42.12/24"
@@ -91,10 +85,10 @@ nodes:
   - hostname: "titan"
     ipAddress: "192.168.42.13"
     installDiskSelector:
-      model: "SAMSUNG HM500JI"
+      model: "Samsung SSD 970 EVO Plus 500GB"
     machineSpec:
       secureboot: false
-    #talosImageURL: factory.talos.dev/installer/8b54cca4fd80b92e006fe5a01af44712aec1036c07b3255836f43e51990c5035
+    talosImageURL: factory.talos.dev/installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8
     controlPlane: true
     schematic:
       customization:
@@ -102,12 +96,9 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
     networkInterfaces:
-      - interface: bond0
-        bond:
-          mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: 00:4e:01:a1:49:a4
-              driver: e1000e
+      - deviceSelector:
+          hardwareAddr: ec:0d:9a:b2:49:60
+          driver: mlx4_core
         dhcp: false
         addresses:
           - "192.168.42.13/24"
