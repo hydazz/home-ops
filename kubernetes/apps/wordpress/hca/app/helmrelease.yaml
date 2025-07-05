@@ -90,7 +90,7 @@ spec:
         hostnames: ["${D_HCA}"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https-hca-apex
         rules:
           - backendRefs:

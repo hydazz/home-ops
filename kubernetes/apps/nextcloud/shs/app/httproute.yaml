@@ -8,7 +8,7 @@ spec:
   hostnames: ["storage.${D_HS}"]
   parentRefs:
     - name: external
-      namespace: kube-system
+      namespace: network
       sectionName: https
   # https://github.com/rafal11ck/home-ops/blob/main/kubernetes/apps/default/nextcloud/app/httproute.yaml
   rules:

@@ -90,7 +90,7 @@ spec:
         hostnames: ["${D_LMVCA}"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https-lmvca-apex
         rules:
           - backendRefs:

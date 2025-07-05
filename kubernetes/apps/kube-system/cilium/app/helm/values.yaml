@@ -29,9 +29,7 @@ envoy:
     serviceMonitor:
       enabled: true
 gatewayAPI:
-  enabled: true
-  enableAlpn: true
-  xffNumTrustedHops: 1
+  enabled: false
 hubble:
   enabled: false
 ipam:
@@ -46,9 +44,12 @@ kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: false
+l7Proxy: true
 loadBalancer:
   algorithm: maglev
   mode: "dsr"
+  l7:
+    backend: envoy
 localRedirectPolicy: true
 operator:
   dashboards:

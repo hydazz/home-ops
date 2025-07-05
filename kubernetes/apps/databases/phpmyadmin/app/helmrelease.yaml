@@ -71,7 +71,7 @@ spec:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
     persistence:
       tmpfs:

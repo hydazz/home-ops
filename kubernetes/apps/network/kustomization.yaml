@@ -9,5 +9,6 @@ resources:
   - ./adguard-dns/ks.yaml
   - ./adguard-home/ks.yaml
   - ./cloudflare-dns/ks.yaml
+  - ./gateway/ks.yaml
   - ./k8s-gateway/ks.yaml
   - ./multus/ks.yaml
