@@ -16,8 +16,8 @@ spec:
       namespace: databases
     - name: dragonfly-cluster
       namespace: databases
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/mailserver/mailu/app
   postBuild:
@@ -28,6 +28,8 @@ spec:
       APP: *app
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CACHE_CAPACITY: 512Mi
+      VOLSYNC_STORAGECLASS: ceph-filesystem
+      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
       VOLSYNC_ACCESSMODES: ReadWriteMany
       VOLSYNC_PUID: "0"
       VOLSYNC_PGID: "0"

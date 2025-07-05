@@ -185,12 +185,16 @@ spec:
       uri: /admin
       updateStrategy:
         type: Recreate
+      # this should never be created
+      persistence:
+        size: 1Mi
     postfix:
       podAnnotations: *reloader
       updateStrategy:
         type: Recreate
       persistence:
         size: 128Mi
+        storageClass: ceph-block
     dovecot:
       enabled: true
       podAnnotations: *reloader
@@ -198,6 +202,9 @@ spec:
         type: Recreate
       compression: lz4
       compressionLevel: 6
+      # this should never be created
+      persistence:
+        size: 1Mi
     rspamd:
       enabled: true
       podAnnotations: *reloader
@@ -205,6 +212,7 @@ spec:
         type: Recreate
       persistence:
         size: 1Gi
+        storageClass: ceph-block
     webmail:
       enabled: true
       podAnnotations: *reloader
@@ -229,6 +237,7 @@ spec:
         - mailu
       persistence:
         size: 128Mi
+        storageClass: ceph-block
     # Disabled services
     redis:
       enabled: false
@@ -236,6 +245,7 @@ spec:
       enabled: false
       persistence:
         size: 2Gi
+        storageClass: ceph-block
     webdav:
       enabled: false
       updateStrategy:
@@ -247,6 +257,7 @@ spec:
       delay: 600
       persistence:
         size: 512Mi
+        storageClass: ceph-block
     tika:
       enabled: false
       languages:
