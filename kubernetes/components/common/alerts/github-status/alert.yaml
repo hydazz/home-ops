@@ -10,3 +10,8 @@ spec:
   eventSources:
     - kind: Kustomization
       name: "*"
+  # Exclude messages from Kustomizations that use external GitRepositories
+  # to avoid commit status errors for SHAs that don't exist in this repo
+  exclusionList:
+    - ".*Kustomization/network/multus-crd.*"
+    - ".*Kustomization/databases/cnpg-barman-cloud-crds.*"
