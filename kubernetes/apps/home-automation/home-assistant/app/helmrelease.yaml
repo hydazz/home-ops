@@ -98,6 +98,16 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
+      app-local: # needed for trusted_networks local access
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
       code-server:
         hostnames: ["code.${D_HS}"]
         parentRefs:
