@@ -19,16 +19,6 @@ spec:
   values:
     controllers:
       adguard-home:
-        initContainers:
-          init-config:
-            image:
-              repository: ghcr.io/home-operations/busybox
-              tag: 1.37.0@sha256:026ed7273270ec08f6902b4ae8334c23b473e5394bec3bbbdbfe580c710d50bc
-            command:
-              - /bin/sh
-              - -c
-              - |
-                cp -f /tmp/config/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
         containers:
           app:
             image:
@@ -36,7 +26,6 @@ spec:
               tag: v0.107.63@sha256:320ab49bd5f55091c7da7d1232ed3875f687769d6bb5e55eb891471528e2e18f
             env:
               TZ: Australia/Melbourne
-              foo: bar
             probes:
               liveness: &probes
                 enabled: true
@@ -74,7 +63,7 @@ spec:
       dns:
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 192.168.42.152,2404:e80:661b:42::152
+          lbipam.cilium.io/ips: 192.168.42.152, 2404:e80:661b:42::152
         externalTrafficPolicy: Local
         ipFamilyPolicy: PreferDualStack
         ipFamilies:
@@ -97,21 +86,13 @@ spec:
         rules:
           - backendRefs:
               - name: adguard-home-app
-                port: 80
+                port: *port
     persistence:
       config:
-        type: emptyDir
+        existingClaim: adguard-home
         globalMounts:
           - path: /opt/adguardhome/conf
       data:
-        existingClaim: adguard-home
+        existingClaim: adguard-home-data
         globalMounts:
           - path: /opt/adguardhome/work
-      config-source:
-        type: secret
-        name: adguard-home-config
-        advancedMounts:
-          adguard-home:
-            init-config:
-              - path: /tmp/config
-                readOnly: true
