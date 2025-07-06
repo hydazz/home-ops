@@ -24,17 +24,16 @@ spec:
     kind: OCIRepository
     name: envoy-gateway
   install:
+    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       retries: 3
   values:
-    deployment:
+    config:
       envoyGateway:
-        image:
-          repository: docker.io/envoyproxy/gateway
-          tag: v1.4.2
-        rbac:
-          cluster: true
+        gateway:
+          controllerName: gateway.envoyproxy.io/gatewayclass-controller

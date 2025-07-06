@@ -4,16 +4,16 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: internal
+  labels:
+    type: internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: "internal.${D_HS}"
+    external-dns.alpha.kubernetes.io/target: &hostname internal.${D_HS}
 spec:
-  gatewayClassName: cilium
-  addresses:
-    - type: IPAddress
-      value: "192.168.42.120"
+  gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: "internal.${D_HS}"
+      external-dns.alpha.kubernetes.io/hostname: *hostname
+      lbipam.cilium.io/ips: 192.168.42.120
   listeners:
     - name: http
       protocol: HTTP
@@ -32,4 +32,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_HS//./-}-production-tls
+            name: ${D_HS//./-}-wildcard-production-tls

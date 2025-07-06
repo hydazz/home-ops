@@ -3,6 +3,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./certificate.yaml
-#  - ./external.yaml
-#  - ./internal.yaml
+  - ./hca.yaml
+  - ./hs.yaml
+  - ./igi.yaml
+  - ./sn.yaml
+  - ./taca.yaml
+  - ./tan.yaml
+  - ./lmvca.yaml

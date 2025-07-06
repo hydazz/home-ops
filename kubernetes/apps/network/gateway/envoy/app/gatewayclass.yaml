@@ -1,10 +1,23 @@
 ---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: config
+    namespace: network
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_envoyproxies.yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
   name: config
 spec:
+  #ipFamily: DualStack
   telemetry:
     metrics:
       prometheus: {}
@@ -12,7 +25,7 @@ spec:
     drainTimeout: 300s
   logging:
     level:
-      default: info
+      default: debug
   provider:
     type: Kubernetes
     kubernetes:
@@ -26,3 +39,5 @@ spec:
             limits:
               cpu: 500m
               memory: 1Gi
+      envoyService:
+        externalTrafficPolicy: Cluster
