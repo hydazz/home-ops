@@ -10,7 +10,7 @@ spec:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: mailserver
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: mailserver,network
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -23,6 +23,11 @@ metadata:
   name: "${D_HCA//./-}-production"
 spec:
   secretName: "${D_HCA//./-}-production-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: network
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -35,6 +40,11 @@ metadata:
   name: "${D_IGI//./-}-production"
 spec:
   secretName: "${D_IGI//./-}-production-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: network
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -47,6 +57,11 @@ metadata:
   name: "${D_SN//./-}-production"
 spec:
   secretName: "${D_SN//./-}-production-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: network
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -59,6 +74,11 @@ metadata:
   name: "${D_TACA//./-}-production"
 spec:
   secretName: "${D_TACA//./-}-production-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: network
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -71,6 +91,11 @@ metadata:
   name: "${D_TAN//./-}-production"
 spec:
   secretName: "${D_TAN//./-}-production-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: network
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -83,6 +108,11 @@ metadata:
   name: "${D_LMVCA//./-}-production"
 spec:
   secretName: "${D_LMVCA//./-}-production-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: network
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer

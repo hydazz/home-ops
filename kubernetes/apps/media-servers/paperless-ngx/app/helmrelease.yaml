@@ -116,7 +116,7 @@ spec:
         hostnames: ["paperless.${D_HS}"]
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
