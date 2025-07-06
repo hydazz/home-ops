@@ -8,4 +8,4 @@ components:
 resources:
   - ./shs/ks.yaml
   - ./shca/ks.yaml
-  - ./helmrepository.yaml
+  - ./ocirepository.yaml
