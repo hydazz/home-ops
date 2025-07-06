@@ -55,7 +55,7 @@ spec:
           enabled: true
           hostnames: ["auth.${D_HS}"]
           parentRefs:
-            - name: external
+            - name: cloudflare
               namespace: network
               sectionName: https
       metrics:

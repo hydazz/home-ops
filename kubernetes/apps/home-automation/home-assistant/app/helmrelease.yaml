@@ -91,7 +91,7 @@ spec:
       app:
         hostnames: ["homeassistant.${D_HS}"]
         parentRefs:
-          - name: external
+          - name: cloudflare
             namespace: network
             sectionName: https
         rules:

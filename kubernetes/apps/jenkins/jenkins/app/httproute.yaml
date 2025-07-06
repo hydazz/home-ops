@@ -7,7 +7,7 @@ metadata:
 spec:
   hostnames: ["ci.${D_IGI}"]
   parentRefs:
-    - name: external
+    - name: cloudflare
       namespace: network
       sectionName: https-igi
   rules:
