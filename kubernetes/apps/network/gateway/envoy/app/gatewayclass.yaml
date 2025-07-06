@@ -22,7 +22,7 @@ spec:
       prometheus: {}
   logging:
     level:
-      default: debug
+      default: info
   provider:
     type: Kubernetes
     kubernetes:
