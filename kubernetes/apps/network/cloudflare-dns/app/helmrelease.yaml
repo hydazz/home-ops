@@ -17,7 +17,50 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app cloudflare-dns
+  name: &app cloudflare-external-dns
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: cloudflare-dns
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: *app
+    provider:
+      name: cloudflare
+    env:
+      - name: CF_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: &secret cloudflare-dns-secret
+            key: api-token
+    extraArgs:
+      - --cloudflare-dns-records-per-page=1000
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --gateway-name=external
+    triggerLoopOnEvent: true
+    policy: sync
+    sources: ["crd", "gateway-httproute"]
+    txtOwnerId: external
+    txtPrefix: k8s.external.
+    #domainFilters: [""]
+    serviceMonitor:
+      enabled: true
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app cloudflare-cloudflare-dns
 spec:
   interval: 1h
   chartRef:
@@ -45,22 +88,13 @@ spec:
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --gateway-name=external
+      - --gateway-name=cloudflare
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]
-    txtOwnerId: default
-    txtPrefix: k8s.
-    domainFilters:
-      [
-        "${D_HS}",
-        "${D_HCA}",
-        "${D_IGI}",
-        "${D_SN}",
-        "${D_TACA}",
-        "${D_TAN}",
-        "${D_LMVCA}",
-      ]
+    txtOwnerId: cloudflare
+    txtPrefix: k8s.cloudflare.
+    #domainFilters: [""]
     serviceMonitor:
       enabled: true
     podAnnotations:

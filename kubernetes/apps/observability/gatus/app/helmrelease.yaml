@@ -100,7 +100,7 @@ spec:
           - "{{ .Release.Name }}.${D_HS}"
           - status.${D_HS}
         parentRefs:
-          - name: external
+          - name: cloudflare
             namespace: network
             sectionName: https
     rbac:

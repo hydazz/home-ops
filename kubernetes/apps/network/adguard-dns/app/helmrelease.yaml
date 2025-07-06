@@ -17,7 +17,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app adguard-dns
+  name: &app adguard-internal-dns
 spec:
   interval: 1h
   chartRef:
@@ -65,16 +65,17 @@ spec:
             path: /healthz
             port: http-webhook
           timeoutSeconds: 30
+    extraArgs:
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --gateway-name=internal
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["gateway-httproute", "service"]
-    txtOwnerId: main
-    txtPrefix: k8s.main.
-    #    domainFilters: [""]
+    sources: ["crd", "gateway-httproute"]
+    txtOwnerId: default
+    txtPrefix: k8s.
+    #domainFilters: [""]
     serviceMonitor:
-      enabled: false
+      enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret
-    terminationGracePeriodSeconds: 120
-    extraArgs:
-      - --gateway-name=internal
