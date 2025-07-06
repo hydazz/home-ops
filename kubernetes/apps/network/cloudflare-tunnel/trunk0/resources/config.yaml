@@ -24,29 +24,5 @@ ingress:
     service: *envoy
     originRequest:
       originServerName: "cloudflare.${D_IGI}"
-  - hostname: "${D_SN}"
-    service: *envoy
-    originRequest:
-      originServerName: "cloudflare.${D_SN}"
-  - hostname: "*.${D_SN}"
-    service: *envoy
-    originRequest:
-      originServerName: "cloudflare.${D_SN}"
-  - hostname: "${D_TACA}"
-    service: *envoy
-    originRequest:
-      originServerName: "cloudflare.${D_TACA}"
-  - hostname: "*.${D_TACA}"
-    service: *envoy
-    originRequest:
-      originServerName: "cloudflare.${D_TACA}"
-  - hostname: "${D_TAN}"
-    service: *envoy
-    originRequest:
-      originServerName: "cloudflare.${D_TAN}"
-  - hostname: "*.${D_TAN}"
-    service: *envoy
-    originRequest:
-      originServerName: "cloudflare.${D_TAN}"
 
   - service: http_status:404
