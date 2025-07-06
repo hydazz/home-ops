@@ -24,5 +24,19 @@ spec:
     kind: Gateway
     name: external
   clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_clienttrafficpolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: client-traffic-cloudflare
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: cloudflare
+  clientIPDetection:
     customHeader:
       name: "CF-Connecting-IP"

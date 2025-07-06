@@ -6,3 +6,4 @@ resources:
   - ./clienttrafficpolicy.yaml
   - ./external.yaml
   - ./internal.yaml
+  - ./cloudflare.yaml
