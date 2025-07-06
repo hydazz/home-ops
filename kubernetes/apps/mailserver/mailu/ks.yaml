@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
+    - ../../../../components/gatus/external
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: databases
@@ -26,6 +27,8 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: mail
+      GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CACHE_CAPACITY: 512Mi
       VOLSYNC_STORAGECLASS: ceph-filesystem

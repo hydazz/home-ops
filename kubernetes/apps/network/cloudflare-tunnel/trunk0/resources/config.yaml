@@ -3,7 +3,7 @@ ingress:
   - hostname: "${D_HS}"
     service: &envoy https://envoy-network-cloudflare-f139e514.network.svc.cluster.local:443
     originRequest:
-      originServerName: "cloudflare.${D_HS}"
+      originServerName: "${D_HS}"
   - hostname: "*.${D_HS}"
     service: *envoy
     originRequest:
@@ -11,7 +11,7 @@ ingress:
   - hostname: "${D_HCA}"
     service: *envoy
     originRequest:
-      originServerName: "cloudflare.${D_HCA}"
+      originServerName: "${D_HCA}"
   - hostname: "*.${D_HCA}"
     service: *envoy
     originRequest:
@@ -19,7 +19,7 @@ ingress:
   - hostname: "${D_IGI}"
     service: *envoy
     originRequest:
-      originServerName: "cloudflare.${D_IGI}"
+      originServerName: "${D_IGI}"
   - hostname: "*.${D_IGI}"
     service: *envoy
     originRequest:

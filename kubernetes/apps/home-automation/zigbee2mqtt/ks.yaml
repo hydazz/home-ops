@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
+    - ../../../../components/gatus/guarded
   dependsOn:
     - name: emqx-cluster
     - name: rook-ceph-cluster
@@ -23,6 +24,7 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 128Mi
       VOLSYNC_CACHE_CAPACITY: 32Mi
   prune: true

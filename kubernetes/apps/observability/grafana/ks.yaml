@@ -19,6 +19,7 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_GROUP: *namespace
   prune: true
   retryInterval: 2m
   sourceRef:

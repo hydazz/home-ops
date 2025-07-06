@@ -87,11 +87,14 @@ spec:
             port: 8080
     route:
       app:
-        hostnames: ["${D_HCA}"]
+        hostnames: ["${D_HCA}", "www.${D_HCA}"]
         parentRefs:
           - name: cloudflare
             namespace: network
             sectionName: https-hca-apex
+          - name: cloudflare
+            namespace: network
+            sectionName: https-hca
         rules:
           - backendRefs:
               - identifier: app

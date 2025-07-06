@@ -87,11 +87,14 @@ spec:
             port: 8080
     route:
       app:
-        hostnames: ["${D_LMVCA}"]
+        hostnames: ["${D_LMVCA}", "www.${D_LMVCA}"]
         parentRefs:
           - name: external
             namespace: network
             sectionName: https-lmvca-apex
+          - name: external
+            namespace: network
+            sectionName: https-lmvca
         rules:
           - backendRefs:
               - identifier: app

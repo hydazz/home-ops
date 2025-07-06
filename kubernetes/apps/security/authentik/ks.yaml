@@ -14,12 +14,18 @@ spec:
       namespace: databases
     - name: rook-ceph-cluster
       namespace: rook-ceph
+  components:
+    - ../../../../components/gatus/external
   interval: 1h
   path: ./kubernetes/apps/security/authentik/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+    substitute:
+      APP: *app
+      GATUS_GROUP: *namespace
+      GATUS_SUBDOMAIN: auth
   prune: true
   retryInterval: 2m
   sourceRef:

@@ -65,6 +65,7 @@ spec:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: rook
+      GATUS_GROUP: *namespace
   prune: true
   retryInterval: 2m
   sourceRef:

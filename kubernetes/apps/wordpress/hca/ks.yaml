@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
+    - ../../../../components/gatus/external
   dependsOn:
     - name: mariadb-cluster
       namespace: databases
@@ -24,6 +25,9 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_GROUP: *namespace
+      GATUS_SUBDOMAIN: www
+      GATUS_DOMAIN: "${D_HCA}"
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 256Mi
   prune: true
