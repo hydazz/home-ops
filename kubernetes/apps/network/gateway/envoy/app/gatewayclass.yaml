@@ -17,12 +17,9 @@ kind: EnvoyProxy
 metadata:
   name: config
 spec:
-  #ipFamily: DualStack
   telemetry:
     metrics:
       prometheus: {}
-  shutdown:
-    drainTimeout: 300s
   logging:
     level:
       default: debug
@@ -30,7 +27,7 @@ spec:
     type: Kubernetes
     kubernetes:
       envoyDeployment:
-        replicas: 2
+        replicas: 3
         container:
           resources:
             requests:
@@ -39,5 +36,3 @@ spec:
             limits:
               cpu: 500m
               memory: 1Gi
-      envoyService:
-        externalTrafficPolicy: Cluster

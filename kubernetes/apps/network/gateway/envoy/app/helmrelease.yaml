@@ -32,8 +32,3 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
-  values:
-    config:
-      envoyGateway:
-        gateway:
-          controllerName: gateway.envoyproxy.io/gatewayclass-controller
