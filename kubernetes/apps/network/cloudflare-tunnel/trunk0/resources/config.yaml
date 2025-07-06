@@ -1,0 +1,31 @@
+---
+originRequest:
+  originServerName: "cloudflare.${D_HS}"
+
+ingress:
+  - hostname: "${D_HS}"
+    service: &svc https://envoy-network-cloudflare-f139e514.network.svc.cluster.local
+  - hostname: "*.${D_HS}"
+    service: *svc
+  - hostname: "${D_HCA}"
+    service: *svc
+  - hostname: "*.${D_HCA}"
+    service: *svc
+  - hostname: "${D_IGI}"
+    service: *svc
+  - hostname: "*.${D_IGI}"
+    service: *svc
+  - hostname: "${D_SN}"
+    service: *svc
+  - hostname: "*.${D_SN}"
+    service: *svc
+  - hostname: "${D_TACA}"
+    service: *svc
+  - hostname: "*.${D_TACA}"
+    service: *svc
+  - hostname: "${D_TAN}"
+    service: *svc
+  - hostname: "*.${D_TAN}"
+    service: *svc
+
+  - service: http_status:404
