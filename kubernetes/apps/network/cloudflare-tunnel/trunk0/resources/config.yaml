@@ -1,31 +1,52 @@
 ---
-originRequest:
-  originServerName: "cloudflare.${D_HS}"
-
 ingress:
   - hostname: "${D_HS}"
-    service: &svc https://envoy-network-cloudflare-f139e514.network.svc.cluster.local
+    service: &envoy https://envoy-network-cloudflare-f139e514.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "cloudflare.${D_HS}"
   - hostname: "*.${D_HS}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_HS}"
   - hostname: "${D_HCA}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_HCA}"
   - hostname: "*.${D_HCA}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_HCA}"
   - hostname: "${D_IGI}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_IGI}"
   - hostname: "*.${D_IGI}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_IGI}"
   - hostname: "${D_SN}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_SN}"
   - hostname: "*.${D_SN}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_SN}"
   - hostname: "${D_TACA}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_TACA}"
   - hostname: "*.${D_TACA}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_TACA}"
   - hostname: "${D_TAN}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_TAN}"
   - hostname: "*.${D_TAN}"
-    service: *svc
+    service: *envoy
+    originRequest:
+      originServerName: "cloudflare.${D_TAN}"
 
   - service: http_status:404
