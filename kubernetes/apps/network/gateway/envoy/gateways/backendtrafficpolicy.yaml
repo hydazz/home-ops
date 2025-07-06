@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_backendtrafficpolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: response-overwrite
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: internal
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: external
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: cloudflare
+  responseOverride:
+    - match:
+        statusCodes:
+          - type: Value
+            value: 404
+      response:
+        contentType: text/plain
+        body:
+          type: Inline
+          inline: "Oops! Your request is not found."
