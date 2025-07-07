@@ -18,7 +18,7 @@ cni:
   exclusive: false
 dashboards:
   enabled: true
-devices: ens+ enp+
+devices: ens+ bond+
 enableRuntimeDeviceDetection: true
 endpointRoutes:
   enabled: true

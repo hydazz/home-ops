@@ -67,9 +67,12 @@ nodes:
             - siderolabs/zfs
             - siderolabs/intel-ucode
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: e4:1d:2d:7e:65:70
-          driver: mlx4_core
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: e4:1d:2d:7e:65:70
+              driver: mlx4_core
         dhcp: false
         addresses:
           - "192.168.42.12/24"
@@ -96,9 +99,12 @@ nodes:
           officialExtensions:
             - siderolabs/intel-ucode
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: ec:0d:9a:b2:49:60
-          driver: mlx4_core
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: ec:0d:9a:b2:49:60
+              driver: mlx4_core
         dhcp: false
         addresses:
           - "192.168.42.13/24"
