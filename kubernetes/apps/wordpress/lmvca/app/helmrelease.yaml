@@ -89,10 +89,10 @@ spec:
       app:
         hostnames: ["${D_LMVCA}", "www.${D_LMVCA}"]
         parentRefs:
-          - name: external
+          - name: cloudflare
             namespace: network
             sectionName: https-lmvca-apex
-          - name: external
+          - name: cloudflare
             namespace: network
             sectionName: https-lmvca
         rules:

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: cloudflare-trunk-0
+  name: cloudflare-trunk-1
 spec:
   interval: 1h
   chartRef:
@@ -35,7 +35,7 @@ spec:
               TUNNEL_TRANSPORT_PROTOCOL: quic
             envFrom:
               - secretRef:
-                  name: cloudflare-tunnel-0-secret
+                  name: cloudflare-tunnel-1-secret
             args: ["tunnel", "run"]
             probes:
               liveness: &probes
@@ -78,7 +78,7 @@ spec:
     persistence:
       config-file:
         type: configMap
-        name: cloudflare-tunnel-0-configmap
+        name: cloudflare-tunnel-1-configmap
         globalMounts:
           - path: /etc/cloudflared/config.yaml
             subPath: config.yaml

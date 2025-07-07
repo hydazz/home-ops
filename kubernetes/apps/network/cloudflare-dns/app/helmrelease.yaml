@@ -94,7 +94,13 @@ spec:
     sources: ["crd", "gateway-httproute"]
     txtOwnerId: cloudflare
     txtPrefix: k8s.cloudflare.
-    #domainFilters: [""]
+    domainFilters:
+      - ${D_HS}
+      - ${D_HCA}
+      - ${D_IGI}
+      - ${D_SN}
+      - ${D_TACA}
+      - ${D_TAN}
     serviceMonitor:
       enabled: true
     podAnnotations:
