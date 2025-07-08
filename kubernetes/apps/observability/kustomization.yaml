@@ -14,3 +14,4 @@ resources:
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
   - ./silence-operator/ks.yaml
+  - ./agents/telegraf-zfs/ks.yaml
