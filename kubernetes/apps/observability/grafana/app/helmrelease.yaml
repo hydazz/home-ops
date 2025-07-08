@@ -85,47 +85,48 @@ spec:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-          - name: default
+          - name: kubernetes
             orgId: 1
-            folder: ""
+            folder: "Kubernetes"
             type: file
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/default
+              path: /var/lib/grafana/dashboards/kubernetes
+          - name: storage
+            orgId: 1
+            folder: "Storage"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/storage
+          - name: databases
+            orgId: 1
+            folder: "Databases"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/databases
+          - name: infrastructure
+            orgId: 1
+            folder: "Infrastructure"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/infrastructure
+          - name: monitoring
+            orgId: 1
+            folder: "Monitoring"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/monitoring
     dashboards:
-      default:
-        ceph-cluster:
-          # renovate: depName="Ceph Cluster"
-          gnetId: 2842
-          revision: 18
-          datasource: Prometheus
-        ceph-osd:
-          # renovate: depName="Ceph - OSD (Single)"
-          gnetId: 5336
-          revision: 9
-          datasource: Prometheus
-        ceph-pools:
-          # renovate: depName="Ceph - Pools"
-          gnetId: 5342
-          revision: 9
-          datasource: Prometheus
-        cert-manager:
-          # renovate: depName="Cert-manager-Kubernetes"
-          gnetId: 20842
-          revision: 3
-          datasource: Prometheus
-        envoy:
-          # renovate: depName="Envoy Proxy Monitoring gRPC"
-          gnetId: 23239
-          revision: 1
-          datasource:
-            - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
-        external-dns:
-          # renovate: depName="External-dns"
-          gnetId: 15038
-          revision: 3
-          datasource: Prometheus
+      kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
           gnetId: 15761
@@ -161,36 +162,21 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
-        mysql-overview:
-          # renovate: depName="MySQL Overview"
-          gnetId: 7362
-          revision: 5
+      storage:
+        ceph-cluster:
+          # renovate: depName="Ceph Cluster"
+          gnetId: 2842
+          revision: 18
           datasource: Prometheus
-        mysql-replication:
-          # renovate: depName="MySQL Replication"
-          gnetId: 7371
-          revision: 1
+        ceph-osd:
+          # renovate: depName="Ceph - OSD (Single)"
+          gnetId: 5336
+          revision: 9
           datasource: Prometheus
-        mariadb-galera:
-          # renovate: depName="Galera/MariaDB - Overview"
-          gnetId: 13106
-          revision: 3
-          datasource: Prometheus
-        mysql-quickstart:
-          # renovate: depName="MySQL Exporter Quickstart and Dashboard"
-          gnetId: 14057
-          revision: 1
-          datasource: Prometheus
-        node-exporter-full:
-          # renovate: depName="Node Exporter Full"
-          gnetId: 1860
-          revision: 41
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
-        prometheus:
-          # renovate: depName="Prometheus"
-          gnetId: 19105
-          revision: 7
+        ceph-pools:
+          # renovate: depName="Ceph - Pools"
+          gnetId: 5342
+          revision: 9
           datasource: Prometheus
         volsync:
           # renovate: depName="VolSync Dashboard"
@@ -204,6 +190,51 @@ spec:
           datasource: Prometheus
         zfs-detail:
           url: https://raw.githubusercontent.com/jfroy/flatops/refs/heads/main/kubernetes/apps/observability/grafana/app/resources/zfs-details.json
+          datasource: Prometheus
+      databases:
+        mysql-overview:
+          # renovate: depName="MySQL Overview"
+          gnetId: 7362
+          revision: 5
+          datasource: Prometheus
+        mariadb-galera:
+          # renovate: depName="Galera/MariaDB - Overview"
+          gnetId: 13106
+          revision: 3
+          datasource: Prometheus
+        mysql-quickstart:
+          # renovate: depName="MySQL Exporter Quickstart and Dashboard"
+          gnetId: 14057
+          revision: 1
+          datasource: Prometheus
+      infrastructure:
+        cert-manager:
+          # renovate: depName="Cert-manager-Kubernetes"
+          gnetId: 20842
+          revision: 3
+          datasource: Prometheus
+        envoy:
+          # renovate: depName="Envoy Proxy Monitoring gRPC"
+          gnetId: 23239
+          revision: 1
+          datasource:
+            - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
+        external-dns:
+          # renovate: depName="External-dns"
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
+        node-exporter-full:
+          # renovate: depName="Node Exporter Full"
+          gnetId: 1860
+          revision: 41
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+      monitoring:
+        prometheus:
+          # renovate: depName="Prometheus"
+          gnetId: 19105
+          revision: 7
           datasource: Prometheus
     sidecar:
       image:
