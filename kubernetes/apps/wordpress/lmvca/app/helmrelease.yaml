@@ -23,9 +23,9 @@ spec:
           reloader.stakater.com/auto: "true"
         initContainers:
           init-wp:
-            image:
-              repository: ghcr.io/hydazz/docker-wordpress
-              tag: 6.8.1-fpm-alpine@sha256:ff0c5ee228aeaf2607f122303fbe828a84e2e48e815a28d18b794535c57ae19d
+            image: &image
+              repository: ghcr.io/hydazz/wordpress
+              tag: 6.8.1@sha256:d0b2e35d0d9100503301734d84e46b0dbad23dbe8c92b1af9b3e935af464dfe5
             command:
               - /bin/sh
               - -c
@@ -40,9 +40,7 @@ spec:
                 echo "WordPress initialization completed"
         containers:
           app:
-            image:
-              repository: ghcr.io/hydazz/docker-wordpress
-              tag: 6.8.1-fpm-alpine@sha256:ff0c5ee228aeaf2607f122303fbe828a84e2e48e815a28d18b794535c57ae19d
+            image: *image
             env:
               WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
