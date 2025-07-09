@@ -81,5 +81,7 @@ spec:
         globalMounts:
           - path: /config/logs
             subPath: logs
+          - path: /config/backups
+            subPath: backups
           - path: /tmp
             subPath: tmp
