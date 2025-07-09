@@ -7,7 +7,7 @@ metadata:
 spec:
   retentionPolicy: 7d
   configuration:
-    destinationPath: s3://b2backup-k8s/cnpg/v16/
+    destinationPath: s3://b2backup-k8s/cnpg/
     endpointURL: https://s3.us-east-005.backblazeb2.com
     s3Credentials:
       accessKeyId:
