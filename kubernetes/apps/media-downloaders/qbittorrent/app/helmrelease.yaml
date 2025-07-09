@@ -85,8 +85,6 @@ spec:
               #  cpu: 8
               #  memory: 2Gi
     defaultPodOptions:
-      nodeSelector:
-        kubernetes.io/hostname: discovery
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
