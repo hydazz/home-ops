@@ -3,24 +3,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_TAN//./-}-apex-production"
+  name: "${D_TAN//./-}-production"
 spec:
-  secretName: "${D_TAN//./-}-apex-production-tls"
+  secretName: "${D_TAN//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${D_TAN}"
-  dnsNames: ["${D_TAN}"]
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/certificate_v1.json
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: "${D_TAN//./-}-wildcard-production"
-spec:
-  secretName: "${D_TAN//./-}-wildcard-production-tls"
-  issuerRef:
-    name: letsencrypt-production
-    kind: ClusterIssuer
-  commonName: "*.${D_TAN}"
-  dnsNames: ["*.${D_TAN}"]
+  dnsNames: ["${D_TAN}", "*.${D_TAN}"]

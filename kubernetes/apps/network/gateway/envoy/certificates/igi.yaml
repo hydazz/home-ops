@@ -3,24 +3,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_IGI//./-}-apex-production"
+  name: "${D_IGI//./-}-production"
 spec:
-  secretName: "${D_IGI//./-}-apex-production-tls"
+  secretName: "${D_IGI//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${D_IGI}"
-  dnsNames: ["${D_IGI}"]
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/certificate_v1.json
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: "${D_IGI//./-}-wildcard-production"
-spec:
-  secretName: "${D_IGI//./-}-wildcard-production-tls"
-  issuerRef:
-    name: letsencrypt-production
-    kind: ClusterIssuer
-  commonName: "*.${D_IGI}"
-  dnsNames: ["*.${D_IGI}"]
+  dnsNames: ["${D_IGI}", "*.${D_IGI}"]

@@ -3,24 +3,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${D_LMVCA//./-}-apex-production"
+  name: "${D_LMVCA//./-}-production"
 spec:
-  secretName: "${D_LMVCA//./-}-apex-production-tls"
+  secretName: "${D_LMVCA//./-}-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${D_LMVCA}"
-  dnsNames: ["${D_LMVCA}"]
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/certificate_v1.json
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: "${D_LMVCA//./-}-wildcard-production"
-spec:
-  secretName: "${D_LMVCA//./-}-wildcard-production-tls"
-  issuerRef:
-    name: letsencrypt-production
-    kind: ClusterIssuer
-  commonName: "*.${D_LMVCA}"
-  dnsNames: ["*.${D_LMVCA}"]
+  dnsNames: ["${D_LMVCA}", "*.${D_LMVCA}"]

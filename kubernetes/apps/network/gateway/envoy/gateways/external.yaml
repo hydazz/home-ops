@@ -10,10 +10,12 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname direct.${D_HS}
 spec:
   gatewayClassName: envoy
+  addresses:
+    - type: IPAddress
+      value: 192.168.42.130
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.42.130
   listeners:
     - name: https
       protocol: HTTPS
@@ -25,7 +27,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_HS//./-}-wildcard-production-tls
+            name: ${D_HS//./-}-production-tls
     - name: https-apex
       protocol: HTTPS
       port: 443
@@ -36,7 +38,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_HS//./-}-apex-production-tls
+            name: ${D_HS//./-}-production-tls
 
     - name: https-hca
       protocol: HTTPS
@@ -48,7 +50,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_HCA//./-}-wildcard-production-tls
+            name: ${D_HCA//./-}-production-tls
     - name: https-hca-apex
       protocol: HTTPS
       port: 443
@@ -59,7 +61,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_HCA//./-}-apex-production-tls
+            name: ${D_HCA//./-}-production-tls
 
     - name: https-igi
       protocol: HTTPS
@@ -71,7 +73,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_IGI//./-}-wildcard-production-tls
+            name: ${D_IGI//./-}-production-tls
     - name: https-igi-apex
       protocol: HTTPS
       port: 443
@@ -82,7 +84,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_IGI//./-}-apex-production-tls
+            name: ${D_IGI//./-}-production-tls
 
     - name: https-lmvca
       protocol: HTTPS
@@ -94,7 +96,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_LMVCA//./-}-wildcard-production-tls
+            name: ${D_LMVCA//./-}-production-tls
     - name: https-lmvca-apex
       protocol: HTTPS
       port: 443
@@ -105,4 +107,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${D_LMVCA//./-}-apex-production-tls
+            name: ${D_LMVCA//./-}-production-tls
