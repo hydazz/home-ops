@@ -9,6 +9,7 @@ bpf:
   datapathMode: netkit
   masquerade: true
   preallocateMaps: true
+  tproxy: true
 bpfClockProbe: true
 cgroup:
   autoMount:
@@ -18,6 +19,8 @@ cni:
   exclusive: false
 dashboards:
   enabled: true
+  annotations:
+    grafana_folder: Network
 devices: ens+ bond+
 enableRuntimeDeviceDetection: true
 endpointRoutes:
@@ -27,13 +30,41 @@ envoy:
 gatewayAPI:
   enabled: false
 hubble:
-  enabled: false
+  enabled: true
+  metrics:
+    enabled:
+      - dns:query;ignoreAAAA
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+    serviceMonitor:
+      enabled: true
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Network
+  relay:
+    enabled: true
+    rollOutPods: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  ui:
+    enabled: true
+    rollOutPods: true
+    ingress:
+      enabled: false
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: "10.42.0.0/16"
 ipv6NativeRoutingCIDR: "fd42::/48"
 ipv6:
   enabled: true
+enableIPv6Masquerade: true
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true
@@ -80,3 +111,5 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
+socketLB:
+  hostNamespaceOnly: true
