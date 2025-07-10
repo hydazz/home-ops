@@ -60,7 +60,7 @@ spec:
       zfsNode:
         encrKeysDir: /var/openebs/keys
         nodeSelector:
-          kubernetes.io/hostname: voyager
+          extensions.talos.dev/zfs: ""
       crds:
         csi:
           volumeSnapshots:
