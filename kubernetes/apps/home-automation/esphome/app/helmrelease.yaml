@@ -28,6 +28,7 @@ spec:
               tag: 2025.6.3@sha256:322300935a116cb6eba85db75b33c5a28120ebbbfe77ae6753d3cfab3f592a7d
             env:
               TZ: Australia/Melbourne
+              ESPHOME_DASHBOARD_USE_PING: "true"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -62,14 +63,6 @@ spec:
               limits:
                 memory: 512Mi
     defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name":"multus-iot",
-            "namespace": "network",
-            "ips": ["192.168.2.4/24"],
-            "mac": "02:42:c0:a8:02:04"
-          }]
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
