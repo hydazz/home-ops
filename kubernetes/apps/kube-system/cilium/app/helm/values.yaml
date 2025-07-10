@@ -26,7 +26,7 @@ enableRuntimeDeviceDetection: true
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  enabled: true
 gatewayAPI:
   enabled: false
 hubble:
@@ -74,6 +74,9 @@ l2announcements:
 loadBalancer:
   algorithm: maglev
   mode: "dsr"
+  l7:
+    backend: envoy
+l7Proxy: true
 localRedirectPolicy: true
 operator:
   dashboards:
