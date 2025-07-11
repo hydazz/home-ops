@@ -59,17 +59,11 @@ spec:
             port: 9273
             protocol: TCP
     serviceMonitor:
-      telegraf-zfs:
-        serviceName: telegraf-zfs
+      app:
         endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 30s
+          - port: http
             relabelings:
               - action: replace
-                regex: (.*)
                 replacement: $1
                 sourceLabels: ["__meta_kubernetes_pod_node_name"]
                 targetLabel: instance
