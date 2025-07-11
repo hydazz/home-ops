@@ -60,8 +60,9 @@ spec:
             protocol: TCP
     serviceMonitor:
       app:
+        serviceName: telegraf-zfs
         endpoints:
-          - port: http
+          - scheme: http
             relabelings:
               - action: replace
                 replacement: $1
