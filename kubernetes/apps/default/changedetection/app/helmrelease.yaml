@@ -83,3 +83,14 @@ spec:
           changedetection:
             app:
               - path: /datastore
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          changedetection:
+            browserless:
+              - path: /downloads
+                subPath: downloads
+              - path: /profile
+                subPath: profile
+              - path: /config
+                subPath: config
