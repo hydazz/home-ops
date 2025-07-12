@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: cross-seed
 spec:
   interval: 1h
   chartRef:
@@ -18,35 +18,25 @@ spec:
       retries: 3
   values:
     controllers:
-      sabnzbd:
+      cross-seed:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/sabnzbd
-              tag: 4.5.2@sha256:e3f27e50ee51f950d89ce888cb3c3c4e74b46b42751333ee008f906906cbf05b
+              repository: ghcr.io/cross-seed/cross-seed
+              tag: 6.12.7@sha256:84f50b090f732254d3846ad77c8bf9f451fd169465c88b3da4fec715da29a5ff
             env:
-              CROSS_SEED_HOST: cross-seed.media.svc.cluster.local
-              SABNZBD__PORT: &port 80
-              SABNZBD__HOST_WHITELIST_ENTRIES: >-
-                sabnzbd,
-                sabnzbd.downloads,
-                sabnzbd.downloads.svc,
-                sabnzbd.downloads.svc.cluster,
-                sabnzbd.downloads.svc.cluster.local,
-                sabnzbd.${D_HS}
+              CROSS_SEED_PORT: &port 80
               TZ: Australia/Melbourne
-            envFrom:
-              - secretRef:
-                  name: sabnzbd-secret
+            args: ["daemon"]
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api?mode=version
+                    path: /api/ping
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -59,9 +49,9 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
               limits:
-                memory: 12Gi
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -74,27 +64,19 @@ spec:
         ports:
           http:
             port: *port
-    route:
-      app:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
-        parentRefs:
-          - name: internal
-            namespace: network
-            sectionName: https
     persistence:
       config:
-        existingClaim: sabnzbd
+        existingClaim: cross-seed
+      secret-file:
+        type: secret
+        name: cross-seed-secret
+        globalMounts:
+          - path: /config/config.js
+            subPath: config.js
+            readOnly: true
       media:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media
         globalMounts:
           - path: /data
-      scripts:
-        type: configMap
-        name: sabnzbd-scripts
-        defaultMode: 0775
-        globalMounts:
-          - readOnly: true
-      tmp:
-        type: emptyDir
