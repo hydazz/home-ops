@@ -64,7 +64,6 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/zfs
             - siderolabs/intel-ucode
     networkInterfaces:
       - interface: bond0

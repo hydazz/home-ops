@@ -15,5 +15,4 @@ resources:
   - ./promtail/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./agents/telegraf-zfs/ks.yaml
   - ./kromgo/ks.yaml
