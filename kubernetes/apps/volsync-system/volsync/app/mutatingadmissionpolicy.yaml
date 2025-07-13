@@ -99,7 +99,7 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "192.168.42.20",
-                  path: "/mnt/Fast/Backups/Volsync"
+                  path: "/mnt/Slow/Backups/Volsync"
                 }
               }
             }
