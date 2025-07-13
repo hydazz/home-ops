@@ -24,19 +24,18 @@ spec:
           app:
             image:
               repository: ghcr.io/dgtlmoon/changedetection.io
-              tag: 0.50.5@sha256:f7bf37cb0914d442d8c94f29bb528c6797f87d21c8ab0d8a36b8c60efefd0344
+              tag: 0.50.6@sha256:1abf3e8afe7e359baf9583cbf36b0c732bd7a3177a504448a67a51b2d2038c2b
             env:
               TZ: Australia/Melbourne
               BASE_URL: "{{ .Release.Name }}.${D_HS}"
               USE_X_SETTINGS: "1"
               PORT: &port 5000
-              PLAYWRIGHT_DRIVER_URL: "ws://localhost:3000?token=TESTING6R0W53R135510"
+              PLAYWRIGHT_DRIVER_URL: ws://localhost:3000/chrome?stealth=1&--disable-web-security=true&--user-data-dir=~/browserless-cache-123
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
               limits:
-                memory: 128Mi
+                memory: 256Mi
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -45,19 +44,24 @@ spec:
               capabilities: { drop: ["ALL"] }
           browserless:
             image:
-              repository: ghcr.io/browserless/chromium
-              tag: v2.32.1@sha256:cade7f4aca3e1a3af13aff2c55231305ec942fd08048c1c4d4dc265757091650
+              repository: ghcr.io/browserless/chrome
+              tag: v2.33.0@sha256:5442de4240463b9c8f77950a3e76ba41f505fb8cb7e7118542c67836c78651fa
             env:
-              CONCURRENT: "10"
-              DATA_DIR: /profile
-              DOWNLOAD_DIR: /downloads
-              TOKEN: TESTING6R0W53R135510
+              SCREEN_WIDTH: "1920"
+              SCREEN_HEIGHT: "1024"
+              SCREEN_DEPTH: "16"
+              ENABLE_DEBUGGER: "false"
+              PREBOOT_CHROME: "true"
+              CONNECTION_TIMEOUT: "300000"
+              MAX_CONCURRENT_SESSIONS: "10"
+              CHROME_REFRESH_TIME: "600000"
+              DEFAULT_BLOCK_ADS: "true"
+              DEFAULT_STEALTH: "true"
             resources:
               requests:
                 cpu: 10m
-                memory: 1Gi
               limits:
-                memory: 1Gi
+                memory: 2Gi
             securityContext:
               allowPrivilegeEscalation: false
     defaultPodOptions:
@@ -83,14 +87,3 @@ spec:
           changedetection:
             app:
               - path: /datastore
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          changedetection:
-            browserless:
-              - path: /downloads
-                subPath: downloads
-              - path: /profile
-                subPath: profile
-              - path: /config
-                subPath: config
