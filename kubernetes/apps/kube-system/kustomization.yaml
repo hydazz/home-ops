@@ -16,3 +16,4 @@ resources:
   - ./nvidia-device-plugin/ks.yaml
   - ./reflector/ks.yaml
   - ./spegel/ks.yaml
+  - ./generic-device-plugin/ks.yaml

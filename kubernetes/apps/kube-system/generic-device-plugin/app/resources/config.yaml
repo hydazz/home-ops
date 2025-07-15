@@ -1,0 +1,7 @@
+---
+devices:
+  - name: skyconnect
+    groups:
+      - count: 10
+        paths:
+          - path: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_0e799ed75441ed1190af7ca7ccf2b06c-if00-port0
