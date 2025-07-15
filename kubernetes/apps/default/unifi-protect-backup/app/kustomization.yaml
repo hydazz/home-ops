@@ -8,7 +8,7 @@ resources:
 configMapGenerator:
   - name: rclone-conf
     files:
-      - rclone.conf=./resources/rclone.conf
+      - ./resources/rclone.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

@@ -9,8 +9,8 @@ resources:
 configMapGenerator:
   - name: kometa-configmap
     files:
-      - config.yml=./resources/config.yml
-      - playlists.yml=./resources/playlists.yml
+      - ./resources/config.yml
+      - ./resources/playlists.yml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

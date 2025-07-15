@@ -11,10 +11,10 @@ resources:
 configMapGenerator:
   - name: wordpress-nginx-config
     files:
-      - nginx.conf=./resources/nginx.conf
+      - ./resources/nginx.conf
   - name: wordpress-php-config
     files:
-      - wordpress-custom.ini=./resources/wordpress-custom.ini
+      - ./resources/wordpress-custom.ini
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

@@ -9,6 +9,6 @@ resources:
 secretGenerator:
   - name: nextcloud-shca-values
     files:
-      - values.yaml=./resources/values.sops.yaml
+      - ./resources/values.sops.yaml
     options:
       disableNameSuffixHash: true
