@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hydazz/nut-server
-              tag: 2.8.2@sha256:704c7e9826c1a3f3345d73e3d9864f5251cc1c40210972fc5ef2ffc18435599b
+              tag: 2.8.3@sha256:45564112a207ef00f992d504531e15e461433c2329c02d9641c5f7015731bafd
             command: ["sleep", "infinity"]
             env:
               TZ: Australia/Melbourne
