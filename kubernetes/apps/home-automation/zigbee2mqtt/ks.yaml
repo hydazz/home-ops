@@ -16,6 +16,8 @@ spec:
     - name: emqx-cluster
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: generic-device-plugin
+      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/home-automation/zigbee2mqtt/app
   postBuild:

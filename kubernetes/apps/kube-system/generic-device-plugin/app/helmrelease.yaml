@@ -19,8 +19,9 @@ spec:
   values:
     controllers:
       generic-device-plugin:
+        annotations:
+          reloader.stakater.com/auto: "true"
         type: daemonset
-        strategy: RollingUpdate
         containers:
           app:
             image:

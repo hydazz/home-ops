@@ -21,17 +21,6 @@ spec:
     controllers:
       multus:
         type: daemonset
-        pod:
-          hostNetwork: true
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: NotIn
-                        values:
-                          - discovery
         initContainers:
           cni-plugins:
             image:
@@ -44,13 +33,24 @@ spec:
               tag: v4.2.1
             args:
               - --cleanup-config-on-exit=true
-            resources:
-              requests:
-                cpu: "10m"
-              limits:
-                memory: "512Mi"
             securityContext:
               privileged: true
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      hostNetwork: true
+      affinity:
+        nodeAffinity: # discovery cant do vlans yet
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values:
+                      - discovery
     persistence:
       etc-cni-net-d:
         type: hostPath
