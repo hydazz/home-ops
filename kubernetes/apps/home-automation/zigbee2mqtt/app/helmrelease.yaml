@@ -51,37 +51,28 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "true"
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ember
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: &serialPort /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_0e799ed75441ed1190af7ca7ccf2b06c-if00-port0
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_0e799ed75441ed1190af7ca7ccf2b06c-if00-port0
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
             securityContext:
-              privileged: true
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 512Mi
+                squat.ai/skyconnect: 1
     defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: feature.node.kubernetes.io/usb-ff_10c4_ea60.present
-                    operator: In
-                    values:
-                      - "true"
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 20 # dialout
     service:
       app:
         ports:
@@ -99,9 +90,3 @@ spec:
         existingClaim: zigbee2mqtt
         globalMounts:
           - path: /config
-      usb:
-        type: hostPath
-        hostPath: *serialPort
-        hostPathType: CharDevice
-        globalMounts:
-          - path: *serialPort
