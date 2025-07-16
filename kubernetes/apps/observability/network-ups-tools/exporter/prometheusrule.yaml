@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nut-exporter-rules
+spec:
+  groups:
+    - name: nut-exporter.rules
+      rules:
+        - alert: UpsOnBattery
+          expr: |
+            nut_status{status="OB"} == 1
+          for: 30s
+          annotations:
+            summary: >-
+              UPS {{ $labels.ups }} is running on battery power
+            description: >-
+              UPS {{ $labels.ups }} has switched to battery power. This could indicate a power outage or utility power issue.
+          labels:
+            severity: warning
+
+        - alert: UpsLowBattery
+          expr: |
+            nut_status{status="LB"} == 1
+          for: 1m
+          annotations:
+            summary: >-
+              UPS {{ $labels.ups }} has low battery
+            description: >-
+              UPS {{ $labels.ups }} is running on battery power and the battery charge is low. System may shutdown soon.
+          labels:
+            severity: critical
+
+        - alert: UpsBatteryChargeLevel
+          expr: |
+            nut_battery_charge < 50
+          for: 5m
+          annotations:
+            summary: >-
+              UPS {{ $labels.ups }} battery charge is below 50%
+            description: >-
+              UPS {{ $labels.ups }} battery charge level is {{ $value }}%, which is below the recommended threshold.
+          labels:
+            severity: warning
+
+        - alert: UpsBatteryChargeCritical
+          expr: |
+            nut_battery_charge < 25
+          for: 2m
+          annotations:
+            summary: >-
+              UPS {{ $labels.ups }} battery charge is critically low
+            description: >-
+              UPS {{ $labels.ups }} battery charge level is {{ $value }}%, which is critically low. Immediate attention required.
+          labels:
+            severity: critical
+
+        - alert: UpsHighTemperature
+          expr: |
+            nut_ups_temperature > 40
+          for: 5m
+          annotations:
+            summary: >-
+              UPS {{ $labels.ups }} temperature is high
+            description: >-
+              UPS {{ $labels.ups }} internal temperature is {{ $value }}°C, which is above the recommended threshold.
+          labels:
+            severity: warning
+
+        - alert: UpsOffline
+          expr: |
+            up{job="nut-exporter"} == 0
+          for: 2m
+          annotations:
+            summary: >-
+              UPS monitoring is offline
+            description: >-
+              The NUT exporter is not responding. UPS monitoring data is unavailable.
+          labels:
+            severity: critical
+
+        - alert: UpsReplaceBattery
+          expr: |
+            nut_status{status="RB"} == 1
+          for: 1m
+          annotations:
+            summary: >-
+              UPS {{ $labels.ups }} battery needs replacement
+            description: >-
+              UPS {{ $labels.ups }} is indicating that the battery needs to be replaced.
+          labels:
+            severity: warning
+
+        - alert: UpsOverload
+          expr: |
+            nut_ups_load > 90
+          for: 5m
+          annotations:
+            summary: >-
+              UPS {{ $labels.ups }} is overloaded
+            description: >-
+              UPS {{ $labels.ups }} load is {{ $value }}%, which is above the safe operating threshold.
+          labels:
+            severity: critical

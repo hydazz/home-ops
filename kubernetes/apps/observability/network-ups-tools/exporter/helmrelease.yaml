@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nut-exporter
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      nut-exporter:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/druggeri/nut_exporter
+              tag: 3.2.1@sha256:3b452a9f29c50cad2909a9815ff8cf13b1f1079a641492bf7d06063725846e28
+            env:
+              TZ: Australia/Melbourne
+            args:
+              - --nut.vars_enable=
+              - --nut.server=nut-server.observability.svc.cluster.local
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              limits:
+                cpu: 200m
+                memory: 200Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 9199
+    serviceMonitor:
+      nut-exporter:
+        enabled: true
+        serviceName: nut-exporter
+        endpoints:
+          - interval: 30s
+            path: /ups_metrics
+            port: http
+            scheme: http
+            scrapeTimeout: 30s
+            metricRelabelings:
+              - sourceLabels: [instance]
+                targetLabel: instance
+                replacement: "5px"
+          - interval: 30s
+            path: /metrics
+            port: http
+            scheme: http
+            scrapeTimeout: 30s
