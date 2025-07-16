@@ -25,7 +25,7 @@ spec:
       enabled: true
       image:
         repository: nginx
-        tag: 1.29.0-alpine@sha256:6e39bb3765ac959c7e1240509636173417a5e37abf140f418401e2fa73970bbe
+        tag: 1.29.0-alpine@sha256:186168f580ee1792a48cd83c3e42b110a8ccb21e855a6271240975d451311d6b
     fullnameOverride: *app
     nextcloud:
       extraInitContainers:
