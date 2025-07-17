@@ -6,3 +6,9 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml
+secretGenerator:
+  - name: nextcloud-shs-values
+    files:
+      - values.yaml=./resources/values.sops.yaml
+    options:
+      disableNameSuffixHash: true
