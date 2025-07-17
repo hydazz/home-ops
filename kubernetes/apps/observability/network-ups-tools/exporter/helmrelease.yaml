@@ -66,6 +66,13 @@ spec:
             port: http
             scheme: http
             scrapeTimeout: 30s
+            relabelings:
+              # stops the graphs changing when the pod name changes
+              - action: replace
+                regex: (.*)
+                replacement: nut-exporter
+                sourceLabels: ["__meta_kubernetes_pod_name"]
+                targetLabel: pod
             metricRelabelings:
               - sourceLabels: [instance]
                 targetLabel: instance
