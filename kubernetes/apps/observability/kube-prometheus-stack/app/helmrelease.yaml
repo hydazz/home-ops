@@ -153,13 +153,15 @@ spec:
                 expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m >= 1) and ignoring (reason) min_over_time(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[10m]) == 1
                 labels:
                   severity: critical
-      zfs-rules:
+      temperature-rules:
         groups:
-          - name: zfs
+          - name: cpu_temp
             rules:
-              - alert: ZfsUnexpectedPoolState
+              - alert: HighCPUTemperature
                 annotations:
-                  summary: ZFS pool {{$labels.zpool}} on {{$labels.instance}} is in a unexpected state {{$labels.state}}
-                expr: node_zfs_zpool_state{state!="online"} > 0
+                  summary: "High CPU Temperature Detected"
+                  description: "Shit is a bout to hit the fan."
+                expr: node_hwmon_temp_celsius{chip=~".*coretemp.*", sensor="temp1"} > 80
+                for: 30s
                 labels:
                   severity: critical
