@@ -30,8 +30,12 @@ spec:
       APP: *app
       GATUS_GROUP: *namespace
       GATUS_SUBDOMAIN: storage
-      VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_CACHE_CAPACITY: 512Mi
+      VOLSYNC_CAPACITY: 64Gi
+      VOLSYNC_CACHE_CAPACITY: 16Gi
+      VOLSYNC_PUID: "82"
+      VOLSYNC_PGID: "82"
+      #VOLSYNC_CAPACITY: 2Gi
+      #VOLSYNC_CACHE_CAPACITY: 512Mi
   prune: true
   retryInterval: 2m
   sourceRef:

@@ -33,6 +33,8 @@ spec:
       GATUS_DOMAIN: "${D_HCA}"
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CACHE_CAPACITY: 512Mi
+      VOLSYNC_PUID: "82"
+      VOLSYNC_PGID: "82"
   prune: true
   retryInterval: 2m
   sourceRef:
