@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: b2-sync
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      kopia-sync:
+        type: cronjob
+        cronjob: &cronJobSpec
+          schedule: "0 1 * * *" # 1:00 AM
+          timeZone: Australia/Melbourne
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+        containers:
+          app:
+            image:
+              repository: kopia/kopia
+              tag: 20250620.0.42502@sha256:6ade0b36ecaf4c276a533314f2d9fa6bacd9acb8f840d74d3b68bdb4900e0cec
+            command:
+              - /bin/bash
+              - -c
+              - |
+                set -euo pipefail
+                echo -e "\033[1;34m[INFO] Connecting to Kopia repository...\033[0m"
+                kopia repository connect filesystem \
+                  --path /data/kopia \
+                  --readonly \
+                  --password="${KOPIA_PASSWORD}"
+                echo -e "\033[1;34m[INFO] Starting Kopia sync-to B2...\033[0m"
+                kopia repository sync-to b2 \
+                  --bucket=b2backup-kopia \
+                  --key-id="${B2_ACCESS_KEY_ID}" \
+                  --key="${B2_SECRET_ACCESS_KEY}" \
+                  --delete \
+                  --parallel=8 \
+                  --no-progress \
+                  --log-level=warning
+                echo -e "\033[1;32m[SUCCESS] Kopia sync complete.\033[0m"
+            envFrom:
+              - secretRef:
+                  name: kopia-sync-secret
+      volsync-sync:
+        type: cronjob
+        cronjob:
+          <<: *cronJobSpec
+          schedule: "0 1 * * *" # 1:00 AM
+        containers:
+          app:
+            image:
+              repository: restic/restic
+              tag: 0.18.0@sha256:4cf4a61ef9786f4de53e9de8c8f5c040f33830eb0a10bf3d614410ee2fcb6120
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                echo -e "\033[1;34m[INFO] Starting Restic sync job...\033[0m"
+                for src in /data/volsync/*; do
+                  ns=$(basename "$src")
+                  dest="b2:b2backup-k8s:volsync/$ns"
+                  echo -e "\033[1;33m[SYNC] Namespace: $ns → $dest\033[0m"
+                  echo -e "\033[1;34m[INFO] Initializing repo if needed...\033[0m"
+                  if restic init --repo "$dest"; then
+                    echo -e "\033[1;32m[OK] Repo initialized: $dest\033[0m"
+                  else
+                    echo -e "\033[1;31m[WARN] Repo already exists or init skipped: $dest\033[0m"
+                  fi
+                  echo -e "\033[1;34m[INFO] Copying from $src to $dest...\033[0m"
+                  restic copy --from-repo "$src" --repo "$dest" --no-lock
+                  echo -e "\033[1;32m[OK] Copy complete for $ns\033[0m"
+                done
+                echo -e "\033[1;32m[SUCCESS] All Restic syncs complete.\033[0m"
+            envFrom:
+              - secretRef:
+                  name: volsync-sync-secret
+    persistence:
+      kopia-data:
+        type: nfs
+        server: 192.168.42.20
+        path: /mnt/Slow/Backups/
+        advancedMounts:
+          kopia-sync:
+            app:
+              - path: /data/kopia
+                subPath: Kopia
+          volsync-sync:
+            app:
+              - path: /data/volsync
+                subPath: Volsync
