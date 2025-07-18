@@ -26,38 +26,38 @@ enableRuntimeDeviceDetection: true
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: true
+  enabled: false
 gatewayAPI:
   enabled: false
-hubble:
-  enabled: true
-  metrics:
-    enabled:
-      - dns:query;ignoreAAAA
-      - drop
-      - tcp
-      - flow
-      - port-distribution
-      - icmp
-      - http
-    serviceMonitor:
-      enabled: true
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Network
-  relay:
-    enabled: true
-    rollOutPods: true
-    prometheus:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-  ui:
-    enabled: true
-    rollOutPods: true
-    ingress:
-      enabled: false
+#hubble:
+#  enabled: true
+#  metrics:
+#    enabled:
+#      - dns:query;ignoreAAAA
+#      - drop
+#      - tcp
+#      - flow
+#      - port-distribution
+#      - icmp
+#      - http
+#    serviceMonitor:
+#      enabled: true
+#    dashboards:
+#      enabled: true
+#      annotations:
+#        grafana_folder: Network
+#  relay:
+#    enabled: true
+#    rollOutPods: true
+#    prometheus:
+#      enabled: true
+#      serviceMonitor:
+#        enabled: true
+#  ui:
+#    enabled: true
+#    rollOutPods: true
+#    ingress:
+#      enabled: false
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: "10.42.0.0/16"
@@ -74,8 +74,6 @@ l2announcements:
 loadBalancer:
   algorithm: maglev
   mode: "dsr"
-  l7:
-    backend: envoy
 l7Proxy: true
 localRedirectPolicy: true
 operator:
