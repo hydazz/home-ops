@@ -1,0 +1,4 @@
+machine:
+  udev:
+    rules:
+      - SUBSYSTEMS=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", GROUP="20", MODE="0660", TAG+="uaccess" # SkyConnect

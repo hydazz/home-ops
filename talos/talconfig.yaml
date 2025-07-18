@@ -24,7 +24,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/990731763242a6b3cf735e49d0f550ce4068b4d0e7f4dfbb49a31799b698877e
+    #talosImageURL: factory.talos.dev/installer/990731763242a6b3cf735e49d0f550ce4068b4d0e7f4dfbb49a31799b698877e
     controlPlane: true
     patches:
       - "@./patches/discovery/machine-nvidia.yaml"
@@ -56,10 +56,8 @@ nodes:
       model: "Samsung SSD 970 EVO Plus 500GB"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/3d8e0d5adc2bffbc359800802c58a68301a006558cb18be0715ffcc93b30e8aa
+    #talosImageURL: factory.talos.dev/installer/3d8e0d5adc2bffbc359800802c58a68301a006558cb18be0715ffcc93b30e8aa
     controlPlane: true
-    kernelModules:
-      - name: zfs
     schematic:
       customization:
         systemExtensions:
@@ -90,7 +88,7 @@ nodes:
       model: "Samsung SSD 970 EVO Plus 500GB"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8
+    #talosImageURL: factory.talos.dev/installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8
     controlPlane: true
     schematic:
       customization:
@@ -122,6 +120,7 @@ patches:
   - "@./patches/global/machine-network.yaml"
   - "@./patches/global/machine-sysctls.yaml"
   - "@./patches/global/machine-time.yaml"
+  - "@./patches/global/machine-udev.yaml"
 
 # Controller patches
 controlPlane:
