@@ -1,21 +1,12 @@
-# Secrets
-*.pub
+/.private/
+/.task/
+/.venv/
+*.crt
 *.key
-*.decrypted~*.yaml
-/age.key
-/cloudflare-tunnel.json
-/github-deploy.key
-/github-deploy.key.pub
-/github-push-token.txt
-# Template config files
-/cluster.yaml
-/nodes.yaml
-# Kubernetes
-kubeconfig
-talosconfig
-# Misc.
-.private/
-.task/
-.venv/
+.decrypted~*
 .DS_Store
+Brewfile.lock.json
 Thumbs.db
+kubeconfig
+onepassword.env
+talosconfig
