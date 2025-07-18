@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ep1cman/unifi-protect-backup
-              tag: 0.13.1@sha256:d56740ca12049c3f8c623d023dffc2c87cb0433da199afacac9cc62137648798
+              tag: 0.14.0@sha256:2ef7dda428085dd64b2323931e78f8a87426c971d69148bcd806b4c50b8d2768
             env:
               TZ: Australia/Melbourne
               DETECTION_TYPES: person,vehicle,ring
