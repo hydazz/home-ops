@@ -41,14 +41,12 @@ spec:
                   --readonly \
                   --password="${KOPIA_PASSWORD}"
                 echo -e "\033[1;34m[INFO] Starting Kopia sync-to B2...\033[0m"
-                kopia repository sync-to b2 \
+                stdbuf -oL -eL kopia repository sync-to b2 \
                   --bucket=b2backup-kopia \
                   --key-id="${B2_ACCESS_KEY_ID}" \
                   --key="${B2_SECRET_ACCESS_KEY}" \
                   --delete \
-                  --parallel=8 \
-                  --no-progress \
-                  --log-level=warning
+                  --parallel=8 2>&1 | stdbuf -oL sed 's/\r/\n/g'
                 echo -e "\033[1;32m[SUCCESS] Kopia sync complete.\033[0m"
             envFrom:
               - secretRef:
