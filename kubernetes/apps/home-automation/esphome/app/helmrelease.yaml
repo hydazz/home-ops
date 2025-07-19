@@ -130,7 +130,7 @@ spec:
         globalMounts:
           - path: /config
       cache:
-        type: emptyDir
+        existingClaim: esphome-cache
         globalMounts:
           - path: /cache
       tmpfs:
