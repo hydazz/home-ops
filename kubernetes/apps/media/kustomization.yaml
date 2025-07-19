@@ -23,3 +23,4 @@ resources:
   - ./tdarr/ks.yaml
   - ./unpackerr/ks.yaml
   - ./recommendarr/ks.yaml
+  - ./secret/ks.yaml
