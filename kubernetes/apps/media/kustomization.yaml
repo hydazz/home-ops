@@ -11,7 +11,7 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./immich/ks.yaml
   - ./kometa/ks.yaml
-  - ./notifiarr/ks.yaml
+  - ./recyclarr/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
