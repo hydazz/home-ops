@@ -24,3 +24,4 @@ resources:
   - ./unpackerr/ks.yaml
   - ./recommendarr/ks.yaml
   - ./secret/ks.yaml
+  - ./excludarr/ks.yaml
