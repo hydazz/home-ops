@@ -6,7 +6,6 @@ namespace: network
 components:
   - ../../components/common
 resources:
-  - ./unifi-dns/ks.yaml
   - ./adguard-home/ks.yaml
   - ./cloudflare-dns/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
@@ -14,3 +13,4 @@ resources:
   - ./gateway/ks.yaml
   - ./k8s-gateway/ks.yaml
   - ./multus/ks.yaml
+  - ./unifi-dns/ks.yaml

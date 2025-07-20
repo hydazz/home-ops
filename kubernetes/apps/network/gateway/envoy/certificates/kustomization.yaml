@@ -6,7 +6,7 @@ resources:
   - ./hca.yaml
   - ./hs.yaml
   - ./igi.yaml
+  - ./lmvca.yaml
   - ./sn.yaml
   - ./taca.yaml
   - ./tan.yaml
-  - ./lmvca.yaml
