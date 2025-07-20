@@ -22,7 +22,7 @@ sops:
             b3F0Q0JaNUczWTE5YmZscTM1cEFjSWsKV7LMrWsga3VXVwbmu5dxyzIs1T7ig076
             W4p0Rr7Qhf90+WiJoteRpfFZkte3ojuCdGi5s55Jx6pq+X8NoklToQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-03T07:32:56Z"
-    mac: ENC[AES256_GCM,data:E+XUeXaYygDl06RImfMugsHcFNQpS+r002CxdHnUJrRbWXO9/fx+Ergsg8kwZO1jmP9/PntbMzZmhBy+jFrJ2fFagK++D9jioXeOpTinVxCGaxS8Dk6PCgJH3Ab5gdeaEGVGvno4D+jXvDqdbTdU6X1yblBPXFHySkm7nYHS6z0=,iv:+20d4UP17ax2pFn2MhPY5Gz6ozIjKgbQXuhkFi6MVdU=,tag:BV6YtSthF2k04Lwg3OFO7Q==,type:str]
+    lastmodified: "2025-07-20T13:56:26Z"
+    mac: ENC[AES256_GCM,data:NTPU71J0FAkG3Nrv+AtPtqDXjD953Oq51ObqslzMirgAcYGVu8IEe+TGTnsXXC+gfJLO38T82+oeB0piHWcVfMG7ZyNHvPtPnFiVaYai7/XhaA+a5sALOPjNMFVBmG0+jhX82Lbu08pvYEkwz1K2FAcFuYfvpQfshc2ZNyFS4hc=,iv:2mdV8gD2Is6J1015tw60u/zl6ov/Zlt//Lj1ShGYmQw=,tag:rnMtJIb9APU+hXQELeyGbg==,type:str]
     encrypted_regex: ^(nextcloud)$
     version: 3.10.2
