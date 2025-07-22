@@ -41,6 +41,7 @@ spec:
             - matchExpressions:
                 - key: extensions.talos.dev/nvidia-container-toolkit-production
                   operator: Exists
+    runtimeClassName: nvidia
     serviceMonitor:
       interval: 15s
       honorLabels: true
