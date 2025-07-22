@@ -9,9 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: nvidia-device-plugin
-      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/observability/dcgm-exporter/app
   prune: true

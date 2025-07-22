@@ -1,12 +1,17 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: dcgm-exporter
 spec:
   interval: 5m
-  url: https://nvidia.github.io/dcgm-exporter/helm-charts
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.2.0
+  url: oci://ghcr.io/home-operations/charts-mirror/dcgm-exporter
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -15,13 +20,9 @@ metadata:
   name: dcgm-exporter
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: dcgm-exporter
-      version: 4.2.0
-      sourceRef:
-        kind: HelmRepository
-        name: dcgm-exporter
+  chartRef:
+    kind: OCIRepository
+    name: dcgm-exporter
   install:
     remediation:
       retries: -1
@@ -29,6 +30,9 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  dependsOn:
+    - name: nvidia-device-plugin
+      namespace: kube-system
   values:
     affinity:
       nodeAffinity:
@@ -37,8 +41,11 @@ spec:
             - matchExpressions:
                 - key: extensions.talos.dev/nvidia-container-toolkit-production
                   operator: Exists
-    runtimeClassName: nvidia
     serviceMonitor:
+      interval: 15s
       honorLabels: true
+    #resources:
+    #  limits:
+    #    nvidia.com/gpu: 1
     securityContext:
       privileged: true
