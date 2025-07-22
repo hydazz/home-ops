@@ -19,8 +19,6 @@ spec:
   values:
     controllers:
       lobby:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -71,16 +69,10 @@ spec:
     service:
       app:
         ports:
-          minecraft:
+          game:
             port: 25565
     persistence:
       config:
         existingClaim: hymc-lobby
         globalMounts:
           - path: /data
-      #paper-global:
-      #  type: configMap
-      #  name: paper-global
-      #  globalMounts:
-      #    - path: /data/config/paper-global.yml
-      #      subPath: paper-global.yaml
