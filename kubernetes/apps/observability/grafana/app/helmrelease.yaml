@@ -245,6 +245,9 @@ spec:
           revision: 41
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
+        nvidia-dcgm:
+          url: https://raw.githubusercontent.com/NVIDIA/dcgm-exporter/main/grafana/dcgm-exporter-dashboard.json
+          datasource: Prometheus
     sidecar:
       image:
         registry: ghcr.io
