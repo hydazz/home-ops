@@ -21,16 +21,16 @@ spec:
       excludarr:
         type: cronjob
         cronjob:
-          schedule: 0 0 * * *
+          schedule: "@daily"
           backoffLimit: 0
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
-          ttlSecondsAfterFinished: 86400
+          timeZone: "Australia/Melbourne"
         containers:
           app:
             image:
-              repository: excludarr/excludarr
+              repository: docker.io/excludarr/excludarr
               tag: v1.1.3@sha256:27cce6632dc3cf26063db1a1ee2b7d27d3281352f30e0ad01c02ff2f50c6ac1b
             command:
               - /bin/bash
@@ -38,7 +38,11 @@ spec:
               - |
                 set -euo pipefail
                 for i in radarr sonarr; do
-                  poetry run -C /app excludarr "$i" exclude -a not-monitored -d -y --progress
+                  echo -e "\033[1;34m[INFO] Running exclude for '$i'...\033[0m"
+                  poetry run -C /app excludarr "$i" exclude -a not-monitored -d -y
+                  echo -e "\033[1;34m[INFO] Running re-add for '$i'...\033[0m"
+                  poetry run -C /app excludarr "$i" re-add
+                  echo -e "\033[1;32m[SUCCESS] Finished processing '$i'.\033[0m"
                 done
             resources:
               requests:
@@ -49,8 +53,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-        pod:
-          restartPolicy: Never
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

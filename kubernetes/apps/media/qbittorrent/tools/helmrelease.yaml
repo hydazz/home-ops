@@ -24,12 +24,12 @@ spec:
       tagging:
         type: cronjob
         cronjob: &cronJobSpec
-          schedule: 0 * * * *
+          schedule: "@hourly"
           backoffLimit: 0
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
-          ttlSecondsAfterFinished: 3600
+          timeZone: "Australia/Melbourne"
         initContainers:
           tag: &container
             image:
@@ -89,13 +89,11 @@ spec:
                 "--with-data",
                 # "--dry-run"
               ]
-        pod:
-          restartPolicy: Never
       orphaned:
         type: cronjob
         cronjob:
           <<: *cronJobSpec
-          schedule: 0 0 * * 0
+          schedule: "@weekly"
           suspend: true
         containers:
           app:
@@ -106,8 +104,6 @@ spec:
                 "*_unpackerred*",
                 # "--dry-run"
               ]
-        pod:
-          restartPolicy: Never
       reannounce:
         containers:
           app:
@@ -134,6 +130,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
       secret-file:
         type: secret

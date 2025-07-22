@@ -21,12 +21,12 @@ spec:
       kometa:
         type: cronjob
         cronjob:
-          schedule: 0 0 * * *
+          schedule: "@daily"
           backoffLimit: 0
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
-          ttlSecondsAfterFinished: 86400
+          timeZone: "Australia/Melbourne"
         containers:
           app:
             image:
@@ -47,15 +47,13 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-        pod:
-          restartPolicy: Never
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        runAsNonRoot: true
         fsGroup: 1000
-        fsGroupChangePolicy: "OnRootMismatch"
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         enabled: false
