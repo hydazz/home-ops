@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Flux Local
 
 on:
@@ -44,7 +45,6 @@ jobs:
             --all-namespaces
             --enable-helm
             --path /github/workspace/kubernetes/flux/cluster
-            --exclude-path /github/workspace/kubernetes/apps/media/secret
             --verbose
 
   diff:
