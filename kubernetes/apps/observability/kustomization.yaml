@@ -15,6 +15,6 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
   - ./network-ups-tools/ks.yaml
-  - ./promtail/ks.yaml
+  - ./alloy/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
