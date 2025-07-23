@@ -25,7 +25,7 @@ spec:
       APP: *app
       GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 4Gi
-      VOLSYNC_CACHE_CAPACITY: 1024Mi
+      VOLSYNC_CACHE_CAPACITY: 1Gi
   prune: true
   retryInterval: 2m
   sourceRef:
