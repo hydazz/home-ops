@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: hymc-lobby
+  name: hymc-pvp
 spec:
   interval: 1h
   chartRef:
@@ -18,41 +18,51 @@ spec:
       retries: 3
   values:
     controllers:
-      lobby:
+      pvp:
         containers:
           app:
             image:
               repository: ghcr.io/itzg/minecraft-server
-              tag: 2025.6.2@sha256:262e2309f7cc6b2ff0ac1458ac52c91e9bc778989543feec6588501f6dad31ef
+              tag: 2025.6.2-java8@sha256:f0c2a7c4508bc17e5d773ee871528fe0a7d92353542b43011b72d8c65e675f63
             env:
               ALLOW_NETHER: false
               AUTOPAUSE_TIMEOUT_EST: 600
               AUTOPAUSE_TIMEOUT_INIT: 300
-              DIFFICULTY: peaceful
+              DIFFICULTY: normal
               ENABLE_AUTOPAUSE: true
               EULA: true
               FORCE_GAMEMODE: true
               GENERATE_STRUCTURES: false
-              JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
+              #JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
               MEMORY: 8192M
-              MINECRAFT_VERSION: 1.21.4
-              MODE: adventure
-              MODRINTH_PROJECTS: |
-                multiverse-core
-                voidworld
-                worldedit
+              MODE: survival
+              SPIGET_PLUGINS: |
+                222 # BossShopPro
+                43424 # StatsSB
               PLUGINS: |
+                https://dev.bukkit.org/projects/mythicmobs/files/6727551/download
+                https://dev.bukkit.org/projects/otherdrops/files/853054/download
+                https://dev.bukkit.org/projects/pvpmanager/files/6612954/download
+                https://dev.bukkit.org/projects/vault/files/894359/download
+                https://dev.bukkit.org/projects/worldedit/files/2597538/download
+                https://dev.bukkit.org/projects/worldguard/files/956770/download
+                https://download.luckperms.net/1595/bukkit/loader/LuckPerms-Bukkit-5.5.10.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsX-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXAntiBuild-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXChat-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
+                https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
               ONLINE_MODE: false
-              PVP: false
+              SPAWN_ANIMALS: false
+              SPAWN_MONSTERS: false
+              SPAWN_NPCS: false
+              SPAWN_PROTECTION: 0
+              ANNOUNCE_PLAYER_ACHIEVEMENTS: false
               SKIP_SUDO: true
               TYPE: PAPER
               TZ: Australia/Melbourne
-              VERSION: 1.21.4
+              VERSION: 1.8.8
             probes:
               liveness: &probes
                 enabled: true
@@ -95,7 +105,7 @@ spec:
             port: 25565
     persistence:
       config:
-        existingClaim: hymc-lobby
+        existingClaim: hymc-pvp
         globalMounts:
           - path: /data
       tmp:
