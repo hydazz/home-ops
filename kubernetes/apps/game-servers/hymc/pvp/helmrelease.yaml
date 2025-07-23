@@ -25,20 +25,27 @@ spec:
               repository: ghcr.io/itzg/minecraft-server
               tag: 2025.6.2-java8@sha256:f0c2a7c4508bc17e5d773ee871528fe0a7d92353542b43011b72d8c65e675f63
             env:
-              ALLOW_NETHER: false
+              TZ: Australia/Melbourne
+              # Autopause
               AUTOPAUSE_TIMEOUT_EST: 600
               AUTOPAUSE_TIMEOUT_INIT: 300
-              DIFFICULTY: normal
               ENABLE_AUTOPAUSE: true
+              SKIP_SUDO: true
+              # Properties
+              ALLOW_NETHER: false
+              ANNOUNCE_PLAYER_ACHIEVEMENTS: false
+              DIFFICULTY: normal
               EULA: true
               FORCE_GAMEMODE: true
               GENERATE_STRUCTURES: false
-              #JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
-              MEMORY: 8192M
               MODE: survival
-              SPIGET_PLUGINS: |
-                222 # BossShopPro
-                43424 # StatsSB
+              ONLINE_MODE: false
+              PVP: true
+              SPAWN_ANIMALS: false
+              SPAWN_MONSTERS: false
+              SPAWN_NPCS: false
+              SPAWN_PROTECTION: 0
+              # Plugins
               PLUGINS: |
                 https://dev.bukkit.org/projects/mythicmobs/files/6727551/download
                 https://dev.bukkit.org/projects/otherdrops/files/853054/download
@@ -53,15 +60,13 @@ spec:
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
                 https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
-              ONLINE_MODE: false
-              SPAWN_ANIMALS: false
-              SPAWN_MONSTERS: false
-              SPAWN_NPCS: false
-              SPAWN_PROTECTION: 0
-              ANNOUNCE_PLAYER_ACHIEVEMENTS: false
-              SKIP_SUDO: true
+              SPIGET_PLUGINS: |
+                222 # BossShopPro
+                43424 # StatsSB
+              # Server
+              #JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
+              MEMORY: 8192M
               TYPE: PAPER
-              TZ: Australia/Melbourne
               VERSION: 1.8.8
             probes:
               liveness: &probes

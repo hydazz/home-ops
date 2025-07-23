@@ -25,18 +25,27 @@ spec:
               repository: ghcr.io/itzg/minecraft-server
               tag: 2025.6.2@sha256:262e2309f7cc6b2ff0ac1458ac52c91e9bc778989543feec6588501f6dad31ef
             env:
-              ALLOW_NETHER: false
+              TZ: Australia/Melbourne
+              # Autopause
               AUTOPAUSE_TIMEOUT_EST: 600
               AUTOPAUSE_TIMEOUT_INIT: 300
-              DIFFICULTY: peaceful
               ENABLE_AUTOPAUSE: true
+              SKIP_SUDO: true
+              # Properties
+              ALLOW_NETHER: false
+              DIFFICULTY: peaceful
               EULA: true
               FORCE_GAMEMODE: true
               GENERATE_STRUCTURES: false
-              JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
-              MEMORY: 8192M
-              MINECRAFT_VERSION: 1.21.4
               MODE: adventure
+              ONLINE_MODE: false
+              PVP: false
+              SPAWN_ANIMALS: false
+              SPAWN_MONSTERS: false
+              SPAWN_NPCS: false
+              SPAWN_PROTECTION: 0
+              # Plugins
+              MINECRAFT_VERSION: 1.21.4
               MODRINTH_PROJECTS: |
                 multiverse-core
                 voidworld
@@ -47,11 +56,10 @@ spec:
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXChat-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
-              ONLINE_MODE: false
-              PVP: false
-              SKIP_SUDO: true
+              # Server
+              JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
+              MEMORY: 8192M
               TYPE: PAPER
-              TZ: Australia/Melbourne
               VERSION: 1.21.4
             probes:
               liveness: &probes
