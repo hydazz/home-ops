@@ -85,12 +85,6 @@ spec:
                   periodSeconds: 1
                   failureThreshold: 300
                   exec: *mc-health
-            resources:
-              requests:
-                cpu: 100m
-                memory: 100Mi
-              limits:
-                memory: 8192Mi
             securityContext:
               # You don't have permission to perform this capture on that device (socket: Operation not permitted)
               allowPrivilegeEscalation: true
@@ -98,6 +92,13 @@ spec:
               capabilities:
                 drop: ["ALL"]
                 add: ["NET_RAW"]
+            resources:
+              requests:
+                cpu: 100m
+                memory: 2048Mi
+              limits:
+                cpu: 2
+                memory: 8192Mi
     defaultPodOptions:
       dnsPolicy: "None"
       dnsConfig:

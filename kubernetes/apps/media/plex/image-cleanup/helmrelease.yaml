@@ -41,15 +41,15 @@ spec:
             envFrom:
               - secretRef:
                   name: plex-image-cleanup-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 1Gi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       affinity:
         podAffinity:

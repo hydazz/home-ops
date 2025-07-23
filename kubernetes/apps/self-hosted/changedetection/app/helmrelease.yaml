@@ -31,17 +31,17 @@ spec:
               USE_X_SETTINGS: "1"
               PORT: &port 5000
               PLAYWRIGHT_DRIVER_URL: ws://localhost:3000/chrome?stealth=1&--disable-web-security=true&--user-data-dir=~/browserless-cache-123
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 256Mi
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
               runAsNonRoot: true
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
           browserless:
             image:
               repository: ghcr.io/browserless/chrome
@@ -57,13 +57,13 @@ spec:
               CHROME_REFRESH_TIME: "600000"
               DEFAULT_BLOCK_ADS: "true"
               DEFAULT_STEALTH: "true"
+            securityContext:
+              allowPrivilegeEscalation: false
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 2Gi
-            securityContext:
-              allowPrivilegeEscalation: false
     defaultPodOptions:
       securityContext:
         fsGroup: 1000

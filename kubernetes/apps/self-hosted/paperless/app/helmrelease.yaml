@@ -55,33 +55,33 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
-            resources:
-              requests:
-                cpu: 50m
-                memory: 1Gi
-              limits:
-                memory: 2Gi
             securityContext:
               allowPrivilegeEscalation: false
               # E: List directory /var/lib/apt/lists/partial is missing. - Acquire (30: Read-only file system)
               readOnlyRootFilesystem: false
               # E: setgroups 65534 failed - setgroups (1: Operation not permitted)
               #capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
           tika:
             image:
               repository: ghcr.io/paperless-ngx/tika
               tag: 2.9.1-minimal
+            securityContext:
+              allowPrivilegeEscalation: false
+              # java.util.concurrent.ExecutionException: java.nio.file.FileSystemException: /tmp/apache-tika-server-forked-tmp-14715358992636831581: Read-only file system
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
                 memory: 400Mi
               limits:
                 memory: 800Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              # java.util.concurrent.ExecutionException: java.nio.file.FileSystemException: /tmp/apache-tika-server-forked-tmp-14715358992636831581: Read-only file system
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
           gotenberg:
             image:
               repository: gotenberg/gotenberg
@@ -92,16 +92,16 @@ spec:
                 "--chromium-disable-javascript=true",
                 "--chromium-allow-list=file:///tmp/.*",
               ]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
                 memory: 50Mi
               limits:
                 memory: 100Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
         fsGroup: 1000

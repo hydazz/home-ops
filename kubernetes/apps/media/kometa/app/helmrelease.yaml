@@ -39,14 +39,14 @@ spec:
             envFrom:
               - secretRef:
                   name: kometa-secret
-            resources:
-              requests:
-                cpu: 100m
-                memory: 256Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

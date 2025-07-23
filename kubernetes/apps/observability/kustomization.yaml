@@ -6,6 +6,7 @@ namespace: observability
 components:
   - ../../components/common
 resources:
+  - ./alloy/ks.yaml
   - ./blackbox-exporter/ks.yaml
   - ./dcgm-exporter/ks.yaml
   - ./gatus/ks.yaml
@@ -15,6 +16,5 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
   - ./network-ups-tools/ks.yaml
-  - ./alloy/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
