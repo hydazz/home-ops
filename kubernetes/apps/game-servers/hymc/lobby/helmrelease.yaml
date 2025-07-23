@@ -58,6 +58,7 @@ spec:
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
               # Server
               JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
+              JVM_DD_OPTS: "disable.watchdog:true"
               MEMORY: 8192M
               TYPE: PAPER
               VERSION: 1.21.4

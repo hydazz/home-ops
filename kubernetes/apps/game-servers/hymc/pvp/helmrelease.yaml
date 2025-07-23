@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: ghcr.io/itzg/minecraft-server
-              tag: 2025.6.2-java8@sha256:f0c2a7c4508bc17e5d773ee871528fe0a7d92353542b43011b72d8c65e675f63
+              tag: 2025.6.2@sha256:262e2309f7cc6b2ff0ac1458ac52c91e9bc778989543feec6588501f6dad31ef
             env:
               TZ: Australia/Melbourne
               # Autopause
@@ -47,7 +47,7 @@ spec:
               SPAWN_PROTECTION: 0
               # Plugins
               PLUGINS: |
-                https://dev.bukkit.org/projects/mythicmobs/files/6727551/download
+                https://dev.bukkit.org/projects/mythicmobs/files/2840724/download
                 https://dev.bukkit.org/projects/otherdrops/files/853054/download
                 https://dev.bukkit.org/projects/pvpmanager/files/6612954/download
                 https://dev.bukkit.org/projects/vault/files/894359/download
@@ -64,9 +64,11 @@ spec:
                 222 # BossShopPro
                 43424 # StatsSB
               # Server
-              #JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
+              JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
+              JVM_DD_OPTS: "disable.watchdog:true"
               MEMORY: 8192M
-              TYPE: PAPER
+              TYPE: CUSTOM
+              CUSTOM_SERVER: https://downloads.hpfxd.com/v2/projects/pandaspigot/versions/1.8.8/builds/latest/downloads/paperclip
               VERSION: 1.8.8
             probes:
               liveness: &probes
@@ -97,6 +99,10 @@ spec:
                 drop: ["ALL"]
                 add: ["NET_RAW"]
     defaultPodOptions:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - "10.43.0.10"
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
