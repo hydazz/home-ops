@@ -41,7 +41,7 @@ spec:
                   echo -e "\033[1;34m[INFO] Running exclude for '$i'...\033[0m"
                   poetry run -C /app excludarr "$i" exclude -a not-monitored -d -y
                   echo -e "\033[1;34m[INFO] Running re-add for '$i'...\033[0m"
-                  poetry run -C /app excludarr "$i" re-add
+                  poetry run -C /app excludarr "$i" re-add -y
                   echo -e "\033[1;32m[SUCCESS] Finished processing '$i'.\033[0m"
                 done
             resources:
