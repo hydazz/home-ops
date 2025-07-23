@@ -25,15 +25,24 @@ spec:
               repository: ghcr.io/itzg/minecraft-server
               tag: 2025.6.2@sha256:262e2309f7cc6b2ff0ac1458ac52c91e9bc778989543feec6588501f6dad31ef
             env:
+              ALLOW_NETHER: false
+              AUTOPAUSE_TIMEOUT_EST: 600
+              AUTOPAUSE_TIMEOUT_INIT: 300
+              DIFFICULTY: peaceful
+              ENABLE_AUTOPAUSE: true
               EULA: true
+              FORCE_GAMEMODE: true
+              GENERATE_STRUCTURES: false
               JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
               MEMORY: 8192M
-              SKIP_SUDO: true
+              MODE: adventure
               ONLINE_MODE: false
+              PVP: false
+              SKIP_SUDO: true
+              SYNC_SKIP_NEWER_IN_DESTINATION: false
               TYPE: PAPER
               TZ: Australia/Melbourne
               VERSION: 1.21.8
-              SYNC_SKIP_NEWER_IN_DESTINATION: false
             probes:
               liveness: &probes
                 enabled: true
@@ -56,9 +65,12 @@ spec:
               limits:
                 memory: 8192Mi
             securityContext:
-              allowPrivilegeEscalation: false
-              #readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              # You don't have permission to perform this capture on that device (socket: Operation not permitted)
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+                add: ["NET_RAW"]
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -76,3 +88,7 @@ spec:
         existingClaim: hymc-lobby
         globalMounts:
           - path: /data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

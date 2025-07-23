@@ -27,13 +27,15 @@ spec:
               repository: ghcr.io/itzg/mc-proxy
               tag: 2025.6.0@sha256:f14b7eb0ca1958b2a32c28ff285fe2f047c08ea65f5eca02a9f3a9362e9e9877
             env:
+              ENABLE_RCON: true
+              MINECRAFT_VERSION: 1.21
+              MODRINTH_PROJECTS: viaversion,viabackwards,viarewind
               TYPE: VELOCITY
               TZ: Australia/Melbourne
               VERSION: 3.4.0-SNAPSHOT
-              ENABLE_RCON: true
             securityContext:
               allowPrivilegeEscalation: false
-              #readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
@@ -51,10 +53,6 @@ spec:
           game:
             port: 25565
     persistence:
-      config:
-        type: emptyDir
-        globalMounts:
-          - path: /server
       velocity:
         type: configMap
         name: velocity
@@ -69,3 +67,10 @@ spec:
           - path: /server/forwarding.secret
             subPath: forwarding.secret
             readOnly: true
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /server
+            subPath: server
+          - path: /tmp
+            subPath: tmp
