@@ -37,12 +37,13 @@ spec:
             env: &env
               DB_PORT: "5432"
               ENABLE_MAPBOX: "false"
+              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003
+              IMMICH_MEDIA_LOCATION: /photos
+              IMMICH_SERVER_URL: http://immich-server.media.svc.cluster.local:2283
               LOG_LEVEL: verbose
               NODE_ENV: "production"
               REDIS_HOSTNAME: dragonfly.databases.svc.cluster.local
               REDIS_PORT: "6379"
-              IMMICH_SERVER_URL: http://immich-server.media.svc.cluster.local:2283
-              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003
             envFrom:
               - secretRef:
                   name: immich-secret
@@ -128,7 +129,7 @@ spec:
         server: 192.168.42.20
         path: /mnt/Slow/Media/Immich
         globalMounts:
-          - path: /usr/src/app/upload
+          - path: /photos
       machine-learning-cache:
         existingClaim: immich-cache
         advancedMounts:
