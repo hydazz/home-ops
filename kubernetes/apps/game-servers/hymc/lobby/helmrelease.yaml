@@ -26,13 +26,9 @@ spec:
               tag: 2025.6.2@sha256:262e2309f7cc6b2ff0ac1458ac52c91e9bc778989543feec6588501f6dad31ef
             env:
               TZ: Australia/Melbourne
-              # Autopause
-              AUTOPAUSE_TIMEOUT_EST: 600
-              AUTOPAUSE_TIMEOUT_INIT: 300
-              ENABLE_AUTOPAUSE: true
-              SKIP_SUDO: true
               # Properties
               ALLOW_NETHER: false
+              ANNOUNCE_PLAYER_ACHIEVEMENTS: false
               DIFFICULTY: peaceful
               EULA: true
               FORCE_GAMEMODE: true
@@ -57,9 +53,9 @@ spec:
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
               # Server
-              JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
+              JVM_XX_OPTS: "-Xms512M -Xmx1536M -XX:+UseG1GC"
               JVM_DD_OPTS: "disable.watchdog:true"
-              MEMORY: 8192M
+              MEMORY: &memory 2048M
               TYPE: PAPER
               VERSION: 1.21.4
             probes:
@@ -78,20 +74,21 @@ spec:
                   failureThreshold: 300
                   exec: *mc-health
             securityContext:
-              # You don't have permission to perform this capture on that device (socket: Operation not permitted)
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: ["ALL"]
-                add: ["NET_RAW"]
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
-                memory: 100Mi
+                memory: 1024Mi
               limits:
-                cpu: 250m
-                memory: 8192Mi
+                cpu: 2
+                memory: *memory
     defaultPodOptions:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - "10.43.0.10"
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
