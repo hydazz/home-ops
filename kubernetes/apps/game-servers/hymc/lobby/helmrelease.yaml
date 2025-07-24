@@ -53,9 +53,7 @@ spec:
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
               # Server
-              JVM_XX_OPTS: "-Xms512M -Xmx1536M -XX:+UseG1GC"
-              JVM_DD_OPTS: "disable.watchdog:true"
-              MEMORY: &memory 2048M
+              MEMORY: ""
               TYPE: PAPER
               VERSION: 1.21.4
             probes:
@@ -80,10 +78,10 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 1024Mi
+                memory: 1Gi
               limits:
-                cpu: 2
-                memory: *memory
+                cpu: 4
+                memory: 4Gi
     defaultPodOptions:
       dnsPolicy: "None"
       dnsConfig:
@@ -105,7 +103,12 @@ spec:
         existingClaim: hymc-lobby
         globalMounts:
           - path: /data
-      tmp:
+      tmpfs:
         type: emptyDir
         globalMounts:
           - path: /tmp
+            subPath: tmp
+          - path: /data/logs
+            subPath: logs
+          - path: /data/cache
+            subPath: cache

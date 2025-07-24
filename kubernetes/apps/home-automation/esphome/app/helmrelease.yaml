@@ -37,7 +37,7 @@ spec:
                 cpu: 5m
                 memory: 512Mi
               limits:
-                memory: 3072Mi
+                memory: 4Gi
           code-server:
             image:
               repository: ghcr.io/coder/code-server
