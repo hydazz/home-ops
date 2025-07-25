@@ -22,23 +22,39 @@ spec:
         containers:
           app:
             image:
-              repository: ollama/ollama
+              repository: docker.io/ollama/ollama
               tag: 0.9.6@sha256:f478761c18fea69b1624e095bce0f8aab06825d09ccabcd0f88828db0df185ce
             env:
+              HOME: /config
               OLLAMA_HOST: 0.0.0.0
-              OLLAMA_PORT: &port 11434
-              OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: /models
+              OLLAMA_ORIGINS: "*"
+              OLLAMA_PORT: &port 11434
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
                 memory: 256Mi
               limits:
-                cpu: 2000m
+                cpu: 8
                 memory: 8Gi
                 nvidia.com/gpu: 1
     defaultPodOptions:
       runtimeClassName: nvidia
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -54,8 +70,6 @@ spec:
     persistence:
       config:
         type: emptyDir
-        globalMounts:
-          - path: /root/.ollama
       models:
         existingClaim: ollama-models
         globalMounts:
