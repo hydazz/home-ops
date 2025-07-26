@@ -103,13 +103,6 @@ spec:
           - name: cloudflare
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
-      app-internal:
-        hostnames: ["hass.${D_HS}"]
-        parentRefs:
           - name: internal
             namespace: network
             sectionName: https
