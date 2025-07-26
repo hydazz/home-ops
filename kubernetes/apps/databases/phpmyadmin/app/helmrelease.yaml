@@ -19,8 +19,6 @@ spec:
   values:
     controllers:
       phpmyadmin:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -57,9 +55,10 @@ spec:
                 memory: 512M
     defaultPodOptions:
       securityContext:
-        runAsUser: 33
-        runAsGroup: 33
-        fsGroup: 33
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:

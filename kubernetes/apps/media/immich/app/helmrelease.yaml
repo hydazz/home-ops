@@ -19,8 +19,6 @@ spec:
   values:
     controllers:
       server:
-        annotations:
-          reloader.stakater.com/auto: "true"
         initContainers:
           init-db:
             image:
@@ -71,8 +69,6 @@ spec:
               limits:
                 memory: 2Gi
       machine-learning:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:

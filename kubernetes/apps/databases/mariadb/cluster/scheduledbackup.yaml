@@ -20,9 +20,9 @@ spec:
         enabled: true
       accessKeyIdSecretKeyRef:
         name: mariadb-secret
-        key: AWS_ACCESS_KEY_ID
+        key: B2_ACCESS_KEY_ID
       secretAccessKeySecretKeyRef:
         name: mariadb-secret
-        key: AWS_SECRET_ACCESS_KEY
+        key: B2_SECRET_ACCESS_KEY
   compression: bzip2
   maxRetention: 168h # 7 days

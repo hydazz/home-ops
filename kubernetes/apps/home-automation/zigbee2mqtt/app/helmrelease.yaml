@@ -19,8 +19,6 @@ spec:
   values:
     controllers:
       zigbee2mqtt:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -67,12 +65,12 @@ spec:
                 squat.ai/skyconnect: 1
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 20 # dialout
+        supplementalGroups: [20]
     service:
       app:
         ports:

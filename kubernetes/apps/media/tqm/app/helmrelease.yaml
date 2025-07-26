@@ -53,8 +53,6 @@ spec:
             args:
               - clean
               - qb
-        pod:
-          restartPolicy: Never
       orphaned:
         type: cronjob
         cronjob:
@@ -67,8 +65,6 @@ spec:
             args:
               - orphan
               - qb
-        pod:
-          restartPolicy: Never
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

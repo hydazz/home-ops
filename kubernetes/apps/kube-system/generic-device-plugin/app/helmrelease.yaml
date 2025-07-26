@@ -31,7 +31,6 @@ spec:
               - --log-level=info
               - --config=/config/config.yaml
             securityContext:
-              # privileged: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }

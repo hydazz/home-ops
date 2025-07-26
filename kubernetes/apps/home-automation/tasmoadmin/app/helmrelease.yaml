@@ -94,11 +94,10 @@ spec:
         existingClaim: tasmoadmin
         globalMounts:
           - path: /data
-      nginx-tmp:
+      tmpfs:
         type: emptyDir
         globalMounts:
           - path: /var/lib/nginx/tmp
-      nginx-logs:
-        type: emptyDir
-        globalMounts:
+            subPath: nginx-tmp
           - path: /var/lib/nginx/logs
+            subPath: nginx-logs
