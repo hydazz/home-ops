@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/game-servers/hymc/velocity
+  path: ./kubernetes/apps/game-servers/minecraft/hymc/velocity
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -32,12 +32,12 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/volsync
+    - ../../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/game-servers/hymc/lobby
+  path: ./kubernetes/apps/game-servers/minecraft/hymc/lobby
   postBuild:
     substitute:
       APP: *app
@@ -64,12 +64,12 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/volsync
+    - ../../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/game-servers/hymc/pvp
+  path: ./kubernetes/apps/game-servers/minecraft/hymc/pvp
   postBuild:
     substitute:
       APP: *app
