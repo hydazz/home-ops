@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app wordpress-lmvca
+  name: wordpress-lmvca
 spec:
   interval: 1h
   chartRef:
@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      lmvca:
+      wordpress:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -30,14 +30,13 @@ spec:
               - /bin/sh
               - -c
               - |
-                echo "Initialising WordPress files..."
                 if [ ! -f /var/www/html/wp-config-sample.php ]; then
-                  echo "Copying WordPress core files (excluding wp-content)..."
+                  echo "Copying WordPress core files..."
                   cd /usr/src/wordpress
                   find . -maxdepth 1 ! -name wp-content ! -name . -exec cp -rL {} /var/www/html/ \; 2>/dev/null || true
                   mkdir -p /var/www/html/wp-content/uploads 2>/dev/null || true
                 fi
-                echo "WordPress initialization completed"
+                echo "WordPress files copied successfully."
         containers:
           app:
             image: *image
@@ -74,15 +73,15 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 82
-        runAsGroup: 82
-        fsGroup: 82
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
           http:
-            port: 8080
+            port: &port 8080
     route:
       app:
         hostnames: ["${D_LMVCA}", "www.${D_LMVCA}"]
@@ -96,43 +95,36 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: 8080
+                port: *port
     persistence:
-      html:
-        type: emptyDir
-        globalMounts:
-          - path: /var/www/html
       wp-content:
         existingClaim: wordpress-lmvca
         globalMounts:
           - path: /var/www/html/wp-content
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/www/html
+            subPath: html
+          - path: /var/cache/nginx
+            subPath: cache-nginx
+          - path: /var/run
+            subPath: run
       php-config:
         type: configMap
         name: wordpress-php-config
         advancedMounts:
-          lmvca:
+          wordpress:
             app:
-              - path: /usr/local/etc/php/conf.d/wordpress-custom.ini
-                subPath: wordpress-custom.ini
+              - path: /usr/local/etc/php/conf.d/wordpress.ini
+                subPath: wordpress.ini
                 readOnly: true
       nginx-config:
         type: configMap
         name: wordpress-nginx-config
         advancedMounts:
-          lmvca:
+          wordpress:
             nginx:
               - path: /etc/nginx/nginx.conf
                 subPath: nginx.conf
                 readOnly: true
-      nginx-cache:
-        type: emptyDir
-        advancedMounts:
-          lmvca:
-            nginx:
-              - path: /var/cache/nginx
-      nginx-run:
-        type: emptyDir
-        advancedMounts:
-          lmvca:
-            nginx:
-              - path: /var/run
