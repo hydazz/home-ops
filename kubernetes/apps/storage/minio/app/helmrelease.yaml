@@ -39,7 +39,7 @@ spec:
                 spec:
                   httpGet:
                     path: /minio/health/live
-                    port: 9000
+                    port: &s3Port 9000
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -67,9 +67,9 @@ spec:
       main:
         ports:
           http:
-            port: 9001
+            port: &port 9001
           api:
-            port: 9000
+            port: *s3Port
     route:
       console:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
@@ -80,7 +80,7 @@ spec:
         rules:
           - backendRefs:
               - name: *app
-                port: 9001
+                port: *port
       s3-api:
         hostnames: ["s3.${D_HS}"]
         parentRefs:
@@ -90,7 +90,7 @@ spec:
         rules:
           - backendRefs:
               - name: *app
-                port: 9000
+                port: *s3Port
     persistence:
       data:
         existingClaim: minio
