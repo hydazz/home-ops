@@ -30,19 +30,27 @@ spec:
     remediation:
       retries: 3
   values:
+    global:
+      deploymentStrategy:
+        type: RollingUpdate
+      envFrom:
+        - secretRef:
+            name: &secret authentik-secret
+      deploymentAnnotations:
+        reloader.stakater.com/auto: "true"
     authentik:
       redis:
         host: dragonfly.databases.svc.cluster.local
         port: "6379"
         db: "2"
-    global:
-      deploymentStrategy:
-        type: Recreate
-      envFrom:
-        - secretRef:
-            name: &secret authentik-secret
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
+      email:
+        host: ${EMAIL_SERVER}
+        port: 465
+        username: ${EMAIL_USER}
+        password: ${EMAIL_PASSWORD}
+        use_ssl: true
+        timeout: 30
+        from: "authentik <${EMAIL_USER}>"
     server:
       initContainers:
         - name: init-db
@@ -50,6 +58,14 @@ spec:
           envFrom:
             - secretRef:
                 name: *secret
+      autoscaling: &autoscale
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 3
+      metrics: &metrics
+        prometheus:
+          serviceMonitor:
+            enabled: true
       route:
         main:
           enabled: true
@@ -58,16 +74,6 @@ spec:
             - name: cloudflare
               namespace: network
               sectionName: https
-      metrics:
-        prometheus:
-          serviceMonitor:
-            enabled: true
     worker:
-      serviceAccount:
-        create: true
-    postgresql:
-      enabled: false
-    redis:
-      enabled: false
-    geoip:
-      enabled: false
+      autoscaling: *autoscale
+      metrics: *metrics
