@@ -59,6 +59,7 @@ spec:
         type: cronjob
         cronjob:
           <<: *cronJobSpec
+          schedule: "0 4 * * *"
         containers:
           app:
             image:
@@ -69,22 +70,23 @@ spec:
               - -c
               - |
                 set -eu
-                echo -e "\033[1;34m[INFO] Starting Restic sync job...\033[0m"
-                for src in /data/volsync/*; do
-                  ns=$(basename "$src")
-                  dest="b2:b2backup-k8s:volsync/$ns"
-                  echo -e "\033[1;33m[SYNC] Namespace: $ns → $dest\033[0m"
-                  echo -e "\033[1;34m[INFO] Initializing repo if needed...\033[0m"
-                  if restic init --repo "$dest"; then
-                    echo -e "\033[1;32m[OK] Repo initialized: $dest\033[0m"
-                  else
-                    echo -e "\033[1;31m[WARN] Repo already exists or init skipped: $dest\033[0m"
-                  fi
-                  echo -e "\033[1;34m[INFO] Copying from $src to $dest...\033[0m"
-                  restic copy --from-repo "$src" --repo "$dest" --no-lock
-                  echo -e "\033[1;32m[OK] Copy complete for $ns\033[0m"
+                apk add --no-cache rclone -qq
+                echo -e "\033[1;33m[SYNC] Syncing /data/volsync → b2:b2backup-k8s:volsync\033[0m"
+                rclone sync \
+                  /data/volsync \
+                  ":b2,account=$B2_ACCOUNT_ID,key=$B2_ACCOUNT_KEY:b2backup-k8s/volsync" \
+                  --b2-hard-delete \
+                  --transfers=16 \
+                  --checkers=16
+                echo -e "\033[1;32m[OK] Rclone sync complete.\033[0m"
+                echo -e "\033[1;34m[INFO] Running restic checks on all remote repos...\033[0m"
+                for repo_dir in $(rclone lsf ":b2,account=$B2_ACCOUNT_ID,key=$B2_ACCOUNT_KEY:b2backup-k8s/volsync" --dirs-only); do
+                  repo="b2:b2backup-k8s:volsync/${repo_dir%/}"
+                  echo -e "\033[1;33m[CHECK] Running restic check on: $repo\033[0m"
+                  restic check --repo "$repo" >/dev/null
+                  echo -e "\033[1;32m[OK] Restic check passed for $repo_dir\033[0m"
                 done
-                echo -e "\033[1;32m[SUCCESS] All Restic syncs complete.\033[0m"
+                echo -e "\033[1;32m[SUCCESS] All rclone syncs and restic checks complete.\033[0m"
             envFrom:
               - secretRef:
                   name: volsync-sync-secret
