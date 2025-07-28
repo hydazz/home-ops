@@ -84,7 +84,7 @@ spec:
       s3-api:
         hostnames: ["s3.${D_HS}"]
         parentRefs:
-          - name: cloudflare
+          - name: external
             namespace: network
             sectionName: https
         rules:
