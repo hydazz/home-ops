@@ -45,6 +45,7 @@ spec:
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
+              # cannot access /etc/phpmyadmin/ ...
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
@@ -56,9 +57,10 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        # cannot access /etc/phpmyadmin/ ...
+        runAsUser: 33
+        runAsGroup: 33
+        fsGroup: 33
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
