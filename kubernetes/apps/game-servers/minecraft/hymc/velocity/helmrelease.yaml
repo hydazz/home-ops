@@ -23,13 +23,16 @@ spec:
           app:
             image:
               repository: ghcr.io/itzg/mc-proxy
-              tag: java21@sha256:58245617422a22845fa9a0c64de6db3e28340b1438a3ef1318df7f39cce87cbd
+              tag: 2025.6.0@sha256:f14b7eb0ca1958b2a32c28ff285fe2f047c08ea65f5eca02a9f3a9362e9e9877
             env:
-              ENABLE_RCON: true
-              MINECRAFT_VERSION: 1.21
-              MODRINTH_PROJECTS: viaversion,viabackwards,viarewind
+              MINECRAFT_VERSION: 1.21.8
+              PLUGINS: |
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.4.2/PAPER/ViaBackwards-5.4.2.jar
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaRewind/versions/4.0.9/PAPER/ViaRewind-4.0.9.jar
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.4.2/PAPER/ViaVersion-5.4.2.jar
               TYPE: VELOCITY
               TZ: Australia/Melbourne
+              ICON: https://s3.${D_HS}/hymc/server-icon.png
               VERSION: 3.4.0-SNAPSHOT
             securityContext:
               allowPrivilegeEscalation: false
