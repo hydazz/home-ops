@@ -58,14 +58,22 @@ spec:
           envFrom:
             - secretRef:
                 name: *secret
-      autoscaling: &autoscale
+      autoscaling: &scaling
         enabled: true
         minReplicas: 1
         maxReplicas: 3
-      metrics: &metrics
-        prometheus:
-          serviceMonitor:
-            enabled: true
+        targetCPUUtilizationPercentage: 50
+      pdb: &pdb
+        enabled: true
+        minAvailable: 1
+        maxUnavailable: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 1Gi
+        limits:
+          cpu: 2000m
+          memory: 2Gi
       route:
         main:
           enabled: true
@@ -75,5 +83,12 @@ spec:
               namespace: network
               sectionName: https
     worker:
-      autoscaling: *autoscale
-      metrics: *metrics
+      autoscaling: *scaling
+      pdb: *pdb
+      resources:
+        requests:
+          cpu: 500m
+          memory: 750Mi
+        limits:
+          cpu: 2000m
+          memory: 2Gi
