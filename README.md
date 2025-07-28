@@ -39,3 +39,43 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 </div>
 
 ---
+
+# What's in the rack:
+
+### 🖥️ Compute
+
+| Node      | CPU       | Memory | Storage               | GPU              | OS      | Case                 | Function                             |
+| --------- | --------- | ------ | --------------------- | ---------------- | ------- | -------------------- | ------------------------------------ |
+| data      | i7-12700K | 64GB   | 4×8TB + 1TB Boot      |                  | TrueNAS | SilverStone RM21-308 | media storage, file storage, backups |
+| discovery | i7-14700K | 64GB   | 500GB Boot + 1TB Ceph | RTX 4060 Ti 16GB | Talos   | SilverStone RM400    | Talos node with da GPU               |
+| voyager   | i7-13700K | 64GB   | 500GB Boot + 1TB Ceph |                  | Talos   | SilverStone RM23-502 |                                      |
+| titan     | i7-12700K | 64GB   | 500GB Boot + 1TB Ceph |                  | Talos   | SilverStone RM23-502 |                                      |
+
+### 🌐 Networking
+
+| Device             | Model              | Details                         |
+| ------------------ | ------------------ | ------------------------------- |
+| Router/NVR         | UDM Pro Max        | 8TB HDD for NVR                 |
+| Aggregation Switch | USW-Aggregation    | 8× SFP+                         |
+| Core Switch        | USW Pro Max 24 PoE | Does some switching and powring |
+
+### 🔌 Other
+
+| Device | Model                 | Details                                                                               |
+| ------ | --------------------- | ------------------------------------------------------------------------------------- |
+| IP KVM | Geekworm X680         | 4-port HDMI + USB KVM                                                                 |
+| UPS    | Eaton 5PX Gen2 1500VA | Burnt a hole through the carpet trying to DIY an EBM (luckly the rack hides the hole) |
+
+---
+
+### 💸 Dependencies/Costings
+
+| Service                                 | Function                                                      | Cost ($AUD)           |
+| --------------------------------------- | ------------------------------------------------------------- | --------------------- |
+| [1Password](https://1password.com/)     | Secrets with [External Secrets](https://external-secrets.io/) | Free courtesy of work |
+| [Cloudflare](https://cloudflare.com/)   | Domain/Proxying/CDN/R2                                        | Free (+domains)       |
+| [Newshosting](https://newshosting.com/) | Usenet                                                        | $189.67/yr (for now?) |
+| [TorGuard](https://torguard.net/)       | VPN                                                           | $7.65/month           |
+| [GitHub](https://github.com/)           | Hosting this repository and CI/CD                             | Free                  |
+| [Backblaze](https://backblaze.com/)     | Offsite backups of everything                                 | ~$4.82/month (735GB)  |
+| Energy Usage                            | Cost of running Rack + PoE devices                            | ~$2/day (~10kW)       |
