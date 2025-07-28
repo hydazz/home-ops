@@ -46,6 +46,7 @@ spec:
                 multiverse-core
                 voidworld
                 worldedit
+                customnpcs
               PLUGINS: |
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsX-2.21.1.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXAntiBuild-2.21.1.jar
