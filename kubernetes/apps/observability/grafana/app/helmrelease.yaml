@@ -125,6 +125,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/monitoring
+          - name: cilium
+            orgId: 1
+            folder: "Cilium"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/cilium
     dashboards:
       kubernetes:
         kubernetes-api-server:
