@@ -42,15 +42,6 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       hostNetwork: true
-      affinity:
-        nodeAffinity: # discovery cant do vlans yet
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: NotIn
-                    values:
-                      - discovery
     persistence:
       etc-cni-net-d:
         type: hostPath

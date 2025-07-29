@@ -70,15 +70,6 @@ spec:
             "ips": ["192.168.2.4/24"],
             "mac": "3e:59:e4:f7:43:02"
           }]
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: NotIn
-                    values:
-                      - discovery
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

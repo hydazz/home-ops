@@ -21,7 +21,7 @@ dashboards:
   enabled: true
   annotations:
     grafana_folder: Network
-devices: ens+ bond+
+devices: bond+
 enableRuntimeDeviceDetection: true
 endpointRoutes:
   enabled: true
