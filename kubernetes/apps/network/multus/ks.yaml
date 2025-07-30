@@ -33,7 +33,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: multus
-      namespace: network
+      namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/network/multus/networks
   prune: true
