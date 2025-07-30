@@ -21,7 +21,8 @@ cniConfig:
 nodes:
   - hostname: "discovery"
     ipAddress: "192.168.42.10"
-    installDisk: "/dev/sda"
+    installDiskSelector:
+      wwid: "eui.0025385931b03c1a" # Samsung SSD 970 EVO Plus 1TB
     machineSpec:
       secureboot: false
     #talosImageURL: factory.talos.dev/installer/990731763242a6b3cf735e49d0f550ce4068b4d0e7f4dfbb49a31799b698877e
@@ -32,13 +33,16 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
+            - siderolabs/intel-ucode
             - siderolabs/nonfree-kmod-nvidia-production
             - siderolabs/nvidia-container-toolkit-production
-            - siderolabs/qemu-guest-agent
-    # TODO: switch to bonds once I figure it out
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:74:98:2d"
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: f4:52:14:80:7f:a0
+              driver: mlx4_core
         dhcp: false
         addresses:
           - "192.168.42.10/24"
@@ -46,9 +50,12 @@ nodes:
         routes: &routes
           - network: "0.0.0.0/0"
             gateway: "192.168.42.1"
-        mtu: 1500
         vip:
           ip: *talosControlplaneVip
+        vlans:
+          - &vlan2
+            vlanId: 2
+            dhcp: false
 
   - hostname: "voyager"
     ipAddress: "192.168.42.12"
@@ -78,9 +85,7 @@ nodes:
         vip:
           ip: *talosControlplaneVip
         vlans:
-          - &vlan2
-            vlanId: 2
-            dhcp: false
+          - *vlan2
 
   - hostname: "titan"
     ipAddress: "192.168.42.13"

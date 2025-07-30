@@ -44,12 +44,15 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 ### 🖥️ Compute
 
-| Node      | CPU       | Memory | Storage               | GPU              | OS      | Case                 | Function                             |
-| --------- | --------- | ------ | --------------------- | ---------------- | ------- | -------------------- | ------------------------------------ |
-| data      | i7-12700K | 64GB   | 4×8TB + 1TB Boot      |                  | TrueNAS | SilverStone RM21-308 | media storage, file storage, backups |
-| discovery | i7-14700K | 64GB   | 500GB Boot + 1TB Ceph | RTX 4060 Ti 16GB | Talos   | SilverStone RM400    | Talos node with da GPU               |
-| voyager   | i7-13700K | 64GB   | 500GB Boot + 1TB Ceph |                  | Talos   | SilverStone RM23-502 |                                      |
-| titan     | i7-12700K | 64GB   | 500GB Boot + 1TB Ceph |                  | Talos   | SilverStone RM23-502 |                                      |
+| Node             | CPU       | Memory | Storage                                      | GPU              | OS      | Case                 | Function                       |
+| ---------------- | --------- | ------ | -------------------------------------------- | ---------------- | ------- | -------------------- | ------------------------------ |
+| nebula           | i7-12700K | 32GB   | 1TB Boot                                     |                  | Proxmox | SilverStone RM21-308 | Hypervisor                     |
+| └─ picard        | 4 vCPU    | 8GB    | 16GB Boot + 4×4TB (Slow) + 1x1TB NVMe (Fast) |                  | TrueNAS |                      | Media/file storage and backups |
+| └─ x86-builder-1 | 8 vCPU    | 8GB    | 16GB Boot + 64GB Docker Disk                 |                  | Debian  |                      | Docker builds                  |
+|                  |           |        |                                              |                  |         |                      |
+| discovery        | i7-14700K | 64GB   | 500GB Boot + 1TB Ceph                        | RTX 4060 Ti 16GB | Talos   | SilverStone RM400    | Talos node with da GPU         |
+| voyager          | i7-13700K | 64GB   | 500GB Boot + 1TB Ceph                        |                  | Talos   | SilverStone RM23-502 |                                |
+| titan            | i7-12700K | 64GB   | 500GB Boot + 1TB Ceph                        |                  | Talos   | SilverStone RM23-502 |                                |
 
 ### 🌐 Networking
 
