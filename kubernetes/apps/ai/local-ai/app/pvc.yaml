@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ollama-models
+  name: local-ai-models
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:

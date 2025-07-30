@@ -3,27 +3,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app open-webui
-  namespace: &namespace self-hosted
+  name: &app local-ai
+  namespace: &namespace ai
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/volsync
   dependsOn:
+    - name: nvidia-device-plugin
+      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/self-hosted/open-webui/app
+  path: ./kubernetes/apps/ai/local-ai/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-    substitute:
-      APP: *app
-      VOLSYNC_CAPACITY: 128Mi
-      VOLSYNC_CACHE_CAPACITY: 32Mi
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -32,4 +28,4 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: false
+  wait: true
