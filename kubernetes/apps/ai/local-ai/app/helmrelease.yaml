@@ -20,19 +20,16 @@ spec:
     controllers:
       local-ai:
         containers:
-          app:
+          app: &app
             image:
               repository: docker.io/localai/localai
               tag: v3.3.0-gpu-nvidia-cuda-12@sha256:e9b62c3e7304826bd14dcd9646a565c74f1bffed096fbfc879be160b64720b6e
-            env:
+            env: &env
               CONTEXT_SIZE: 512
               DEBUG: true
               MODELS_PATH: /models
               PORT: &port 8080
               THREADS: 8
-              # uncomment to reinstall models if pvc is deleted. DISABLE PROBES!
-              #MODELS: ollama://gemma:2b
-              #EXTERNAL_BACKENDS: llama-cpp
             probes:
               liveness: &probes
                 enabled: true
@@ -57,6 +54,31 @@ spec:
               limits:
                 memory: 24Gi
                 nvidia.com/gpu: 1
+        # preloads the models/backends if they are changed/deleted
+        initContainers:
+          preload-models:
+            <<: *app
+            env:
+              <<: *env
+              MODELS: ollama://gemma:2b
+              EXTERNAL_BACKENDS: llama-cpp
+            command:
+              - sh
+              - -c
+              - |
+                /local-ai &
+                pid=$!
+                echo "Waiting for LocalAI to become ready..."
+                until curl -sf http://localhost:8080/readyz; do
+                  sleep 5
+                done
+                echo "LocalAI is ready, exiting preload container"
+                kill $pid
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
     defaultPodOptions:
       runtimeClassName: nvidia
       securityContext:
