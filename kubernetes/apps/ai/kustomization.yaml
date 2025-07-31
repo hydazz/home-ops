@@ -5,6 +5,6 @@ kind: Kustomization
 namespace: ai
 components:
   - ../../components/common
-resources: []
+resources:
   #- ./ollama/ks.yaml
-  #- ./local-ai/ks.yaml
+  - ./local-ai/ks.yaml

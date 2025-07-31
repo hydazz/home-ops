@@ -30,6 +30,9 @@ spec:
               MODELS_PATH: /models
               PORT: &port 8080
               THREADS: 8
+              # uncomment to reinstall models if pvc is deleted. DISABLE PROBES!
+              #MODELS: ollama://gemma:2b
+              #EXTERNAL_BACKENDS: llama-cpp
             probes:
               liveness: &probes
                 enabled: true
@@ -45,8 +48,7 @@ spec:
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              # Does not seem to like readOnly
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -85,5 +87,7 @@ spec:
         globalMounts:
           - path: /configuration
             subPath: configuration
+          - path: /backends
+            subPath: backends
           - path: /tmp
             subPath: tmp
