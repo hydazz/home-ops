@@ -30,9 +30,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: nvidia-device-plugin
-      namespace: kube-system
   values:
     affinity:
       nodeAffinity:
@@ -42,11 +39,18 @@ spec:
                 - key: extensions.talos.dev/nvidia-container-toolkit-production
                   operator: Exists
     runtimeClassName: nvidia
+    resources:
+      limits:
+        memory: 1024Mi
+        nvidia.com/gpu: 1
     serviceMonitor:
-      interval: 15s
-      honorLabels: true
-    #resources:
-    #  limits:
-    #    nvidia.com/gpu: 1
-    securityContext:
-      privileged: true
+      # this will start working when 4.3.0 is released
+      metricRelabelings:
+        - action: labeldrop
+          regex: namespace
+        - action: labeldrop
+          regex: pod
+        - action: labeldrop
+          regex: exported_pod
+        - action: labeldrop
+          regex: exported_namespace
