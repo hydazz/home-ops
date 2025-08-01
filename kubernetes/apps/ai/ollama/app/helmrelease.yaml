@@ -29,7 +29,7 @@ spec:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_MODELS: /models
               OLLAMA_ORIGINS: "*"
-              OLLAMA_PORT: &port 80
+              OLLAMA_PORT: &port 11434
             probes:
               liveness:
                 enabled: true
