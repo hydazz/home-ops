@@ -19,8 +19,6 @@ spec:
   values:
     controllers:
       tdarr:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -31,11 +29,8 @@ spec:
               PUID: 1000
               PGID: 1000
               serverIP: 0.0.0.0
-              serverPort: 8266
+              serverPort: &serverPort 8266
               webUIPort: &port 8265
-              internalNode: true
-              inContainer: true
-              nodeName: Internal
             probes:
               liveness:
                 enabled: true
@@ -44,18 +39,50 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 512Mi
+      worker-nvidia:
+        type: daemonset
+        containers:
+          app:
+            image:
+              repository: ghcr.io/haveagitgat/tdarr_node
+              tag: 2.45.01@sha256:7e98e8b97350101bda7af1673e473edd65915f10a0c5ae040487dec220a870c8
+            env:
+              - name: nodeID
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              - name: serverIP
+                value: tdarr.media.svc.cluster.local
+              - name: serverPort
+                value: *serverPort
+            resources:
+              requests:
+                cpu: 10m
                 memory: 1Gi
               limits:
                 cpu: 1
                 memory: 3Gi
                 nvidia.com/gpu: 1
-    defaultPodOptions:
-      runtimeClassName: nvidia
+        pod:
+          runtimeClassName: nvidia
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: nvidia.com/gpu.present
+                        operator: In
+                        values:
+                          - "true"
     service:
       app:
+        controller: tdarr
         ports:
           http:
             port: *port
+          server:
+            port: *serverPort
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
@@ -66,11 +93,11 @@ spec:
     persistence:
       config:
         existingClaim: tdarr
-        globalMounts:
-          - path: /app/server
-            subPath: server
-          - path: /app/configs
-            subPath: config
+        advancedMounts:
+          tdarr:
+            app:
+              - path: /app/server
+                subPath: server
       media:
         type: nfs
         server: 192.168.42.20
