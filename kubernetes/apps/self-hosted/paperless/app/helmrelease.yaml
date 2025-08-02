@@ -107,7 +107,7 @@ spec:
     defaultPodOptions:
       securityContext:
         fsGroup: 1000
-        fsGroupChangePolicy: "OnRootMismatch"
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -139,8 +139,5 @@ spec:
           paperless:
             app:
               - path: /usr/src/paperless/media
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp

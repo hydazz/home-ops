@@ -44,24 +44,28 @@ spec:
               - secretRef:
                   name: paperless-ai-secret
             probes:
-              liveness: &probe
+              liveness:
                 enabled: true
-              readiness: *probe
-              startup: *probe
+              readiness:
+                enabled: true
             resources:
               requests:
-                cpu: 500m
-                memory: 512Mi
+                cpu: 10m
+                memory: 1Gi
               limits:
-                cpu: 700m
-                memory: 2Gi
+                cpu: 2
+                memory: 4Gi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
-        fsGroupChangePolicy: "OnRootMismatch"
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -79,3 +83,12 @@ spec:
         existingClaim: paperless-ai
         globalMounts:
           - path: /app/data
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /app/logs
+            subPath: logs
+          - path: /home/node
+            subPath: node
