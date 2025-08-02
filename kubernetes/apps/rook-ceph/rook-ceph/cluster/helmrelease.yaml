@@ -37,6 +37,16 @@ spec:
       createPrometheusRules: true
     toolbox:
       enabled: true
+    route:
+      dashboard:
+        host:
+          name: ["rook.${D_HS}"]
+          path: /
+          pathType: PathPrefix
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
     cephClusterSpec:
       cephConfig:
         global:
