@@ -35,7 +35,7 @@ spec:
       name: cilium-values
   values:
     hubble:
-      enabled: true
+      enabled: &hubble false
       metrics:
         enabled:
           - dns:query
@@ -50,11 +50,11 @@ spec:
         dashboards:
           enabled: true
       relay:
-        enabled: true
+        enabled: *hubble
         rollOutPods: true
         prometheus:
           serviceMonitor:
             enabled: true
       ui:
-        enabled: true
+        enabled: *hubble
         rollOutPods: true
