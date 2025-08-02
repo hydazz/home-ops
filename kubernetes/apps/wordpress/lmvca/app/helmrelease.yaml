@@ -94,7 +94,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 8080
+            port: *port
     route:
       app:
         hostnames: ["${D_LMVCA}", "www.${D_LMVCA}"]
