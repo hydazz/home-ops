@@ -40,7 +40,7 @@ spec:
     route:
       dashboard:
         host:
-          name: ["rook.${D_HS}"]
+          name: rook.${D_HS}
           path: /
           pathType: PathPrefix
         parentRefs:
