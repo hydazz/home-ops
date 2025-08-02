@@ -39,12 +39,11 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 512Mi
       worker-nvidia:
         type: daemonset
         containers:
           app:
-            image:
+            image: &workerImage
               repository: ghcr.io/haveagitgat/tdarr_node
               tag: 2.45.01@sha256:7e98e8b97350101bda7af1673e473edd65915f10a0c5ae040487dec220a870c8
             env:
@@ -56,10 +55,13 @@ spec:
                 value: tdarr.media.svc.cluster.local
               - name: serverPort
                 value: *serverPort
+              - name: PUID
+                value: "1000"
+              - name: PGID
+                value: "1000"
             resources:
               requests:
                 cpu: 10m
-                memory: 1Gi
               limits:
                 cpu: 1
                 memory: 3Gi
@@ -73,6 +75,45 @@ spec:
                   - matchExpressions:
                       - key: nvidia.com/gpu.present
                         operator: In
+                        values:
+                          - "true"
+      worker-intel:
+        type: daemonset
+        containers:
+          app:
+            image: *workerImage
+            env:
+              - name: nodeID
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              - name: serverIP
+                value: tdarr.media.svc.cluster.local
+              - name: serverPort
+                value: *serverPort
+              - name: PUID
+                value: "1000"
+              - name: PGID
+                value: "1000"
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                cpu: 1
+                memory: 3Gi
+                gpu.intel.com/i915: 1
+        pod:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: intel.feature.node.kubernetes.io/gpu
+                        operator: In
+                        values:
+                          - "true"
+                      - key: nvidia.com/gpu.present
+                        operator: NotIn
                         values:
                           - "true"
     service:
