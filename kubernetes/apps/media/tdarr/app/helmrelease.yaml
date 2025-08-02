@@ -29,8 +29,11 @@ spec:
               PUID: 1000
               PGID: 1000
               serverIP: 0.0.0.0
-              serverPort: &serverPort 8266
+              serverPort: 8266
               webUIPort: &port 8265
+              internalNode: true
+              inContainer: true
+              nodeName: Internal
             probes:
               liveness:
                 enabled: true
@@ -39,91 +42,18 @@ spec:
             resources:
               requests:
                 cpu: 10m
-      worker-nvidia:
-        type: daemonset
-        containers:
-          app:
-            image: &workerImage
-              repository: ghcr.io/haveagitgat/tdarr_node
-              tag: 2.45.01@sha256:7e98e8b97350101bda7af1673e473edd65915f10a0c5ae040487dec220a870c8
-            env:
-              - name: nodeID
-                valueFrom:
-                  fieldRef:
-                    fieldPath: spec.nodeName
-              - name: serverIP
-                value: tdarr.media.svc.cluster.local
-              - name: serverPort
-                value: *serverPort
-              - name: PUID
-                value: "1000"
-              - name: PGID
-                value: "1000"
-            resources:
-              requests:
-                cpu: 10m
+                memory: 512Mi
               limits:
                 cpu: 1
-                memory: 3Gi
+                memory: 2Gi
                 nvidia.com/gpu: 1
-        pod:
-          runtimeClassName: nvidia
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: nvidia.com/gpu.present
-                        operator: In
-                        values:
-                          - "true"
-      worker-intel:
-        type: daemonset
-        containers:
-          app:
-            image: *workerImage
-            env:
-              - name: nodeID
-                valueFrom:
-                  fieldRef:
-                    fieldPath: spec.nodeName
-              - name: serverIP
-                value: tdarr.media.svc.cluster.local
-              - name: serverPort
-                value: *serverPort
-              - name: PUID
-                value: "1000"
-              - name: PGID
-                value: "1000"
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                cpu: 1
-                memory: 3Gi
-                gpu.intel.com/i915: 1
-        pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: intel.feature.node.kubernetes.io/gpu
-                        operator: In
-                        values:
-                          - "true"
-                      - key: nvidia.com/gpu.present
-                        operator: NotIn
-                        values:
-                          - "true"
+    defaultPodOptions:
+      runtimeClassName: nvidia
     service:
       app:
-        controller: tdarr
         ports:
           http:
             port: *port
-          server:
-            port: *serverPort
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
@@ -134,11 +64,11 @@ spec:
     persistence:
       config:
         existingClaim: tdarr
-        advancedMounts:
-          tdarr:
-            app:
-              - path: /app/server
-                subPath: server
+        globalMounts:
+          - path: /app/server
+            subPath: server
+          - path: /app/configs
+            subPath: config
       media:
         type: nfs
         server: 192.168.42.20
