@@ -58,6 +58,16 @@ spec:
                 gpu.intel.com/i915: 1
                 memory: 16Gi
     defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - discovery
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
