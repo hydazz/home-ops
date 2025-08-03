@@ -24,16 +24,28 @@ nodes:
     installDiskSelector:
       wwid: "eui.0025385931b03c1a" # Samsung SSD 970 EVO Plus 1TB
     machineSpec:
-      secureboot: false
+      secureboot: true
     #talosImageURL: factory.talos.dev/installer/990731763242a6b3cf735e49d0f550ce4068b4d0e7f4dfbb49a31799b698877e
     controlPlane: true
+    nodeLabels:
+      nvidia.com/gpu.present: "true"
+      intel.feature.node.kubernetes.io/gpu: "true"
     patches:
-      - "@./patches/discovery/machine-nvidia.yaml"
+      - "@./patches/global/machine-nvidia.yaml"
     schematic:
       customization:
+        extraKernelArgs: &extraKernelArgs
+          - i915.enable_guc=3                   # Meteor Lake CPU / iGPU
+          - intel_iommu=on                      # PCI Passthrough
+          - iommu=pt                            # PCI Passthrough
+          - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
+          - -lockdown                           # Secure Boot / BPF
+          - lockdown=integrity                  # Secure Boot / BPF
         systemExtensions:
           officialExtensions:
+            - siderolabs/i915
             - siderolabs/intel-ucode
+            - siderolabs/mei
             - siderolabs/nonfree-kmod-nvidia-production
             - siderolabs/nvidia-container-toolkit-production
     networkInterfaces:
@@ -60,16 +72,21 @@ nodes:
   - hostname: "voyager"
     ipAddress: "192.168.42.12"
     installDiskSelector:
-      model: "Samsung SSD 970 EVO Plus 500GB"
+      wwid: "eui.0025385691b4fd0c" # Samsung SSD 970 EVO Plus 500GB
     machineSpec:
-      secureboot: false
+      secureboot: true
     #talosImageURL: factory.talos.dev/installer/3d8e0d5adc2bffbc359800802c58a68301a006558cb18be0715ffcc93b30e8aa
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
     schematic:
       customization:
+        extraKernelArgs: *extraKernelArgs
         systemExtensions:
           officialExtensions:
+            - siderolabs/i915
             - siderolabs/intel-ucode
+            - siderolabs/mei
     networkInterfaces:
       - interface: bond0
         bond:
@@ -90,16 +107,21 @@ nodes:
   - hostname: "titan"
     ipAddress: "192.168.42.13"
     installDiskSelector:
-      model: "Samsung SSD 970 EVO Plus 500GB"
+      wwid: "eui.0025385301b0a063" # Samsung SSD 970 EVO Plus 500GB
     machineSpec:
-      secureboot: false
+      secureboot: true
     #talosImageURL: factory.talos.dev/installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
     schematic:
       customization:
+        extraKernelArgs: *extraKernelArgs
         systemExtensions:
           officialExtensions:
+            - siderolabs/i915
             - siderolabs/intel-ucode
+            - siderolabs/mei
     networkInterfaces:
       - interface: bond0
         bond:
