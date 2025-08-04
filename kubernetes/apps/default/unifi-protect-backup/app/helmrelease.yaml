@@ -71,7 +71,7 @@ spec:
         existingClaim: unifi-protect-backup
       rclone-config:
         type: configMap
-        name: rclone-conf
+        name: unifi-protect-backup-rclone-configmap
         globalMounts:
           - path: /config/rclone/rclone.conf
             subPath: rclone.conf

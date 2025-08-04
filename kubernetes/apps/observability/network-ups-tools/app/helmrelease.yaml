@@ -48,7 +48,7 @@ spec:
       config:
         enabled: true
         type: configMap
-        name: nut-server
+        name: nut-server-configmap
         globalMounts:
           - path: /etc/nut
             readOnly: true

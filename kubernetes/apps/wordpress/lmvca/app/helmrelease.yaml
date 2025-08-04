@@ -125,7 +125,7 @@ spec:
             subPath: run
       php-config:
         type: configMap
-        name: wordpress-php-config
+        name: wordpress-php-configmap
         advancedMounts:
           wordpress:
             app:
@@ -134,7 +134,7 @@ spec:
                 readOnly: true
       nginx-config:
         type: configMap
-        name: wordpress-nginx-config
+        name: wordpress-nginx-configmap
         advancedMounts:
           wordpress:
             nginx:

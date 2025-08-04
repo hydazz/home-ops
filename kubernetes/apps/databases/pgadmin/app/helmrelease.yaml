@@ -82,7 +82,7 @@ spec:
           - path: /var/lib/pgadmin
       server-json:
         type: configMap
-        name: servers-json
+        name: pgadmin-servers-configmap
         globalMounts:
           - path: /pgadmin4/servers.json
             subPath: servers.json

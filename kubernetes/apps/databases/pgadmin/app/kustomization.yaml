@@ -6,7 +6,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: servers-json
+  - name: pgadmin-servers-configmap
     files:
       - ./resources/servers.json
 generatorOptions:

@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: nut-server
+  - name: nut-server-configmap
     files:
       - ./config/nut.conf
       - ./config/ups.conf

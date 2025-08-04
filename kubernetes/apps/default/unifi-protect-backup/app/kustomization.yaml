@@ -6,7 +6,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: rclone-conf
+  - name: unifi-protect-backup-rclone-configmap
     files:
       - ./resources/rclone.conf
 generatorOptions:

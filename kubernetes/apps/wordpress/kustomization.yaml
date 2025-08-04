@@ -9,10 +9,10 @@ resources:
   - ./hca/ks.yaml
   - ./lmvca/ks.yaml
 configMapGenerator:
-  - name: wordpress-nginx-config
+  - name: wordpress-nginx-configmap
     files:
       - ./resources/nginx.conf
-  - name: wordpress-php-config
+  - name: wordpress-php-configmap
     files:
       - ./resources/wordpress.ini
 generatorOptions:

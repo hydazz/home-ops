@@ -6,7 +6,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: velocity
+  - name: velocity-configmap
     files:
       - ./resources/velocity.toml
 generatorOptions:
