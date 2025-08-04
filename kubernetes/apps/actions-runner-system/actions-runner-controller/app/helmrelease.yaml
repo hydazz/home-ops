@@ -17,7 +17,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &name actions-runner-controller
+  name: &app actions-runner-controller
 spec:
   interval: 1h
   chartRef:
@@ -33,4 +33,4 @@ spec:
     remediation:
       retries: 3
   values:
-    fullnameOverride: *name
+    fullnameOverride: *app

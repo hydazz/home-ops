@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: adguard-home
+  name: &app adguard-home
 spec:
   interval: 1h
   chartRef:
@@ -85,14 +85,14 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: adguard-home-app
+              - name: "{{ .Release.Name }}-app"
                 port: *port
     persistence:
       config:
-        existingClaim: adguard-home
+        existingClaim: *app
         globalMounts:
           - path: /opt/adguardhome/conf
       data:
-        existingClaim: adguard-home-data
+        existingClaim: "{{ .Release.Name }}-data"
         globalMounts:
           - path: /opt/adguardhome/work

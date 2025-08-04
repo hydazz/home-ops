@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: hymc-lobby
+  name: &app hymc-lobby
 spec:
   interval: 1h
   chartRef:
@@ -101,7 +101,7 @@ spec:
             port: 25565
     persistence:
       config:
-        existingClaim: hymc-lobby
+        existingClaim: *app
         globalMounts:
           - path: /data
       tmpfs:

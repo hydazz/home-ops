@@ -76,10 +76,10 @@ spec:
     persistence:
       client:
         type: secret
-        name: &clientCert barman-cloud-client-tls
+        name: &clientCert "{{ .Release.Name }}-client-tls"
       server:
         type: secret
-        name: &serverCert barman-cloud-server-tls
+        name: &serverCert "{{ .Release.Name }}-server-tls"
     service:
       app:
         annotations:

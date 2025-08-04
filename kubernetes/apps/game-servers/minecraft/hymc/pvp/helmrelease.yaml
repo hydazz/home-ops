@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: hymc-pvp
+  name: &app hymc-pvp
 spec:
   interval: 1h
   chartRef:
@@ -107,7 +107,7 @@ spec:
             port: 25565
     persistence:
       config:
-        existingClaim: hymc-pvp
+        existingClaim: *app
         globalMounts:
           - path: /data
       tmpfs:

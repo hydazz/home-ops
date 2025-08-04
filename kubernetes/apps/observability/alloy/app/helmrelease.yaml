@@ -17,7 +17,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: alloy
+  name: &app alloy
 spec:
   interval: 1h
   chartRef:
@@ -31,14 +31,14 @@ spec:
     remediation:
       retries: 3
   values:
-    fullnameOverride: alloy
+    fullnameOverride: *app
     alloy:
       configMap:
         create: false
-        name: &name alloy-configmap
+        name: &configMap alloy-configmap
         key: config.alloy
     controller:
       podAnnotations:
-        configmap.reloader.stakater.com/reload: *name
+        configmap.reloader.stakater.com/reload: *configMap
     serviceMonitor:
       enabled: true

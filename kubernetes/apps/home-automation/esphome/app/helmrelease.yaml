@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: esphome
+  name: &app esphome
 spec:
   interval: 1h
   chartRef:
@@ -65,11 +65,11 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: esphome
+        existingClaim: *app
         globalMounts:
           - path: /config
       cache:
-        existingClaim: esphome-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /cache
       tmp:

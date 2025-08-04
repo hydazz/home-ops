@@ -33,7 +33,7 @@ spec:
           image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
           envFrom:
             - secretRef:
-                name: nextcloud-shca-secret
+                name: &secret nextcloud-shca-secret
       host: storage.${D_HCA}
       extraEnv:
         - name: REDIS_HOST
@@ -42,7 +42,7 @@ spec:
           value: "3"
       existingSecret:
         enabled: true
-        secretName: nextcloud-shca-secret
+        secretName: *secret
         usernameKey: ADMIN_USER
         passwordKey: ADMIN_PASSWORD
       configs:
@@ -81,14 +81,14 @@ spec:
       type: postgresql
       existingSecret:
         enabled: true
-        secretName: nextcloud-shca-secret
+        secretName: *secret
         usernameKey: DB_USERNAME
         passwordKey: DB_PASSWORD
         hostKey: DB_HOSTNAME
         databaseKey: DB_DATABASE_NAME
     persistence:
       enabled: true
-      existingClaim: nextcloud-shca
+      existingClaim: *app
     cronjob:
       enabled: true
 

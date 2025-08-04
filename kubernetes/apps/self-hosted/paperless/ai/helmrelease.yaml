@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: paperless-ai
+  name: &app paperless-ai
 spec:
   interval: 1h
   chartRef:
@@ -42,7 +42,7 @@ spec:
               USE_PROMPT_TAGS: "no"
             envFrom:
               - secretRef:
-                  name: paperless-ai-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true
@@ -80,7 +80,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: paperless-ai
+        existingClaim: *app
         globalMounts:
           - path: /app/data
       tmpfs:

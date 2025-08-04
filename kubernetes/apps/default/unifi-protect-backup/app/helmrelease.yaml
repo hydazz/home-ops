@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: unifi-protect-backup
+  name: &app unifi-protect-backup
 spec:
   interval: 1h
   chartRef:
@@ -68,10 +68,10 @@ spec:
         enabled: false
     persistence:
       config:
-        existingClaim: unifi-protect-backup
+        existingClaim: *app
       rclone-config:
         type: configMap
-        name: unifi-protect-backup-rclone-configmap
+        name: "{{ .Release.Name }}-rclone-configmap"
         globalMounts:
           - path: /config/rclone/rclone.conf
             subPath: rclone.conf

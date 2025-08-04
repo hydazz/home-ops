@@ -63,7 +63,7 @@ spec:
     persistence:
       config-file:
         type: secret
-        name: excludarr-secret
+        name: "{{ .Release.Name }}-secret"
         globalMounts:
           - path: /etc/excludarr/excludarr.yml
             subPath: excludarr.yml

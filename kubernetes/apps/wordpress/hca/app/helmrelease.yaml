@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: wordpress-hca
+  name: &app wordpress-hca
 spec:
   interval: 1h
   chartRef:
@@ -45,7 +45,7 @@ spec:
               WORDPRESS_AUTO_UPDATE_CORE: "false"
             envFrom:
               - secretRef:
-                  name: wordpress-hca-secrets
+                  name: "{{ .Release.Name }}-secrets"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -111,7 +111,7 @@ spec:
                 port: *port
     persistence:
       wp-content:
-        existingClaim: wordpress-hca
+        existingClaim: *app
         globalMounts:
           - path: /var/www/html/wp-content
       tmpfs:

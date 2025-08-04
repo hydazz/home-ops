@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: &app sabnzbd
 spec:
   interval: 1h
   chartRef:
@@ -39,7 +39,7 @@ spec:
               TZ: Australia/Melbourne
             envFrom:
               - secretRef:
-                  name: sabnzbd-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -83,7 +83,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: sabnzbd
+        existingClaim: *app
       media:
         type: nfs
         server: 192.168.42.20
@@ -92,7 +92,7 @@ spec:
           - path: /data
       scripts:
         type: configMap
-        name: sabnzbd-scripts
+        name: "{{ .Release.Name }}-scripts"
         defaultMode: 0775
         globalMounts:
           - readOnly: true

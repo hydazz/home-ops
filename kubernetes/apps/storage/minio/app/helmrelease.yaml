@@ -30,14 +30,14 @@ spec:
               MINIO_IDENTITY_OPENID_CONFIG_URL: https://auth.${D_HS}/application/o/minio/.well-known/openid-configuration
               MINIO_IDENTITY_OPENID_DISPLAY_NAME: authentik
               MINIO_PROMETHEUS_AUTH_TYPE: public
-              MINIO_PROMETHEUS_JOB_ID: minio
+              MINIO_PROMETHEUS_JOB_ID: *app
               MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
               MINIO_SERVER_URL: https://s3.${D_HS}
               MINIO_UPDATE: "off"
               TZ: "Australia/Melbourne"
             envFrom:
               - secretRef:
-                  name: minio-secret
+                  name: "{{ .Release.Name }}-secret"
             args: ["server", "/data", "--console-address", ":9001"]
             probes:
               liveness: &probes
@@ -79,7 +79,7 @@ spec:
             port: *s3Port
     serviceMonitor:
       app:
-        serviceName: minio
+        serviceName: *app
         enabled: true
         endpoints:
           - port: s3
@@ -110,7 +110,7 @@ spec:
                 port: *s3Port
     persistence:
       data:
-        existingClaim: minio
+        existingClaim: *app
         globalMounts:
           - path: /data
       tmpfs:

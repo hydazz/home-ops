@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: onepassword
+  name: &app onepassword
 spec:
   interval: 30m
   chartRef:
@@ -28,7 +28,7 @@ spec:
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-secret
+                    name: "{{ .Release.Name }}-secret"
                     key: 1password-credentials.json
             probes:
               liveness:
@@ -72,7 +72,7 @@ spec:
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-secret
+                    name: "{{ .Release.Name }}-secret"
                     key: 1password-credentials.json
             probes:
               liveness:
@@ -104,7 +104,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: onepassword
+        controller: *app
         ports:
           http:
             port: *apiPort

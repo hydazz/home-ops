@@ -40,7 +40,7 @@ spec:
               PHOTO_TRANSCODER: true
             envFrom:
               - secretRef:
-                  name: plex-image-cleanup-secret
+                  name: "{{ .Release.Name }}-secret"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

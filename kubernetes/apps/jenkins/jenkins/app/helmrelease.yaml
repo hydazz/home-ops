@@ -12,7 +12,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jenkins
+  name: &app jenkins
 spec:
   interval: 30m
   chart:
@@ -46,4 +46,4 @@ spec:
     agent:
       enabled: false
     persistence:
-      existingClaim: jenkins
+      existingClaim: *app

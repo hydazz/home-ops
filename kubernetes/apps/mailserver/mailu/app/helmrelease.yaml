@@ -93,7 +93,7 @@ spec:
         roundcube:
           database: roundcube
           username: roundcube
-          existingSecret: mailu-webmail-secret
+          existingSecret: &webmailSecret mailu-webmail-secret
           existingSecretPasswordKey: ROUNDCUBE_DB_PASS
     hostnames:
       - mail.${D_HS}
@@ -181,7 +181,7 @@ spec:
           image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
           envFrom:
             - secretRef:
-                name: mailu-secret
+                name: *secret
       uri: /admin
       updateStrategy:
         type: Recreate
@@ -221,7 +221,7 @@ spec:
           image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
           envFrom:
             - secretRef:
-                name: mailu-webmail-secret
+                name: *webmailSecret
       type: roundcube
       uri: /webmail
       updateStrategy:
