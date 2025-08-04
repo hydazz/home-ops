@@ -28,7 +28,11 @@ spec:
               tag: 2.15.3@sha256:3e0eaca8c082ebe121a0ae9125bea1b4e2d177fca34ac8df4ec14a28e62f63a4
             env:
               TZ: Australia/Melbourne
-              TAUTULLI__PORT: &port 80
+              TAUTULLI_HTTP_BASE_URL: https://tautulli.${D_HS}
+              TAUTULLI_HTTP_PORT: &port 80
+            envFrom:
+              - secretRef:
+                  name: tautulli-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -49,7 +53,8 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 256Mi
+              limits:
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
