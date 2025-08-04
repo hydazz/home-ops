@@ -3,21 +3,21 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app gatus
+  name: &app spoodermon
   namespace: &namespace observability
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/observability/gatus/app
+  path: ./kubernetes/apps/observability/spoodermon/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: status
+      GATUS_SUBDOMAIN: spoodermon
   prune: true
   retryInterval: 2m
   sourceRef:

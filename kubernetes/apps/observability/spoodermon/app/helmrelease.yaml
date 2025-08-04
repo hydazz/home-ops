@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app gatus
+  name: spoodermon
 spec:
   interval: 1h
   chartRef:
@@ -18,27 +18,9 @@ spec:
       retries: 3
   values:
     controllers:
-      gatus:
+      spoodermon:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-config:
-            image:
-              repository: ghcr.io/home-operations/k8s-sidecar
-              tag: 1.30.7@sha256:3b6444d91c6e69a9e07c5e55419452d967d18c833d88b36277dc2021b708f621
-            env:
-              FOLDER: /config
-              LABEL: gatus.io/enabled
-              NAMESPACE: ALL
-              RESOURCE: both
-              UNIQUE_FILENAMES: true
-              METHOD: WATCH
-            restartPolicy: Always
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
         containers:
           app:
             image:
@@ -49,13 +31,9 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               GATUS_WEB_PORT: &port 80
-              D_HS: ${D_HS}
-              D_HCA: ${D_HCA}
-              D_IGI: ${D_IGI}
-              D_SN: ${D_SN}
-              D_TACA: ${D_TACA}
-              D_TAN: ${D_TAN}
-              D_LMVCA: ${D_LMVCA}
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -72,26 +50,19 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: { add: ["NET_RAW"], drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
               limits:
                 memory: 256Mi
     defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
+      hostUsers: false
     service:
       app:
         ports:
           http:
             port: *port
-    serviceMonitor:
-      app:
-        endpoints:
-          - port: http
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
@@ -99,26 +70,7 @@ spec:
           - name: cloudflare
             namespace: network
             sectionName: https
-    rbac:
-      roles:
-        gatus:
-          type: ClusterRole
-          rules:
-            - apiGroups: [""]
-              resources: ["configmaps", "secrets"]
-              verbs: ["get", "watch", "list"]
-      bindings:
-        gatus:
-          type: ClusterRoleBinding
-          roleRef:
-            identifier: gatus
-          subjects:
-            - identifier: gatus
-    serviceAccount:
-      gatus: {}
     persistence:
-      config:
-        type: emptyDir
       config-file:
         type: configMap
         name: "{{ .Release.Name }}-configmap"
