@@ -19,9 +19,9 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 <div align="center">
 
-[![Home-Internet](https://img.shields.io/uptimerobot/status/m793494864-xxx?color=brightgreeen&label=Home%20Internet&style=for-the-badge&logo=ubiquiti&logoColor=white)](https://gatus.hyde.services)&nbsp;&nbsp;
-[![Status-Page](https://img.shields.io/uptimerobot/status/m800929398-48377b2124aaf2d81cb5c676?color=brightgreeen&label=Status%20Page&style=for-the-badge&logo=statuspage&logoColor=white)](https://gatus.hyde.services)&nbsp;&nbsp;
-[![Alertmanager](https://img.shields.io/uptimerobot/status/m793494864-xxx?color=brightgreeen&label=Alertmanager&style=for-the-badge&logo=prometheus&logoColor=white)](https://gatus.hyde.services)
+[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fspoodermon.hyde.services%2Fapi%2Fv1%2Fendpoints%2F_ping%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://gatus.hyde.services)&nbsp;&nbsp;
+[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fspoodermon.hyde.services%2Fapi%2Fv1%2Fendpoints%2F_status-page%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://gatus.hyde.services)&nbsp;&nbsp;
+[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fspoodermon.hyde.services%2Fapi%2Fv1%2Fendpoints%2F_heartbeat%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://gatus.hyde.services)
 
 </div>
 
