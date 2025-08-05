@@ -22,9 +22,14 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - 192.168.42.20:9633 # picard
+        - 192.168.42.20:9633
+      labels:
+        hostname: picard
   metricsPath: /metrics
   relabelings:
     - action: replace
       targetLabel: job
       replacement: *name
+    - action: replace
+      sourceLabels: [hostname]
+      targetLabel: instance
