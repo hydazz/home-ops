@@ -9,6 +9,7 @@ spec:
     - targets:
         - 192.168.3.2:9100 # nebula
         - 192.168.10.8:9100 # pikvm
+        - 192.168.42.20:9100 # picard
   metricsPath: /metrics
   relabelings:
     - action: replace
