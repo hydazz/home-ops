@@ -37,8 +37,11 @@ ipv6NativeRoutingCIDR: "fd42::/48"
 ipv6:
   enabled: true
 enableIPv6Masquerade: true
-k8sServiceHost: 127.0.0.1
-k8sServicePort: 7445
+k8s:
+  apiServerURLs: >-
+    https://192.168.42.10:6443
+    https://192.168.42.12:6443
+    https://192.168.42.13:6443
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
