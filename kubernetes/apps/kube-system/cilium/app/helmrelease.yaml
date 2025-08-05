@@ -33,28 +33,3 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values
-  values:
-    hubble:
-      enabled: &hubble false
-      metrics:
-        enabled:
-          - dns:query
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - http
-        serviceMonitor:
-          enabled: true
-        dashboards:
-          enabled: true
-      relay:
-        enabled: *hubble
-        rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
-      ui:
-        enabled: *hubble
-        rollOutPods: true
