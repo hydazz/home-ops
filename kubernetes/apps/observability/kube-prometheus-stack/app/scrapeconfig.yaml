@@ -8,6 +8,7 @@ spec:
   staticConfigs:
     - targets:
         - 192.168.3.2:9100 # nebula
+        - 192.168.10.8:9100 # pikvm
   metricsPath: /metrics
   relabelings:
     - action: replace
