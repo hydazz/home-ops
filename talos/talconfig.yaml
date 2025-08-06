@@ -154,4 +154,5 @@ controlPlane:
   patches:
     - "@./patches/controller/admission-controller-patch.yaml"
     - "@./patches/controller/cluster.yaml"
+    - "@./patches/controller/mutating-admission-policy.yaml"
     - "@./patches/controller/scheduler.yaml"
