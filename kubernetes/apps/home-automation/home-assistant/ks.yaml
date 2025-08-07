@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/guarded
+    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -23,6 +23,7 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: homeassistant
       GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 4Gi
       VOLSYNC_CACHE_CAPACITY: 1Gi

@@ -115,7 +115,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["paperless.${D_HS}"]
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
         parentRefs:
           - name: internal
             namespace: network
