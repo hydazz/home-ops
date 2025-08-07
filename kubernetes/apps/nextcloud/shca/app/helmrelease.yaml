@@ -40,6 +40,18 @@ spec:
           value: dragonfly.databases.svc.cluster.local
         - name: REDIS_DATABASE
           value: "3"
+      lifecycle:
+        postStartCommand:
+          - "/bin/sh"
+          - "-c"
+          - |
+            echo "Waiting for Nextcloud to be ready..."
+            su -s /bin/sh www-data -c 'php occ maintenance:repair --include-expensive' || true
+            su -s /bin/sh www-data -c 'php occ files:scan --all' || true
+            su -s /bin/sh www-data -c 'php occ files:cleanup' || true
+            su -s /bin/sh www-data -c 'php occ db:add-missing-indices' || true
+            su -s /bin/sh www-data -c 'php occ db:add-missing-primary-keys' || true
+            su -s /bin/sh www-data -c 'php occ db:add-missing-columns' || true
       existingSecret:
         enabled: true
         secretName: *secret
@@ -69,6 +81,16 @@ spec:
             'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
           );
       phpConfigs:
+        www.conf: |
+          [www]
+          user = www-data
+          group = www-data
+          listen = 127.0.0.1:9000
+          pm = dynamic
+          pm.max_children = 50
+          pm.start_servers = 12
+          pm.min_spare_servers = 6
+          pm.max_spare_servers = 18
         uploadLimit.ini: |
           upload_max_filesize = 16G
           post_max_size = 16G
