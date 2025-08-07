@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: nextcloud
-      tag: 31.0.7-fpm-alpine@sha256:3a17193e6ec81633948abdc14be813b40a17541c9fc6c458fb52f784baf203e2
+      tag: 31.0.7-fpm-alpine@sha256:502bea8b153a7bc7a270edf0d5a06046216f55e64ce62657197bc943133fa197
       flavor: fpm-alpine
     nginx:
       enabled: true
