@@ -20,7 +20,7 @@ nextcloud:
           nfs:
             server: ENC[AES256_GCM,data:YKlPTD7nHfhrSDXD9A==,iv:OFTViRSCq4ZZj6vjS7rAF1UcgzCan/zAMSIp1IEzmds=,tag:7D65cXnvNQVvl+nt5RgK5Q==,type:str]
             path: ENC[AES256_GCM,data:LQEsSLeiyNeUwQancPBLMA==,iv:AacM+iUt51gGLed5nCfxQqYlT0F9IMEyU25uyxsfrPQ=,tag:ybvHKbpOBf2A3eRs56jIFw==,type:str]
-        - name: ENC[AES256_GCM,data:h2lAFys=,iv:sevc9Zo6Cks9BoX2tYr/Hf9Fu6vbTD/ryWLDqzV1Hyo=,tag:f6qNGJ1j1v0QvwsjHCMBog==,type:str]
+        - name: ENC[AES256_GCM,data:2+5l3l8=,iv:yqzfiuQG8DKyr2oc0N5VYtavBqnq45phqxDe5tQGRmc=,tag:yqnnTYQm1bMmwkz4nLK9dw==,type:str]
           emptyDir: {}
     extraVolumeMounts:
         - name: ENC[AES256_GCM,data:53uXXd4fQJtEIg==,iv:xq5EDx+GqPkKF/MhGHsDvT99R6Eq7Z7XXUotzFdIEGI=,tag:4vHtnhFSvRyPaKruDEj8KQ==,type:str]
@@ -33,8 +33,15 @@ nextcloud:
           mountPath: ENC[AES256_GCM,data:h9hA5oDBTH/YvPSx,iv:lF2ZmxcmJmFMOvxsRYCMaYJaBri6ICdrnsM5R74wlw0=,tag:xAeiJBV3gwQI4hI4W38ETA==,type:str]
         - name: ENC[AES256_GCM,data:JZnJL37kxecMkQ==,iv:/eyvSZH1CdnDPTG/v9brD4gE/KgdIbGpGs52k4O5BSo=,tag:HeBiigGq7c6k3dgtdyLX8g==,type:str]
           mountPath: ENC[AES256_GCM,data:/XoDTiEqs7tDeHc=,iv:j/waJinjM9FF7ZR6HOvXa5PmUha2Wj17FzaodqVay0A=,tag:MgMVG9+2a2EHRWSpRJLPhQ==,type:str]
-        - name: ENC[AES256_GCM,data:Le1HE3g=,iv:PvxhFaMuA78rREj32DtShPDbr7RCViZYjNgfRSuTl9w=,tag:BkAaSWSZUR7uGBrhC94VNA==,type:str]
+        - name: ENC[AES256_GCM,data:K2B4vus=,iv:6uQIQw5YaGPvKGFLJnepmQ4nafJJ+MEn0zRdY58tM58=,tag:C5ym5m+oWGET+vbO4q8c5A==,type:str]
           mountPath: ENC[AES256_GCM,data:2PYt4TQd,iv:5kWSusDxzthB9TWU/tpypHZSx09RU+9z6RPqZe4S/oU=,tag:kOg9A1L9bQNXsXigNkhHrA==,type:str]
+          subPath: ENC[AES256_GCM,data:+6vQD+Y=,iv:4t7rUMPeFWyNUMZL3BW9N6UOVPWiCGuM+ePKpmnXxRw=,tag:Xb6M898LhGiwwzJuCXb4bQ==,type:str]
+        - name: ENC[AES256_GCM,data:K2B4vus=,iv:6uQIQw5YaGPvKGFLJnepmQ4nafJJ+MEn0zRdY58tM58=,tag:C5ym5m+oWGET+vbO4q8c5A==,type:str]
+          mountPath: ENC[AES256_GCM,data:RtWmeUNCe77S5FmgmPHe/A==,iv:a+tTu19Uu00WPMDnfdzmEmmndypw05S7iER6wHYNKbQ=,tag:pE3961p/jeL3rjaUddWsog==,type:str]
+          subPath: ENC[AES256_GCM,data:1NQWHCxcNWX3iDA=,iv:Y1D61GKSbkS8BgaM83w4yxOfV5wqsKSfi1GIbg8A6c8=,tag:HG75pkmHwIzGAxxnhHgfoQ==,type:str]
+        - name: ENC[AES256_GCM,data:K2B4vus=,iv:6uQIQw5YaGPvKGFLJnepmQ4nafJJ+MEn0zRdY58tM58=,tag:C5ym5m+oWGET+vbO4q8c5A==,type:str]
+          mountPath: ENC[AES256_GCM,data:bLw0bVbcpnw=,iv:lJvRgMDPIb4zW4kWitbW8M82uY9x+Fpiuqb7wTPYzpI=,tag:PiaQOLXW2QzSj5KQoqFAVQ==,type:str]
+          subPath: ENC[AES256_GCM,data:W2Vf,iv:EfM0mBkJ3rpJ+Yi30/XTTkkRPY6CAHUJHM5kbUBH+5w=,tag:8ic62tjQ7/pK9u0pYAhXPQ==,type:str]
 sops:
     age:
         - recipient: age1umudqfh963mmhgkgatylwh9jgez7qh4twpaqy3ea3nlcarhm09hq5er32r
@@ -46,7 +53,7 @@ sops:
             b3F0Q0JaNUczWTE5YmZscTM1cEFjSWsKV7LMrWsga3VXVwbmu5dxyzIs1T7ig076
             W4p0Rr7Qhf90+WiJoteRpfFZkte3ojuCdGi5s55Jx6pq+X8NoklToQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-20T13:56:21Z"
-    mac: ENC[AES256_GCM,data:Rfk0YOh01nZteObZL7yeED1EdeLK7L0wUVkWGo5++5z43S9OFpSt7oxAsyZHn5w3RSoxnH48AAPT1uqDu3cZ3PQFK/Bd5yoM67WEytwFAWCnj2kJcCJTzqOQwCN3u1P+OXE1vYGxYyv367S8RNOvEk6Wa0nG57Fmc3GLa7IEXjo=,iv:L0XjqA1Kt2w0Xa2sorsdUj5gsigXErDrdnC3+bQNdqU=,tag:cfXc51xbCBR4SaRKn7sNOg==,type:str]
+    lastmodified: "2025-08-07T12:58:24Z"
+    mac: ENC[AES256_GCM,data:2MLZ6Gb7GjXz9nTnQno94N77Irv6yCsWG0AFSmyIFTJmV8P26rL45Li+nussks/dxbF6DFx9VhghHf/R9fr52jEpHIvZ9zhsJPWCkuEaKNzUB9cFcD1gYEZpYHuxb4f0rNh68Eitj0lbEby/H7tfvoJItmNGh0L4cskTffRpRzA=,iv:70X8ExYfKkFzPcIoLPbz4tK83OMdxK8o50i7oQu/snQ=,tag:kzPIIofNa38Gb1YzsraGAw==,type:str]
     encrypted_regex: ^(nextcloud)$
     version: 3.10.2
