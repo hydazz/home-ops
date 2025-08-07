@@ -53,7 +53,7 @@ sops:
             b3F0Q0JaNUczWTE5YmZscTM1cEFjSWsKV7LMrWsga3VXVwbmu5dxyzIs1T7ig076
             W4p0Rr7Qhf90+WiJoteRpfFZkte3ojuCdGi5s55Jx6pq+X8NoklToQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-08-07T12:58:24Z"
-    mac: ENC[AES256_GCM,data:2MLZ6Gb7GjXz9nTnQno94N77Irv6yCsWG0AFSmyIFTJmV8P26rL45Li+nussks/dxbF6DFx9VhghHf/R9fr52jEpHIvZ9zhsJPWCkuEaKNzUB9cFcD1gYEZpYHuxb4f0rNh68Eitj0lbEby/H7tfvoJItmNGh0L4cskTffRpRzA=,iv:70X8ExYfKkFzPcIoLPbz4tK83OMdxK8o50i7oQu/snQ=,tag:kzPIIofNa38Gb1YzsraGAw==,type:str]
+    lastmodified: "2025-08-07T22:36:42Z"
+    mac: ENC[AES256_GCM,data:cFRVaL71qRA9LQTHuw1noAbDMfZDgznta/tIf8U13d1/wMQUISze/Xrxd0+2JTwUyhxGiHT9pAGGhsmy2t1xhylk+XN0RBc4+MZs4FQTH9aZmQ4wJ+jKuZN+2xC74vc5iJfhO0FHnR4YkpOSqsg/zBDOtDIakpnwW+i66Mm1XlM=,iv:TbnzRBnjNHcYpLos9ngtKxBgxdAoMBnRJzmIMOoVlwQ=,tag:qCvKtzLIlMmBGCjiHHshiA==,type:str]
     encrypted_regex: ^(nextcloud)$
     version: 3.10.2

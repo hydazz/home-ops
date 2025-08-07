@@ -45,13 +45,12 @@ spec:
           - /bin/sh
           - -c
           - |
-            echo "Waiting for Nextcloud to be ready..."
-            su -s /bin/sh www-data -c 'php occ maintenance:repair --include-expensive' || true
-            su -s /bin/sh www-data -c 'php occ files:scan --all' || true
-            su -s /bin/sh www-data -c 'php occ files:cleanup' || true
-            su -s /bin/sh www-data -c 'php occ db:add-missing-indices' || true
-            su -s /bin/sh www-data -c 'php occ db:add-missing-primary-keys' || true
-            su -s /bin/sh www-data -c 'php occ db:add-missing-columns' || true
+            php occ maintenance:repair --include-expensive || true
+            php occ files:scan --all || true
+            php occ files:cleanup || true
+            php occ db:add-missing-indices || true
+            php occ db:add-missing-primary-keys || true
+            php occ db:add-missing-columns || true
       existingSecret:
         enabled: true
         secretName: *secret
