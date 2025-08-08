@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: docker.io/kopia/kopia
-              tag: 20250806.0.235127@sha256:cb47ddbad87c165e24e001dd1016dce192c91382d6fb3cfb110d854a0dae0efd
+              tag: 20250808.0.214135@sha256:738a64b6f55b19bcd163d051288290e0243c11ec611118a811b6ca3be37cb01f
             command:
               - /bin/bash
               - -c
