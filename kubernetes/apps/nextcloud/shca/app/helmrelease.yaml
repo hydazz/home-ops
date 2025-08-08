@@ -28,12 +28,6 @@ spec:
         tag: 1.29.0-alpine@sha256:d67ea0d64d518b1bb04acde3b00f722ac3e9764b3209a9b0a98924ba35e4b779
     fullnameOverride: *app
     nextcloud:
-      extraInitContainers:
-        - name: init-db
-          image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
-          envFrom:
-            - secretRef:
-                name: &secret nextcloud-shca-secret
       host: storage.${D_HCA}
       extraEnv:
         - name: REDIS_HOST
@@ -53,7 +47,7 @@ spec:
             php occ db:add-missing-columns || true
       existingSecret:
         enabled: true
-        secretName: *secret
+        secretName: &secret nextcloud-shca-secret
         usernameKey: ADMIN_USER
         passwordKey: ADMIN_PASSWORD
       configs:

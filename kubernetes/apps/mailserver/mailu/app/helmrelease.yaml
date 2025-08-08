@@ -176,12 +176,6 @@ spec:
     admin:
       enabled: true
       podAnnotations: *reloader
-      initContainers:
-        - name: init-db
-          image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
-          envFrom:
-            - secretRef:
-                name: *secret
       uri: /admin
       updateStrategy:
         type: Recreate
@@ -216,12 +210,6 @@ spec:
     webmail:
       enabled: true
       podAnnotations: *reloader
-      initContainers:
-        - name: init-db
-          image: ghcr.io/home-operations/postgres-init:17.5@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
-          envFrom:
-            - secretRef:
-                name: *webmailSecret
       type: roundcube
       uri: /webmail
       updateStrategy:
