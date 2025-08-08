@@ -41,16 +41,9 @@ spec:
     runtimeClassName: nvidia
     resources:
       limits:
-        memory: 1024Mi
+        memory: 1Gi
         nvidia.com/gpu: 1
     serviceMonitor:
-      # this will start working when 4.3.0 is released
       metricRelabelings:
         - action: labeldrop
-          regex: namespace
-        - action: labeldrop
-          regex: pod
-        - action: labeldrop
-          regex: exported_pod
-        - action: labeldrop
-          regex: exported_namespace
+          regex: (namespace|pod|exported_pod|exported_namespace|exported_container)
