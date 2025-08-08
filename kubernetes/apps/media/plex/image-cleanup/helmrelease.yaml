@@ -58,8 +58,7 @@ spec:
                 matchExpressions:
                   - key: app.kubernetes.io/name
                     operator: In
-                    values:
-                      - plex
+                    values: [plex]
               topologyKey: kubernetes.io/hostname
       securityContext:
         runAsNonRoot: true
