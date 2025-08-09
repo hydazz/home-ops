@@ -18,13 +18,13 @@ spec:
       retries: 3
   values:
     image:
-      repository: nextcloud
+      repository: docker.io/library/nextcloud
       tag: 31.0.7-fpm-alpine@sha256:502bea8b153a7bc7a270edf0d5a06046216f55e64ce62657197bc943133fa197
       flavor: fpm-alpine
     nginx:
       enabled: true
       image:
-        repository: nginx
+        repository: docker.io/library/nginx
         tag: 1.29.0-alpine@sha256:d67ea0d64d518b1bb04acde3b00f722ac3e9764b3209a9b0a98924ba35e4b779
     fullnameOverride: *app
     nextcloud:
