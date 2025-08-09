@@ -64,5 +64,23 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
+    {
+      description: "Immich Group",
+      groupName: "Immich",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/immich-app/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "MariaDB Operator Group",
+      groupName: "MariaDB Operator",
+      matchDatasources: ["helm"],
+      matchPackageNames: ["/mariadb-operator/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
   ],
 }
