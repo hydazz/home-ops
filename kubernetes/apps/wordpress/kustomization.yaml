@@ -11,7 +11,7 @@ resources:
 configMapGenerator:
   - name: wordpress-nginx-configmap
     files:
-      - ./resources/nginx.conf
+      - ./resources/default.conf
   - name: wordpress-php-configmap
     files:
       - ./resources/wordpress.ini
