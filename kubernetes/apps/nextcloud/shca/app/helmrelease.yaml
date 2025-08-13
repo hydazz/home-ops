@@ -25,7 +25,7 @@ spec:
       enabled: true
       image:
         repository: docker.io/library/nginx
-        tag: 1.29.0-alpine@sha256:d67ea0d64d518b1bb04acde3b00f722ac3e9764b3209a9b0a98924ba35e4b779
+        tag: 1.29.1-alpine@sha256:b4fbf8d1e0d79cee3709302a39f227781cf480e60f7f7680eef626f602787e9a
     fullnameOverride: *app
     nextcloud:
       host: storage.${D_HCA}
