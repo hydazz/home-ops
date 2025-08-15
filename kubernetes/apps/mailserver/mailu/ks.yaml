@@ -30,7 +30,6 @@ spec:
       GATUS_SUBDOMAIN: mail
       GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_CACHE_CAPACITY: 512Mi
       VOLSYNC_STORAGECLASS: ceph-filesystem
       VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
       VOLSYNC_ACCESSMODES: ReadWriteMany

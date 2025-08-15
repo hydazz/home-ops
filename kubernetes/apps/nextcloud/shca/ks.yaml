@@ -32,7 +32,6 @@ spec:
       GATUS_SUBDOMAIN: storage
       GATUS_DOMAIN: "${D_HCA}"
       VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_CACHE_CAPACITY: 512Mi
   prune: true
   retryInterval: 2m
   sourceRef:

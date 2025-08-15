@@ -32,7 +32,6 @@ spec:
       GATUS_SUBDOMAIN: ci
       GATUS_DOMAIN: "${D_IGI}"
       VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_CACHE_CAPACITY: 512Mi
   prune: true
   retryInterval: 1m
   sourceRef:

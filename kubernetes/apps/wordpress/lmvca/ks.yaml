@@ -29,7 +29,6 @@ spec:
       GATUS_SUBDOMAIN: www
       GATUS_DOMAIN: "${D_LMVCA}"
       VOLSYNC_CAPACITY: 1Gi
-      VOLSYNC_CACHE_CAPACITY: 256Mi
   prune: true
   sourceRef:
     kind: GitRepository

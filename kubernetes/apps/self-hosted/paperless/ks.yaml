@@ -32,7 +32,6 @@ spec:
       APP: *app
       GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 128Mi
-      VOLSYNC_CACHE_CAPACITY: 32Mi
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -66,7 +65,6 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 128Mi
-      VOLSYNC_CACHE_CAPACITY: 32Mi
   prune: true
   retryInterval: 2m
   sourceRef:
