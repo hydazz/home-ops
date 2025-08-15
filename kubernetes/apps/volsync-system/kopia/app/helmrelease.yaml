@@ -77,6 +77,8 @@ spec:
             namespace: network
             sectionName: https
     persistence:
+      config:
+        type: emptyDir
       config-file:
         type: configMap
         name: kopia-repository-configmap
@@ -90,10 +92,3 @@ spec:
         path: /mnt/Slow/Backups/VolsyncKopia
         globalMounts:
           - path: /repository
-      tmpfs:
-        type: emptyDir
-        globalMounts:
-          - path: /config/cache
-            subPath: cache
-          - path: /config/logs
-            subPath: logs
