@@ -72,6 +72,6 @@ spec:
       media:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/Slow/Media/Plex Media
+        path: /mnt/user/Media/Plex Media
         globalMounts:
           - path: /media
