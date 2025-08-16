@@ -75,3 +75,4 @@ spec:
         path: /mnt/user/Media/Plex Media
         globalMounts:
           - path: /media
+            readOnly: true

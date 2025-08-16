@@ -75,6 +75,7 @@ spec:
         path: /mnt/user/Media
         globalMounts:
           - path: /data
+            readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:
