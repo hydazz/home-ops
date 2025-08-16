@@ -110,10 +110,11 @@ spec:
       media:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/Slow/Media
+        path: /mnt/user/Media
         advancedMounts:
           qbittorrent:
             app:
               - path: /data
+                readOnly: true
       tmp:
         type: emptyDir

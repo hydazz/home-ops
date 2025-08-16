@@ -115,9 +115,10 @@ spec:
       library:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/Slow/Media/Immich
+        path: /mnt/user/Media/Immich
         globalMounts:
           - path: /photos
+            readOnly: true
       machine-learning-cache:
         existingClaim: "{{ .Release.Name }}-cache"
         advancedMounts:
