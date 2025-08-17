@@ -115,6 +115,5 @@ spec:
           qbittorrent:
             app:
               - path: /data
-                readOnly: true
       tmp:
         type: emptyDir

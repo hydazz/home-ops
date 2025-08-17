@@ -90,7 +90,6 @@ spec:
         path: /mnt/user/Media
         globalMounts:
           - path: /data
-            readOnly: true
       scripts:
         type: configMap
         name: "{{ .Release.Name }}-scripts"
