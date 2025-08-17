@@ -29,8 +29,8 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/kopia/kopia
-              tag: 0.21.1@sha256:24884f5e9e5f9c19746eddb51fb3449ceb4b6bb0ad6681e145bed53eb2d50125
+              repository: ghcr.io/home-operations/kopia
+              tag: 0.21.1@sha256:f666b5f2c1ea4649cd2bd703507d4b81c2b515782e8476ba4a145b091a704a53
             command:
               - /bin/bash
               - -c
