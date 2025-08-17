@@ -90,6 +90,6 @@ spec:
       repository:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/user/Backups/Volsync
+        path: /mnt/user/Backups/Kopia/Volsync
         globalMounts:
           - path: /repository

@@ -115,7 +115,7 @@ spec:
       library:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/user/Media/Immich
+        path: /mnt/user/Immich
         globalMounts:
           - path: /photos
       machine-learning-cache:
