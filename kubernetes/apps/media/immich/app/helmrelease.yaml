@@ -118,6 +118,7 @@ spec:
         path: /mnt/user/Media/Immich
         globalMounts:
           - path: /photos
+            readOnly: true
       machine-learning-cache:
         existingClaim: "{{ .Release.Name }}-cache"
         advancedMounts:
