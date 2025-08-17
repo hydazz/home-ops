@@ -46,8 +46,9 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 | Node             | CPU       | Memory | Storage                                       | GPU              | OS      | Case                 | Function                       |
 | ---------------- | --------- | ------ | --------------------------------------------- | ---------------- | ------- | -------------------- | ------------------------------ |
-| picard           | i7-12700K | 64GB   | 128GB Boot + 4×4TB (Slow) + 2x1TB NVMe (Fast) |                  | TrueNAS | SilverStone RM21-308 | Media/file storage and backups |
-| └─ x86-builder-1 | 8 vCPU    | 8GB    | 64GB Boot                                     |                  | Debian  |                      | Docker builds                  |
+| picard           | i7-12700K | 64GB   | 1TB Boot + Disks                              |                  | Proxmox | SilverStone RM21-308 | Hypervisor                     |
+| └─ data          | 8 vCPUs   | 8GB    | 32GB USB 4x4TB+1TB (Array) + 2x2TB SSD (Data) |                  | Unraid  |                      | Media/file storage and backups |
+| └─ x86-builder-1 | 8 vCPUs   | 8GB    | 64GB Boot                                     |                  | Debian  |                      | Docker builds                  |
 | -                |           |        |                                               |                  |         |                      |                                |
 | discovery        | i7-14700K | 64GB   | 1TB Boot + 1TB Ceph                           | RTX 4060 Ti 16GB | Talos   | SilverStone RM400    | Talos node with da GPU         |
 | voyager          | i7-13700K | 64GB   | 500GB Boot + 1TB Ceph                         |                  | Talos   | SilverStone RM23-502 |                                |
