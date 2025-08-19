@@ -1,0 +1,32 @@
+---
+machine:
+  install:
+    diskSelector:
+      wwid: eui.0025385301b0a063 # Samsung SSD 970 EVO Plus 500GB
+    image: factory.talos.dev/metal-installer-secureboot/292e18ead18d085ced96563e1c4d15645d5b5c7154c11d95e10074848b2730a8:v1.11.0-beta.2
+  network:
+    hostname: titan
+    interfaces:
+      - interface: bond0
+        addresses:
+          - 192.168.42.13/24
+          - 2404:e80:661b:42::13/64
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.42.1
+        bond:
+          interfaces: []
+          deviceSelectors:
+            - hardwareAddr: ec:0d:9a:b2:49:60
+              driver: mlx4_core
+          mode: active-backup
+        vlans:
+          - routes: []
+            dhcp: false
+            vlanId: 2
+        dhcp: false
+        vip:
+          ip: 192.168.42.100
+  nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
+  type: controlplane

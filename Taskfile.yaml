@@ -10,14 +10,15 @@ vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
   SCRIPTS_DIR: "{{.ROOT_DIR}}/scripts"
   TALOS_DIR: "{{.ROOT_DIR}}/talos"
-  PRIVATE_DIR: "{{.ROOT_DIR}}/.private"
-  TALOSCONFIG: "{{.ROOT_DIR}}/talos/clusterconfig/talosconfig"
+
+dotenv:
+  - "{{.ROOT_DIR}}/onepassword.env"
 
 env:
   KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
   MINIJINJA_CONFIG_FILE: "{{.ROOT_DIR}}/.minijinja.toml"
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
-  TALOSCONFIG: "{{.TALOSCONFIG}}"
+  TALOSCONFIG: "{{.ROOT_DIR}}/talosconfig"
 
 includes:
   bootstrap: .taskfiles/bootstrap
@@ -27,11 +28,6 @@ includes:
   workstation: .taskfiles/workstation
 
 tasks:
-  default: task --list
-
-  reconcile:
-    desc: Force Flux to pull in changes from your Git repository
-    cmd: flux --namespace flux-system reconcile kustomization flux-system --with-source
-    preconditions:
-      - test -f {{.KUBECONFIG}}
-      - which flux
+  default:
+    cmd: task --list
+    silent: true
