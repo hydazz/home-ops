@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      server:
+      immich:
         containers:
           app:
             image:
@@ -27,9 +27,9 @@ spec:
             env: &env
               DB_PORT: "5432"
               ENABLE_MAPBOX: "false"
-              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003
+              IMMICH_MACHINE_LEARNING_URL: http://localhost:3003
               IMMICH_MEDIA_LOCATION: /photos
-              IMMICH_SERVER_URL: http://immich-server.media.svc.cluster.local:2283
+              IMMICH_SERVER_URL: http://localhost:2283
               LOG_LEVEL: verbose
               NODE_ENV: "production"
               REDIS_HOSTNAME: dragonfly.databases.svc.cluster.local
@@ -60,9 +60,7 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
-      machine-learning:
-        containers:
-          app:
+          machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.138.1@sha256:f34e855424fd91c5990132e5b2bde91e1d178ec5205de293ebd8779839a4a77c
@@ -90,16 +88,10 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      server:
-        controller: server
+      app:
         ports:
           http:
             port: *port
-      machine-learning:
-        controller: machine-learning
-        ports:
-          http:
-            port: 3003
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
@@ -107,10 +99,6 @@ spec:
           - name: external
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: server
-                port: *port
     persistence:
       library:
         type: nfs
@@ -120,10 +108,8 @@ spec:
           - path: /photos
       machine-learning-cache:
         existingClaim: "{{ .Release.Name }}-cache"
-        advancedMounts:
-          machine-learning:
-            app:
-              - path: /cache
+        globalMounts:
+          - path: /cache
       tmpfs:
         type: emptyDir
         globalMounts:
