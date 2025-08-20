@@ -58,7 +58,6 @@ spec:
         cronjob:
           <<: *cronJobSpec
           schedule: "@weekly"
-          suspend: true
         containers:
           app:
             <<: *container
