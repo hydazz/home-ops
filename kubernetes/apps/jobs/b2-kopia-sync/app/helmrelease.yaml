@@ -73,7 +73,7 @@ spec:
 
                 kopia repository sync-to b2 \
                   --bucket="${B2_BUCKET}" \
-                  --prefix="${B2_PREFIX}" \
+                  --prefix="${B2_PREFIX}/" \
                   --key-id="${B2_ACCESS_KEY_ID}" \
                   --key="${B2_SECRET_ACCESS_KEY}" \
                   --delete \
