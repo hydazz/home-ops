@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: b2-sync
+  name: b2-kopia-sync
 spec:
   interval: 1h
   chartRef:
@@ -17,7 +17,7 @@ spec:
       retries: 3
   values:
     controllers:
-      kopia-sync:
+      sync-main:
         type: cronjob
         cronjob: &cronJobSpec
           schedule: "@daily"
@@ -46,7 +46,7 @@ spec:
 
                 # Validate environment variables
                 echo "=== Environment Validation ==="
-                for var in KOPIA_PASSWORD B2_ACCESS_KEY_ID B2_SECRET_ACCESS_KEY; do
+                for var in KOPIA_PASSWORD B2_ACCESS_KEY_ID B2_SECRET_ACCESS_KEY B2_BUCKET B2_PREFIX; do
                   if [[ -z "${!var:-}" ]]; then
                     echo "ERROR: Required environment variable $var is not set"
                     exit 1
@@ -67,11 +67,13 @@ spec:
                 # Start sync
                 echo "=== Starting Kopia Sync to B2 ==="
                 echo "Target bucket: ${B2_BUCKET}"
+                echo "Target prefix: ${B2_PREFIX}"
                 echo
                 echo "Sync progress:"
 
                 kopia repository sync-to b2 \
                   --bucket="${B2_BUCKET}" \
+                  --prefix="${B2_PREFIX}" \
                   --key-id="${B2_ACCESS_KEY_ID}" \
                   --key="${B2_SECRET_ACCESS_KEY}" \
                   --delete \
@@ -88,22 +90,22 @@ spec:
                 printf '=%.0s' {1..50}
                 echo
             env:
-              - name: B2_BUCKET
-                value: "b2backup-kopia"
+              B2_BUCKET: b2backup-kopia
+              B2_PREFIX: main
             envFrom: &secret
               - secretRef:
-                  name: kopia-sync-secret
-      volsync-sync:
+                  name: b2-kopia-sync-secret
+      sync-volsync:
         type: cronjob
         cronjob:
           <<: *cronJobSpec
-          schedule: "0 4 * * *"
+          #schedule: "0 4 * * *"
         containers:
           app:
             <<: *container
             env:
-              - name: B2_BUCKET
-                value: "b2backup-k8s"
+              B2_BUCKET: b2backup-kopia
+              B2_PREFIX: volsync
             envFrom: *secret
     defaultPodOptions:
       securityContext:
@@ -120,11 +122,11 @@ spec:
         server: 192.168.42.20
         path: /mnt/user/Backups/Kopia
         advancedMounts:
-          kopia-sync:
+          sync-main:
             app:
               - path: /repository
                 subPath: Main
-          volsync-sync:
+          sync-volsync:
             app:
               - path: /repository
                 subPath: Volsync

@@ -6,4 +6,4 @@ namespace: jobs
 components:
   - ../../components/common
 resources:
-  - ./b2-sync/ks.yaml
+  - ./b2-kopia-sync/ks.yaml

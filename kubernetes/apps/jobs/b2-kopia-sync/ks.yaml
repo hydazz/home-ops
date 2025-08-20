@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app b2-sync
+  name: &app b2-kopia-sync
   namespace: &namespace jobs
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/jobs/b2-sync/app
+  path: ./kubernetes/apps/jobs/b2-kopia-sync/app
   prune: true
   retryInterval: 2m
   sourceRef:
