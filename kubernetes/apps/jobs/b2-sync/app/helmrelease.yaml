@@ -27,7 +27,7 @@ spec:
           failedJobsHistory: 1
           timeZone: "Australia/Melbourne"
         containers:
-          app:
+          app: &container
             image:
               repository: ghcr.io/home-operations/kopia
               tag: 0.21.1@sha256:f666b5f2c1ea4649cd2bd703507d4b81c2b515782e8476ba4a145b091a704a53
@@ -36,23 +36,61 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                echo -e "\033[1;34m[INFO] Connecting to Kopia repository...\033[0m"
+
+                # Setup environment
+                export KOPIA_CHECK_FOR_UPDATES=false
+
+                echo "=== Kopia Repository Sync ==="
+                echo "Container started at: $(date)"
+                echo
+
+                # Validate environment variables
+                echo "=== Environment Validation ==="
+                for var in KOPIA_PASSWORD B2_ACCESS_KEY_ID B2_SECRET_ACCESS_KEY; do
+                  if [[ -z "${!var:-}" ]]; then
+                    echo "ERROR: Required environment variable $var is not set"
+                    exit 1
+                  fi
+                  echo "$var: [SET]"
+                done
+                echo
+
+                # Connect to repository
+                echo "=== Connecting to Kopia Repository ==="
                 kopia repository connect filesystem \
-                  --path /data/kopia \
+                  --path=/repository \
                   --readonly \
                   --password="${KOPIA_PASSWORD}"
-                echo -e "\033[1;34m[INFO] Starting Kopia sync-to B2...\033[0m"
-                # best way i've found to get the logs outputted ¯\_(ツ)_/¯
-                stdbuf -oL -eL \
-                  kopia repository sync-to b2 \
-                    --bucket=b2backup-kopia \
-                    --key-id="${B2_ACCESS_KEY_ID}" \
-                    --key="${B2_SECRET_ACCESS_KEY}" \
-                    --delete \
-                    --parallel=8 2>&1 | \
-                  stdbuf -oL sed 's/\r/\n/g'
-                echo -e "\033[1;32m[SUCCESS] Kopia sync complete.\033[0m"
-            envFrom:
+                echo "Repository connection successful"
+                echo
+
+                # Start sync
+                echo "=== Starting Kopia Sync to B2 ==="
+                echo "Target bucket: ${B2_BUCKET}"
+                echo
+                echo "Sync progress:"
+
+                kopia repository sync-to b2 \
+                  --bucket="${B2_BUCKET}" \
+                  --key-id="${B2_ACCESS_KEY_ID}" \
+                  --key="${B2_SECRET_ACCESS_KEY}" \
+                  --delete \
+                  --parallel=8 </dev/null \
+                || {
+                  echo
+                  echo "ERROR: Kopia sync failed"
+                  exit 1
+                }
+
+                echo
+                echo "=== Sync Operation Complete ==="
+                echo "Repository sync completed successfully at: $(date)"
+                printf '=%.0s' {1..50}
+                echo
+            env:
+              - name: B2_BUCKET
+                value: "b2backup-kopia"
+            envFrom: &secret
               - secretRef:
                   name: kopia-sync-secret
       volsync-sync:
@@ -62,45 +100,31 @@ spec:
           schedule: "0 4 * * *"
         containers:
           app:
-            image:
-              repository: docker.io/restic/restic
-              tag: 0.18.0@sha256:4cf4a61ef9786f4de53e9de8c8f5c040f33830eb0a10bf3d614410ee2fcb6120
-            command:
-              - /bin/sh
-              - -c
-              - |
-                set -eu
-                apk add --no-cache rclone -qq
-                echo -e "\033[1;33m[SYNC] Syncing /data/volsync → b2:b2backup-k8s:volsync\033[0m"
-                rclone sync \
-                  /data/volsync \
-                  ":b2,account=$B2_ACCOUNT_ID,key=$B2_ACCOUNT_KEY:b2backup-k8s/volsync" \
-                  --b2-hard-delete \
-                  --transfers=16 \
-                  --checkers=16
-                echo -e "\033[1;32m[OK] Rclone sync complete.\033[0m"
-                echo -e "\033[1;34m[INFO] Running restic checks on all remote repos...\033[0m"
-                for repo_dir in $(rclone lsf ":b2,account=$B2_ACCOUNT_ID,key=$B2_ACCOUNT_KEY:b2backup-k8s/volsync" --dirs-only); do
-                  repo="b2:b2backup-k8s:volsync/${repo_dir%/}"
-                  echo -e "\033[1;33m[CHECK] Running restic check on: $repo\033[0m"
-                  restic check --repo "$repo" >/dev/null
-                  echo -e "\033[1;32m[OK] Restic check passed for $repo_dir\033[0m"
-                done
-                echo -e "\033[1;32m[SUCCESS] All rclone syncs and restic checks complete.\033[0m"
-            envFrom:
-              - secretRef:
-                  name: volsync-sync-secret
+            <<: *container
+            env:
+              - name: B2_BUCKET
+                value: "b2backup-k8s"
+            envFrom: *secret
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
-      kopia-data:
+      config:
+        type: emptyDir
+      repository:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/Slow/Backups/
+        path: /mnt/user/Backups/Kopia
         advancedMounts:
           kopia-sync:
             app:
-              - path: /data/kopia
-                subPath: Kopia
+              - path: /repository
+                subPath: Main
           volsync-sync:
             app:
-              - path: /data/volsync
+              - path: /repository
                 subPath: Volsync
