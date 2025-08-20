@@ -17,7 +17,7 @@ spec:
       retries: 3
   values:
     controllers:
-      sync-main:
+      main:
         type: cronjob
         cronjob: &cronJobSpec
           schedule: "@daily"
@@ -95,7 +95,7 @@ spec:
             envFrom: &secret
               - secretRef:
                   name: b2-kopia-sync-secret
-      sync-volsync:
+      volsync:
         type: cronjob
         cronjob:
           <<: *cronJobSpec
@@ -122,11 +122,11 @@ spec:
         server: 192.168.42.20
         path: /mnt/user/Backups/Kopia
         advancedMounts:
-          sync-main:
+          main:
             app:
               - path: /repository
                 subPath: Main
-          sync-volsync:
+          volsync:
             app:
               - path: /repository
                 subPath: Volsync
