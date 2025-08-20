@@ -44,8 +44,6 @@ spec:
       namespace: media
     - name: dragonfly-cluster
       namespace: databases
-    - name: keda
-      namespace: observability
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
