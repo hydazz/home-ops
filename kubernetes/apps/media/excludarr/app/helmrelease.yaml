@@ -21,7 +21,8 @@ spec:
       excludarr:
         type: cronjob
         cronjob:
-          schedule: "@daily"
+          schedule: "@weekly"
+          suspend: true
           backoffLimit: 0
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
@@ -37,13 +38,40 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                for i in radarr sonarr; do
-                  echo -e "\033[1;34m[INFO] Running exclude for '$i'...\033[0m"
-                  poetry run -C /app excludarr "$i" exclude -a not-monitored -d -y
-                  echo -e "\033[1;34m[INFO] Running re-add for '$i'...\033[0m"
-                  poetry run -C /app excludarr "$i" re-add -y
-                  echo -e "\033[1;32m[SUCCESS] Finished processing '$i'.\033[0m"
+
+                echo "=== Excludarr Content Management ==="
+                echo "Container started at: $(date)"
+                echo
+
+                for service in radarr sonarr; do
+                  echo "=== Processing ${service^} ==="
+                  echo "Target service: $service"
+                  echo
+
+                  echo "--- Running exclude operation ---"
+                  poetry run -C /app excludarr "$service" exclude -a not-monitored -d -y || {
+                    echo "ERROR: Exclude operation failed for $service"
+                    exit 1
+                  }
+                  echo "Exclude operation completed for $service"
+                  echo
+
+                  echo "--- Running re-add operation ---"
+                  poetry run -C /app excludarr "$service" re-add -y || {
+                    echo "ERROR: Re-add operation failed for $service"
+                    exit 1
+                  }
+                  echo "Re-add operation completed for $service"
+                  echo
+
+                  echo "=== ${service^} Processing Complete ==="
+                  echo
                 done
+
+                echo "=== All Operations Complete ==="
+                echo "Content management completed successfully at: $(date)"
+                printf '=%.0s' {1..50}
+                echo
             resources:
               requests:
                 cpu: 10m
