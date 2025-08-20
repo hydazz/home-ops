@@ -21,28 +21,6 @@ spec:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          gluetun:
-            image:
-              repository: ghcr.io/qdm12/gluetun
-              tag: v3.40.0@sha256:2b42bfa046757145a5155acece417b65b4443c8033fb88661a8e9dcf7fda5a00
-            env:
-              DNS_ADDRESS: 1.1.1.1
-              VPN_SERVICE_PROVIDER: custom
-              VPN_TYPE: wireguard
-              VPN_INTERFACE: wg0
-              WIREGUARD_ENDPOINT_PORT: 1443
-              FIREWALL_VPN_INPUT_PORTS: &bittorrentPort 54913
-              FIREWALL_INPUT_PORTS: &port 80
-              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
-            restartPolicy: Always
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
-            securityContext:
-              #capabilities: { add: ["NET_ADMIN"] }
-              #allowPrivilegeEscalation: false
-              privileged: true
         containers:
           app:
             image:
@@ -50,20 +28,20 @@ spec:
               tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
             env:
               TZ: Australia/Melbourne
-              QBT_WEBUI_PORT: *port
-              QBITTORRENT__BT_PORT: *bittorrentPort
+              QBT_WEBUI_PORT: &port 80
+              QBT_TORRENTING_PORT: &torrentPort 50413
             probes:
               liveness: &probes
-                enabled: false
+                enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /api/v2/app/version
                     port: *port
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 6
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               readiness: *probes
               startup:
                 enabled: true
@@ -71,28 +49,36 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
             securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-              runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 250m
-                memory: 256Mi
-              #limits:
-              #  cpu: 8
-              #  memory: 2Gi
+                cpu: 100m
+              limits:
+                memory: 18Gi
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
+        forceRename: *app
+        primary: true
         ports:
           http:
             port: *port
+      bittorrent:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.42.155
+        ports:
+          bittorrent-tcp:
+            port: *torrentPort
+            protocol: TCP
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${D_HS}"]
@@ -100,20 +86,18 @@ spec:
           - name: internal
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: *app
-        advancedMounts:
-          qbittorrent:
-            app:
-              - path: /config
       media:
         type: nfs
         server: 192.168.42.20
         path: /mnt/user/Media
-        advancedMounts:
-          qbittorrent:
-            app:
-              - path: /data
+        globalMounts:
+          - path: /data
       tmp:
         type: emptyDir
