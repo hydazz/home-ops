@@ -6,3 +6,4 @@ resources:
   - ./gatewayclass.yaml
   - ./helmrelease.yaml
   - ./podmonitor.yaml
+  - ./servicemonitor.yaml

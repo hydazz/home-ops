@@ -32,3 +32,10 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
+  values:
+    deployment:
+      envoyGateway:
+        rbac:
+          cluster: true
+        gateway:
+          controllerName: gateway.envoyproxy.io/gatewayclass-controller

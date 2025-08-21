@@ -3,17 +3,17 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: cloudflare
+  name: external
   labels:
-    type: cloudflare
+    type: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname cloudflare.${D_HS}
+    external-dns.alpha.kubernetes.io/target: &hostname direct.${D_HS}
 spec:
-  gatewayClassName: envoy
+  gatewayClassName: envoy-gateway
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.42.140
+      lbipam.cilium.io/ips: 192.168.42.130
   listeners:
     - name: https
       protocol: HTTPS

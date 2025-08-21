@@ -9,7 +9,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.${D_HS}
 spec:
-  gatewayClassName: envoy
+  gatewayClassName: envoy-gateway
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
