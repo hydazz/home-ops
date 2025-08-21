@@ -200,10 +200,9 @@ spec:
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values: [mailu-dovecot]
+                matchLabels:
+                  app.kubernetes.io/name: mailu
+                  app.kubernetes.io/component: admin
               topologyKey: kubernetes.io/hostname
       # this should never be created
       persistence:
