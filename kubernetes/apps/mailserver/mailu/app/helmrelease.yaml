@@ -196,6 +196,15 @@ spec:
         type: Recreate
       compression: lz4
       compressionLevel: 6
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values: [mailu-dovecot]
+              topologyKey: kubernetes.io/hostname
       # this should never be created
       persistence:
         size: 1Mi
