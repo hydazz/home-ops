@@ -7,7 +7,7 @@ metadata:
 spec:
   sourcePVC: "${APP}"
   trigger:
-    schedule: "0 0 * * *"
+    schedule: "0 */6 * * *"
   kopia:
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}"]
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
@@ -21,10 +21,7 @@ spec:
       fsGroup: ${VOLSYNC_PGID:=1000}
     repository: "${APP}-volsync-secret"
     retain:
-      hourly: 0
+      hourly: 4
       daily: 7
-      weekly: 4
-      monthly: 12
-      yearly: 1
     storageClassName: "${VOLSYNC_STORAGECLASS:=ceph-block}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}"
