@@ -10,12 +10,10 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname cloudflare.${D_HS}
 spec:
   gatewayClassName: envoy
-  addresses:
-    - type: IPAddress
-      value: 192.168.42.140
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      lbipam.cilium.io/ips: 192.168.42.140
   listeners:
     - name: https
       protocol: HTTPS
