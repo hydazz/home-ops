@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hydazz/nut-server
-              tag: 2.8.4@sha256:db60850384ddb475b2b3c23fc08276156b3ff5dd3f8101ec720a3a76fe59f1b0
+              tag: 2.8.4@sha256:24b274cbb8ad12d43abba6fce3340ecc2c009c02cf7a6a275be23ff49e0b177b
             env:
               TZ: Australia/Melbourne
             securityContext:
