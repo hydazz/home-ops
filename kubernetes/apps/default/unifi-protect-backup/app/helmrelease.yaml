@@ -24,8 +24,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/ep1cman/unifi-protect-backup
-              tag: 0.14.0@sha256:2ef7dda428085dd64b2323931e78f8a87426c971d69148bcd806b4c50b8d2768
+              repository: ghcr.io/hydazz/unifi-protect-backup
+              tag: 0.14.0@sha256:a5150587f613772755ffb09748253755aa3a7a24459b9d44adebc84797c2acd1
             env:
               TZ: Australia/Melbourne
               DETECTION_TYPES: person,vehicle,ring
@@ -33,8 +33,6 @@ spec:
               FILE_STRUCTURE_FORMAT: "{camera_name}/{event.start:%d-%m-%Y}/{event.end:%I-%M-%S%p} {detection_type}.mp4"
               MAX_EVENT_LENGTH: "7200"
               PARALLEL_UPLOADS: "1"
-              PGID: "1000"
-              PUID: "1000"
               PURGE_INTERVAL: 1d
               RCLONE_DESTINATION: cloudflare:/unifi-protect
               RCLONE_RETENTION: 1d
@@ -48,19 +46,17 @@ spec:
                   name: unifi-protect-secret
             securityContext:
               allowPrivilegeEscalation: false
-              # s6-bullshit
-              # readOnlyRootFilesystem: false
-              # capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
                 memory: 256Mi
     defaultPodOptions:
       securityContext:
-        # s6-bullshit
-        # runAsNonRoot: true
-        # runAsUser: 1000
-        # runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
@@ -73,6 +69,6 @@ spec:
         type: configMap
         name: "{{ .Release.Name }}-rclone-configmap"
         globalMounts:
-          - path: /config/rclone/rclone.conf
+          - path: /config/rclone.conf
             subPath: rclone.conf
             readOnly: true
