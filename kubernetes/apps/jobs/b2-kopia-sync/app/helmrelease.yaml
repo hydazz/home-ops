@@ -120,7 +120,7 @@ spec:
       repository:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/user/Backups/Kopia
+        path: /mnt/Slow/Backups/Kopia
         advancedMounts:
           main:
             app:

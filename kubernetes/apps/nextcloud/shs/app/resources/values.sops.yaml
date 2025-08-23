@@ -3,7 +3,7 @@ nextcloud:
         - name: ENC[AES256_GCM,data:/6xvlYcgBks=,iv:+DQgArgbLtfxyqnXyXV8MH7TbLL+VMaizW9cKCmxg4M=,tag:hxlryEiWW6FIhsRXKAtz0A==,type:str]
           nfs:
             server: ENC[AES256_GCM,data:qodu5DyBT9MBONvrmQ==,iv:qYBgZ9s8vLdqOCmmo1ioRAN3P6E7gxPiJ9TCgye1kdQ=,tag:nAabDyit24RnuzbRJOclSQ==,type:str]
-            path: ENC[AES256_GCM,data:m397Xhm6vqAqWIWmOrM=,iv:zVE1bzUmPMpIo5Oi4v7+NJM/uc67S/6jhuGkKJXPp0Q=,tag:UdU6qdVVu4M7KZuXI+aeYA==,type:str]
+            path: ENC[AES256_GCM,data:G1tOAi2u2hqehDKTBV4=,iv:d19x1AsRv8Vos7rJojjqNsQKgyCKEO4jboUpnjJpJeU=,tag:VuPuTzPPYVLcuBB18/lWcg==,type:str]
         - name: ENC[AES256_GCM,data:NbKwvPw=,iv:LjRgMakVj++jrcb/QdGx7Jvc3x/NX5HZ4giv1iO5R5c=,tag:yHkDkSSBdpfJQVlMfGpUbA==,type:str]
           emptyDir: {}
     extraVolumeMounts:
@@ -29,7 +29,7 @@ sops:
             b3F0Q0JaNUczWTE5YmZscTM1cEFjSWsKV7LMrWsga3VXVwbmu5dxyzIs1T7ig076
             W4p0Rr7Qhf90+WiJoteRpfFZkte3ojuCdGi5s55Jx6pq+X8NoklToQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-08-16T07:27:15Z"
-    mac: ENC[AES256_GCM,data:jX/pLuAKBC6OiGLThdWYIUIocKGHT1aP0GrkTjY+vjWERurohxpbVkbt2cxge7vxllHmFadLd1I6QmhDChr5n6dS1cNPRNNV9u2k3Qt+WmrEAVAhE5CEJvUb5pKn2/aysVMHM1G3uptG3dcAvCmDckutmctvVL3aMowV3gQm930=,iv:OFihkpkzFohmxKRTkkW7XJ2xDOWkhN+jets8AxWtJgM=,tag:BXPkLPZ860FZw1rGybsOiQ==,type:str]
+    lastmodified: "2025-08-23T15:11:06Z"
+    mac: ENC[AES256_GCM,data:wetGQbnChTpyQQr0pwtorAY/SqHN1K5eoMTU9aCVh0T7XhDtXwCDKrXQ5V3mcwaHh7IPAnqwmgZ5AskXFLx0HWVRdZ90wBSyKygErHz4SCQKLSCCQc9ESrSkDfrc45MaGtl0DOwXQhb8ds2wSvl/0PykcvvcgT8wtiK/P61vK7M=,iv:xToeFnJfZdWy/izyIqyoTUuFkihV7hTXTKp6b/i6V2o=,tag:nHjWHxVEXDa4jj5f68wb1A==,type:str]
     encrypted_regex: ^(nextcloud)$
     version: 3.10.2

@@ -3,23 +3,23 @@ nextcloud:
         - name: ENC[AES256_GCM,data:FT8VZt7ZtKEV8A==,iv:Vg4eU9YEP2oR4YM8iteh3Xpag1SXXXWSCR48LF/Tl88=,tag:o+OapQjtUr6elHKRK40TMA==,type:str]
           nfs:
             server: ENC[AES256_GCM,data:YKlPTD7nHfhrSDXD9A==,iv:OFTViRSCq4ZZj6vjS7rAF1UcgzCan/zAMSIp1IEzmds=,tag:7D65cXnvNQVvl+nt5RgK5Q==,type:str]
-            path: ENC[AES256_GCM,data:aBBI46JtOFwGI7vMJnpjKQ==,iv:/v++J+EZi1K9UhMNQI1GMEVAtYkS+s0asu/6z5Pgs1s=,tag:TZBbZ7pJtPXHUJDCh0OtBw==,type:str]
+            path: ENC[AES256_GCM,data:6UVDjv722riMJ82CvK4ULw==,iv:cjxIT8EjpvlqXEr+a8M6y5QlemeqfUS/nEkuLnCVNtk=,tag:z2cWm4c8mzp6YSf9bqNpiA==,type:str]
         - name: ENC[AES256_GCM,data:yWXCnZlsWZPTyw==,iv:UOqSSmXWBv3hfCGjcQCp5w4C16ufKMx2DGONmf18L4o=,tag:laz1MYOfmgk6E83Bpc0kzA==,type:str]
           nfs:
             server: ENC[AES256_GCM,data:YKlPTD7nHfhrSDXD9A==,iv:OFTViRSCq4ZZj6vjS7rAF1UcgzCan/zAMSIp1IEzmds=,tag:7D65cXnvNQVvl+nt5RgK5Q==,type:str]
-            path: ENC[AES256_GCM,data:4P4PZgEBtGIhlhkS0m/F4Q==,iv:7yrcq8GbllXAGbxyIZRWn+RQ5hu3PRIJxwTHc3H3/9Q=,tag:Mo+aVLw7b3Z8WGU+v9t2BA==,type:str]
+            path: ENC[AES256_GCM,data:ngGZG/2Q7id23Y7qh0KK5w==,iv:GzkApAz3+8HuwZgVfsfyY3trDFjbERms7KpMpmiKBFA=,tag:mtIYnxx8nKfTv6Lh3j3PVw==,type:str]
         - name: ENC[AES256_GCM,data:fCw1b5P/WWn+4rRV,iv:kXKkb/CnDax7qewPTq5eugc3XwHX5J4i156LLcELpzk=,tag:sJ4+s1J/InCQmDdfeNcpaQ==,type:str]
           nfs:
             server: ENC[AES256_GCM,data:YKlPTD7nHfhrSDXD9A==,iv:OFTViRSCq4ZZj6vjS7rAF1UcgzCan/zAMSIp1IEzmds=,tag:7D65cXnvNQVvl+nt5RgK5Q==,type:str]
-            path: ENC[AES256_GCM,data:dczhPGrE3N6/ZKYi2x+64i1N,iv:du6AFJ4navGE7wP7Uz9OeXQFXy40Cao2Ev2kIkgn2AI=,tag:zpK7Ll2HQb/fLZ2ykGODsw==,type:str]
+            path: ENC[AES256_GCM,data:HHW2MUnCWnDg3vYKu1RoSZzX,iv:j9fsQbiNwi7NKJaqtZVuwYmMgPDXGwCqdjnWpwSvE3U=,tag:0eRnlBREwG5xA2n+4F+BSg==,type:str]
         - name: ENC[AES256_GCM,data:Rv1sB78kLqtCDWE=,iv:WN79m5LmmMsBYXoJKCPZfvBL+XH75LIUFTR6lvEAN3c=,tag:hjuaOma2bwlfQ5kFyPRbcA==,type:str]
           nfs:
             server: ENC[AES256_GCM,data:YKlPTD7nHfhrSDXD9A==,iv:OFTViRSCq4ZZj6vjS7rAF1UcgzCan/zAMSIp1IEzmds=,tag:7D65cXnvNQVvl+nt5RgK5Q==,type:str]
-            path: ENC[AES256_GCM,data:ctUAeBcts3TYbT7b8mYfrxY=,iv:SgOsnvy63UCNtYdG4DxWMTmZRzLGh1XuVqVneDhmrNk=,tag:C5e/56bezVRHU9AjawTnxw==,type:str]
+            path: ENC[AES256_GCM,data:5l5uE1s/B/cM0cyzGmByFjU=,iv:7BQyk2tRqAXJBeiv+7Ob68w0ATluO3sr+ks0666IbIU=,tag:+hn2Q/WKJfcw+JKc1kxESw==,type:str]
         - name: ENC[AES256_GCM,data:1YIhn2joT0fmvw==,iv:YfiMkvVPZYehHgHL65mrJ3Osx33DpHuAgCwnWMqvNFY=,tag:SE0JVSHxA+2dOi8/g98omA==,type:str]
           nfs:
             server: ENC[AES256_GCM,data:YKlPTD7nHfhrSDXD9A==,iv:OFTViRSCq4ZZj6vjS7rAF1UcgzCan/zAMSIp1IEzmds=,tag:7D65cXnvNQVvl+nt5RgK5Q==,type:str]
-            path: ENC[AES256_GCM,data:8Ha3WM16gSWe6/WG25OUaA==,iv:xRCGKcH+/U768KZ96+QnL7RDVWx1QkhBo37+ZFlimQs=,tag:Pl+PXwVuqcELJPNtMpv3fw==,type:str]
+            path: ENC[AES256_GCM,data:31uMsgMCJgtAEH6PEvQ2sA==,iv:atjNPOUsfLFRwGsE5Um992wG72Fs6Sxg38sB+kVzde0=,tag:TKYOWf1kAtXYE3kqRa8nvg==,type:str]
         - name: ENC[AES256_GCM,data:2+5l3l8=,iv:yqzfiuQG8DKyr2oc0N5VYtavBqnq45phqxDe5tQGRmc=,tag:yqnnTYQm1bMmwkz4nLK9dw==,type:str]
           emptyDir: {}
     extraVolumeMounts:
@@ -53,7 +53,7 @@ sops:
             b3F0Q0JaNUczWTE5YmZscTM1cEFjSWsKV7LMrWsga3VXVwbmu5dxyzIs1T7ig076
             W4p0Rr7Qhf90+WiJoteRpfFZkte3ojuCdGi5s55Jx6pq+X8NoklToQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-08-16T07:27:19Z"
-    mac: ENC[AES256_GCM,data:F22xjIpXG8y/8rxhePtVCeKj1f1qTRAhuoSmubiKdJdp7FAed/J4kERac8aHnfxWelpQzdtCX9l4q1GWrg4ykA3Fb3wrDorxd8zgvKVCLrfZwum/QYavMzgZKLesXKyKShiGAlPZdBnSaCgWv/wlAECDeAgNv0WEo7Br7AKrzmc=,iv:NW60IukapPm+Lj82LMKnLCXTUdlhBrs/698Eh28gAPQ=,tag:S8p8wKZZ9VJT6o/O7eMi8Q==,type:str]
+    lastmodified: "2025-08-23T15:11:02Z"
+    mac: ENC[AES256_GCM,data:nIL8Vm9khf3VTrwD7N4ZQdLSGaiXWaG4ZuX9XcRXUnOS1Da1j2pgUQhykEy2+1G+FEFxCmWF1ntVjOSC1fm3xfZxtGoaWhbM+hdtYNOVRLdnADZmrTyclMZb88qxabHQU2Bt8Ofiru3YNWa9p8U/0wrCbcg8oCJ5BZRkL17RHrQ=,iv:b0HNEmzOcy6qd9p41SeLAVplcMqlWpg2rXIv+6Byumo=,tag:8puT0PhLXSx6JQcPzWwBbw==,type:str]
     encrypted_regex: ^(nextcloud)$
     version: 3.10.2

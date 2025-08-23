@@ -134,7 +134,7 @@ spec:
       media:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/user/Public/Paperless/media
+        path: /mnt/Fast/Public/Paperless/media
         advancedMounts:
           paperless:
             app:

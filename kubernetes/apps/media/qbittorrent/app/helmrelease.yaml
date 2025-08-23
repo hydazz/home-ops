@@ -96,8 +96,9 @@ spec:
       media:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/user/Media
+        path: /mnt/Slow/Media
         globalMounts:
           - path: /data
+            readOnly: true
       tmp:
         type: emptyDir
