@@ -30,3 +30,8 @@ machine:
   nodeLabels:
     intel.feature.node.kubernetes.io/gpu: "true"
   type: controlplane
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m
