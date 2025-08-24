@@ -99,6 +99,5 @@ spec:
         path: /mnt/Slow/Media
         globalMounts:
           - path: /data
-            readOnly: true
       tmp:
         type: emptyDir
