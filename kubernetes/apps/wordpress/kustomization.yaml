@@ -8,6 +8,7 @@ components:
 resources:
   - ./hca/ks.yaml
   - ./lmvca/ks.yaml
+  - ./shca/ks.yaml
 configMapGenerator:
   - name: wordpress-nginx-configmap
     files:
