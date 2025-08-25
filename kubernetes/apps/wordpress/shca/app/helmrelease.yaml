@@ -27,6 +27,7 @@ spec:
               repository: ghcr.io/hydazz/wordpress
               tag: 6.8.2@sha256:2104fb4f5883656260c103a85b3b28f75dc865117bb9176386eb5d8cddbe4194
             command:
+              # does not copy default themes and plugins, these need to be manually copied on first run
               - /bin/sh
               - -c
               - |
@@ -62,16 +63,7 @@ spec:
               tag: 1.29.1-alpine@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8
             probes:
               liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &port 8080
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 6
+                enabled: false
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
@@ -94,7 +86,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: &port 8080
     route:
       app:
         hostnames: ["shop.${D_HCA}", "store.${D_HCA}"]
