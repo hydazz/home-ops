@@ -25,7 +25,7 @@ spec:
           init-wp:
             image: &image
               repository: ghcr.io/hydazz/wordpress
-              tag: 6.8.2@sha256:2104fb4f5883656260c103a85b3b28f75dc865117bb9176386eb5d8cddbe4194
+              tag: 6.8.2@sha256:ccda18e1c924abf5bc0249c4ebc04f4aff148286c77a72da42b4b72f1101c5f7
             command:
               # does not copy default themes and plugins, these need to be manually copied on first run
               - /bin/sh
