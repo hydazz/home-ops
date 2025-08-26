@@ -28,6 +28,7 @@ spec:
               tag: 1.42.1.10060@sha256:04563be281364ba2462285aacb2ca13d7ef7e1d0b19e1203f4c19b4a56840c5c
             env:
               TZ: Australia/Melbourne
+              PLEX_ADVERTISE_URL: https://plex.${D_HS}:443,http://192.168.42.151:32400
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
             probes:
               liveness: &probes
@@ -64,6 +65,7 @@ spec:
             - weight: 100
               preference:
                 matchExpressions:
+                  # discovery has better cooling
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
@@ -82,6 +84,28 @@ spec:
         ports:
           http:
             port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        parentRefs:
+          - name: external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove: ["Range"]
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /library/streams
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: *app

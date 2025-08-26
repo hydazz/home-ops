@@ -10,11 +10,11 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    #   - ../../../../components/gatus/external # add later
+    - ../../../../components/gatus/external
     - ../../../../components/keda/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-    - name: nvidia-device-plugin
+    - name: intel-device-plugin-gpu
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -26,6 +26,7 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_GROUP: *namespace
       GATUS_PATH: /web/index.html
       VOLSYNC_CAPACITY: 16Gi
   prune: true
@@ -42,17 +43,14 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app plex-image-cleanup
+  name: &app plex-tools
   namespace: &namespace media
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: plex
-      namespace: media
   interval: 1h
-  path: ./kubernetes/apps/media/plex/image-cleanup
+  path: ./kubernetes/apps/media/plex/tools
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -61,4 +59,4 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: true
+  wait: false
