@@ -25,7 +25,7 @@ spec:
           init-wp:
             image: &image
               repository: ghcr.io/hydazz/wordpress
-              tag: 6.8.2@sha256:2f12f40736a6fe426abc2d7f430775246372b1a4bd2cab246a09deecb049998c
+              tag: 6.8.2@sha256:2c5b70b6fa9d723caf1876ace6c7d5cdba6fbfd0cd6366be126f883001392078
             command: ["/scripts/bootstrap.sh"]
         containers:
           app:
