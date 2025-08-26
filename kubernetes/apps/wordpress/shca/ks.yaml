@@ -26,7 +26,7 @@ spec:
     substitute:
       APP: *app
       GATUS_GROUP: *namespace
-      GATUS_SUBDOMAIN: www
+      GATUS_SUBDOMAIN: store
       GATUS_DOMAIN: "${D_HCA}"
       VOLSYNC_CAPACITY: 1Gi
   prune: true
