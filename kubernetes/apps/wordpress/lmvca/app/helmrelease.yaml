@@ -26,17 +26,7 @@ spec:
             image: &image
               repository: ghcr.io/hydazz/wordpress
               tag: 6.8.2@sha256:47112c37a8ead18a4e0d831f1ecbfad59e4e9b29243a98bb5c1f01ae2dc590fb
-            command:
-              - /bin/sh
-              - -c
-              - |
-                if [ ! -f /var/www/html/wp-config-sample.php ]; then
-                  echo "Copying WordPress core files..."
-                  cd /usr/src/wordpress
-                  find . -maxdepth 1 ! -name wp-content ! -name . -exec cp -rL {} /var/www/html/ \; 2>/dev/null || true
-                  mkdir -p /var/www/html/wp-content/uploads 2>/dev/null || true
-                fi
-                echo "WordPress files copied successfully."
+            command: ["/scripts/bootstrap.sh"]
         containers:
           app:
             image: *image
@@ -55,7 +45,6 @@ spec:
                 cpu: 100m
                 memory: 256Mi
               limits:
-                cpu: 500m
                 memory: 512Mi
           nginx:
             image:
@@ -121,15 +110,6 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /var/www/html/wp-content
-      tmpfs:
-        type: emptyDir
-        globalMounts:
-          - path: /var/www/html
-            subPath: html
-          - path: /var/cache/nginx
-            subPath: cache-nginx
-          - path: /var/run
-            subPath: run
       php-config:
         type: configMap
         name: wordpress-php-configmap
@@ -148,3 +128,22 @@ spec:
               - path: /etc/nginx/conf.d/default.conf
                 subPath: default.conf
                 readOnly: true
+      bootstrap-script:
+        type: configMap
+        name: wordpress-bootstrap-script
+        defaultMode: 0755
+        advancedMounts:
+          wordpress:
+            init-wp:
+              - path: /scripts/bootstrap.sh
+                subPath: bootstrap.sh
+                readOnly: true
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/www/html
+            subPath: html
+          - path: /var/cache/nginx
+            subPath: cache-nginx
+          - path: /var/run
+            subPath: run

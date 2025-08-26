@@ -16,6 +16,9 @@ configMapGenerator:
   - name: wordpress-php-configmap
     files:
       - ./resources/wordpress.ini
+  - name: wordpress-bootstrap-script
+    files:
+      - ./resources/bootstrap.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
