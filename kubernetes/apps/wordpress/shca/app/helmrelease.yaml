@@ -31,7 +31,7 @@ spec:
           app:
             image: *image
             env:
-              WORDPRESS_MEMORY_LIMIT: 256M
+              WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
             envFrom:
               - secretRef:
@@ -42,10 +42,10 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
-                memory: 256Mi
-              limits:
+                cpu: 150m
                 memory: 512Mi
+              limits:
+                memory: 1Gi
           nginx:
             image:
               repository: docker.io/library/nginx
