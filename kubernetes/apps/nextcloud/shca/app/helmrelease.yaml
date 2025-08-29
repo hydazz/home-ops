@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: docker.io/library/nextcloud
-      tag: 31.0.8-fpm-alpine@sha256:520c8e63f77db9a1ca895d643f68542e2777e08ad736eae64eaedb3a1fcc11d6
+      tag: 31.0.8-fpm-alpine@sha256:bce4eb0834fac0ad0086c756053db0c54ea05af862482598bd68374d8082b8e8
       flavor: fpm-alpine
     nginx:
       enabled: true
