@@ -17,9 +17,8 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/media/unpackerr/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
+    substitute:
+      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
