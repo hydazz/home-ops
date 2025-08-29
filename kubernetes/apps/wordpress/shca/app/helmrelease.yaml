@@ -26,16 +26,17 @@ spec:
             image: &image
               repository: ghcr.io/hydazz/wordpress
               tag: 6.8.2@sha256:f6c3bf97d171c742420fe96f416254a2e06369c03b7d5963db17f0b1a580217d
-            command: ["/scripts/bootstrap.sh"]
+            command: ["/usr/bin/tail", "-f", "/dev/null"]
+            envFrom: &secret
+              - secretRef:
+                  name: "{{ .Release.Name }}-secrets"
         containers:
           app:
             image: *image
             env:
               WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secrets"
+            envFrom: *secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
