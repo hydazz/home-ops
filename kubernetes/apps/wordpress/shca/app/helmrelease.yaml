@@ -26,7 +26,7 @@ spec:
             image: &image
               repository: ghcr.io/hydazz/wordpress
               tag: 6.8.2@sha256:f6c3bf97d171c742420fe96f416254a2e06369c03b7d5963db17f0b1a580217d
-            command: ["/usr/bin/tail", "-f", "/dev/null"]
+            command: ["/scripts/bootstrap.sh"]
             envFrom: &secret
               - secretRef:
                   name: "{{ .Release.Name }}-secrets"
@@ -111,31 +111,25 @@ spec:
       php-config:
         type: configMap
         name: wordpress-php-configmap
-        advancedMounts:
-          wordpress:
-            app:
-              - path: /usr/local/etc/php/conf.d/wordpress.ini
-                subPath: wordpress.ini
-                readOnly: true
+        globalMounts:
+          - path: /usr/local/etc/php/conf.d/wordpress.ini
+            subPath: wordpress.ini
+            readOnly: true
       nginx-config:
         type: configMap
         name: wordpress-nginx-configmap
-        advancedMounts:
-          wordpress:
-            nginx:
-              - path: /etc/nginx/conf.d/default.conf
-                subPath: default.conf
-                readOnly: true
+        globalMounts:
+          - path: /etc/nginx/conf.d/default.conf
+            subPath: default.conf
+            readOnly: true
       bootstrap-script:
         type: configMap
         name: wordpress-bootstrap-script
         defaultMode: 0755
-        advancedMounts:
-          wordpress:
-            init-wp:
-              - path: /scripts/bootstrap.sh
-                subPath: bootstrap.sh
-                readOnly: true
+        globalMounts:
+          - path: /scripts/bootstrap.sh
+            subPath: bootstrap.sh
+            readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:
