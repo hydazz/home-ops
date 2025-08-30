@@ -38,6 +38,7 @@ reboot-node node:
 [doc('Render Config')]
 render-config node:
     @minijinja-cli -D "machinetype=$(just talos machine-type {{node}})" \
+        -D "nvidia_gpu_present=$(just talos nvidia-gpu-present {{node}})" \
         "{{talos_dir}}/machineconfig.yaml.j2" | op inject >"{{temp_dir}}/base.yaml"
     @minijinja-cli -D "machinetype=$(just talos machine-type {{node}})" \
         "{{talos_dir}}/nodes/{{node}}.yaml.j2" | op inject >"{{temp_dir}}/patch.yaml"
@@ -58,12 +59,16 @@ upgrade-k8s version:
 
 [doc('Upgrade Node')]
 upgrade-node node:
-    @talosctl -n "{{node}}" upgrade -i "$(just talos machine-image)" -m powercycle --timeout=10m
+    @talosctl -n "{{node}}" upgrade -i "$(just talos machine-image {{node}})" -m powercycle --timeout=10m
 
 [private]
 machine-type node:
     @minijinja-cli "{{talos_dir}}/nodes/{{node}}.yaml.j2" | yq -e '.machine.type // ""'
 
 [private]
-machine-image:
-    @minijinja-cli "{{talos_dir}}/machineconfig.yaml.j2" | yq -e '.machine.install.image // ""'
+machine-image node:
+    @minijinja-cli "{{talos_dir}}/nodes/{{node}}.yaml.j2" | yq -e '.machine.install.image // ""'
+
+[private]
+nvidia-gpu-present node:
+    @minijinja-cli "{{talos_dir}}/nodes/{{node}}.yaml.j2" | yq -e '.machine.nodeLabels."nvidia.com/gpu.present" // "false"'
