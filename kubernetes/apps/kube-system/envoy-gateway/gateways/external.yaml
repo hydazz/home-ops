@@ -15,94 +15,100 @@ spec:
       external-dns.alpha.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 192.168.42.130
   listeners:
-    - name: https
+    - &http
+      # ===== HS =====
+      name: http-hs-apex
+      protocol: HTTP
+      port: 80
+      hostname: &hs_apex "${D_HS}"
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    - <<: *http
+      name: http-hs
+      hostname: &hs "*.${D_HS}"
+
+    - &https
+      name: https-hs-apex
       protocol: HTTPS
       port: 443
-      hostname: "*.${D_HS}"
+      hostname: *hs_apex
       allowedRoutes:
         namespaces:
           from: All
-      tls:
+      tls: &tls_hs
         certificateRefs:
           - kind: Secret
             name: ${D_HS//./-}-production-tls
-    - name: https-apex
-      protocol: HTTPS
-      port: 443
-      hostname: "${D_HS}"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: ${D_HS//./-}-production-tls
 
-    - name: https-hca
-      protocol: HTTPS
-      port: 443
-      hostname: "*.${D_HCA}"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: ${D_HCA//./-}-production-tls
-    - name: https-hca-apex
-      protocol: HTTPS
-      port: 443
-      hostname: "${D_HCA}"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
+    - <<: *https
+      name: https-hs
+      hostname: *hs
+      tls: *tls_hs
+
+    # ===== HCA =====
+    - <<: *http
+      name: http-hca-apex
+      hostname: &hca_apex "${D_HCA}"
+
+    - <<: *http
+      name: http-hca
+      hostname: &hca "*.${D_HCA}"
+
+    - <<: *https
+      name: https-hca-apex
+      hostname: *hca_apex
+      tls: &tls_hca
         certificateRefs:
           - kind: Secret
             name: ${D_HCA//./-}-production-tls
 
-    - name: https-igi
-      protocol: HTTPS
-      port: 443
-      hostname: "*.${D_IGI}"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: ${D_IGI//./-}-production-tls
-    - name: https-igi-apex
-      protocol: HTTPS
-      port: 443
-      hostname: "${D_IGI}"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
+    - <<: *https
+      name: https-hca
+      hostname: *hca
+      tls: *tls_hca
+
+    # ===== IGI =====
+    - <<: *http
+      name: http-igi-apex
+      hostname: &igi_apex "${D_IGI}"
+
+    - <<: *http
+      name: http-igi
+      hostname: &igi "*.${D_IGI}"
+
+    - <<: *https
+      name: https-igi-apex
+      hostname: *igi_apex
+      tls: &tls_igi
         certificateRefs:
           - kind: Secret
             name: ${D_IGI//./-}-production-tls
 
-    - name: https-lmvca
-      protocol: HTTPS
-      port: 443
-      hostname: "*.${D_LMVCA}"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
+    - <<: *https
+      name: https-igi
+      hostname: *igi
+      tls: *tls_igi
+
+    # ===== LMVCA =====
+    - <<: *http
+      name: http-lmvca-apex
+      hostname: &lmvca_apex "${D_LMVCA}"
+
+    - <<: *http
+      name: http-lmvca
+      hostname: &lmvca "*.${D_LMVCA}"
+
+    - <<: *https
+      name: https-lmvca-apex
+      hostname: *lmvca_apex
+      tls: &tls_lmvca
         certificateRefs:
           - kind: Secret
             name: ${D_LMVCA//./-}-production-tls
-    - name: https-lmvca-apex
-      protocol: HTTPS
-      port: 443
-      hostname: "${D_LMVCA}"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: ${D_LMVCA//./-}-production-tls
+
+    - <<: *https
+      name: https-lmvca
+      hostname: *lmvca
+      tls: *tls_lmvca

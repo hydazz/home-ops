@@ -15,21 +15,34 @@ spec:
       external-dns.alpha.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 192.168.42.120
   listeners:
-    - name: http
+    - &http
+      # ===== HS =====
+      name: http-hs-apex
       protocol: HTTP
       port: 80
-      hostname: "*.${D_HS}"
+      hostname: &hs_apex "${D_HS}"
       allowedRoutes:
         namespaces:
           from: Same
-    - name: https
+
+    - <<: *http
+      name: http-hs
+      hostname: &hs "*.${D_HS}"
+
+    - &https
+      name: https-hs-apex
       protocol: HTTPS
       port: 443
-      hostname: "*.${D_HS}"
+      hostname: *hs_apex
       allowedRoutes:
         namespaces:
           from: All
-      tls:
+      tls: &tls_hs
         certificateRefs:
           - kind: Secret
             name: ${D_HS//./-}-production-tls
+
+    - <<: *https
+      name: https-hs
+      hostname: *hs
+      tls: *tls_hs
