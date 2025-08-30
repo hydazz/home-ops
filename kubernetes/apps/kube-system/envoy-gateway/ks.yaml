@@ -45,7 +45,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: certificates
+    - name: certificates-import
       namespace: kube-system
     - name: envoy-gateway-operator
       namespace: kube-system

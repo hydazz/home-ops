@@ -11,6 +11,10 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/kube-system/certificates/import
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -36,6 +40,10 @@ spec:
       namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/kube-system/certificates/export
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   retryInterval: 2m
   sourceRef:
