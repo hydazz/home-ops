@@ -1,7 +1,7 @@
 ---
 ingress:
   - hostname: "${D_LMVCA}"
-    service: &envoy https://envoy-network-cloudflare-f139e514.network.svc.cluster.local:443
+    service: &envoy https://envoy-kube-system-cloudflare-c4a673c0.kube-system.svc.cluster.local:443
     originRequest:
       originServerName: "${D_LMVCA}"
   - hostname: "*.${D_LMVCA}"
