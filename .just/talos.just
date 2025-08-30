@@ -1,5 +1,5 @@
 set quiet := true
-set shell := ['bash', '-eu', '-o', 'pipefail', '-c']
+set shell := ['bash', '-euo', 'pipefail', '-c']
 
 scripts_dir := justfile_dir() + '/scripts'
 talos_dir := justfile_dir() + '/talos'
@@ -8,7 +8,7 @@ controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 
 [private]
 default:
-    just --list talos
+    just -l talos
 
 [doc('Apply Talos config to a node')]
 apply-node node *args:

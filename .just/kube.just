@@ -1,13 +1,13 @@
 set quiet := true
-set shell := ['bash', '-eu', '-o', 'pipefail', '-c']
+set shell := ['bash', '-euo', 'pipefail', '-c']
 
 [private]
 default:
-    just --list kube
+    just -l kube
 
 [doc('Browse a PVC')]
 browse-pvc namespace pvc:
-    kubectl browse-pvc -n {{ namespace }} --image mirror.gcr.io/alpine:latest {{ pvc }}
+    kubectl browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ pvc }}
 
 [doc('Open a shell on a node')]
 node-shell node:

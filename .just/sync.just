@@ -1,9 +1,9 @@
 set quiet := true
-set shell := ['bash', '-eu', '-o', 'pipefail', '-c']
+set shell := ['bash', '-euo', 'pipefail', '-c']
 
 [private]
 default:
-    just --list sync
+    just -l sync
 
 [doc('Sync ExternalSecrets')]
 es:
