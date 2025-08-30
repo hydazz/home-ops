@@ -32,8 +32,7 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 47m
-                memory: 2Gi
+                cpu: 10m
               limits:
                 memory: 2Gi
     defaultPodOptions:
@@ -55,6 +54,7 @@ spec:
       app:
         ports:
           http:
+            appProtocol: kubernetes.io/ws
             port: 8123
     route:
       app:
