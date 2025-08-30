@@ -7,3 +7,4 @@ resources:
   - ./cloudflare.yaml
   - ./external.yaml
   - ./internal.yaml
+  - ./redirect.yaml
