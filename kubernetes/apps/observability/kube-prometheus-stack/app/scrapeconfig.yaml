@@ -33,5 +33,6 @@ spec:
       targetLabel: job
       replacement: *name
     - action: replace
-      sourceLabels: [hostname]
+      sourceLabels:
+        - hostname
       targetLabel: instance

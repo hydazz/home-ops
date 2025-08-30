@@ -64,7 +64,9 @@ spec:
       - --gateway-name=internal
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["gateway-httproute", "service"]
+    sources:
+      - gateway-httproute
+      - service
     txtOwnerId: default
     txtPrefix: k8s.
     #domainFilters: [""]

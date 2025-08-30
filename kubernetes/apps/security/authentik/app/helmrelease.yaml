@@ -71,7 +71,8 @@ spec:
       route:
         main:
           enabled: true
-          hostnames: ["auth.${D_HS}"]
+          hostnames:
+            - auth.${D_HS}
           parentRefs:
             - name: cloudflare
               namespace: network

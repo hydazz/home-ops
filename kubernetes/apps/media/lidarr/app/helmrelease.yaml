@@ -55,7 +55,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 100m
@@ -74,7 +74,8 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: internal
             namespace: network

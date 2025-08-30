@@ -70,7 +70,8 @@ spec:
             port: 80
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: internal
             namespace: network

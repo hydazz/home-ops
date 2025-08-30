@@ -8,4 +8,5 @@ spec:
   endpoints:
     - dnsName: "cloudflare.${D_LMVCA}"
       recordType: CNAME
-      targets: ["${CLOUDFLARE_TUNNEL_ID_1}.cfargotunnel.com"]
+      targets:
+        - ${CLOUDFLARE_TUNNEL_ID_1}.cfargotunnel.com

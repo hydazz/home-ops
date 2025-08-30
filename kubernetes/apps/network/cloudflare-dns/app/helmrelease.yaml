@@ -47,7 +47,9 @@ spec:
       - --gateway-name=external
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["crd", "gateway-httproute"]
+    sources:
+      - crd
+      - gateway-httproute
     txtOwnerId: external
     txtPrefix: k8s.external.
     #domainFilters: [""]
@@ -91,7 +93,9 @@ spec:
       - --gateway-name=cloudflare
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["crd", "gateway-httproute"]
+    sources:
+      - crd
+      - gateway-httproute
     txtOwnerId: cloudflare
     txtPrefix: k8s.cloudflare.
     domainFilters:

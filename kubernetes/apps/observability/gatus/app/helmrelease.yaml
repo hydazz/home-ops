@@ -72,7 +72,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 100m
@@ -96,7 +96,8 @@ spec:
           - port: http
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: cloudflare
             namespace: network
@@ -106,9 +107,15 @@ spec:
         gatus:
           type: ClusterRole
           rules:
-            - apiGroups: [""]
-              resources: ["configmaps", "secrets"]
-              verbs: ["get", "watch", "list"]
+            - apiGroups:
+                - ""
+              resources:
+                - configmaps
+                - secrets
+              verbs:
+                - get
+                - watch
+                - list
       bindings:
         gatus:
           type: ClusterRoleBinding

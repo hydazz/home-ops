@@ -39,15 +39,15 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: true
-            #  capabilities: { drop: ["ALL"] }
-            #resources:
-            #  requests:
-            #    cpu: 100m
-            #  limits:
-            #    memory: 4Gi
+              #securityContext:
+              #  allowPrivilegeEscalation: false
+              #  readOnlyRootFilesystem: true
+              #  capabilities: { drop: ["ALL"] }
+              #resources:
+              #  requests:
+              #    cpu: 100m
+              #  limits:
+              #    memory: 4Gi
     #defaultPodOptions:
     #  securityContext:
     #    runAsNonRoot: true
@@ -78,7 +78,8 @@ spec:
             protocol: UDP
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: internal
             namespace: network

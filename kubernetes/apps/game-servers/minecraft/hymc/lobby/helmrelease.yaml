@@ -63,7 +63,7 @@ spec:
                 custom: true
                 spec:
                   periodSeconds: 60
-                  exec: &mc-health { command: ["mc-health"] }
+                  exec: &mc-health {command: ["mc-health"]}
               readiness: *probes
               startup:
                 <<: *probes
@@ -75,7 +75,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 100m
@@ -87,7 +87,7 @@ spec:
       dnsPolicy: "None"
       dnsConfig:
         nameservers:
-          - "10.43.0.10"
+          - 10.43.0.10
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

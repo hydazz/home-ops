@@ -58,7 +58,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -73,7 +73,8 @@ spec:
             port: 3000
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: internal
             namespace: network

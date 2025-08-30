@@ -44,7 +44,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
@@ -59,7 +59,8 @@ spec:
                   # follow plex around to mount PVC with RWO
                   - key: app.kubernetes.io/name
                     operator: In
-                    values: [plex]
+                    values:
+                      - plex
               topologyKey: kubernetes.io/hostname
       securityContext:
         runAsNonRoot: true

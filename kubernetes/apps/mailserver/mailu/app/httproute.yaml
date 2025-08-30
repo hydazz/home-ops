@@ -5,7 +5,8 @@ kind: HTTPRoute
 metadata:
   name: mailu
 spec:
-  hostnames: ["mail.${D_HS}"]
+  hostnames:
+    - mail.${D_HS}
   parentRefs:
     - name: external
       namespace: network

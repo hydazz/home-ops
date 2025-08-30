@@ -41,7 +41,7 @@ spec:
               allowPrivilegeEscalation: false
               # Read-only file system: '/app/backend/open_webui/static/'
               readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 100m
@@ -60,7 +60,8 @@ spec:
             port: 8080
     route:
       app:
-        hostnames: ["chat.${D_HS}"]
+        hostnames:
+          - chat.${D_HS}
         parentRefs:
           - name: cloudflare
             namespace: network

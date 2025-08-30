@@ -1,18 +1,18 @@
 ---
 customization:
   extraKernelArgs:
-    - i915.enable_guc=3                   # Meteor Lake CPU / iGPU
-    - intel_iommu=on                      # PCI Passthrough
-    - iommu=pt                            # PCI Passthrough
+    - i915.enable_guc=3 # Meteor Lake CPU / iGPU
+    - intel_iommu=on # PCI Passthrough
+    - iommu=pt # PCI Passthrough
     - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
-    - -lockdown                           # Secure Boot / BPF
-    - lockdown=integrity                  # Secure Boot / BPF
+    - -lockdown # Secure Boot / BPF
+    - lockdown=integrity # Secure Boot / BPF
   systemExtensions:
     officialExtensions:
-      - siderolabs/i915        # Intel iGPU
+      - siderolabs/i915 # Intel iGPU
       - siderolabs/intel-ucode # Intel iGPU
-      - siderolabs/mei         # Intel iGPU
-      - siderolabs/nfsrahead   # NFS Performance
+      - siderolabs/mei # Intel iGPU
+      - siderolabs/nfsrahead # NFS Performance
 
       # (Un)comment as needed
 #     - siderolabs/nonfree-kmod-nvidia-production      # NVIDIA GPU

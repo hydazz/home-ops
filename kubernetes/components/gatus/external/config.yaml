@@ -1,3 +1,4 @@
+---
 endpoints:
   - name: "${GATUS_APP:=${APP}}"
     group: "${GATUS_GROUP:=external}"

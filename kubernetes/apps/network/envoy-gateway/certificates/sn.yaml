@@ -10,4 +10,6 @@ spec:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${D_SN}"
-  dnsNames: ["${D_SN}", "*.${D_SN}"]
+  dnsNames:
+    - ${D_SN}
+    - "*.${D_SN}"

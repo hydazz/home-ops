@@ -39,7 +39,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               limits:
                 cpu: 200m
@@ -71,10 +71,12 @@ spec:
               - action: replace
                 regex: (.*)
                 replacement: *app
-                sourceLabels: ["__meta_kubernetes_pod_name"]
+                sourceLabels:
+                  - __meta_kubernetes_pod_name
                 targetLabel: pod
             metricRelabelings:
-              - sourceLabels: [instance]
+              - sourceLabels:
+                  - instance
                 targetLabel: instance
                 replacement: "5px"
           - interval: 30s

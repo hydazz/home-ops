@@ -5,7 +5,8 @@ kind: HTTPRoute
 metadata:
   name: nextcloud-shca
 spec:
-  hostnames: ["storage.${D_HCA}"]
+  hostnames:
+    - storage.${D_HCA}
   parentRefs:
     - name: external
       namespace: network

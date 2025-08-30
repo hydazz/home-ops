@@ -62,7 +62,7 @@ spec:
                 path: /spec/template/spec/dnsConfig
                 value:
                   nameservers:
-                    - "10.43.0.10"
+                    - 10.43.0.10
           # Use cert-manager TLS secret in front pod
           - target:
               version: v1

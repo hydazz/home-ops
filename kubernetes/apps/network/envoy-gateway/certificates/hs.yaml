@@ -15,4 +15,7 @@ spec:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${D_HS}"
-  dnsNames: ["${D_HS}", "*.${D_HS}", "*.k8s.${D_HS}"]
+  dnsNames:
+    - ${D_HS}
+    - "*.${D_HS}"
+    - "*.k8s.${D_HS}"

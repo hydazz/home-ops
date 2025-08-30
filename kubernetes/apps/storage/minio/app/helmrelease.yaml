@@ -38,7 +38,11 @@ spec:
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            args: ["server", "/data", "--console-address", ":9001"]
+            args:
+              - server
+              - /data
+              - --console-address
+              - :9001
             probes:
               liveness: &probes
                 enabled: true
@@ -55,7 +59,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 memory: 512Mi
@@ -89,7 +93,8 @@ spec:
             scrapeTimeout: 10s
     route:
       console:
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: internal
             namespace: network
@@ -99,7 +104,8 @@ spec:
               - name: *app
                 port: *port
       s3-api:
-        hostnames: ["s3.${D_HS}"]
+        hostnames:
+          - s3.${D_HS}
         parentRefs:
           - name: external
             namespace: network

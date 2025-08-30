@@ -5,7 +5,8 @@ kind: HTTPRoute
 metadata:
   name: github-webhook
 spec:
-  hostnames: ["flux-webhook.${D_HS}"]
+  hostnames:
+    - flux-webhook.${D_HS}
   parentRefs:
     - name: cloudflare
       namespace: network

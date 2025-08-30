@@ -29,7 +29,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
@@ -58,7 +58,8 @@ spec:
             port: 8123
     route:
       app:
-        hostnames: ["homeassistant.${D_HS}"]
+        hostnames:
+          - homeassistant.${D_HS}
         parentRefs:
           - name: cloudflare
             namespace: network

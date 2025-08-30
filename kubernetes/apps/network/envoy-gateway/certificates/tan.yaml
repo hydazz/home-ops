@@ -10,4 +10,6 @@ spec:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${D_TAN}"
-  dnsNames: ["${D_TAN}", "*.${D_TAN}"]
+  dnsNames:
+    - ${D_TAN}
+    - "*.${D_TAN}"

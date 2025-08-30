@@ -57,9 +57,9 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          - { name: Alertmanager, orgId: 1 }
-          - { name: Loki, orgId: 1 }
-          - { name: Prometheus, orgId: 1 }
+          - {name: Alertmanager, orgId: 1}
+          - {name: Loki, orgId: 1}
+          - {name: Prometheus, orgId: 1}
         datasources:
           - name: Prometheus
             type: prometheus
@@ -191,14 +191,14 @@ spec:
           gnetId: 22604
           revision: 2
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         volsync:
           # renovate: depName="VolSync Dashboard"
           gnetId: 21356
           revision: 3
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
-            - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
+            - {name: DS_PROMETHEUS, value: Prometheus}
+            - {name: VAR_REPLICATIONDESTNAME, value: .*-dst}
         zfs:
           # renovate: depName="ZFS"
           gnetId: 7845
@@ -231,7 +231,7 @@ spec:
           gnetId: 23239
           revision: 1
           datasource:
-            - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
+            - {name: DS_AFRANET_PROMETHEUS, value: Prometheus}
         envoy-clusters:
           url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-clusters.json
           datasource: Prometheus
@@ -257,7 +257,7 @@ spec:
           gnetId: 1860
           revision: 41
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         nvidia-dcgm:
           url: https://raw.githubusercontent.com/NVIDIA/dcgm-exporter/main/grafana/dcgm-exporter-dashboard.json
           datasource: Prometheus
@@ -290,7 +290,8 @@ spec:
     route:
       main:
         enabled: true
-        hostnames: ["{{ .Release.Name }}.${D_HS}"]
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: internal
             namespace: network
