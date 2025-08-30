@@ -45,7 +45,7 @@ spec:
             - alertmanager.${D_HS}
           parentRefs:
             - name: internal
-              namespace: network
+              namespace: kube-system
               sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -74,7 +74,7 @@ spec:
             - prometheus.${D_HS}
           parentRefs:
             - name: internal
-              namespace: network
+              namespace: kube-system
               sectionName: https
       prometheusSpec:
         image:

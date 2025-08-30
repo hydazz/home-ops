@@ -45,7 +45,7 @@ spec:
           pathType: PathPrefix
         parentRefs:
           - name: internal
-            namespace: network
+            namespace: kube-system
             sectionName: https
     cephClusterSpec:
       cephConfig:

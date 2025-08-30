@@ -6,9 +6,12 @@ namespace: kube-system
 components:
   - ../../components/common
 resources:
+  - ./certificates/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
+  - ./envoy-gateway/ks.yaml
+  - ./gateway-api-crds/ks.yaml
   - ./generic-device-plugin/ks.yaml
   - ./intel-device-plugin-operator/ks.yaml
   - ./metrics-server/ks.yaml

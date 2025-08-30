@@ -4,7 +4,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app envoy-gateway-operator
-  namespace: &namespace network
+  namespace: &namespace kube-system
 spec:
   commonMetadata:
     labels:
@@ -24,35 +24,7 @@ spec:
       inProgress: status.conditions.filter(e, e.type == 'Accepted').all(e, e.status == 'Unknown')
       current: status.conditions.filter(e, e.type == 'Accepted').all(e, e.status == 'True')
   interval: 1h
-  path: ./kubernetes/apps/network/envoy-gateway/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app envoy-gateway-certs
-  namespace: &namespace network
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
-  interval: 1h
-  path: ./kubernetes/apps/network/envoy-gateway/certificates
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
+  path: ./kubernetes/apps/kube-system/envoy-gateway/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -67,18 +39,18 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app envoy-gateway-instances
-  namespace: &namespace network
+  namespace: &namespace kube-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: envoy-gateway-certs
-      namespace: network
+    - name: certificates
+      namespace: kube-system
     - name: envoy-gateway-operator
-      namespace: network
+      namespace: kube-system
   interval: 1h
-  path: ./kubernetes/apps/network/envoy-gateway/gateways
+  path: ./kubernetes/apps/kube-system/envoy-gateway/gateways
   postBuild:
     substituteFrom:
       - name: cluster-secrets

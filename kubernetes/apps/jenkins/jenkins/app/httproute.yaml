@@ -9,7 +9,7 @@ spec:
     - ci.${D_IGI}
   parentRefs:
     - name: cloudflare
-      namespace: network
+      namespace: kube-system
       sectionName: https-igi
   rules:
     - backendRefs:

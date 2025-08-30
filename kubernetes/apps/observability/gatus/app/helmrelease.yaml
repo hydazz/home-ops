@@ -100,7 +100,7 @@ spec:
           - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: cloudflare
-            namespace: network
+            namespace: kube-system
             sectionName: https
     rbac:
       roles:

@@ -9,7 +9,7 @@ spec:
     - storage.${D_HCA}
   parentRefs:
     - name: external
-      namespace: network
+      namespace: kube-system
       sectionName: https-hca
   rules:
     - backendRefs:

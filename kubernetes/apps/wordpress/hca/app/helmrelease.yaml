@@ -100,10 +100,10 @@ spec:
           - www.${D_HCA}
         parentRefs:
           - name: cloudflare
-            namespace: network
+            namespace: kube-system
             sectionName: https-hca-apex
           - name: cloudflare
-            namespace: network
+            namespace: kube-system
             sectionName: https-hca
         rules:
           - backendRefs:

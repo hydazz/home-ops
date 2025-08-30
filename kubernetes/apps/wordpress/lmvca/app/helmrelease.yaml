@@ -100,10 +100,10 @@ spec:
           - www.${D_LMVCA}
         parentRefs:
           - name: cloudflare
-            namespace: network
+            namespace: kube-system
             sectionName: https-lmvca-apex
           - name: cloudflare
-            namespace: network
+            namespace: kube-system
             sectionName: https-lmvca
         rules:
           - backendRefs:

@@ -98,7 +98,7 @@ spec:
           - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
           - name: external
-            namespace: network
+            namespace: kube-system
             sectionName: https
     persistence:
       library:
