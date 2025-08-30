@@ -126,6 +126,8 @@ spec:
     serviceAccount:
       gatus: {}
     persistence:
+      config:
+        type: emptyDir
       data:
         existingClaim: *app
       config-file:
