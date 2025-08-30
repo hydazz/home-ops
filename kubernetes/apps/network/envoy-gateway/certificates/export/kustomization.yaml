@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./hca.yaml
+  - ./hca-pushsecret.yaml
+  - ./hs.yaml
+  - ./hs-pushsecret.yaml
+  - ./igi.yaml
+  - ./igi-pushsecret.yaml
+  - ./lmvca.yaml
+  - ./lmvca-pushsecret.yaml
+  - ./sn.yaml
+  - ./sn-pushsecret.yaml
+  - ./taca.yaml
+  - ./taca-pushsecret.yaml
+  - ./tan.yaml
+  - ./tan-pushsecret.yaml

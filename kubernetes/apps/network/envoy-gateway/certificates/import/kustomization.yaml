@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./hca-externalsecret.yaml
+  - ./hs-externalsecret.yaml
+  - ./igi-externalsecret.yaml
+  - ./lmvca-externalsecret.yaml
+  - ./sn-externalsecret.yaml
+  - ./taca-externalsecret.yaml
+  - ./tan-externalsecret.yaml
