@@ -98,7 +98,7 @@ spec:
         parentRefs:
           - name: internal
             namespace: kube-system
-            sectionName: https
+            sectionName: https-hs
         rules:
           - backendRefs:
               - name: *app
@@ -109,7 +109,7 @@ spec:
         parentRefs:
           - name: external
             namespace: kube-system
-            sectionName: https
+            sectionName: https-hs
         rules:
           - backendRefs:
               - name: *app

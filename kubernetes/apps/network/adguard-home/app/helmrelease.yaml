@@ -83,7 +83,7 @@ spec:
         parentRefs:
           - name: internal
             namespace: kube-system
-            sectionName: https
+            sectionName: https-hs
         rules:
           - backendRefs:
               - name: "{{ .Release.Name }}-app"

@@ -101,7 +101,7 @@ spec:
         parentRefs:
           - name: cloudflare
             namespace: kube-system
-            sectionName: https
+            sectionName: https-hs
     rbac:
       roles:
         gatus:

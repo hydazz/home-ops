@@ -10,7 +10,7 @@ spec:
   parentRefs:
     - name: external
       namespace: kube-system
-      sectionName: https
+      sectionName: https-hs
   rules:
     - backendRefs:
         - name: nextcloud-shs

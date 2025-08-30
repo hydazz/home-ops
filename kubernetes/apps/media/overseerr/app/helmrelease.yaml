@@ -70,7 +70,7 @@ spec:
         parentRefs:
           - name: cloudflare
             namespace: kube-system
-            sectionName: https
+            sectionName: https-hs
     persistence:
       config:
         existingClaim: *app
