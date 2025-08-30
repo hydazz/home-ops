@@ -40,7 +40,7 @@ wait: (with-banner "Waiting for nodes to be not-ready")
     fi
 
 namespaces: (with-banner "Applying Namespaces")
-    find "{{ kubernetes_dir }}/apps" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | while IFS= read -r namespace; do \
+    find "{{ kubernetes_dir }}/apps" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | while IFS= read -r namespace; do \
         if kubectl get namespace "${namespace}" &>/dev/null; then \
             continue; \
         fi; \
