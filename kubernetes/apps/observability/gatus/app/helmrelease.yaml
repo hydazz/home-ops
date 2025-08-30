@@ -126,7 +126,7 @@ spec:
     serviceAccount:
       gatus: {}
     persistence:
-      config:
+      data:
         existingClaim: *app
       config-file:
         type: configMap

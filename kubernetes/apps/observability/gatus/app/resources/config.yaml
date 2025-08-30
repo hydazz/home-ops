@@ -2,6 +2,11 @@
 web:
   port: ${GATUS_WEB_PORT}
 
+storage:
+  type: sqlite
+  path: /data/sqlite.db
+  caching: true
+
 metrics: true
 
 ui:
