@@ -22,7 +22,7 @@ spec:
     metrics:
       prometheus: {}
   shutdown:
-    drainTimeout: 300s
+    drainTimeout: 5s
   logging:
     level:
       default: info
@@ -40,4 +40,4 @@ spec:
               cpu: 500m
               memory: 1Gi
       envoyService:
-        externalTrafficPolicy: Cluster # cilium l2 announce doesn't support externalTrafficPolicy: Local
+        externalTrafficPolicy: Local
