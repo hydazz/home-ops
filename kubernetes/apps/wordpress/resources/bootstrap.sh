@@ -1,37 +1,47 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===== Config =====
+# ===== Configuration =====
 WP_ROOT="${WP_ROOT:-/var/www/html}"
 WP_SOURCE="${WP_SOURCE:-/usr/src/wordpress}"
 
 DRAGONFLY_HOST="${DRAGONFLY_HOST:-dragonfly.databases.svc.cluster.local}"
 DRAGONFLY_PORT="${DRAGONFLY_PORT:-6379}"
+DRAGONFLY_DBID="${DRAGONFLY_DBID:-2}"
 
 WP_PARALLEL="${WP_PARALLEL:-8}"
 WP_ARGS=(--path="$WP_ROOT" --quiet)
 
-throttle() { while [ "$(jobs -pr | wc -l)" -ge "$WP_PARALLEL" ]; do sleep 0.1; done; } # wp cli uses a bit of ram...
-set_w3() { wp w3tc option set "$1" "$2" "${WP_ARGS[@]}" &>/dev/null || true; }
+# ===== Helper Functions =====
+throttle() {
+    while [ "$(jobs -pr | wc -l)" -ge "$WP_PARALLEL" ]; do
+        sleep 0.1
+    done
+}
+
+set_w3() {
+    wp w3tc option set "$1" "$2" "${WP_ARGS[@]}" &>/dev/null || true
+}
 
 sep() {
     printf '=%.0s' {1..50}
     echo
 }
 
+# ===== Main Script =====
 echo "🚀 WordPress Init"
 echo "   Root: ${WP_ROOT}"
 echo "   Source: ${WP_SOURCE}"
 echo "   Redis: ${DRAGONFLY_HOST}:${DRAGONFLY_PORT}"
+echo "   Redis DB ID: ${DRAGONFLY_DBID}"
 sep
 
 # --- Sync core ---
 echo "📁 Syncing WordPress core..."
-rsync --recursive --no-perms --no-owner --no-group --no-times "${WP_SOURCE}/" "${WP_ROOT}/" </dev/null ||
-    {
-        echo "❌ ERROR: rsync failed"
-        exit 1
-    }
+rsync --recursive --no-perms --no-owner --no-group --no-times "${WP_SOURCE}/" "${WP_ROOT}/" </dev/null || {
+    echo "❌ ERROR: rsync failed"
+    exit 1
+}
 echo "✅ Core sync complete"
 sep
 
@@ -58,11 +68,10 @@ if ! wp core is-installed "${WP_ARGS[@]}"; then
         --admin_user="${WORDPRESS_ADMIN_USER}" \
         --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
         --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
-        "${WP_ARGS[@]}" </dev/null ||
-        {
-            echo "❌ ERROR: wp core install failed"
-            exit 1
-        }
+        "${WP_ARGS[@]}" </dev/null || {
+        echo "❌ ERROR: wp core install failed"
+        exit 1
+    }
 
     echo "✅ WordPress installation complete"
     sep
@@ -93,41 +102,28 @@ echo "✅ W3TC ready"
 sep
 
 # --- Configure W3TC ---
-echo "⚡ Configuring W3TC (${DRAGONFLY_HOST}:${DRAGONFLY_PORT})..."
+echo "⚡️ Configuring W3TC (${DRAGONFLY_HOST}:${DRAGONFLY_PORT}, DB ID: ${DRAGONFLY_DBID})..."
 
 components=(pgcache dbcache objectcache minify)
 for c in "${components[@]}"; do
-    throttle
-    set_w3 "${c}.enabled" true &
-    throttle
-    set_w3 "${c}.engine" redis &
-    throttle
-    set_w3 "${c}.redis.servers" "${DRAGONFLY_HOST}:${DRAGONFLY_PORT}" &
-    throttle
-    set_w3 "${c}.redis.dbid" 2 &
-    throttle
-    set_w3 "${c}.redis.password" "" &
-    throttle
-    set_w3 "${c}.memcached.servers" "" &
-    throttle
-    set_w3 "${c}.memcached.username" "" &
-    throttle
-    set_w3 "${c}.memcached.password" "" &
+    throttle; set_w3 "${c}.enabled" true &
+    throttle; set_w3 "${c}.engine" redis &
+    throttle; set_w3 "${c}.redis.servers" "${DRAGONFLY_HOST}:${DRAGONFLY_PORT}" &
+    throttle; set_w3 "${c}.redis.dbid" "${DRAGONFLY_DBID}" &
+    throttle; set_w3 "${c}.redis.password" "" &
+    throttle; set_w3 "${c}.memcached.servers" "" &
+    throttle; set_w3 "${c}.memcached.username" "" &
+    throttle; set_w3 "${c}.memcached.password" "" &
 done
 
-# page cache specifics
-throttle
-set_w3 pgcache.lifetime 86400 &
-throttle
-set_w3 pgcache.prime.enabled true &
-throttle
-set_w3 pgcache.prime.interval 86400 &
-throttle
-set_w3 pgcache.prime.limit 30 &
+# Page cache specifics
+throttle; set_w3 pgcache.lifetime 86400 &
+throttle; set_w3 pgcache.prime.enabled true &
+throttle; set_w3 pgcache.prime.interval 86400 &
+throttle; set_w3 pgcache.prime.limit 30 &
 
-# extras
-throttle
-set_w3 lazyload.enabled true &
+# Extras
+throttle; set_w3 lazyload.enabled true &
 
 wait || true
 echo "✅ W3TC configuration complete"
