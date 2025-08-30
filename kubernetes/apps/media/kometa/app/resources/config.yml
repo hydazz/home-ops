@@ -15,100 +15,75 @@ libraries:
     overlay_files:
       - default: resolution
       - default: audio_codec
+
 playlist_files:
-  - file: config/playlists.yaml
+  - file: config/playlists.yml
+
 settings:
+  cache: true
+  cache_expiration: 60
+  sync_mode: sync
+  show_unmanaged: true
+  show_filtered: false
+  show_missing: true
+  run_again_delay: 2
+  asset_directory: /config/assets
+  asset_folders: false
+  create_asset_folders: false
+  missing_only_released: false
+  delete_below_minimum: false
+  minimum_items: 1
+  asset_depth: 0
+  dimensional_asset_rename: false
+  download_url_assets: false
+  show_missing_season_assets: false
+  default_collection_order:
+  delete_not_scheduled: false
+  only_filter_missing: false
+  show_options: false
+  show_missing_assets: false
+  tvdb_language: eng
+  ignore_ids:
+  ignore_imdb_ids:
+  verify_ssl: true
+  playlist_sync_to_users: all
+  show_missing_episode_assets: false
+  show_asset_not_needed: true
+  item_refresh_delay: 0
+  custom_repo:
+  prioritize_assets: false
+  playlist_report: false
+  show_unconfigured: true
+  playlist_exclude_users:
   run_order:
     - operations
     - metadata
     - collections
     - overlays
-  cache: true
-  cache_expiration: 60
-  asset_directory: config/assets
-  asset_folders: true
-  asset_depth: 0
-  create_asset_folders: false
-  prioritize_assets: false
-  dimensional_asset_rename: false
-  download_url_assets: false
-  show_missing_season_assets: false
-  show_missing_episode_assets: false
-  show_asset_not_needed: true
-  sync_mode: append
-  minimum_items: 1
-  delete_below_minimum: true
-  delete_not_scheduled: false
-  run_again_delay: 2
-  missing_only_released: false
-  only_filter_missing: false
-  show_unmanaged: true
-  show_unconfigured: true
-  show_filtered: false
-  show_options: true
-  show_missing: true
-  show_missing_assets: true
-  save_report: false
-  tvdb_language: eng
-  item_refresh_delay: 0
-  playlist_sync_to_users: all
-  playlist_report: false
-  verify_ssl: true
-  overlay_filetype: jpg
-  overlay_artwork_filetype: jpg
-  show_unfiltered: false
 
-# Can be individually specified per library as well; REQUIRED for the script to run
 plex:
   url: http://plex.media.svc.cluster.local:32400
   token: <<PLEX_API_KEY>>
-  timeout: 60
+  timeout: 120
   clean_bundles: false
   empty_trash: false
   optimize: false
-  verify_ssl: false
-# REQUIRED for the script to run
+  db_cache: 1024
+
 tmdb:
   apikey: <<TMDB_API_KEY>>
   language: en
   cache_expiration: 60
+  region: AU
 trakt:
   client_id: <<TRAKT_CLIENT_ID>>
   client_secret: <<TRAKT_CLIENT_SECRET>>
+  force_refresh: true
   authorization:
-    # everything below is autofilled by the script
     access_token: <<TRAKT_ACCESS_TOKEN>>
     token_type: Bearer
-    expires_in: <<TRAKT_EXPIRES_IN>>
+    expires_in: 86400
     refresh_token: <<TRAKT_REFRESH_TOKEN>>
     scope: public
     created_at: <<TRAKT_CREATED_AT>>
-# Can be individually specified per library as well
-radarr:
-  url: http://radarr.media.svc.cluster.local
-  token: <<RADARR_API_KEY>>
-  root_folder_path: /data/Plex Media/Movies
-  monitor: true
-  availability: announced
-  quality_profile: Auto
-  search: false
-  add_existing: false
-  upgrade_existing: false
-  ignore_cache: false
-  monitor_existing: false
-# Can be individually specified per library as well
-sonarr:
-  url: http://sonarr.media.svc.cluster.local
-  token: <<SONARR_API_KEY>>
-  root_folder_path: /data/Plex Media/TV Shows
-  monitor: all
-  quality_profile: Auto
-  language_profile: English
-  series_type: standard
-  season_folder: true
-  search: false
-  cutoff_search: false
-  add_existing: false
-  upgrade_existing: false
-  ignore_cache: false
-  monitor_existing: false
+  pin:
