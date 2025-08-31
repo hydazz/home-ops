@@ -44,10 +44,10 @@ spec:
         port: "6379"
         db: "2"
       email:
-        host: ${EMAIL_SERVER}
+        host: "${EMAIL_SERVER}"
         port: 465
-        username: ${EMAIL_USER}
-        password: ${EMAIL_PASSWORD}
+        username: "${EMAIL_USER}"
+        password: "${EMAIL_PASSWORD}"
         use_ssl: true
         timeout: 30
         from: "authentik <${EMAIL_USER}>"
