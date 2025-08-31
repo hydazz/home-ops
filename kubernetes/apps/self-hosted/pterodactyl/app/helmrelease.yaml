@@ -42,9 +42,9 @@ spec:
               liveness: &probes
                 enabled: false
               readiness: *probes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
             #  capabilities:
             #    drop:
             #      - ALL
@@ -54,13 +54,13 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-    #defaultPodOptions:
-    #  securityContext:
-    #    runAsNonRoot: true
-    #    runAsUser: 1000
-    #    runAsGroup: 1000
-    #    fsGroup: 1000
-    #    fsGroupChangePolicy: OnRootMismatch
+    defaultPodOptions:
+      securityContext:
+        #    runAsNonRoot: true
+        #    runAsUser: 1000
+        #    runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -78,7 +78,7 @@ spec:
       data:
         existingClaim: *app
         globalMounts:
-          - path: /app/storage/app
+          - path: /app/var/
       tmpfs:
         type: emptyDir
         globalMounts:
