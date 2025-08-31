@@ -111,6 +111,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
+        controller: wordpress
         ports:
           http:
             port: *port
@@ -123,10 +124,6 @@ spec:
           - name: cloudflare
             namespace: kube-system
             sectionName: https-hca
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
     persistence:
       wp-content:
         existingClaim: *app
