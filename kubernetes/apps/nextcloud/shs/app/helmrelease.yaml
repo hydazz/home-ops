@@ -34,9 +34,9 @@ spec:
               SMTP_HOST: "${EMAIL_SERVER}"
               SMTP_PORT: "465"
               SMTP_SECURE: ssl
-              SMTP_NAME: no-reply
+              SMTP_NAME: "${EMAIL_USER}"
               SMTP_PASSWORD: "${EMAIL_PASSWORD}"
-              MAIL_FROM_ADDRESS: "${EMAIL_USER}"
+              MAIL_FROM_ADDRESS: no-reply
               MAIL_DOMAIN: "${D_HS}"
             envFrom: &envFrom
               - secretRef:
