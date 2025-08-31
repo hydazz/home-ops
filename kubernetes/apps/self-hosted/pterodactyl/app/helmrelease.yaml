@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hydazz/pterodactyl
-              tag: 1.11.11@sha256:ebdaaf218e693a9de07220c9f81590363559790da0e644f30fc575c35732ffc0
+              tag: 1.11.11@sha256:e1b1ec993254f2010f442c98a48b907e0a61fe42622a07d602f5f9bf595749d8
             env:
               APP_ENV: production
               APP_DEBUG: "true"
