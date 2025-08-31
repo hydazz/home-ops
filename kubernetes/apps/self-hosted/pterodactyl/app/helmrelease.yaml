@@ -54,7 +54,16 @@ spec:
               tag: 1.29.1-alpine@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8
             probes:
               liveness: &probes
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
@@ -78,7 +87,7 @@ spec:
       app:
         ports:
           http:
-            port: 8080
+            port: *port
     route:
       app:
         hostnames:
