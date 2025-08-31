@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hydazz/unifi-protect-backup
-              tag: 0.14.0@sha256:a5150587f613772755ffb09748253755aa3a7a24459b9d44adebc84797c2acd1
+              tag: 0.14.0@sha256:91604591567ebf6b6f083febea11e9aa62d9ab74f334a0bfc4719a9e41d5a4f7
             env:
               TZ: Australia/Melbourne
               DETECTION_TYPES: person,vehicle,ring
