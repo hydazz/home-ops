@@ -8,12 +8,31 @@ metadata:
     external-dns.alpha.kubernetes.io/controller: none
 spec:
   parentRefs:
-    - name: internal
+    - &internal
+      name: internal
       namespace: kube-system
-      sectionName: http
-    - name: external
+      sectionName: http-hs-apex
+    - <<: *internal
+      sectionName: http-hs
+
+    - &external
+      name: external
       namespace: kube-system
-      sectionName: http
+      sectionName: http-hs-apex
+    - <<: *external
+      sectionName: http-hs
+    - <<: *external
+      sectionName: http-hca-apex
+    - <<: *external
+      sectionName: http-hca
+    - <<: *external
+      sectionName: http-igi-apex
+    - <<: *external
+      sectionName: http-igi
+    - <<: *external
+      sectionName: http-lmvca-apex
+    - <<: *external
+      sectionName: http-lmvca
   rules:
     - filters:
         - requestRedirect:
