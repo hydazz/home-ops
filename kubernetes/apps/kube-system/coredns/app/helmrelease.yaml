@@ -40,7 +40,13 @@ spec:
       create: true
     service:
       name: kube-dns
-      clusterIP: 10.43.0.10
+      clusterIPs:
+        - 10.43.0.10
+        - fd43::a
+      ipFamilies:
+        - IPv4
+        - IPv6
+      ipFamilyPolicy: PreferDualStack
     servers:
       - zones:
           - zone: .
@@ -48,6 +54,8 @@ spec:
             use_tcp: true
         port: 53
         plugins:
+          - name: bind
+            parameters: "0.0.0.0 ::"
           - name: errors
           - name: health
             configBlock: |-
