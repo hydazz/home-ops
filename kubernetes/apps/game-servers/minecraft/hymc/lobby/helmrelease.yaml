@@ -84,10 +84,6 @@ spec:
                 cpu: 4
                 memory: 4Gi
     defaultPodOptions:
-      dnsPolicy: "None"
-      dnsConfig:
-        nameservers:
-          - 10.43.0.10
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

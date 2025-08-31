@@ -49,20 +49,6 @@ spec:
               kind: Deployment
               name: mailu-dovecot
             patch: *pvcpatch
-          # Fix DNS resolver for admin pod (use IPv4 DNS instead of IPv6)
-          - target:
-              version: v1
-              kind: Deployment
-              name: mailu-admin
-            patch: |
-              - op: add
-                path: /spec/template/spec/dnsPolicy
-                value: "None"
-              - op: add
-                path: /spec/template/spec/dnsConfig
-                value:
-                  nameservers:
-                    - 10.43.0.10
           # Use cert-manager TLS secret in front pod
           - target:
               version: v1
