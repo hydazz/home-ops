@@ -5,7 +5,12 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./httproute.yaml
+configMapGenerator:
+  - name: nextcloud-shca-config
+    files:
+      - ./resources/custom.config.php
+    options:
+      disableNameSuffixHash: true
 secretGenerator:
   - name: nextcloud-shca-values
     files:
