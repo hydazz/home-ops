@@ -110,8 +110,9 @@ spec:
     persistence:
       enabled: true
       existingClaim: *app
+    # crond does not run as 1000, find a better solution than Webcron
     cronjob:
-      enabled: true
+      enabled: false
 
   valuesFrom:
     - kind: Secret

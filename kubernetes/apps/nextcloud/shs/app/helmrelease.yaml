@@ -110,16 +110,9 @@ spec:
     persistence:
       enabled: true
       existingClaim: *app
+    # crond does not run as 1000, find a better solution than Webcron
     cronjob:
-      enabled: true
-      # Fix for crond permission issues when running as non-root
-      securityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: false
-        capabilities:
-          add:
-            - SETGID
-            - SETUID
+      enabled: false
 
   valuesFrom:
     - kind: Secret
