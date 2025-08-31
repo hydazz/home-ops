@@ -5,10 +5,9 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./httproute.yaml
-secretGenerator:
-  - name: nextcloud-shs-values
+configMapGenerator:
+  - name: nextcloud-shs-config
     files:
-      - values.yaml=./resources/values.sops.yaml
+      - ./resources/custom.config.php
     options:
       disableNameSuffixHash: true

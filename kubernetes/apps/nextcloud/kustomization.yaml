@@ -9,3 +9,23 @@ resources:
   - ./ocirepository.yaml
   - ./shca/ks.yaml
   - ./shs/ks.yaml
+configMapGenerator:
+  - name: nextcloud-php-configmap
+    files:
+      - ./resources/nextcloud.ini
+      - ./resources/www.conf
+  - name: nextcloud-nginx-configmap
+    files:
+      - ./resources/default.conf
+  - name: nextcloud-configs
+    files:
+      - ./resources/apps.config.php
+      - ./resources/redis.config.php
+      - ./resources/reverse-proxy.config.php
+      - ./resources/smtp.config.php
+      - ./resources/upgrade-disable-web.config.php
+      - ./resources/autoconfig.php
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
