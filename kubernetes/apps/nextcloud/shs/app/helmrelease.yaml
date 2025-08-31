@@ -26,12 +26,12 @@ spec:
             image: &image
               repository: docker.io/library/nextcloud
               tag: 31.0.8-fpm-alpine@sha256:1e310b0d628a923756c95fbec5c04a129011ca55060f7953bd04f3ff11b2c382
-            env:
+            env: &env
               NEXTCLOUD_TRUSTED_DOMAINS: storage.${D_HS}
               NEXTCLOUD_DATA_DIR: /var/www/html/data
               REDIS_HOST: dragonfly.databases.svc.cluster.local
               REDIS_DATABASE: "3"
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             lifecycle:
@@ -57,6 +57,19 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
+          cron:
+            image: *image
+            command:
+              - sh
+              - -c
+              - |
+                while :; do
+                  php cron.php || true
+                  sleep 300
+                done
+            env: *env
+            envFrom: *envFrom
+            securityContext: *securityContext
           nginx:
             image:
               repository: docker.io/library/nginx
@@ -110,6 +123,30 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https-hs
+        rules:
+          - matches:
+              - path:
+                  type: RegularExpression
+                  value: /.well-known/(?:card|cal)dav
+            filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /remote.php/dav/
+                  statusCode: 301
+          - backendRefs:
+              - identifier: app
+                port: *port
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /settings/ajax/checksetup
+            timeouts:
+              request: 300s
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       nextcloud-data:
         existingClaim: *app
