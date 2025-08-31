@@ -40,7 +40,7 @@ spec:
               WORDPRESS_CONFIG_EXTRA: |
                 define('DISABLE_WP_CRON', true);
             envFrom: *secret
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities: {drop: ["ALL"]}
@@ -50,6 +50,18 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 1Gi
+          cron:
+            image: *image
+            command:
+              - sh
+              - -c
+              - |
+                while :; do
+                  wp cron event run --due-now --path=/var/www/html || true
+                  sleep 300
+                done
+            envFrom: *secret
+            securityContext: *securityContext
           nginx:
             image:
               repository: docker.io/library/nginx
@@ -83,25 +95,6 @@ spec:
               limits:
                 cpu: 500m
                 memory: 256Mi
-      cron:
-        type: cronjob
-        cronjob:
-          schedule: "*/5 * * * *"
-          backoffLimit: 0
-          concurrencyPolicy: Forbid
-          successfulJobsHistory: 1
-          failedJobsHistory: 1
-          timeZone: "Australia/Melbourne"
-        containers:
-          cron:
-            image: *image
-            command:
-              - wp cron event run --due-now --path=/var/www/html --quiet
-            envFrom: *secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -111,7 +104,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: wordpress
         ports:
           http:
             port: *port
