@@ -23,7 +23,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            image:
+            image: &image
               repository: ghcr.io/hydazz/pterodactyl
               tag: 1.11.11@sha256:e1b1ec993254f2010f442c98a48b907e0a61fe42622a07d602f5f9bf595749d8
             env:
@@ -35,10 +35,10 @@ spec:
               SESSION_DRIVER: redis
               QUEUE_DRIVER: redis
               REDIS_HOST: dragonfly.databases.svc.cluster.local
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities: {drop: ["ALL"]}
@@ -48,6 +48,35 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
+          queue-worker:
+            image: *image
+            command:
+              - php
+              - /app/artisan
+              - queue:work
+              - --queue=high,standard,low
+              - --sleep=3
+              - --tries=3
+            envFrom: *envFrom
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+          cron:
+            image: *image
+            command:
+              - sh
+              - -c
+              - |
+                while :; do
+                  php /app/artisan schedule:run &>/dev/null
+                  sleep 60
+                done
+            envFrom: *envFrom
+            securityContext: *securityContext
           nginx:
             image:
               repository: docker.io/library/nginx
