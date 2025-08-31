@@ -112,6 +112,14 @@ spec:
       existingClaim: *app
     cronjob:
       enabled: true
+      # Fix for crond permission issues when running as non-root
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: false
+        capabilities:
+          add:
+            - SETGID
+            - SETUID
 
   valuesFrom:
     - kind: Secret
