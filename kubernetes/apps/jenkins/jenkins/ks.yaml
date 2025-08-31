@@ -33,10 +33,11 @@ spec:
       GATUS_DOMAIN: "${D_IGI}"
       VOLSYNC_CAPACITY: 2Gi
   prune: true
-  retryInterval: 1m
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
