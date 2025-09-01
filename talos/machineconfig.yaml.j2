@@ -4,7 +4,7 @@ persist: true
 machine:
   ca:
     crt: op://K8s/talos/MACHINE_CA_CRT
-    {% if machinetype == 'controlplane' %}
+    {% if ENV.CONTROLLER %}
     key: op://K8s/talos/MACHINE_CA_KEY
     {% endif %}
   certSANs:
@@ -20,7 +20,7 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    {% if machinetype == 'controlplane' %}
+    {% if ENV.CONTROLLER %}
     kubernetesTalosAPIAccess:
       allowedKubernetesNamespaces:
         - actions-runner-system
@@ -50,7 +50,7 @@ machine:
         noatime=True
   install:
     wipe: false
-  {% if nvidia_gpu_present == 'true' %}
+  {% if ENV.NVIDIA %}
   kernel:
     modules:
       - name: nvidia
@@ -79,8 +79,8 @@ machine:
         - 192.168.42.0/24
         - 2404:e80:661b:42::/64
   sysctls:
-    fs.inotify.max_user_watches: "1048576"
     fs.inotify.max_user_instances: "8192"
+    fs.inotify.max_user_watches: "1048576"
     net.core.default_qdisc: fq
     net.core.rmem_max: "67108864"
     net.core.wmem_max: "67108864"
@@ -91,23 +91,20 @@ machine:
     net.ipv4.tcp_fastopen: "3"
     net.ipv4.tcp_mtu_probing: "1"
     net.ipv4.tcp_rmem: 4096 87380 33554432
-    net.ipv4.tcp_wmem: 4096 65536 33554432
     net.ipv4.tcp_window_scaling: "1"
-    net.ipv6.conf.all.forwarding: "1"
+    net.ipv4.tcp_wmem: 4096 65536 33554432
     net.ipv6.conf.all.accept_ra: "2"
+    net.ipv6.conf.all.forwarding: "1"
     net.ipv6.conf.bond0.accept_ra: "2"
-    sunrpc.tcp_slot_table_entries: "128"
     sunrpc.tcp_max_slot_table_entries: "128"
+    sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
     vm.nr_hugepages: "1024"
-    {% if nvidia_gpu_present == 'true' %}
-    net.core.bpf_jit_harden: "1"
-    {% endif %}
   token: op://K8s/talos/MACHINE_TOKEN
 cluster:
   ca:
     crt: op://K8s/talos/CLUSTER_CA_CRT
-    {% if machinetype == 'controlplane' %}
+    {% if ENV.CONTROLLER %}
     key: op://K8s/talos/CLUSTER_CA_KEY
     {% endif %}
   clusterName: kubernetes
@@ -126,7 +123,7 @@ cluster:
       - fd43::/112
   secret: op://K8s/talos/CLUSTER_SECRET
   token: op://K8s/talos/CLUSTER_TOKEN
-  {% if machinetype == 'controlplane' %}
+  {% if ENV.CONTROLLER %}
   aggregatorCA:
     crt: op://K8s/talos/CLUSTER_AGGREGATORCA_CRT
     key: op://K8s/talos/CLUSTER_AGGREGATORCA_KEY
