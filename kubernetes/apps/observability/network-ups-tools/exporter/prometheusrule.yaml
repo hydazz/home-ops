@@ -9,7 +9,7 @@ spec:
     - name: nut-exporter.rules
       rules:
         - alert: UpsOnBattery
-          expr: |
+          expr: |-
             nut_status{status="OB"} == 1
           for: 30s
           annotations:
@@ -21,7 +21,7 @@ spec:
             severity: warning
 
         - alert: UpsLowBattery
-          expr: |
+          expr: |-
             nut_status{status="LB"} == 1
           for: 1m
           annotations:
@@ -33,7 +33,7 @@ spec:
             severity: critical
 
         - alert: UpsBatteryChargeLevel
-          expr: |
+          expr: |-
             nut_battery_charge < 50
           for: 5m
           annotations:
@@ -45,7 +45,7 @@ spec:
             severity: warning
 
         - alert: UpsBatteryChargeCritical
-          expr: |
+          expr: |-
             nut_battery_charge < 25
           for: 2m
           annotations:
@@ -57,7 +57,7 @@ spec:
             severity: critical
 
         - alert: UpsHighTemperature
-          expr: |
+          expr: |-
             nut_ups_temperature > 40
           for: 5m
           annotations:
@@ -69,7 +69,7 @@ spec:
             severity: warning
 
         - alert: UpsOffline
-          expr: |
+          expr: |-
             up{job="nut-exporter"} == 0
           for: 2m
           annotations:
@@ -81,7 +81,7 @@ spec:
             severity: critical
 
         - alert: UpsReplaceBattery
-          expr: |
+          expr: |-
             nut_status{status="RB"} == 1
           for: 1m
           annotations:
@@ -93,7 +93,7 @@ spec:
             severity: warning
 
         - alert: UpsOverload
-          expr: |
+          expr: |-
             nut_ups_load > 90
           for: 5m
           annotations:

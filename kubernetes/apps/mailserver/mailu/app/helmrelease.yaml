@@ -54,7 +54,7 @@ spec:
               version: v1
               kind: Deployment
               name: mailu-front
-            patch: |
+            patch: |-
               - op: replace
                 path: /spec/template/spec/volumes/0/secret/secretName
                 value: ${D_HS//./-}-production-tls

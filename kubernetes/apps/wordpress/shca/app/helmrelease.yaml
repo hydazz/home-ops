@@ -37,7 +37,7 @@ spec:
             env:
               WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
-              WORDPRESS_CONFIG_EXTRA: |
+              WORDPRESS_CONFIG_EXTRA: |-
                 define('DISABLE_WP_CRON', true);
             envFrom: *secret
             securityContext: &securityContext
