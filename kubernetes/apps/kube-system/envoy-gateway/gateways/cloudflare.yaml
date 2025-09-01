@@ -15,25 +15,11 @@ spec:
       external-dns.alpha.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 192.168.42.140
   listeners:
-    - &http
-      # ===== HS =====
-      name: http-hs-apex
-      protocol: HTTP
-      port: 80
-      hostname: &hs_apex "${D_HS}"
-      allowedRoutes:
-        namespaces:
-          from: Same
-
-    - <<: *http
-      name: http-hs
-      hostname: &hs "*.${D_HS}"
-
     - &https
       name: https-hs-apex
       protocol: HTTPS
       port: 443
-      hostname: *hs_apex
+      hostname: "${D_HS}"
       allowedRoutes:
         namespaces:
           from: All
@@ -44,21 +30,13 @@ spec:
 
     - <<: *https
       name: https-hs
-      hostname: *hs
+      hostname: "*.${D_HS}"
       tls: *tls_hs
 
     # ===== HCA =====
-    - <<: *http
-      name: http-hca-apex
-      hostname: &hca_apex "${D_HCA}"
-
-    - <<: *http
-      name: http-hca
-      hostname: &hca "*.${D_HCA}"
-
     - <<: *https
       name: https-hca-apex
-      hostname: *hca_apex
+      hostname: "${D_HCA}"
       tls: &tls_hca
         certificateRefs:
           - kind: Secret
@@ -66,21 +44,13 @@ spec:
 
     - <<: *https
       name: https-hca
-      hostname: *hca
+      hostname: "*.${D_HCA}"
       tls: *tls_hca
 
     # ===== IGI =====
-    - <<: *http
-      name: http-igi-apex
-      hostname: &igi_apex "${D_IGI}"
-
-    - <<: *http
-      name: http-igi
-      hostname: &igi "*.${D_IGI}"
-
     - <<: *https
       name: https-igi-apex
-      hostname: *igi_apex
+      hostname: "${D_IGI}"
       tls: &tls_igi
         certificateRefs:
           - kind: Secret
@@ -88,21 +58,13 @@ spec:
 
     - <<: *https
       name: https-igi
-      hostname: *igi
+      hostname: "*.${D_IGI}"
       tls: *tls_igi
 
     # ===== LMVCA =====
-    - <<: *http
-      name: http-lmvca-apex
-      hostname: &lmvca_apex "${D_LMVCA}"
-
-    - <<: *http
-      name: http-lmvca
-      hostname: &lmvca "*.${D_LMVCA}"
-
     - <<: *https
       name: https-lmvca-apex
-      hostname: *lmvca_apex
+      hostname: "${D_LMVCA}"
       tls: &tls_lmvca
         certificateRefs:
           - kind: Secret
@@ -110,5 +72,5 @@ spec:
 
     - <<: *https
       name: https-lmvca
-      hostname: *lmvca
+      hostname: "*.${D_LMVCA}"
       tls: *tls_lmvca
