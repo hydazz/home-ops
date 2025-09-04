@@ -18,6 +18,7 @@ kind: EnvoyProxy
 metadata:
   name: config
 spec:
+  ipFamily: DualStack
   telemetry:
     metrics:
       prometheus: {}
