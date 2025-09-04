@@ -1,13 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: mailu
-spec:
-  interval: 1h
-  url: https://mailu.github.io/helm-charts
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -79,7 +70,7 @@ spec:
         roundcube:
           database: roundcube
           username: roundcube
-          existingSecret: &webmailSecret mailu-webmail-secret
+          existingSecret: mailu-webmail-secret
           existingSecretPasswordKey: ROUNDCUBE_DB_PASS
     hostnames:
       - mail.${D_HS}

@@ -3,17 +3,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./hca.yaml
   - ./hca-pushsecret.yaml
-  - ./hs.yaml
+  - ./hca.yaml
   - ./hs-pushsecret.yaml
-  - ./igi.yaml
+  - ./hs.yaml
   - ./igi-pushsecret.yaml
-  - ./lmvca.yaml
+  - ./igi.yaml
   - ./lmvca-pushsecret.yaml
-  - ./sn.yaml
+  - ./lmvca.yaml
   - ./sn-pushsecret.yaml
-  - ./taca.yaml
+  - ./sn.yaml
   - ./taca-pushsecret.yaml
-  - ./tan.yaml
+  - ./taca.yaml
   - ./tan-pushsecret.yaml
+  - ./tan.yaml

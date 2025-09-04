@@ -1,18 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: grafana
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 9.4.4
-  url: oci://ghcr.io/grafana/helm-charts/grafana
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -87,7 +73,7 @@ spec:
         providers:
           - name: kubernetes
             orgId: 1
-            folder: "Kubernetes"
+            folder: Kubernetes
             type: file
             disableDeletion: false
             editable: true
@@ -95,7 +81,7 @@ spec:
               path: /var/lib/grafana/dashboards/kubernetes
           - name: storage
             orgId: 1
-            folder: "Storage"
+            folder: Storage
             type: file
             disableDeletion: false
             editable: true
@@ -103,7 +89,7 @@ spec:
               path: /var/lib/grafana/dashboards/storage
           - name: databases
             orgId: 1
-            folder: "Databases"
+            folder: Databases
             type: file
             disableDeletion: false
             editable: true
@@ -111,7 +97,7 @@ spec:
               path: /var/lib/grafana/dashboards/databases
           - name: network
             orgId: 1
-            folder: "Network"
+            folder: Network
             type: file
             disableDeletion: false
             editable: true
@@ -119,7 +105,7 @@ spec:
               path: /var/lib/grafana/dashboards/network
           - name: monitoring
             orgId: 1
-            folder: "Monitoring"
+            folder: Monitoring
             type: file
             disableDeletion: false
             editable: true
@@ -127,7 +113,7 @@ spec:
               path: /var/lib/grafana/dashboards/monitoring
           - name: cilium
             orgId: 1
-            folder: "Cilium"
+            folder: Cilium
             type: file
             disableDeletion: false
             editable: true
