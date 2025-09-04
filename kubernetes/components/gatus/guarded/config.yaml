@@ -11,4 +11,4 @@ endpoints:
       query-name: "${GATUS_SUBDOMAIN:=${APP}}.${GATUS_DOMAIN:=${D_HS}}"
       query-type: A
     conditions:
-      - "len([BODY]) == 0"
+      - len([BODY]) == 0
