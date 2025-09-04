@@ -3,7 +3,6 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 
 scripts_dir := justfile_dir() + '/scripts'
 talos_dir := justfile_dir() + '/talos'
-temp_dir := `mktemp -d`
 controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 
 [private]
@@ -39,9 +38,8 @@ reboot-node node:
 render-config node:
     export CONTROLLER="$(just talos machine-controller {{ node }})"; \
     export NVIDIA="$(just talos machine-nvidia {{ node }})"; \
-    just template "{{ talos_dir }}/machineconfig.yaml.j2" >"{{ temp_dir }}/base.yaml"; \
-    just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2" >"{{ temp_dir }}/overlay.yaml"
-    talosctl machineconfig patch "{{ temp_dir }}/base.yaml" -p "@{{ temp_dir }}/overlay.yaml"
+    talosctl machineconfig patch <(just template "{{ talos_dir }}/machineconfig.yaml.j2") \
+        -p @<(just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2")
 
 [doc('Reset a node')]
 reset-node node:
@@ -63,7 +61,7 @@ upgrade-node node:
 
 [private]
 machine-controller node:
-    just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2" | yq -e '(.machine.type == "controlplane") // ""'
+    just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2" | yq -e 'select(.machine) | (.machine.type == "controlplane") // ""'
 
 [private]
 machine-nvidia node:
@@ -71,4 +69,4 @@ machine-nvidia node:
 
 [private]
 machine-image:
-    just template "{{ talos_dir }}/machineconfig.yaml.j2" | yq -e '.machine.install.image // ""'
+    just template "{{ talos_dir }}/machineconfig.yaml.j2" | yq -e 'select(.machine) | .machine.install.image'
