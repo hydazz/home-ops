@@ -15,7 +15,6 @@ resources:
   - ./generic-device-plugin/ks.yaml
   - ./intel-device-plugin-operator/ks.yaml
   - ./metrics-server/ks.yaml
-  - ./node-feature-discovery/ks.yaml
   - ./nvidia-device-plugin/ks.yaml
   - ./reflector/ks.yaml
   - ./reloader/ks.yaml
