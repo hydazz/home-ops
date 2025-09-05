@@ -45,18 +45,16 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 5
     extraArgs:
-      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
-      - --crd-source-kind=DNSEndpoint
       - --gateway-name=internal
     triggerLoopOnEvent: true
     policy: sync
+    logLevel: debug
     sources:
       - gateway-httproute
       - service
-    txtOwnerId: default
-    txtPrefix: k8s.
-    #domainFilters: [""]
+    txtOwnerId: main
+    txtPrefix: k8s.main.
     serviceMonitor:
-      enabled: false
+      enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret

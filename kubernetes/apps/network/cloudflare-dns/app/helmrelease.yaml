@@ -21,11 +21,11 @@ spec:
     provider:
       name: cloudflare
     env:
-      - name: CF_API_TOKEN
+      - name: &name CF_API_TOKEN
         valueFrom:
           secretKeyRef:
             name: &secret cloudflare-dns-secret
-            key: api-token
+            key: *name
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
@@ -33,6 +33,7 @@ spec:
       - --gateway-name=external
     triggerLoopOnEvent: true
     policy: sync
+    logLevel: debug
     sources:
       - crd
       - gateway-httproute
@@ -47,7 +48,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app cloudflare-cloudflare-dns
+  name: &app cloudflare-dns
 spec:
   interval: 1h
   chartRef:
@@ -65,11 +66,11 @@ spec:
     provider:
       name: cloudflare
     env:
-      - name: CF_API_TOKEN
+      - name: &name CF_API_TOKEN
         valueFrom:
           secretKeyRef:
             name: &secret cloudflare-dns-secret
-            key: api-token
+            key: *name
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
@@ -78,6 +79,7 @@ spec:
       - --gateway-name=cloudflare
     triggerLoopOnEvent: true
     policy: sync
+    logLevel: debug
     sources:
       - crd
       - gateway-httproute
