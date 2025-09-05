@@ -6,7 +6,6 @@ namespace: network
 components:
   - ../../components/common
 resources:
-  - ./adguard-home/ks.yaml
   - ./cloudflare-dns/ks.yaml
   - ./echo/ks.yaml
   - ./multus/ks.yaml
