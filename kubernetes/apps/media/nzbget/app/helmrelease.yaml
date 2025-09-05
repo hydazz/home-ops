@@ -1,0 +1,92 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nzbget
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: nzbget
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      nzbget:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/nzbget
+              tag: 25.3.0@sha256:6ce885f0648894047483d64c4f32785af819b1def597c476e5ba2b7e564cfe68
+            env:
+              NZBGET__PORT: &port 80
+              TZ: Australia/Melbourne
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 8Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${D_HS}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: *app
+      media:
+        type: nfs
+        server: 192.168.42.20
+        path: /mnt/Slow/Media
+        globalMounts:
+          - path: /data
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          nzbget:
+            app:
+              - path: /tmp
+                subPath: tmp
