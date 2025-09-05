@@ -40,7 +40,7 @@ spec:
       tls: &tls_hs
         certificateRefs:
           - kind: Secret
-            name: ${D_HS//./-}-production-tls
+            name: ${D_HS//./-}-tls
 
     - <<: *https
       name: https-hs

@@ -1,0 +1,123 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+# Account 1:
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name hydaz-com-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: hydaz.com
+  dnsNames:
+    - hydaz.com
+    - "*.hydaz.com"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+# Account 2:
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_HS//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_HS}
+  dnsNames:
+    - ${D_HS}
+    - "*.${D_HS}"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_HCA//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_HCA}
+  dnsNames:
+    - ${D_HCA}
+    - "*.${D_HCA}"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_IGI//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_IGI}
+  dnsNames:
+    - ${D_IGI}
+    - "*.${D_IGI}"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_SN//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_SN}
+  dnsNames:
+    - ${D_SN}
+    - "*.${D_SN}"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_TACA//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_TACA}
+  dnsNames:
+    - ${D_TACA}
+    - "*.${D_TACA}"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_TAN//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_TAN}
+  dnsNames:
+    - ${D_TAN}
+    - "*.${D_TAN}"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+# Account 3:
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_LMVCA//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_LMVCA}
+  dnsNames:
+    - ${D_LMVCA}
+    - "*.${D_LMVCA}"

@@ -27,7 +27,7 @@ spec:
       tls: &tls_hs
         certificateRefs:
           - kind: Secret
-            name: ${D_HS//./-}-production-tls
+            name: ${D_HS//./-}-tls
 
     - <<: *https
       name: https-hs
@@ -41,7 +41,7 @@ spec:
       tls: &tls_hca
         certificateRefs:
           - kind: Secret
-            name: ${D_HCA//./-}-production-tls
+            name: ${D_HCA//./-}-tls
 
     - <<: *https
       name: https-hca
@@ -55,7 +55,7 @@ spec:
       tls: &tls_igi
         certificateRefs:
           - kind: Secret
-            name: ${D_IGI//./-}-production-tls
+            name: ${D_IGI//./-}-tls
 
     - <<: *https
       name: https-igi
@@ -69,7 +69,7 @@ spec:
       tls: &tls_lmvca
         certificateRefs:
           - kind: Secret
-            name: ${D_LMVCA//./-}-production-tls
+            name: ${D_LMVCA//./-}-tls
 
     - <<: *https
       name: https-lmvca
