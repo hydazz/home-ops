@@ -48,7 +48,6 @@ spec:
       - --gateway-name=internal
     triggerLoopOnEvent: true
     policy: sync
-    logLevel: debug
     sources:
       - gateway-httproute
       - service

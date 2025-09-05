@@ -33,7 +33,6 @@ spec:
       - --gateway-name=external
     triggerLoopOnEvent: true
     policy: sync
-    logLevel: debug
     sources:
       - crd
       - gateway-httproute
@@ -79,9 +78,7 @@ spec:
       - --gateway-name=cloudflare
     triggerLoopOnEvent: true
     policy: sync
-    logLevel: debug
     sources:
-      - crd
       - gateway-httproute
     txtOwnerId: cloudflare
     txtPrefix: k8s.cloudflare.
