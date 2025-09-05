@@ -4,7 +4,7 @@ persist: true
 machine:
   ca:
     crt: op://K8s/talos/MACHINE_CA_CRT
-    {% if ENV.CONTROLLER %}
+    {% if ENV.IS_CONTROLLER %}
     key: op://K8s/talos/MACHINE_CA_KEY
     {% endif %}
   certSANs:
@@ -20,7 +20,7 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    {% if ENV.CONTROLLER %}
+    {% if ENV.IS_CONTROLLER %}
     kubernetesTalosAPIAccess:
       allowedKubernetesNamespaces:
         - actions-runner-system
@@ -50,7 +50,7 @@ machine:
         noatime=True
   install:
     wipe: false
-  {% if ENV.NVIDIA %}
+  {% if ENV.HAS_NVIDIA %}
   kernel:
     modules:
       - name: nvidia
@@ -104,7 +104,7 @@ machine:
 cluster:
   ca:
     crt: op://K8s/talos/CLUSTER_CA_CRT
-    {% if ENV.CONTROLLER %}
+    {% if ENV.IS_CONTROLLER %}
     key: op://K8s/talos/CLUSTER_CA_KEY
     {% endif %}
   clusterName: kubernetes
@@ -123,7 +123,7 @@ cluster:
       - fd43::/112
   secret: op://K8s/talos/CLUSTER_SECRET
   token: op://K8s/talos/CLUSTER_TOKEN
-  {% if ENV.CONTROLLER %}
+  {% if ENV.IS_CONTROLLER %}
   aggregatorCA:
     crt: op://K8s/talos/CLUSTER_AGGREGATORCA_CRT
     key: op://K8s/talos/CLUSTER_AGGREGATORCA_KEY
@@ -143,10 +143,10 @@ cluster:
       feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
     image: registry.k8s.io/kube-apiserver:v1.34.0
-  controllerManager:
+  IS_CONTROLLERManager:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-controller-manager:v1.34.0
+    image: registry.k8s.io/kube-IS_CONTROLLER-manager:v1.34.0
   coreDNS:
     disabled: true
   etcd:
