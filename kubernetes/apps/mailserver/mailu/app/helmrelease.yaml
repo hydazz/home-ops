@@ -404,6 +404,11 @@ spec:
         type: secret
         name: ${D_HS//./-}-tls
         defaultMode: 0444
+        items:
+          - key: tls.crt
+            path: cert.pem
+          - key: tls.key
+            path: key.pem
         advancedMounts:
           front:
             app:
