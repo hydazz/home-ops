@@ -32,6 +32,13 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-label-filter=type in (cloudflare,external)
+    #managedRecordTypes:
+    #  - A
+    #  - AAAA
+    #  - CNAME
+    #  - MX
+    #  - TXT
+    #  - SRV
     triggerLoopOnEvent: true
     policy: sync
     sources:

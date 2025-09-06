@@ -1,0 +1,129 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: mailu-records
+spec:
+  endpoints:
+    - &mx
+      # ===== HS =====
+      dnsName: ${D_HS}
+      recordType: MX
+      targets:
+        - "10 mail.${D_HS}"
+
+    - &spf
+      dnsName: ${D_HS}
+      recordType: TXT
+      targets:
+        - "v=spf1 mx a:mail.${D_HS} ~all"
+
+    - &dmarc
+      dnsName: _dmarc.${D_HS}
+      recordType: TXT
+      targets:
+        - "v=DMARC1; p=reject; adkim=s; aspf=s"
+
+    - &srv_imap
+      dnsName: _imap._tcp.${D_HS}
+      recordType: SRV
+      targets:
+        - "20 1 143 mail.${D_HS}"
+    - &srv_pop3
+      dnsName: _pop3._tcp.${D_HS}
+      recordType: SRV
+      targets:
+        - "20 1 110 mail.${D_HS}"
+    - &srv_submission
+      dnsName: _submission._tcp.${D_HS}
+      recordType: SRV
+      targets:
+        - "20 1 587 mail.${D_HS}"
+    - &srv_submissions
+      dnsName: _submissions._tcp.${D_HS}
+      recordType: SRV
+      targets:
+        - "10 1 465 mail.${D_HS}"
+    - &srv_imaps
+      dnsName: _imaps._tcp.${D_HS}
+      recordType: SRV
+      targets:
+        - "10 1 993 mail.${D_HS}"
+    - &srv_pop3s
+      dnsName: _pop3s._tcp.${D_HS}
+      recordType: SRV
+      targets:
+        - "10 1 995 mail.${D_HS}"
+    - &srv_autodiscover
+      dnsName: _autodiscover._tcp.${D_HS}
+      recordType: SRV
+      targets:
+        - "0 0 443 mail.${D_HS}"
+
+    - &cname_autoconfig
+      dnsName: autoconfig.${D_HS}
+      recordType: CNAME
+      targets:
+        - mail.${D_HS}
+    - &cname_autodiscover
+      dnsName: autodiscover.${D_HS}
+      recordType: CNAME
+      targets:
+        - mail.${D_HS}
+
+    # ===== IGI =====
+    - <<: *mx
+      dnsName: ${D_IGI}
+    - <<: *spf
+      dnsName: ${D_IGI}
+    - <<: *dmarc
+      dnsName: _dmarc.${D_IGI}
+
+    - <<: *srv_imap
+      dnsName: _imap._tcp.${D_IGI}
+    - <<: *srv_pop3
+      dnsName: _pop3._tcp.${D_IGI}
+    - <<: *srv_submission
+      dnsName: _submission._tcp.${D_IGI}
+    - <<: *srv_submissions
+      dnsName: _submissions._tcp.${D_IGI}
+    - <<: *srv_imaps
+      dnsName: _imaps._tcp.${D_IGI}
+    - <<: *srv_pop3s
+      dnsName: _pop3s._tcp.${D_IGI}
+    - <<: *srv_autodiscover
+      dnsName: _autodiscover._tcp.${D_IGI}
+
+    - <<: *cname_autoconfig
+      dnsName: autoconfig.${D_IGI}
+    - <<: *cname_autodiscover
+      dnsName: autodiscover.${D_IGI}
+
+    # ===== LMVCA =====
+    - <<: *mx
+      dnsName: ${D_LMVCA}
+    - <<: *spf
+      dnsName: ${D_LMVCA}
+    - <<: *dmarc
+      dnsName: _dmarc.${D_LMVCA}
+
+    - <<: *srv_imap
+      dnsName: _imap._tcp.${D_LMVCA}
+    - <<: *srv_pop3
+      dnsName: _pop3._tcp.${D_LMVCA}
+    - <<: *srv_submission
+      dnsName: _submission._tcp.${D_LMVCA}
+    - <<: *srv_submissions
+      dnsName: _submissions._tcp.${D_LMVCA}
+    - <<: *srv_imaps
+      dnsName: _imaps._tcp.${D_LMVCA}
+    - <<: *srv_pop3s
+      dnsName: _pop3s._tcp.${D_LMVCA}
+    - <<: *srv_autodiscover
+      dnsName: _autodiscover._tcp.${D_LMVCA}
+
+    - <<: *cname_autoconfig
+      dnsName: autoconfig.${D_LMVCA}
+    - <<: *cname_autodiscover
+      dnsName: autodiscover.${D_LMVCA}
