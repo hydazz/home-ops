@@ -48,7 +48,7 @@ spec:
             patch: |-
               - op: replace
                 path: /spec/template/spec/volumes/0/secret/secretName
-                value: ${D_HS//./-}-production-tls
+                value: ${D_HS//./-}-tls
           # Delete default PVCs
           - patch: |
               $patch: delete
