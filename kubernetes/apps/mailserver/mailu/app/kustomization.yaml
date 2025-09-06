@@ -6,5 +6,11 @@ resources:
   #- ./dnsendpoint.yaml # awaiting support
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./helmrepository.yaml
-  - ./httproute.yaml
+  - ./ocirepository.yaml
+  - ./pvc.yaml
+configMapGenerator:
+  - name: mailu-env-configmap
+    envs:
+      - ./resources/env.yaml
+generatorOptions:
+  disableNameSuffixHash: true
