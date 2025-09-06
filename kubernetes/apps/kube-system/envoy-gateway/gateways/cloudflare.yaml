@@ -13,7 +13,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 2404:e80:661b:42::140
+      lbipam.cilium.io/ips: 2404:e80:661b:42::140 # exposed over IPv6 as the external gateway is using my 1 and only IPv4 address
   listeners:
     - &https
       # ===== HS =====
