@@ -124,6 +124,8 @@ spec:
             port: *port
     route:
       app:
+        annotations:
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames:
           - storage.${D_HS}
         parentRefs:

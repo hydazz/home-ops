@@ -104,6 +104,8 @@ spec:
               - name: *app
                 port: *port
       s3-api:
+        annotations:
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames:
           - s3.${D_HS}
         parentRefs:
