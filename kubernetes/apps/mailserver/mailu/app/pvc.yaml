@@ -1,0 +1,52 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mailu
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-block
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mailu-postfix
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: ceph-block
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mailu-rspamd
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-block
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/persistentvolumeclaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mailu-webmail
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: ceph-block
