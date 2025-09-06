@@ -8,3 +8,9 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./pvc.yaml
+configMapGenerator:
+  - name: mailu-env-configmap
+    envs:
+      - ./resources/env.yaml
+generatorOptions:
+  disableNameSuffixHash: true

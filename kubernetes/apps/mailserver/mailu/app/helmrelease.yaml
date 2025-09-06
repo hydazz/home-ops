@@ -26,89 +26,21 @@ spec:
             image:
               repository: ghcr.io/mailu/nginx
               tag: 2024.06.43
-            env: &env
-              TZ: Australia/Melbourne
-              # Core Mailu configuration
-              DOMAIN: &domain ${D_HS}
-              HOSTNAMES: mail.${D_HS}
-              SUBNET: 10.42.0.0/16
-              SUBNET6: fd42::/48
-              SITENAME: Mailu
-              WEBSITE: https://mail.${D_HS}
-              LOGO_URL: none
-              LOGO_BACKGROUND: none
-              # Database configuration
-              DB_FLAVOR: postgresql
-              DB_HOST: postgres-rw.databases.svc.cluster.local:5432
-              DB_NAME: mailu
-              DB_USER: mailu
-              # Redis configuration
-              RATELIMIT_STORAGE_URL: redis://dragonfly.databases.svc.cluster.local:6379/2
-              # Mail configuration
-              MESSAGE_SIZE_LIMIT: "67108864"
-              MESSAGE_RATELIMIT: 200/day
-              AUTH_RATELIMIT_IP: 60/hour
-              AUTH_RATELIMIT_USER: 100/day
-              # Webmail configuration
-              WEB_ADMIN: /admin
-              WEB_WEBMAIL: /webmail
-              WEBROOT_REDIRECT: /webmail
-              ROUNDCUBE_DB_FLAVOR: postgresql
-              ROUNDCUBE_DB_HOST: postgres-rw.databases.svc.cluster.local:5432
-              ROUNDCUBE_DB_NAME: roundcube
-              ROUNDCUBE_DB_USER: roundcube
-              # Security configuration
-              TLS_FLAVOR: mail
+            env:
               REAL_IP_FROM: 0.0.0.0/0
               REAL_IP_HEADER: X-Forwarded-For
               SESSION_COOKIE_SECURE: "true"
-              # Features
-              ADMIN: "true"
-              FETCHMAIL_ENABLED: "false"
-              ANTIVIRUS_ACTION: discard
-              ANTIVIRUS: none
-              # Compression
-              COMPRESSION: lz4
-              COMPRESSION_LEVEL: "6"
-              # Service addresses
-              FRONT_ADDRESS: mailu-front.mailserver.svc.cluster.local
-              ADMIN_ADDRESS: mailu-admin.mailserver.svc.cluster.local
-              SMTP_ADDRESS: mailu-postfix.mailserver.svc.cluster.local
-              IMAP_ADDRESS: mailu-dovecot.mailserver.svc.cluster.local
-              ANTISPAM_ADDRESS: mailu-rspamd.mailserver.svc.cluster.local
-              WEBMAIL_ADDRESS: mailu-webmail.mailserver.svc.cluster.local
-              REDIS_ADDRESS: dragonfly.databases.svc.cluster.local
-              # Initial admin configuration
-              INITIAL_ADMIN_MODE: ifmissing
-              INITIAL_ADMIN_ACCOUNT: alex
-              INITIAL_ADMIN_DOMAIN: *domain
-              # Webmail configuration
-              WEBMAIL: roundcube
-              ROUNDCUBE_PLUGINS: archive,zipdownload,markasjunk,managesieve,enigma,carddav,vcard_attachments,mailu
-              # Additional settings
-              PORTS: 110,995,143,993,25,465,587,4190
-              LOG_LEVEL: WARNING
-              DEBUG: "false"
-              WELCOME: "true"
-              WELCOME_SUBJECT: Welcome to Mailu
-              WELCOME_BODY: Welcome to Mailu, your new email service. Please change your password and update your profile.
-              POSTMASTER: postmaster
-              # Mailu Helm Chart compatibility
-              MAILU_HELM_CHART: "true"
-              I_KNOW_MY_SETUP_DOESNT_FIT_REQUIREMENTS_AND_WONT_FILE_ISSUES_WITHOUT_PATCHES: "true"
             envFrom:
-              - secretRef:
-                  name: &secret mailu-secret
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
-                  exec:
-                    command:
-                      - /bin/sh
-                      - -c
-                      - "curl -f -L http://localhost/ || exit 1"
+                  httpGet:
+                    path: /
+                    port: 80
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -137,11 +69,27 @@ spec:
               repository: ghcr.io/mailu/admin
               tag: 2024.06.43
             env:
-              <<: *env
-              QUOTA_STORAGE_URL: redis://dragonfly.databases.svc.cluster.local:6379/1
+              ADMIN: "true"
+              DB_FLAVOR: postgresql
+              FETCHMAIL_ENABLED: "false"
+              INITIAL_ADMIN_ACCOUNT: alex
+              INITIAL_ADMIN_DOMAIN: ${D_HS}
+              INITIAL_ADMIN_MODE: ifmissing
+              LOGO_BACKGROUND: none
+              LOGO_URL: none
+              MESSAGE_RATELIMIT: 200/day
+              SITENAME: Mailu
+              WEBMAIL: roundcube
+              WEBSITE: https://mail.${D_HS}
+              WEB_ADMIN: /admin
+              WELCOME: "true"
+              WELCOME_BODY: Welcome to Mailu, your new email service. Please change your password and update your profile.
+              WELCOME_SUBJECT: Welcome to Mailu
             envFrom:
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
               - secretRef:
-                  name: *secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &adminProbes
                 enabled: true
@@ -149,7 +97,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: &adminPort 8080
+                    port: 8080
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -175,20 +123,17 @@ spec:
               repository: ghcr.io/mailu/postfix
               tag: 2024.06.43
             env:
-              <<: *env
+              MESSAGE_SIZE_LIMIT: "67108864"
             envFrom:
-              - secretRef:
-                  name: *secret
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
             probes:
               startup:
                 enabled: true
                 custom: true
                 spec:
-                  exec:
-                    command:
-                      - /bin/sh
-                      - -c
-                      - "ss -lntp | grep -q :25"
+                  tcpSocket:
+                    port: 25
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -197,11 +142,8 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  exec:
-                    command:
-                      - /bin/sh
-                      - -c
-                      - "ss -lntp | grep -q :25"
+                  tcpSocket:
+                    port: 25
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -223,20 +165,18 @@ spec:
               repository: ghcr.io/mailu/dovecot
               tag: 2024.06.43
             env:
-              <<: *env
+              COMPRESSION: lz4
+              COMPRESSION_LEVEL: "6"
             envFrom:
-              - secretRef:
-                  name: *secret
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
             probes:
               liveness: &dovecotProbes
                 enabled: true
                 custom: true
                 spec:
-                  exec:
-                    command:
-                      - /bin/sh
-                      - -c
-                      - "ss -lntp | grep -q :993"
+                  tcpSocket:
+                    port: 993
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 10
@@ -260,10 +200,12 @@ spec:
               repository: ghcr.io/mailu/rspamd
               tag: 2024.06.43
             env:
-              <<: *env
+              ANTIVIRUS: none
+              ANTIVIRUS_ACTION: discard
+              RATELIMIT_STORAGE_URL: redis://dragonfly.databases.svc.cluster.local:6379/2
             envFrom:
-              - secretRef:
-                  name: *secret
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
             probes:
               startup:
                 enabled: true
@@ -308,10 +250,13 @@ spec:
               repository: ghcr.io/mailu/webmail
               tag: 2024.06.43
             env:
-              <<: *env
+              ROUNDCUBE_DB_FLAVOR: postgresql
+              ROUNDCUBE_PLUGINS: archive,zipdownload,markasjunk,managesieve,enigma,carddav,vcard_attachments,mailu
+              WEBROOT_REDIRECT: /webmail
+              WEB_WEBMAIL: /webmail
             envFrom:
               - secretRef:
-                  name: *secret
+                  name: "{{ .Release.Name }}-webmail-secret"
             probes:
               liveness: &webmailProbes
                 enabled: true
@@ -319,7 +264,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: &webmailPort 80
+                    port: 80
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -343,78 +288,7 @@ spec:
         runAsGroup: 0
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
-      terminationGracePeriodSeconds: 2
     service:
-      front:
-        controller: front
-        ports:
-          http:
-            port: &httpPort 80
-          https:
-            port: 443
-          pop3:
-            port: 110
-          pop3s:
-            port: 995
-          imap:
-            port: 143
-          imaps:
-            port: 993
-          smtp:
-            port: 25
-          smtps:
-            port: 465
-          submission:
-            port: 587
-          lmtp:
-            port: 2525
-          smtp-auth:
-            port: 10025
-          imap-auth:
-            port: 10143
-          sieve:
-            port: 14190
-      admin:
-        controller: admin
-        ports:
-          http:
-            port: *adminPort
-      postfix:
-        controller: postfix
-        ports:
-          smtp:
-            port: 25
-          smtp-ssl:
-            port: 465
-          smtp-starttls:
-            port: 587
-          smtp-auth:
-            port: 10025
-      dovecot:
-        controller: dovecot
-        ports:
-          imap-auth:
-            port: 2102
-          imap-transport:
-            port: 2525
-          imap-default:
-            port: 143
-          pop3:
-            port: 110
-          sieve:
-            port: 4190
-      rspamd:
-        controller: rspamd
-        ports:
-          rspamd:
-            port: 11332
-          rspamd-http:
-            port: *rspamdPort
-      webmail:
-        controller: webmail
-        ports:
-          http:
-            port: *webmailPort
       mail:
         type: LoadBalancer
         controller: front
@@ -422,21 +296,18 @@ spec:
           lbipam.cilium.io/ips: 192.168.42.150
         externalTrafficPolicy: Local
         ports:
-          # IMAP
           imap:
             port: 143
             protocol: TCP
           imaps:
             port: 993
             protocol: TCP
-          # POP3
           pop3:
             port: 110
             protocol: TCP
           pop3s:
             port: 995
             protocol: TCP
-          # SMTP
           smtp:
             port: 25
             protocol: TCP
@@ -446,7 +317,6 @@ spec:
           submission:
             port: 587
             protocol: TCP
-          # ManageSieve
           sieve:
             port: 4190
             protocol: TCP
@@ -462,8 +332,8 @@ spec:
             sectionName: https-hs
         rules:
           - backendRefs:
-              - name: mailu-front
-                port: *httpPort
+              - name: "{{ .Release.Name }}-front"
+                port: &httpPort 80
       autodiscover:
         hostnames:
           # ===== HS =====
@@ -487,11 +357,11 @@ spec:
             sectionName: https-lmvca
         rules:
           - backendRefs:
-              - name: mailu-front
+              - name: "{{ .Release.Name }}-front"
                 port: *httpPort
     persistence:
       admin-data:
-        existingClaim: mailu
+        existingClaim: *app
         advancedMounts:
           admin:
             app:
@@ -500,7 +370,7 @@ spec:
               - path: /dkim
                 subPath: dkim
       dovecot-data:
-        existingClaim: mailu
+        existingClaim: *app
         advancedMounts:
           dovecot:
             app:
@@ -509,14 +379,14 @@ spec:
               - path: /mail
                 subPath: dovecotmail
       postfix-data:
-        existingClaim: mailu-postfix
+        existingClaim: "{{ .Release.Name }}-postfix"
         advancedMounts:
           postfix:
             app:
               - path: /queue
                 subPath: mailqueue
       rspamd-data:
-        existingClaim: mailu-rspamd
+        existingClaim: "{{ .Release.Name }}-rspamd"
         advancedMounts:
           rspamd:
             app:
@@ -525,7 +395,7 @@ spec:
               - path: /etc/rspamd/local.d/maps.d
                 subPath: rspamd-local.d-maps.d
       webmail-data:
-        existingClaim: mailu-webmail
+        existingClaim: "{{ .Release.Name }}-webmail"
         advancedMounts:
           webmail:
             app:
