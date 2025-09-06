@@ -21,7 +21,6 @@ spec:
       front:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         containers:
           app:
             image:
@@ -132,7 +131,6 @@ spec:
       admin:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         containers:
           app:
             image:
@@ -171,7 +169,6 @@ spec:
       postfix:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         containers:
           app:
             image:
@@ -220,7 +217,6 @@ spec:
       dovecot:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         containers:
           app:
             image:
@@ -256,7 +252,6 @@ spec:
       rspamd:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         pod:
           hostname: rspamd
         containers:
@@ -307,7 +302,6 @@ spec:
       webmail:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         containers:
           app:
             image:
