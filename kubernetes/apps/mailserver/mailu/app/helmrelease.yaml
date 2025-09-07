@@ -170,8 +170,11 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  tcpSocket:
-                    port: 25
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - "! /usr/libexec/postfix/master -t"
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -213,8 +216,12 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  tcpSocket:
-                    port: 993
+                  exec:
+                    command:
+                      # Can't load SSL certificate
+                      - sh
+                      - -c
+                      - "kill -0 $(cat /run/dovecot/master.pid)"
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 10
@@ -392,7 +399,6 @@ spec:
           smtp-ssl: *smtps
           smtp-starttls: *submission
           smtp-auth: *smtpAuth
-
       dovecot:
         controller: dovecot
         ports:
