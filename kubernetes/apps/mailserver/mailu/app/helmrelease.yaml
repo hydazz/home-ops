@@ -471,7 +471,7 @@ spec:
             sectionName: https-hs
         rules:
           - backendRefs:
-              - name: app
+              - name: mailu-nginx
                 port: *port
       autodiscover:
         hostnames:
@@ -496,7 +496,7 @@ spec:
             sectionName: https-lmvca
         rules:
           - backendRefs:
-              - name: app
+              - name: mailu-nginx
                 port: *port
     persistence:
       admin-data:
