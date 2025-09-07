@@ -46,6 +46,10 @@ spec:
         limits:
           cpu: 500m
           memory: 1Gi
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
       route:
         main:
           enabled: true
@@ -63,3 +67,7 @@ spec:
         limits:
           cpu: 500m
           memory: 1Gi
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true

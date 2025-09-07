@@ -233,6 +233,11 @@ spec:
           revision: 3
           datasource: Prometheus
       monitoring:
+        authentik:
+          # renovate: depName="authentik"
+          gnetId: 14837
+          revision: 2
+          datasource: Prometheus
         prometheus:
           # renovate: depName="Prometheus"
           gnetId: 19105
