@@ -6,5 +6,5 @@ resources:
   - ./clienttrafficpolicy.yaml
   - ./cloudflare.yaml
   - ./external.yaml
+  - ./httproute.yaml
   - ./internal.yaml
-  - ./redirect.yaml
