@@ -48,9 +48,9 @@ spec:
                   timeoutSeconds: 5
                   failureThreshold: 3
               readiness: *frontProbes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
             #  capabilities:
             #    add:
             #      - NET_BIND_SERVICE
@@ -137,9 +137,9 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *adminProbes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
             #  capabilities:
             #    add:
             #      - CHOWN
@@ -177,9 +177,9 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *postfixProbes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
             #  capabilities:
             #    add:
             #      - NET_BIND_SERVICE
@@ -220,9 +220,9 @@ spec:
                   timeoutSeconds: 10
                   failureThreshold: 3
               readiness: *dovecotProbes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
             #  capabilities:
             #    add:
             #      - CHOWN
@@ -277,9 +277,9 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *rspamdProbes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
             #  capabilities:
             #    drop:
             #      - ALL
@@ -324,9 +324,9 @@ spec:
                   timeoutSeconds: 5
                   failureThreshold: 3
               readiness: *webmailProbes
-            #securityContext:
-            #  allowPrivilegeEscalation: false
-            #  readOnlyRootFilesystem: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
             #  capabilities:
             #    add:
             #      - CHOWN
