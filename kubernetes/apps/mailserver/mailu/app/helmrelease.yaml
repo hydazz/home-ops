@@ -298,7 +298,8 @@ spec:
               tag: 2024.06.43@sha256:d6ddbc1006792a1d820434448ee09b8d13b244910834a447f67e4ed45fbc5914
             env:
               ROUNDCUBE_DB_FLAVOR: postgresql
-              ROUNDCUBE_PLUGINS: archive,zipdownload,markasjunk,managesieve,enigma,carddav,vcard_attachments,mailu
+              ROUNDCUBE_PLUGINS: |-
+                archive,zipdownload,markasjunk,managesieve,enigma,carddav,vcard_attachments,mailu
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-webmail-secret"
@@ -334,7 +335,13 @@ spec:
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
     service:
-      nginx:
+      app:
+        controller: nginx
+        primary: true
+        ports:
+          http:
+            port: *port
+      mail:
         type: LoadBalancer
         controller: nginx
         annotations:
@@ -377,7 +384,7 @@ spec:
             sectionName: https-hs
         rules:
           - backendRefs:
-              - name: "{{ .Release.Name }}-nginx"
+              - name: app
                 port: *port
       autodiscover:
         hostnames:
@@ -402,7 +409,7 @@ spec:
             sectionName: https-lmvca
         rules:
           - backendRefs:
-              - name: "{{ .Release.Name }}-nginx"
+              - name: app
                 port: *port
     persistence:
       admin-data:
