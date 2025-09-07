@@ -310,9 +310,15 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /ping
-                    port: &webmailPort 80
+                  exec:
+                    command:
+                      # access forbidden by rule
+                      - curl
+                      - -f
+                      - -L
+                      - -H
+                      - 'User-Agent: health'
+                      - http://localhost/ping
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -408,7 +414,7 @@ spec:
         controller: webmail
         ports:
           http:
-            port: *webmailPort
+            port: 80
       mail:
         type: LoadBalancer
         controller: front
