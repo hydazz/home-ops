@@ -19,7 +19,7 @@ spec:
   values:
     controllers:
       front:
-        annotations:
+        annotations: &reloader
           reloader.stakater.com/auto: "true"
         containers:
           app:
@@ -36,7 +36,7 @@ spec:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
             probes:
-              liveness: &probes
+              liveness: &frontProbes
                 enabled: true
                 custom: true
                 spec:
@@ -47,7 +47,7 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 3
-              readiness: *probes
+              readiness: *frontProbes
             #securityContext:
             #  allowPrivilegeEscalation: false
             #  readOnlyRootFilesystem: false
@@ -67,8 +67,7 @@ spec:
               limits:
                 memory: 1Gi
       admin:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        annotations: *reloader
         containers:
           app:
             image:
@@ -155,8 +154,7 @@ spec:
               limits:
                 memory: 1Gi
       postfix:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        annotations: *reloader
         containers:
           app:
             image:
@@ -168,16 +166,6 @@ spec:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
             probes:
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  tcpSocket:
-                    port: 25
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 30
               liveness: &postfixProbes
                 enabled: true
                 custom: true
@@ -208,8 +196,7 @@ spec:
               limits:
                 memory: 1Gi
       dovecot:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        annotations: *reloader
         containers:
           app:
             image:
@@ -251,8 +238,7 @@ spec:
               limits:
                 memory: 1Gi
       rspamd:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        annotations: *reloader
         pod:
           hostname: rspamd
         containers:
@@ -304,8 +290,7 @@ spec:
               limits:
                 memory: 1Gi
       webmail:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        annotations: *reloader
         containers:
           app:
             image:
@@ -367,23 +352,23 @@ spec:
         ports:
           http:
             port: *port
-          pop3:
+          pop3: &pop3
             port: 110
-          pop3s:
+          pop3s: &pop3s
             port: 995
-          imap:
+          imap: &imap
             port: 143
-          imaps:
+          imaps: &imaps
             port: 993
-          smtp:
+          smtp: &smtp
             port: 25
-          smtps:
+          smtps: &smtps
             port: 465
-          submission:
+          submission: &submission
             port: 587
-          lmtp:
+          lmtp: &lmtp
             port: 2525
-          smtp-auth:
+          smtp-auth: &smtpAuth
             port: 10025
           imap-auth:
             port: 10143
@@ -397,26 +382,20 @@ spec:
       postfix:
         controller: postfix
         ports:
-          smtp:
-            port: 25
-          smtp-ssl:
-            port: 465
-          smtp-starttls:
-            port: 587
-          smtp-auth:
-            port: 10025
+          smtp: *smtp
+          smtp-ssl: *smtps
+          smtp-starttls: *submission
+          smtp-auth: *smtpAuth
+
       dovecot:
         controller: dovecot
         ports:
           imap-auth:
             port: 2102
-          imap-transport:
-            port: 2525
-          imap-default:
-            port: 143
-          pop3:
-            port: 110
-          sieve:
+          imap-transport: *lmtp
+          imap-default: *imap
+          pop3: *pop3
+          sieve: &sieve
             port: 4190
       rspamd:
         controller: rspamd
@@ -437,30 +416,14 @@ spec:
           lbipam.cilium.io/ips: 192.168.42.150
         externalTrafficPolicy: Local
         ports:
-          imap:
-            port: 143
-            protocol: TCP
-          imaps:
-            port: 993
-            protocol: TCP
-          pop3:
-            port: 110
-            protocol: TCP
-          pop3s:
-            port: 995
-            protocol: TCP
-          smtp:
-            port: 25
-            protocol: TCP
-          smtps:
-            port: 465
-            protocol: TCP
-          submission:
-            port: 587
-            protocol: TCP
-          sieve:
-            port: 4190
-            protocol: TCP
+          imap: *imap
+          imaps: *imaps
+          pop3: *pop3
+          pop3s: *pop3s
+          smtp: *smtp
+          smtps: *smtps
+          submission: *submission
+          sieve: *sieve
     route:
       app:
         annotations:
@@ -471,7 +434,7 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https-hs
-        rules:
+        rules: &rules
           - backendRefs:
               - name: mailu-front
                 port: *port
@@ -496,10 +459,7 @@ spec:
           - name: cloudflare
             namespace: kube-system
             sectionName: https-lmvca
-        rules:
-          - backendRefs:
-              - name: mailu-front
-                port: *port
+        rules: *rules
     persistence:
       admin-data:
         existingClaim: *app
