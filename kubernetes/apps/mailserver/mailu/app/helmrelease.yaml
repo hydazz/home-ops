@@ -363,6 +363,30 @@ spec:
         ports:
           http:
             port: &port 80
+          https:
+            port: 443
+          pop3:
+            port: 110
+          pop3s:
+            port: 995
+          imap:
+            port: 143
+          imaps:
+            port: 993
+          smtp:
+            port: 25
+          smtps:
+            port: 465
+          submission:
+            port: 587
+          lmtp:
+            port: 2525
+          smtp-auth:
+            port: 10025
+          imap-auth:
+            port: 10143
+          sieve:
+            port: 14190
       admin:
         controller: admin
         ports:
