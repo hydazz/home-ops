@@ -25,11 +25,13 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/nginx
-              tag: 2024.06.43
+              tag: 2024.06.43@sha256:33ec8e12608d9b0dbb7532f7aa3706bea9f831a9b2450ef69ca15371cf3c448e
             env:
+              LETSENCRYPT_SHORTCHAIN: "false"
               REAL_IP_FROM: 0.0.0.0/0
               REAL_IP_HEADER: X-Forwarded-For
-              SESSION_COOKIE_SECURE: "true"
+              WEBDAV: none
+              WEBROOT_REDIRECT: /webmail
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
@@ -67,21 +69,50 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/admin
-              tag: 2024.06.43
+              tag: 2024.06.43@sha256:75fb5afaa356a55c9c28aace48b4cbe7f022582017f48812bf7e86a9ee67db2c
             env:
-              ADMIN: "true"
+              AUTH_RATELIMIT_EXEMPTION_LENGTH: "86400"
+              AUTH_RATELIMIT_IP: 60/hour
+              AUTH_RATELIMIT_IP_V4_MASK: "24"
+              AUTH_RATELIMIT_IP_V6_MASK: "56"
+              AUTH_RATELIMIT_USER: 100/day
+              AUTH_REQUIRE_TOKENS: "false"
+              BABEL_DEFAULT_LOCALE: en
+              BABEL_DEFAULT_TIMEZONE: UTC
+              BOOTSTRAP_SERVE_LOCAL: "true"
+              CREDENTIAL_ROUNDS: "12"
               DB_FLAVOR: postgresql
+              DEBUG: "false"
+              DEBUG_PROFILER: "false"
+              DEBUG_TB_INTERCEPT_REDIRECTS: "false"
+              DEFAULT_QUOTA: "1000000000"
+              DEFAULT_SPAM_THRESHOLD: "80"
+              DISABLE_STATISTICS: "false"
+              DKIM_PATH: /dkim/{domain}.{selector}.key
+              DKIM_SELECTOR: dkim
+              DOMAIN_REGISTRATION: "false"
               FETCHMAIL_ENABLED: "false"
               INITIAL_ADMIN_ACCOUNT: alex
               INITIAL_ADMIN_DOMAIN: ${D_HS}
               INITIAL_ADMIN_MODE: update
+              INSTANCE_ID_PATH: /data/instance
               LOGO_BACKGROUND: none
               LOGO_URL: none
+              MEMORY_SESSIONS: "false"
               MESSAGE_RATELIMIT: 200/day
+              PERMANENT_SESSION_LIFETIME: "2592000"
+              PROXY_AUTH_CREATE: "false"
+              PROXY_AUTH_HEADER: X-Auth-Email
+              RATELIMIT_STORAGE_URL: redis://dragonfly.databases.svc.cluster.local:6379/2
+              SESSION_COOKIE_SECURE: "true"
+              SESSION_TIMEOUT: "3600"
               SITENAME: Mailu
-              WEBMAIL: roundcube
+              SQLALCHEMY_DATABASE_URI: sqlite:////data/main.db
+              SQLALCHEMY_TRACK_MODIFICATIONS: "false"
+              SQLITE_DATABASE_FILE: data/main.db
+              STATS_ENDPOINT: 19.{}.stats.mailu.io
+              TEMPLATES_AUTO_RELOAD: "true"
               WEBSITE: https://mail.${D_HS}
-              WEB_ADMIN: /admin
               WELCOME: "true"
               WELCOME_BODY: Welcome to Mailu, your new email service. Please change your password and update your profile.
               WELCOME_SUBJECT: Welcome to Mailu
@@ -121,9 +152,9 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/postfix
-              tag: 2024.06.43
+              tag: 2024.06.43@sha256:f7395355bb68f402740b417cad9e4acb0830607f3bb535822316c2f9f05e6f00
             env:
-              MESSAGE_SIZE_LIMIT: "67108864"
+              REJECT_UNLISTED_RECIPIENT: "yes"
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
@@ -159,11 +190,27 @@ spec:
       dovecot:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      # follow admin around to mount PVC with RWO
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - mailu
+                      - key: app.kubernetes.io/controller
+                        operator: In
+                        values:
+                          - admin
+                  topologyKey: kubernetes.io/hostname
         containers:
           app:
             image:
               repository: ghcr.io/mailu/dovecot
-              tag: 2024.06.43
+              tag: 2024.06.43@sha256:f96b93175e6d67e94bf498137d9688e3108abe65e87438afc98f07fac3ce7b05
             env:
               COMPRESSION: lz4
               COMPRESSION_LEVEL: "6"
@@ -198,11 +245,11 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/rspamd
-              tag: 2024.06.43
+              tag: 2024.06.43@sha256:cc883bfadfa2d64fce7fb2000589668a006e4a374a42539f901d2cc017a805d0
             env:
               ANTIVIRUS: none
               ANTIVIRUS_ACTION: discard
-              RATELIMIT_STORAGE_URL: redis://dragonfly.databases.svc.cluster.local:6379/2
+              SCAN_MACROS: "false"
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
@@ -248,12 +295,10 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/webmail
-              tag: 2024.06.43
+              tag: 2024.06.43@sha256:d6ddbc1006792a1d820434448ee09b8d13b244910834a447f67e4ed45fbc5914
             env:
               ROUNDCUBE_DB_FLAVOR: postgresql
               ROUNDCUBE_PLUGINS: archive,zipdownload,markasjunk,managesieve,enigma,carddav,vcard_attachments,mailu
-              WEBROOT_REDIRECT: /webmail
-              WEB_WEBMAIL: /webmail
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-webmail-secret"
