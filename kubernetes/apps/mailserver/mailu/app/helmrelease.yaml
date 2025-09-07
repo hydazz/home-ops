@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      front:
+      nginx:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -40,7 +40,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: 80
+                    port: &port 80
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -74,7 +74,7 @@ spec:
               FETCHMAIL_ENABLED: "false"
               INITIAL_ADMIN_ACCOUNT: alex
               INITIAL_ADMIN_DOMAIN: ${D_HS}
-              INITIAL_ADMIN_MODE: ifmissing
+              INITIAL_ADMIN_MODE: update
               LOGO_BACKGROUND: none
               LOGO_URL: none
               MESSAGE_RATELIMIT: 200/day
@@ -289,9 +289,9 @@ spec:
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
     service:
-      mail:
+      nginx:
         type: LoadBalancer
-        controller: front
+        controller: nginx
         annotations:
           lbipam.cilium.io/ips: 192.168.42.150
         externalTrafficPolicy: Local
@@ -332,8 +332,8 @@ spec:
             sectionName: https-hs
         rules:
           - backendRefs:
-              - name: "{{ .Release.Name }}-front"
-                port: &httpPort 80
+              - name: "{{ .Release.Name }}-nginx"
+                port: *port
       autodiscover:
         hostnames:
           # ===== HS =====
@@ -357,8 +357,8 @@ spec:
             sectionName: https-lmvca
         rules:
           - backendRefs:
-              - name: "{{ .Release.Name }}-front"
-                port: *httpPort
+              - name: "{{ .Release.Name }}-nginx"
+                port: *port
     persistence:
       admin-data:
         existingClaim: *app
@@ -410,7 +410,7 @@ spec:
           - key: tls.key
             path: key.pem
         advancedMounts:
-          front:
+          nginx:
             app:
               - path: /certs
                 readOnly: true
