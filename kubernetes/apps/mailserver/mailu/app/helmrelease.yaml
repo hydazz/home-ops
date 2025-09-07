@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      nginx:
+      front:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -35,19 +35,19 @@ spec:
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
-            #probes:
-            #  liveness: &probes
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      httpGet:
-            #        path: /
-            #        port: &port 80
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 5
-            #      failureThreshold: 3
-            #  readiness: *probes
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 80
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
             #securityContext:
             #  allowPrivilegeEscalation: false
             #  readOnlyRootFilesystem: false
@@ -125,19 +125,19 @@ spec:
                   name: "{{ .Release.Name }}-env-configmap"
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            #probes:
-            #  liveness: &adminProbes
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      httpGet:
-            #        path: /ping
-            #        port: 8080
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 1
-            #      failureThreshold: 3
-            #  readiness: *adminProbes
+            probes:
+              liveness: &adminProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &adminPort 8080
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *adminProbes
             #securityContext:
             #  allowPrivilegeEscalation: false
             #  readOnlyRootFilesystem: false
@@ -167,28 +167,28 @@ spec:
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
-            #probes:
-            #  startup:
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      tcpSocket:
-            #        port: 25
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 1
-            #      failureThreshold: 30
-            #  liveness: &postfixProbes
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      tcpSocket:
-            #        port: 25
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 1
-            #      failureThreshold: 3
-            #  readiness: *postfixProbes
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 25
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 30
+              liveness: &postfixProbes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 25
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *postfixProbes
             #securityContext:
             #  allowPrivilegeEscalation: false
             #  readOnlyRootFilesystem: false
@@ -221,18 +221,18 @@ spec:
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
-            #probes:
-            #  liveness: &dovecotProbes
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      tcpSocket:
-            #        port: 993
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 10
-            #      failureThreshold: 3
-            #  readiness: *dovecotProbes
+            probes:
+              liveness: &dovecotProbes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 993
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness: *dovecotProbes
             #securityContext:
             #  allowPrivilegeEscalation: false
             #  readOnlyRootFilesystem: false
@@ -267,30 +267,30 @@ spec:
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
-            #probes:
-            #  startup:
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      httpGet:
-            #        path: /
-            #        port: &rspamdPort 11334
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 5
-            #      failureThreshold: 90
-            #  liveness: &rspamdProbes
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      httpGet:
-            #        path: /
-            #        port: *rspamdPort
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 1
-            #      failureThreshold: 3
-            #  readiness: *rspamdProbes
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &rspamdPort 11334
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 90
+              liveness: &rspamdProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *rspamdPort
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *rspamdProbes
             #securityContext:
             #  allowPrivilegeEscalation: false
             #  readOnlyRootFilesystem: false
@@ -320,23 +320,27 @@ spec:
                   name: "{{ .Release.Name }}-env-configmap"
               - secretRef:
                   name: "{{ .Release.Name }}-webmail-secret"
-            #probes:
-            #  liveness: &webmailProbes
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      httpGet:
-            #        path: /
-            #        port: 80
-            #      initialDelaySeconds: 10
-            #      periodSeconds: 10
-            #      timeoutSeconds: 5
-            #      failureThreshold: 3
-            #  readiness: *webmailProbes
+            probes:
+              liveness: &webmailProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &webmailPort 80
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *webmailProbes
             #securityContext:
             #  allowPrivilegeEscalation: false
             #  readOnlyRootFilesystem: false
             #  capabilities:
+            #    add:
+            #      - CHOWN
+            #      - SETGID
+            #      - SETUID
             #    add:
             #      - CHOWN
             #      - SETGID
@@ -357,14 +361,12 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      nginx:
-        controller: nginx
+      front:
+        controller: front
         primary: true
         ports:
           http:
-            port: &port 80
-          https:
-            port: 443
+            port: *port
           pop3:
             port: 110
           pop3s:
@@ -391,7 +393,7 @@ spec:
         controller: admin
         ports:
           http:
-            port: 8080
+            port: *adminPort
       postfix:
         controller: postfix
         ports:
@@ -427,10 +429,10 @@ spec:
         controller: webmail
         ports:
           http:
-            port: 80
+            port: *webmailPort
       mail:
         type: LoadBalancer
-        controller: nginx
+        controller: front
         annotations:
           lbipam.cilium.io/ips: 192.168.42.150
         externalTrafficPolicy: Local
@@ -471,7 +473,7 @@ spec:
             sectionName: https-hs
         rules:
           - backendRefs:
-              - name: mailu-nginx
+              - name: mailu-front
                 port: *port
       autodiscover:
         hostnames:
@@ -496,7 +498,7 @@ spec:
             sectionName: https-lmvca
         rules:
           - backendRefs:
-              - name: mailu-nginx
+              - name: mailu-front
                 port: *port
     persistence:
       admin-data:
@@ -549,7 +551,7 @@ spec:
           - key: tls.key
             path: key.pem
         advancedMounts:
-          nginx:
+          front:
             app:
               - path: /certs
                 readOnly: true
