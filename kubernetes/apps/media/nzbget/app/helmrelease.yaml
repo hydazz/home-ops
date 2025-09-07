@@ -19,8 +19,6 @@ spec:
   values:
     controllers:
       nzbget:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -29,16 +27,13 @@ spec:
             env:
               NZBGET__PORT: &port 80
               TZ: Australia/Melbourne
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /jsonrpc/status
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
