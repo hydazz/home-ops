@@ -30,6 +30,9 @@ spec:
       GATUS_SUBDOMAIN: mail
       GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_STORAGECLASS: ceph-filesystem
+      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
+      VOLSYNC_ACCESSMODES: ReadWriteMany
       VOLSYNC_PUID: "0"
       VOLSYNC_PGID: "0"
   prune: true

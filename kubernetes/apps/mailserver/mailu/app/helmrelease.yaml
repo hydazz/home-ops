@@ -1,18 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: mailu
+  name: &app mailu
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: mailu
-      version: 2.4.0
-      sourceRef:
-        kind: HelmRepository
-        name: mailu
+  chartRef:
+    kind: OCIRepository
+    name: mailu
   install:
     remediation:
       retries: -1
@@ -20,220 +16,516 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  postRenderers:
-    - kustomize:
-        patches:
-          # Overwrite default PVCs with our volsync PVC
-          - target:
-              version: v1
-              kind: Deployment
-              name: mailu-admin
-            patch: &pvcpatch |
-              - op: replace
-                path: /spec/template/spec/volumes/0
-                value:
-                  name: data
-                  persistentVolumeClaim:
-                    claimName: mailu
-          - target:
-              version: v1
-              kind: Deployment
-              name: mailu-dovecot
-            patch: *pvcpatch
-          # Use cert-manager TLS secret in front pod
-          - target:
-              version: v1
-              kind: Deployment
-              name: mailu-front
-            patch: |-
-              - op: replace
-                path: /spec/template/spec/volumes/0/secret/secretName
-                value: ${D_HS//./-}-tls
-          # Delete default PVCs
-          - patch: |
-              $patch: delete
-              apiVersion: v1
-              kind: PersistentVolumeClaim
-              metadata:
-                name: mailu-admin
-                namespace: mailserver
-          - patch: |
-              $patch: delete
-              apiVersion: v1
-              kind: PersistentVolumeClaim
-              metadata:
-                name: mailu-dovecot
-                namespace: mailserver
   values:
-    global:
-      database:
-        roundcube:
-          database: roundcube
-          username: roundcube
-          existingSecret: mailu-webmail-secret
-          existingSecretPasswordKey: ROUNDCUBE_DB_PASS
-    hostnames:
-      - mail.${D_HS}
-    domain: &domain ${D_HS}
-    existingSecret: &secret mailu-secret
-    timezone: Australia/Melbourne
-    initialAccount:
-      enabled: true
-      username: alex
-      domain: *domain
-      existingSecret: *secret
-      existingSecretPasswordKey: INITIAL_ADMIN_PW
-      mode: ifmissing
-    subnet: 10.42.0.0/16
-    subnet6: fd42::/48
-    dmarc:
-      rua: ""
-      ruf: ""
-    limits:
-      messageSizeLimitInMegabytes: 64
-      authRatelimit:
-        ip: 60/hour
-        ipv4Mask: 24
-        ipv6Mask: 56
-        user: 100/day
-        exemptionLength: 86400
-        exemption: ""
-      messageRatelimit:
-        value: 200/day
-        exemption: ""
-    customization:
-      siteName: Mailu
-      website: https://mail.${D_HS}
-      logoUrl: none
-      logoBackground: none
-    externalDatabase:
-      enabled: true
-      type: postgresql
-      host: postgres-rw.databases.svc.cluster.local
-      port: 5432
-      existingSecret: *secret
-      existingSecretDatabaseKey: MAILU_DB
-      existingSecretUsernameKey: MAILU_DB_USER
-      existingSecretPasswordKey: MAILU_DB_PASS
-    externalRedis:
-      enabled: true
-      host: dragonfly.databases.svc.cluster.local
-      port: 6379
-    persistence:
-      single_pvc: false
-    ingress:
-      enabled: false
-      tlsFlavorOverride: mail
-      realIpHeader: X-Forwarded-For
-      realIpFrom: 0.0.0.0/0
-    front:
-      kind: Deployment
-      replicaCount: 1
-      updateStrategy:
-        type: Recreate
-      podAnnotations: &reloader
-        reloader.stakater.com/auto: "true"
-      hostPort:
-        enabled: false
-      externalService:
-        enabled: true
+    controllers:
+      nginx:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mailu/nginx
+              tag: 2024.06.43@sha256:33ec8e12608d9b0dbb7532f7aa3706bea9f831a9b2450ef69ca15371cf3c448e
+            env:
+              LETSENCRYPT_SHORTCHAIN: "false"
+              REAL_IP_FROM: 0.0.0.0/0
+              REAL_IP_HEADER: X-Forwarded-For
+              WEBDAV: none
+              WEBROOT_REDIRECT: /webmail
+            envFrom:
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
+            #probes:
+            #  liveness: &probes
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      httpGet:
+            #        path: /
+            #        port: &port 80
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 5
+            #      failureThreshold: 3
+            #  readiness: *probes
+            #securityContext:
+            #  allowPrivilegeEscalation: false
+            #  readOnlyRootFilesystem: false
+            #  capabilities:
+            #    add:
+            #      - NET_BIND_SERVICE
+            #      - CHOWN
+            #      - SETGID
+            #      - SETUID
+            #      - DAC_OVERRIDE
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+      admin:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mailu/admin
+              tag: 2024.06.43@sha256:75fb5afaa356a55c9c28aace48b4cbe7f022582017f48812bf7e86a9ee67db2c
+            env:
+              AUTH_RATELIMIT_EXEMPTION_LENGTH: "86400"
+              AUTH_RATELIMIT_IP: 60/hour
+              AUTH_RATELIMIT_IP_V4_MASK: "24"
+              AUTH_RATELIMIT_IP_V6_MASK: "56"
+              AUTH_RATELIMIT_USER: 100/day
+              AUTH_REQUIRE_TOKENS: "false"
+              BABEL_DEFAULT_LOCALE: en
+              BABEL_DEFAULT_TIMEZONE: UTC
+              BOOTSTRAP_SERVE_LOCAL: "true"
+              CREDENTIAL_ROUNDS: "12"
+              DB_FLAVOR: postgresql
+              DEBUG: "false"
+              DEBUG_PROFILER: "false"
+              DEBUG_TB_INTERCEPT_REDIRECTS: "false"
+              DEFAULT_QUOTA: "1000000000"
+              DEFAULT_SPAM_THRESHOLD: "80"
+              DISABLE_STATISTICS: "false"
+              DKIM_PATH: /dkim/{domain}.{selector}.key
+              DKIM_SELECTOR: dkim
+              DOMAIN_REGISTRATION: "false"
+              FETCHMAIL_ENABLED: "false"
+              INITIAL_ADMIN_ACCOUNT: alex
+              INITIAL_ADMIN_DOMAIN: ${D_HS}
+              INITIAL_ADMIN_MODE: update
+              INSTANCE_ID_PATH: /data/instance
+              LOGO_BACKGROUND: none
+              LOGO_URL: none
+              MEMORY_SESSIONS: "false"
+              MESSAGE_RATELIMIT: 200/day
+              PERMANENT_SESSION_LIFETIME: "2592000"
+              PROXY_AUTH_CREATE: "false"
+              PROXY_AUTH_HEADER: X-Auth-Email
+              RATELIMIT_STORAGE_URL: redis://dragonfly.databases.svc.cluster.local:6379/2
+              SESSION_COOKIE_SECURE: "true"
+              SESSION_TIMEOUT: "3600"
+              SITENAME: Mailu
+              SQLALCHEMY_DATABASE_URI: sqlite:////data/main.db
+              SQLALCHEMY_TRACK_MODIFICATIONS: "false"
+              SQLITE_DATABASE_FILE: data/main.db
+              STATS_ENDPOINT: 19.{}.stats.mailu.io
+              TEMPLATES_AUTO_RELOAD: "true"
+              WEBSITE: https://mail.${D_HS}
+              WELCOME: "true"
+              WELCOME_BODY: Welcome to Mailu, your new email service. Please change your password and update your profile.
+              WELCOME_SUBJECT: Welcome to Mailu
+            envFrom:
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            #probes:
+            #  liveness: &adminProbes
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      httpGet:
+            #        path: /ping
+            #        port: 8080
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 1
+            #      failureThreshold: 3
+            #  readiness: *adminProbes
+            #securityContext:
+            #  allowPrivilegeEscalation: false
+            #  readOnlyRootFilesystem: false
+            #  capabilities:
+            #    add:
+            #      - CHOWN
+            #      - SETGID
+            #      - SETUID
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+      postfix:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mailu/postfix
+              tag: 2024.06.43@sha256:f7395355bb68f402740b417cad9e4acb0830607f3bb535822316c2f9f05e6f00
+            env:
+              REJECT_UNLISTED_RECIPIENT: "yes"
+            envFrom:
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
+            #probes:
+            #  startup:
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      tcpSocket:
+            #        port: 25
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 1
+            #      failureThreshold: 30
+            #  liveness: &postfixProbes
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      tcpSocket:
+            #        port: 25
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 1
+            #      failureThreshold: 3
+            #  readiness: *postfixProbes
+            #securityContext:
+            #  allowPrivilegeEscalation: false
+            #  readOnlyRootFilesystem: false
+            #  capabilities:
+            #    add:
+            #      - NET_BIND_SERVICE
+            #      - CHOWN
+            #      - SETGID
+            #      - SETUID
+            #      - DAC_OVERRIDE
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+      dovecot:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mailu/dovecot
+              tag: 2024.06.43@sha256:f96b93175e6d67e94bf498137d9688e3108abe65e87438afc98f07fac3ce7b05
+            env:
+              COMPRESSION: lz4
+              COMPRESSION_LEVEL: "6"
+            envFrom:
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
+            #probes:
+            #  liveness: &dovecotProbes
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      tcpSocket:
+            #        port: 993
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 10
+            #      failureThreshold: 3
+            #  readiness: *dovecotProbes
+            #securityContext:
+            #  allowPrivilegeEscalation: false
+            #  readOnlyRootFilesystem: false
+            #  capabilities:
+            #    add:
+            #      - CHOWN
+            #      - SETGID
+            #      - SETUID
+            #      - SYS_CHROOT
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+      rspamd:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          hostname: rspamd
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mailu/rspamd
+              tag: 2024.06.43@sha256:cc883bfadfa2d64fce7fb2000589668a006e4a374a42539f901d2cc017a805d0
+            env:
+              ANTIVIRUS: none
+              ANTIVIRUS_ACTION: discard
+              SCAN_MACROS: "false"
+            envFrom:
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
+            #probes:
+            #  startup:
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      httpGet:
+            #        path: /
+            #        port: &rspamdPort 11334
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 5
+            #      failureThreshold: 90
+            #  liveness: &rspamdProbes
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      httpGet:
+            #        path: /
+            #        port: *rspamdPort
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 1
+            #      failureThreshold: 3
+            #  readiness: *rspamdProbes
+            #securityContext:
+            #  allowPrivilegeEscalation: false
+            #  readOnlyRootFilesystem: false
+            #  capabilities:
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+      webmail:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mailu/webmail
+              tag: 2024.06.43@sha256:d6ddbc1006792a1d820434448ee09b8d13b244910834a447f67e4ed45fbc5914
+            env:
+              ROUNDCUBE_DB_FLAVOR: postgresql
+              ROUNDCUBE_PLUGINS: |-
+                archive,zipdownload,markasjunk,managesieve,enigma,carddav,vcard_attachments,mailu
+            envFrom:
+              - configMapRef:
+                  name: "{{ .Release.Name }}-env-configmap"
+              - secretRef:
+                  name: "{{ .Release.Name }}-webmail-secret"
+            #probes:
+            #  liveness: &webmailProbes
+            #    enabled: true
+            #    custom: true
+            #    spec:
+            #      httpGet:
+            #        path: /
+            #        port: 80
+            #      initialDelaySeconds: 10
+            #      periodSeconds: 10
+            #      timeoutSeconds: 5
+            #      failureThreshold: 3
+            #  readiness: *webmailProbes
+            #securityContext:
+            #  allowPrivilegeEscalation: false
+            #  readOnlyRootFilesystem: false
+            #  capabilities:
+            #    add:
+            #      - CHOWN
+            #      - SETGID
+            #      - SETUID
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    #defaultPodOptions:
+    #  securityContext:
+    #    runAsNonRoot: false
+    #    runAsUser: 0
+    #    runAsGroup: 0
+    #    fsGroup: 0
+    #    fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: nginx
+        primary: true
+        ports:
+          http:
+            port: &port 80
+      admin:
+        controller: admin
+        ports:
+          http:
+            port: 8080
+      postfix:
+        controller: postfix
+        ports:
+          smtp:
+            port: 25
+          smtp-ssl:
+            port: 465
+          smtp-starttls:
+            port: 587
+          smtp-auth:
+            port: 10025
+      dovecot:
+        controller: dovecot
+        ports:
+          imap-auth:
+            port: 2102
+          imap-transport:
+            port: 2525
+          imap-default:
+            port: 143
+          pop3:
+            port: 110
+          sieve:
+            port: 4190
+      rspamd:
+        controller: rspamd
+        ports:
+          rspamd:
+            port: 11332
+          rspamd-http:
+            port: 11334
+      webmail:
+        controller: webmail
+        ports:
+          http:
+            port: 80
+      mail:
         type: LoadBalancer
-        externalTrafficPolicy: Local
+        controller: nginx
         annotations:
           lbipam.cilium.io/ips: 192.168.42.150
+        externalTrafficPolicy: Local
         ports:
-          pop3: true
-          pop3s: true
-          imap: true
-          imaps: true
-          smtp: true
-          smtps: true
-          submission: true
-          manageSieve: true
-    admin:
-      enabled: true
-      podAnnotations: *reloader
-      uri: /admin
-      updateStrategy:
-        type: Recreate
-      # this should never be created
-      persistence:
-        size: 1Mi
-    postfix:
-      podAnnotations: *reloader
-      updateStrategy:
-        type: Recreate
-      persistence:
-        size: 128Mi
-        storageClass: ceph-block
-    dovecot:
-      enabled: true
-      podAnnotations: *reloader
-      updateStrategy:
-        type: Recreate
-      compression: lz4
-      compressionLevel: 6
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: mailu
-                  app.kubernetes.io/component: admin
-              topologyKey: kubernetes.io/hostname
-      # this should never be created
-      persistence:
-        size: 1Mi
-    rspamd:
-      enabled: true
-      podAnnotations: *reloader
-      updateStrategy:
-        type: Recreate
-      persistence:
-        size: 1Gi
-        storageClass: ceph-block
-    webmail:
-      enabled: true
-      podAnnotations: *reloader
-      type: roundcube
-      uri: /webmail
-      updateStrategy:
-        type: Recreate
-      roundcubePlugins:
-        - archive
-        - zipdownload
-        - markasjunk
-        - managesieve
-        - enigma
-        - carddav
-        - vcard_attachments
-        - mailu
-      persistence:
-        size: 128Mi
-        storageClass: ceph-block
-    # Disabled services
-    redis:
-      enabled: false
-    clamav:
-      enabled: false
-      persistence:
-        size: 2Gi
-        storageClass: ceph-block
-    webdav:
-      enabled: false
-      updateStrategy:
-        type: Recreate
-    fetchmail:
-      enabled: false
-      updateStrategy:
-        type: Recreate
-      delay: 600
-      persistence:
-        size: 512Mi
-        storageClass: ceph-block
-    tika:
-      enabled: false
-      languages:
-        - en
-    oletools:
-      enabled: false
+          imap:
+            port: 143
+            protocol: TCP
+          imaps:
+            port: 993
+            protocol: TCP
+          pop3:
+            port: 110
+            protocol: TCP
+          pop3s:
+            port: 995
+            protocol: TCP
+          smtp:
+            port: 25
+            protocol: TCP
+          smtps:
+            port: 465
+            protocol: TCP
+          submission:
+            port: 587
+            protocol: TCP
+          sieve:
+            port: 4190
+            protocol: TCP
+    route:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+        hostnames:
+          - mail.${D_HS}
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https-hs
+        rules:
+          - backendRefs:
+              - name: app
+                port: *port
+      autodiscover:
+        hostnames:
+          # ===== HS =====
+          - autodiscover.${D_HS}
+          - autoconfig.${D_HS}
+          # ===== IGI =====
+          - autodiscover.${D_IGI}
+          - autoconfig.${D_IGI}
+          # ===== LMVCA =====
+          - autodiscover.${D_LMVCA}
+          - autoconfig.${D_LMVCA}
+        parentRefs:
+          - name: cloudflare
+            namespace: kube-system
+            sectionName: https-hs
+          - name: cloudflare
+            namespace: kube-system
+            sectionName: https-igi
+          - name: cloudflare
+            namespace: kube-system
+            sectionName: https-lmvca
+        rules:
+          - backendRefs:
+              - name: app
+                port: *port
+    persistence:
+      admin-data:
+        existingClaim: *app
+        advancedMounts:
+          admin:
+            app:
+              - path: /data
+                subPath: admin
+              - path: /dkim
+                subPath: dkim
+      dovecot-data:
+        existingClaim: *app
+        advancedMounts:
+          dovecot:
+            app:
+              - path: /data
+                subPath: dovecotdata
+              - path: /mail
+                subPath: dovecotmail
+      postfix-data:
+        existingClaim: "{{ .Release.Name }}-postfix"
+        advancedMounts:
+          postfix:
+            app:
+              - path: /queue
+                subPath: mailqueue
+      rspamd-data:
+        existingClaim: "{{ .Release.Name }}-rspamd"
+        advancedMounts:
+          rspamd:
+            app:
+              - path: /var/lib/rspamd
+                subPath: rspamd
+              - path: /etc/rspamd/local.d/maps.d
+                subPath: rspamd-local.d-maps.d
+      webmail-data:
+        existingClaim: "{{ .Release.Name }}-webmail"
+        advancedMounts:
+          webmail:
+            app:
+              - path: /data
+      certs:
+        type: secret
+        name: ${D_HS//./-}-tls
+        defaultMode: 0444
+        items:
+          - key: tls.crt
+            path: cert.pem
+          - key: tls.key
+            path: key.pem
+        advancedMounts:
+          nginx:
+            app:
+              - path: /certs
+                readOnly: true
