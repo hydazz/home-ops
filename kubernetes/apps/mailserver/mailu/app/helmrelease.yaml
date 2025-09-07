@@ -357,7 +357,7 @@ spec:
     #    fsGroup: 0
     #    fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      nginx:
         controller: nginx
         primary: true
         ports:
