@@ -29,29 +29,75 @@ spec:
               PUID: 1000
               PGID: 1000
               serverIP: 0.0.0.0
-              serverPort: 8266
+              serverPort: &serverPort 8266
               webUIPort: &port 8265
-              internalNode: true
-              inContainer: true
-              nodeName: Internal
+              internalNode: "false"
+              inContainer: "true"
             probes:
               liveness:
                 enabled: true
               readiness:
                 enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+            #  capabilities:
+            #    drop:
+            #      - ALL
             resources:
               requests:
                 cpu: 10m
                 memory: 512Mi
+      worker:
+        pod:
+          runtimeClassName: nvidia
+        containers:
+          app:
+            image:
+              repository: ghcr.io/haveagitgat/tdarr_node
+              tag: 2.46.01@sha256:1ecdd628d424a98773e61a6fd85ec1533da0259baa1aa8c806960cfe2b56aa1b
+            env:
+              TZ: Australia/Melbourne
+              PUID: 1000
+              PGID: 1000
+              serverIP: tdarr.media.svc.cluster.local
+              serverPort: *serverPort
+              inContainer: "true"
+              nodeName:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              transcodegpuWorkers: 2
+              transcodecpuWorkers: 0
+              healthcheckgpuWorkers: 0
+              healthcheckcpuWorkers: 4
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+            #  capabilities:
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 50m
+                memory: 1Gi
               limits:
                 nvidia.com/gpu: 1
     defaultPodOptions:
-      runtimeClassName: nvidia
+      securityContext:
+        #    runAsNonRoot: false
+        #    runAsUser: 1000
+        #    runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
+        controller: *app
         ports:
           http:
             port: *port
+          server:
+            port: *serverPort
     route:
       app:
         hostnames:
@@ -63,14 +109,20 @@ spec:
     persistence:
       config:
         existingClaim: *app
-        globalMounts:
-          - path: /app/server
-            subPath: server
-          - path: /app/configs
-            subPath: config
+        advancedMounts:
+          tdarr:
+            app:
+              - path: /app/server
+                subPath: server
+              - path: /app/configs
+                subPath: config
       media:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media/Plex Media
         globalMounts:
           - path: /media
+      transcode:
+        type: emptyDir
+        globalMounts:
+          - path: /transcode
