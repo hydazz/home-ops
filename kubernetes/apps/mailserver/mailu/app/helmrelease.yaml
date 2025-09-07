@@ -455,9 +455,9 @@ spec:
           # ===== HS =====
           - autodiscover.${D_HS}
           - autoconfig.${D_HS}
-          # ===== IGI =====
-          - autodiscover.${D_IGI}
-          - autoconfig.${D_IGI}
+          # ===== imagegenius.io =====
+          - autodiscover.imagegenius.io
+          - autoconfig.imagegenius.io
           # ===== LMVCA =====
           - autodiscover.${D_LMVCA}
           - autoconfig.${D_LMVCA}

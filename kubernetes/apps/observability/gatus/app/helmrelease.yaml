@@ -51,7 +51,6 @@ spec:
               GATUS_WEB_PORT: &port 80
               D_HS: ${D_HS}
               D_HCA: ${D_HCA}
-              D_IGI: ${D_IGI}
               D_SN: ${D_SN}
               D_TACA: ${D_TACA}
               D_TAN: ${D_TAN}

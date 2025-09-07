@@ -30,7 +30,7 @@ spec:
       APP: *app
       GATUS_GROUP: *namespace
       GATUS_SUBDOMAIN: ci
-      GATUS_DOMAIN: "${D_IGI}"
+      GATUS_DOMAIN: "imagegenius.io"
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   retryInterval: 2m

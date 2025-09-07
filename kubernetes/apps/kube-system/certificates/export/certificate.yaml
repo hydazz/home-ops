@@ -50,16 +50,16 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: &name ${D_IGI//./-}-tls
+  name: &name imagegenius-io-tls
 spec:
   secretName: *name
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: ${D_IGI}
+  commonName: imagegenius.io
   dnsNames:
-    - ${D_IGI}
-    - "*.${D_IGI}"
+    - imagegenius.io
+    - "*.imagegenius.io"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1

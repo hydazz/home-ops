@@ -48,18 +48,18 @@ spec:
       hostname: "*.${D_HCA}"
       tls: *tls_hca
 
-    # ===== IGI =====
+    # ===== imagegenius.io =====
     - <<: *https
       name: https-igi-apex
-      hostname: "${D_IGI}"
+      hostname: "imagegenius.io"
       tls: &tls_igi
         certificateRefs:
           - kind: Secret
-            name: ${D_IGI//./-}-tls
+            name: imagegenius-io-tls
 
     - <<: *https
       name: https-igi
-      hostname: "*.${D_IGI}"
+      hostname: "*.imagegenius.io"
       tls: *tls_igi
 
     # ===== LMVCA =====

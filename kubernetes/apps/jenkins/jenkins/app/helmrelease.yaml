@@ -72,7 +72,7 @@ spec:
     route:
       app:
         hostnames:
-          - "ci.${D_IGI}"
+          - "ci.imagegenius.io"
         parentRefs:
           - name: cloudflare
             namespace: kube-system
