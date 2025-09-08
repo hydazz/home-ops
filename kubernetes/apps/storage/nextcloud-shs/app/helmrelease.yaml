@@ -177,25 +177,17 @@ spec:
           - path: /var/www/html/data/alex/files
       nextcloud-config:
         type: configMap
-        name: nextcloud-shs-config
+        name: nextcloud-shs-configmap
         globalMounts:
           - path: /var/www/html/config/custom.config.php
             subPath: custom.config.php
             readOnly: true
-      php-config:
-        type: configMap
-        name: nextcloud-shs-php-configmap
-        globalMounts:
           - path: /usr/local/etc/php/conf.d/nextcloud.ini
             subPath: nextcloud.ini
             readOnly: true
           - path: /usr/local/etc/php-fpm.d/www.conf
             subPath: www.conf
             readOnly: true
-      nginx-config:
-        type: configMap
-        name: nextcloud-shs-nginx-configmap
-        globalMounts:
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf
             readOnly: true

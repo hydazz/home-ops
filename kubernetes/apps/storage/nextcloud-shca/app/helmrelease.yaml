@@ -183,25 +183,17 @@ spec:
           - path: /mnt/Public
       nextcloud-config:
         type: configMap
-        name: nextcloud-shca-config
+        name: nextcloud-shca-configmap
         globalMounts:
           - path: /var/www/html/config/custom.config.php
             subPath: custom.config.php
             readOnly: true
-      php-config:
-        type: configMap
-        name: nextcloud-shca-php-configmap
-        globalMounts:
           - path: /usr/local/etc/php/conf.d/nextcloud.ini
             subPath: nextcloud.ini
             readOnly: true
           - path: /usr/local/etc/php-fpm.d/www.conf
             subPath: www.conf
             readOnly: true
-      nginx-config:
-        type: configMap
-        name: nextcloud-shca-nginx-configmap
-        globalMounts:
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf
             readOnly: true

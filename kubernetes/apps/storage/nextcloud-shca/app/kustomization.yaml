@@ -7,25 +7,15 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
 configMapGenerator:
-  - name: nextcloud-shca-config
+  - name: nextcloud-shca-configmap
     files:
       - ./resources/custom.config.php
-    options:
-      disableNameSuffixHash: true
-  - name: nextcloud-shca-php-configmap
-    files:
       - ./resources/nextcloud.ini
       - ./resources/www.conf
-  - name: nextcloud-shca-nginx-configmap
-    files:
       - ./resources/default.conf
 secretGenerator:
   - name: nextcloud-shca-values
     files:
       - values.yaml=./resources/values.sops.yaml
-    options:
-      disableNameSuffixHash: true
 generatorOptions:
   disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled
