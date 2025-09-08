@@ -30,7 +30,7 @@ spec:
           hostnames:
             - alertmanager.${D_HS}
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: network
               sectionName: https-hs
       alertmanagerSpec:
@@ -59,7 +59,7 @@ spec:
           hostnames:
             - prometheus.${D_HS}
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: network
               sectionName: https-hs
       prometheusSpec:

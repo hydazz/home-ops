@@ -117,7 +117,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https-hs
         rules:

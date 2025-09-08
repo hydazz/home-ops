@@ -64,7 +64,7 @@ spec:
           - name: cloudflare
             namespace: network
             sectionName: https-hs
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https-hs
     persistence:
