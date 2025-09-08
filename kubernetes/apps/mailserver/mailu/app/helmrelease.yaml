@@ -443,7 +443,7 @@ spec:
         hostnames:
           - mail.${D_HS}
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: network
             sectionName: https-hs
         rules: &rules
@@ -462,13 +462,13 @@ spec:
           - autodiscover.${D_LMVCA}
           - autoconfig.${D_LMVCA}
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-hs
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-igi
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-lmvca
         rules: *rules

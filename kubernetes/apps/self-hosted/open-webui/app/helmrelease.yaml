@@ -63,7 +63,7 @@ spec:
         hostnames:
           - chat.${D_HS}
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-hs
     persistence:

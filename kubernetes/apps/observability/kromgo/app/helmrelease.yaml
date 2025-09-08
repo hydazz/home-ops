@@ -70,7 +70,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-hs
         rules:

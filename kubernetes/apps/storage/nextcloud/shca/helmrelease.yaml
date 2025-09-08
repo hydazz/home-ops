@@ -129,7 +129,7 @@ spec:
         hostnames:
           - storage.${D_HCA}
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: network
             sectionName: https-hca
         rules:

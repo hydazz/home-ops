@@ -74,7 +74,7 @@ spec:
         hostnames:
           - "ci.imagegenius.io"
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-igi
     persistence:

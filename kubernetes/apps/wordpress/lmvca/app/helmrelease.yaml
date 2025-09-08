@@ -113,10 +113,10 @@ spec:
           - ${D_LMVCA}
           - www.${D_LMVCA}
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-lmvca-apex
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-lmvca
     persistence:

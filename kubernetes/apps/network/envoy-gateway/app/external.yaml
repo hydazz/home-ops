@@ -65,8 +65,7 @@ spec:
       name: http-hs-apex
       protocol: HTTP
       port: 80
-      # yamllint disable-line rule:line-length
-      hostname: &hs_apex "${D_HS}" # Template variable, substituted by Flux
+      hostname: &hs_apex "${D_HS}"
       allowedRoutes:
         namespaces:
           from: Same

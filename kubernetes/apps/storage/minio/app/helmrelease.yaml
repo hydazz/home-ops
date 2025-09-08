@@ -109,7 +109,7 @@ spec:
         hostnames:
           - s3.${D_HS}
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: network
             sectionName: https-hs
         rules:

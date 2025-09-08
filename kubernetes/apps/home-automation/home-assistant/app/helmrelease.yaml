@@ -61,7 +61,7 @@ spec:
         hostnames:
           - homeassistant.${D_HS}
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-hs
           - name: envoy-internal

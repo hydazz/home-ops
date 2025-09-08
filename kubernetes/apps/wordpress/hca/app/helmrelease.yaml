@@ -113,10 +113,10 @@ spec:
           - ${D_HCA}
           - www.${D_HCA}
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-hca-apex
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-hca
     persistence:

@@ -113,7 +113,7 @@ spec:
           - shop.${D_HCA}
           - store.${D_HCA}
         parentRefs:
-          - name: cloudflare
+          - name: envoy-cloudflare
             namespace: network
             sectionName: https-hca
     persistence:
