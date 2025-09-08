@@ -71,6 +71,6 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.${D_HS}"
         parentRefs:
-          - name: envoy-external
+          - name: envoy-external # cloudflare proxied
             namespace: network
             sectionName: https-hs
