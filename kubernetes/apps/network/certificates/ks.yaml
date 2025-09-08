@@ -3,15 +3,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app envoy-gateway-operator
-  namespace: &namespace kube-system
+  name: &app certificates-import
+  namespace: &namespace network
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/kube-system/envoy-gateway/app
+  path: ./kubernetes/apps/network/certificates/import
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -24,32 +29,27 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app envoy-gateway-instances
-  namespace: &namespace kube-system
+  name: &app certificates-export
+  namespace: &namespace network
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: certificates-import
-      namespace: kube-system
-    - name: envoy-gateway-operator
-      namespace: kube-system
-  healthChecks:
-    - apiVersion: gateway.networking.k8s.io/v1
-      kind: GatewayClass
-      name: envoy-gateway
+      namespace: network
   interval: 1h
-  path: ./kubernetes/apps/kube-system/envoy-gateway/gateways
+  path: ./kubernetes/apps/network/certificates/export
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: true
+  wait: false
