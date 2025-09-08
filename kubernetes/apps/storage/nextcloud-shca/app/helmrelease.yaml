@@ -29,16 +29,11 @@ spec:
             command:
               - sh
               - -c
-              - |
-                # Copy default Nextcloud PHP config files from container defaults
-                cp -r /usr/src/nextcloud/config/*.php /var/www/html/config/
-                # Change ownership to match the main container user
-                chown -Rf 1000:1000 /var/www/html/config/ || true
-            securityContext:
-              allowPrivilegeEscalation: true
+              - "cp -r /usr/src/nextcloud/config/*.php /var/www/html/config/"
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              runAsUser: 0
-              runAsGroup: 0
+              capabilities: {drop: ["ALL"]}
         containers:
           app:
             image: *image
@@ -57,10 +52,7 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            securityContext: &securityContext
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: {drop: ["ALL"]}
+            securityContext: *securityContext
             resources:
               requests:
                 cpu: 300m
@@ -115,7 +107,7 @@ spec:
                 memory: 256Mi
     defaultPodOptions:
       securityContext:
-        #runAsNonRoot: true
+        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
