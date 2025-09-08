@@ -80,8 +80,6 @@ spec:
           - path: /data
       tmpfs:
         type: emptyDir
-        advancedMounts:
-          nzbget:
-            app:
-              - path: /tmp
-                subPath: tmp
+        globalMounts:
+          - path: /tmp
+            subPath: tmp

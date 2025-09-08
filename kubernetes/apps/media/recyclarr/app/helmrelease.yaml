@@ -65,12 +65,10 @@ spec:
             readOnly: true
       tmpfs:
         type: emptyDir
-        advancedMounts:
-          recyclarr:
-            app:
-              - path: /config/logs
-                subPath: logs
-              - path: /config/repositories
-                subPath: repositories
-              - path: /tmp
-                subPath: tmp
+        globalMounts:
+          - path: /config/logs
+            subPath: logs
+          - path: /config/repositories
+            subPath: repositories
+          - path: /tmp
+            subPath: tmp
