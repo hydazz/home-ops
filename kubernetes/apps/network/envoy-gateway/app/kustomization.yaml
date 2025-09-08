@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./gatewayclass.yaml
   - ./helmrelease.yaml
+  - ./internal.yaml
   - ./ocirepository.yaml
   - ./podmonitor.yaml
   - ./servicemonitor.yaml

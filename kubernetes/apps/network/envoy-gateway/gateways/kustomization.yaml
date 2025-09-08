@@ -7,4 +7,3 @@ resources:
   - ./cloudflare.yaml
   - ./external.yaml
   - ./httproute.yaml
-  - ./internal.yaml

@@ -8,9 +8,6 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: internal
-    - group: gateway.networking.k8s.io
-      kind: Gateway
       name: external
   clientIPDetection:
     xForwardedFor:
