@@ -444,7 +444,7 @@ spec:
           - mail.${D_HS}
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https-hs
         rules: &rules
           - backendRefs:
@@ -463,13 +463,13 @@ spec:
           - autoconfig.${D_LMVCA}
         parentRefs:
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-hs
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-igi
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-lmvca
         rules: *rules
     persistence:

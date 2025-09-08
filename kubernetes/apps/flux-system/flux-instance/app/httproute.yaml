@@ -9,7 +9,7 @@ spec:
     - flux-webhook.${D_HS}
   parentRefs:
     - name: cloudflare
-      namespace: kube-system
+      namespace: network
       sectionName: https-hs
   rules:
     - backendRefs:

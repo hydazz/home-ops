@@ -10,14 +10,14 @@ spec:
   parentRefs:
     - &internal
       name: internal
-      namespace: kube-system
+      namespace: network
       sectionName: http-hs-apex
     - <<: *internal
       sectionName: http-hs
 
     - &external
       name: external
-      namespace: kube-system
+      namespace: network
       sectionName: http-hs-apex
     - <<: *external
       sectionName: http-hs

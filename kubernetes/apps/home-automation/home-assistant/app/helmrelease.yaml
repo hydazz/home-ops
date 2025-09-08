@@ -62,10 +62,10 @@ spec:
           - homeassistant.${D_HS}
         parentRefs:
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-hs
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https-hs
     persistence:
       config:

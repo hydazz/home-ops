@@ -114,7 +114,7 @@ spec:
           - store.${D_HCA}
         parentRefs:
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-hca
     persistence:
       wp-content:

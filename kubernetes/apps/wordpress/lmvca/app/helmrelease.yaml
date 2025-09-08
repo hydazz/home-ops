@@ -114,10 +114,10 @@ spec:
           - www.${D_LMVCA}
         parentRefs:
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-lmvca-apex
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-lmvca
     persistence:
       wp-content:

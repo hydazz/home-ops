@@ -57,7 +57,7 @@ spec:
             - auth.${D_HS}
           parentRefs:
             - name: cloudflare
-              namespace: kube-system
+              namespace: network
               sectionName: https-hs
     worker:
       resources:

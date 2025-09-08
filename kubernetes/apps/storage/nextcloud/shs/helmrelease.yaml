@@ -130,7 +130,7 @@ spec:
           - storage.${D_HS}
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https-hs
         rules:
           - matches:

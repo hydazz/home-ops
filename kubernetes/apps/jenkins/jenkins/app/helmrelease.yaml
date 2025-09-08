@@ -75,7 +75,7 @@ spec:
           - "ci.imagegenius.io"
         parentRefs:
           - name: cloudflare
-            namespace: kube-system
+            namespace: network
             sectionName: https-igi
     persistence:
       config:
