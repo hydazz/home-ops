@@ -21,11 +21,28 @@ spec:
       nextcloud:
         annotations:
           reloader.stakater.com/auto: "true"
-        containers:
-          app:
+        initContainers:
+          copy-config:
             image: &image
               repository: docker.io/library/nextcloud
               tag: 31.0.8-fpm-alpine@sha256:1e310b0d628a923756c95fbec5c04a129011ca55060f7953bd04f3ff11b2c382
+            command:
+              - sh
+              - -c
+              - |
+                # Copy default Nextcloud PHP config files from container defaults
+                cp -r /usr/src/nextcloud/config/*.php /var/www/html/config/
+                # Change ownership to match the main container user
+                chown -R 1000:1000 /var/www/html/config/
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: {drop: ["ALL"]}
+              runAsUser: 0
+              runAsGroup: 0
+        containers:
+          app:
+            image: *image
             env: &env
               NEXTCLOUD_TRUSTED_DOMAINS: storage.${D_HS}
               NEXTCLOUD_DATA_DIR: /var/www/html/data
@@ -41,19 +58,6 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            lifecycle:
-              postStart:
-                exec:
-                  command:
-                    - /bin/sh
-                    - -c
-                    - |
-                      php occ maintenance:repair --include-expensive || true
-                      php occ files:scan --all || true
-                      php occ files:cleanup || true
-                      php occ db:add-missing-indices || true
-                      php occ db:add-missing-primary-keys || true
-                      php occ db:add-missing-columns || true
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -112,7 +116,7 @@ spec:
                 memory: 256Mi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
+        #runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
@@ -187,31 +191,9 @@ spec:
           - path: /var/www/html/config/custom.config.php
             subPath: custom.config.php
             readOnly: true
-      nextcloud-configs:
-        type: configMap
-        name: nextcloud-configs
-        globalMounts:
-          - path: /var/www/html/config/apps.config.php
-            subPath: apps.config.php
-            readOnly: true
-          - path: /var/www/html/config/redis.config.php
-            subPath: redis.config.php
-            readOnly: true
-          - path: /var/www/html/config/reverse-proxy.config.php
-            subPath: reverse-proxy.config.php
-            readOnly: true
-          - path: /var/www/html/config/smtp.config.php
-            subPath: smtp.config.php
-            readOnly: true
-          - path: /var/www/html/config/upgrade-disable-web.config.php
-            subPath: upgrade-disable-web.config.php
-            readOnly: true
-          - path: /var/www/html/config/autoconfig.php
-            subPath: autoconfig.php
-            readOnly: true
       php-config:
         type: configMap
-        name: nextcloud-php-configmap
+        name: nextcloud-shs-php-configmap
         globalMounts:
           - path: /usr/local/etc/php/conf.d/nextcloud.ini
             subPath: nextcloud.ini
@@ -221,7 +203,7 @@ spec:
             readOnly: true
       nginx-config:
         type: configMap
-        name: nextcloud-nginx-configmap
+        name: nextcloud-shs-nginx-configmap
         globalMounts:
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf

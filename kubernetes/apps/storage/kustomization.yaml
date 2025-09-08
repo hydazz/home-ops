@@ -7,4 +7,5 @@ components:
   - ../../components/common
 resources:
   - ./minio/ks.yaml
-  - ./nextcloud/ks.yaml
+  - ./nextcloud-shs/ks.yaml
+  - ./nextcloud-shca/ks.yaml
