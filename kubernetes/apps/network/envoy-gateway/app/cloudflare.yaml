@@ -23,7 +23,7 @@ spec:
       envoyService:
         name: envoy-cloudflare
         externalTrafficPolicy: Cluster
-        dualStack: true
+  ipFamily: DualStack
   shutdown:
     drainTimeout: 180s
   telemetry:
