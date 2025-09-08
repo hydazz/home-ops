@@ -21,7 +21,6 @@ resources:
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
-  - ./secret/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./tdarr/ks.yaml
