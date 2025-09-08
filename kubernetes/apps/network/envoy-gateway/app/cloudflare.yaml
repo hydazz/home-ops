@@ -121,13 +121,14 @@ kind: ClientTrafficPolicy
 metadata:
   name: envoy-cloudflare
 spec:
+  clientIPDetection:
+    customHeader:
+      name: "CF-Connecting-IP"
+  http3: {}
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-cloudflare
-  clientIPDetection:
-    customHeader:
-      name: "CF-Connecting-IP"
   tls:
     minVersion: "1.2"
     alpnProtocols:
