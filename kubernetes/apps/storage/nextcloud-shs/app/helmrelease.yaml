@@ -33,11 +33,10 @@ spec:
                 # Copy default Nextcloud PHP config files from container defaults
                 cp -r /usr/src/nextcloud/config/*.php /var/www/html/config/
                 # Change ownership to match the main container user
-                chown -R 1000:1000 /var/www/html/config/
+                chown -Rf 1000:1000 /var/www/html/config/ || true
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
-              capabilities: {drop: ["ALL"]}
               runAsUser: 0
               runAsGroup: 0
         containers:
