@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: envoy-gateway
 spec:
-  interval: 1h
+  interval: 5m
   chartRef:
     kind: OCIRepository
     name: envoy-gateway
@@ -19,9 +19,5 @@ spec:
     remediation:
       retries: 3
   values:
-    deployment:
-      envoyGateway:
-        rbac:
-          cluster: true
-        gateway:
-          controllerName: gateway.envoyproxy.io/gatewayclass-controller
+    global:
+      imageRegistry: mirror.gcr.io

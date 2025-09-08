@@ -5,14 +5,14 @@ kind: ServiceMonitor
 metadata:
   name: envoy-gateway
 spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: gateway-helm
-  namespaceSelector:
-    matchNames:
-      - network
   endpoints:
     - port: metrics
       path: /metrics
-      interval: 10s
       honorLabels: true
+  jobLabel: envoy-gateway
+  namespaceSelector:
+    matchNames:
+      - network
+  selector:
+    matchLabels:
+      control-plane: envoy-gateway
