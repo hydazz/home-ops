@@ -31,7 +31,7 @@ spec:
       - --cloudflare-proxied # routes on the external gateway should use `external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"`
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --gateway-label-filter=type in (cloudflare,external)
+      - --gateway-label-filter=type=cloudflare-dns
     triggerLoopOnEvent: true
     policy: sync
     sources:
