@@ -10,3 +10,5 @@ spec:
   eventSources:
     - kind: Kustomization
       name: "*"
+      matchLabels:
+        kustomize.toolkit.fluxcd.io/name: cluster-apps
