@@ -11,5 +11,6 @@ configMapGenerator:
     files:
       - ./resources/default.conf
       - ./resources/www.conf
+      - ./resources/wordpress.ini
 generatorOptions:
   disableNameSuffixHash: true
