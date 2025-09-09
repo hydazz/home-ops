@@ -116,9 +116,6 @@ spec:
           - name: envoy-cloudflare
             namespace: network
             sectionName: https
-          - name: envoy-cloudflare
-            namespace: network
-            sectionName: https
     persistence:
       wp-content:
         existingClaim: *app

@@ -465,12 +465,6 @@ spec:
           - name: envoy-cloudflare
             namespace: network
             sectionName: https
-          - name: envoy-cloudflare
-            namespace: network
-            sectionName: https
-          - name: envoy-cloudflare
-            namespace: network
-            sectionName: https
         rules: *rules
     persistence:
       admin-data:
