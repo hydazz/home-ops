@@ -150,3 +150,5 @@ spec:
             subPath: cache-nginx
           - path: /var/run
             subPath: run
+          - path: /tmp
+            subPath: tmp
