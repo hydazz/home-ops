@@ -6,3 +6,10 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+configMapGenerator:
+  - name: wordpress-shca-configmap
+    files:
+      - ./resources/default.conf
+      - ./resources/www.conf
+generatorOptions:
+  disableNameSuffixHash: true

@@ -128,17 +128,13 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /var/www/html/wp-content
-      php-config:
+      configs:
         type: configMap
-        name: wordpress-php-configmap
+        name: wordpress-hca-configmap
         globalMounts:
-          - path: /usr/local/etc/php/conf.d/wordpress.ini
-            subPath: wordpress.ini
+          - path: /usr/local/etc/php/conf.d/www.conf
+            subPath: www.conf
             readOnly: true
-      nginx-config:
-        type: configMap
-        name: wordpress-nginx-configmap
-        globalMounts:
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf
             readOnly: true
