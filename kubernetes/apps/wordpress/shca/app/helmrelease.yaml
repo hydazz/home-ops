@@ -21,25 +21,19 @@ spec:
       wordpress:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-wp:
+        containers:
+          app:
             image: &image
               repository: ghcr.io/hydazz/wordpress
               tag: 6.8.2@sha256:af6e43375fcc1172597e7188c74f5ae6a7d7950d2f895dd7c5b908b509dffae9
-            command:
-              - /scripts/bootstrap.sh
-            envFrom: &secret
-              - secretRef:
-                  name: "{{ .Release.Name }}-secrets"
-        containers:
-          app:
-            image: *image
             env:
               WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
               WORDPRESS_CONFIG_EXTRA: |-
                 define('DISABLE_WP_CRON', true);
-            envFrom: *secret
+            envFrom: &secret
+              - secretRef:
+                  name: "{{ .Release.Name }}-secrets"
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -134,14 +128,6 @@ spec:
         globalMounts:
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf
-            readOnly: true
-      bootstrap-script:
-        type: configMap
-        name: wordpress-bootstrap-script
-        defaultMode: 0755
-        globalMounts:
-          - path: /scripts/bootstrap.sh
-            subPath: bootstrap.sh
             readOnly: true
       tmpfs:
         type: emptyDir
