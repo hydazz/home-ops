@@ -21,11 +21,27 @@ spec:
       wordpress:
         annotations:
           reloader.stakater.com/auto: "true"
-        containers:
-          app:
+        initContainers:
+          # tar: .: Cannot change mode to rwxrwxrwx: Operation not permitted
+          wordpress-init:
             image: &image
               repository: ghcr.io/hydazz/wordpress
               tag: 6.8.2@sha256:af6e43375fcc1172597e7188c74f5ae6a7d7950d2f895dd7c5b908b509dffae9
+            command:
+              - sh
+              - -c
+              - |
+                if [ ! -e /var/www/html/index.php ]; then
+                  echo "Copying WordPress files..."
+                  cp -r /usr/src/wordpress/* /var/www/html/
+                fi
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: {drop: ["ALL"]}
+        containers:
+          app:
+            image: *image
             env:
               WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
@@ -34,10 +50,7 @@ spec:
             envFrom: &secret
               - secretRef:
                   name: "{{ .Release.Name }}-secrets"
-            securityContext: &securityContext
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: {drop: ["ALL"]}
+            securityContext: *securityContext
             resources:
               requests:
                 cpu: 150m
