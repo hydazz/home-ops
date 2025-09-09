@@ -135,6 +135,9 @@ spec:
           - path: /usr/local/etc/php-fpm.d/www.conf
             subPath: www.conf
             readOnly: true
+          - path: /usr/local/etc/php/conf.d/wordpress.ini
+            subPath: wordpress.ini
+            readOnly: true
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf
             readOnly: true
