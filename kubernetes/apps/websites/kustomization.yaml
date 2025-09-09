@@ -2,10 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: wordpress
+namespace: websites
 components:
   - ../../components/common
 resources:
-  - ./hca/ks.yaml
-  - ./lmvca/ks.yaml
-  - ./shca/ks.yaml
+  - ./wordpress-hca/ks.yaml
+  - ./wordpress-lmvca/ks.yaml
+  - ./wordpress-shca/ks.yaml
