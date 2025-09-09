@@ -175,7 +175,7 @@ spec:
         path: /mnt/Fast/Alex
         globalMounts:
           - path: /var/www/html/data/alex/files
-      nextcloud-config:
+      configs:
         type: configMap
         name: nextcloud-shs-configmap
         globalMounts:

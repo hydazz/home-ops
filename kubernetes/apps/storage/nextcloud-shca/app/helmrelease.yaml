@@ -181,7 +181,7 @@ spec:
         path: /mnt/Fast/Public
         globalMounts:
           - path: /mnt/Public
-      nextcloud-config:
+      configs:
         type: configMap
         name: nextcloud-shca-configmap
         globalMounts:
