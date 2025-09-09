@@ -37,7 +37,7 @@ spec:
                 fi
             securityContext: &securityContext
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
         containers:
           app:
