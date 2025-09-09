@@ -124,7 +124,7 @@ spec:
   clientIPDetection:
     customHeader:
       name: "CF-Connecting-IP"
-  http3: {}
+  #http3: {}
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
