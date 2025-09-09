@@ -100,7 +100,7 @@ spec:
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-hs
+            sectionName: https
     rbac:
       roles:
         gatus:

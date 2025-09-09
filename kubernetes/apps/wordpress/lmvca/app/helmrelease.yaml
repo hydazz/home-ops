@@ -115,10 +115,10 @@ spec:
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-lmvca-apex
+            sectionName: https
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-lmvca
+            sectionName: https
     persistence:
       wp-content:
         existingClaim: *app

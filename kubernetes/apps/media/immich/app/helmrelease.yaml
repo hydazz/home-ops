@@ -101,7 +101,7 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https-hs
+            sectionName: https
     persistence:
       library:
         type: nfs

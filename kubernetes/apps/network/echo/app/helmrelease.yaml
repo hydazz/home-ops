@@ -73,4 +73,4 @@ spec:
         parentRefs:
           - name: envoy-external # cloudflare proxied
             namespace: network
-            sectionName: https-hs
+            sectionName: https

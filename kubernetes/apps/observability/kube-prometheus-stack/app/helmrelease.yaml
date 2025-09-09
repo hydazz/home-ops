@@ -32,7 +32,7 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: network
-              sectionName: https-hs
+              sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
@@ -61,7 +61,7 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: network
-              sectionName: https-hs
+              sectionName: https
       prometheusSpec:
         image:
           registry: docker.io

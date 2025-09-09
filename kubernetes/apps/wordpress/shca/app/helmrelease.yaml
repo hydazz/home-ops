@@ -115,7 +115,7 @@ spec:
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-hca
+            sectionName: https
     persistence:
       wp-content:
         existingClaim: *app

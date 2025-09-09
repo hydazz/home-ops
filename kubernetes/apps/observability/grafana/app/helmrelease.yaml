@@ -277,7 +277,7 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https-hs
+            sectionName: https
     persistence:
       enabled: false
     testFramework:

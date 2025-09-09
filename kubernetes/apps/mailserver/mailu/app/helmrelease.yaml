@@ -445,7 +445,7 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https-hs
+            sectionName: https
         rules: &rules
           - backendRefs:
               - name: mailu-front
@@ -464,13 +464,13 @@ spec:
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-hs
+            sectionName: https
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-igi
+            sectionName: https
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-lmvca
+            sectionName: https
         rules: *rules
     persistence:
       admin-data:

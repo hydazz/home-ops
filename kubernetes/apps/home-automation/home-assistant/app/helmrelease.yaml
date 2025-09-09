@@ -63,10 +63,10 @@ spec:
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-hs
+            sectionName: https
           - name: envoy-internal
             namespace: network
-            sectionName: https-hs
+            sectionName: https
     persistence:
       config:
         existingClaim: *app

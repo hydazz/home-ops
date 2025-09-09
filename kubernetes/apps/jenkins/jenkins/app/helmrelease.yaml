@@ -76,7 +76,7 @@ spec:
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
-            sectionName: https-igi
+            sectionName: https
     persistence:
       config:
         existingClaim: *app
