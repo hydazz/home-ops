@@ -17,11 +17,6 @@ spec:
     remediation:
       retries: 3
   values:
-    crds:
-      enabled: true
-      upgradeJob:
-        enabled: true
-        forceConflicts: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       route:
@@ -66,7 +61,7 @@ spec:
         image:
           registry: docker.io
           repository: prompp/prompp
-          tag: 2.53.2-0.3.4
+          tag: 2.53.2-0.4.0
         securityContext:
           runAsNonRoot: true
           runAsUser: 64535
@@ -93,7 +88,7 @@ spec:
                   storage: 20Gi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
-      prometheus: &prometheus
+      prometheus:
         monitor:
           enabled: true
           relabelings:
@@ -110,7 +105,15 @@ spec:
         - deployments=[*]
         - persistentvolumeclaims=[*]
       prometheus:
-        <<: *prometheus
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
     grafana:
       enabled: false
       forceDeployDashboards: true
