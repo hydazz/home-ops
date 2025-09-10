@@ -352,12 +352,6 @@ spec:
               limits:
                 memory: 1Gi
     defaultPodOptions:
-      # Your DNS resolver at 10.43.0.10 isn't doing DNSSEC validation
-      dnsPolicy: None
-      dnsConfig:
-        nameservers:
-          - 1.1.1.1
-          - 10.43.0.10
       securityContext:
         #    runAsNonRoot: false
         #    runAsUser: 0
