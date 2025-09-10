@@ -1,14 +1,21 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app onepassword
+  name: onepassword
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
     name: onepassword
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
     controllers:
       onepassword:
@@ -18,11 +25,11 @@ spec:
         containers:
           api:
             image:
-              repository: docker.io/1password/connect-api
-              tag: 1.8.0@sha256:1695b2fdc6897e49fdfd80e64bdb78f4c64f7691a8d46957c0372e47f776430e
+              repository: ghcr.io/1password/connect-api
+              tag: 1.8.0@sha256:2fde4c7166860a645fae1e780afcd3f2b28b8a526beb35e7bc89557ff66b8002
             env:
               XDG_DATA_HOME: &configDir /config
-              OP_HTTP_PORT: &apiPort 8080
+              OP_HTTP_PORT: &apiPort 80
               OP_BUS_PORT: 11220
               OP_BUS_PEERS: localhost:11221
               OP_SESSION:
@@ -38,8 +45,9 @@ spec:
                   httpGet:
                     path: /heartbeat
                     port: *apiPort
-                  initialDelaySeconds: 15
-                  periodSeconds: 30
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
                   failureThreshold: 3
               readiness:
                 enabled: true
@@ -48,22 +56,23 @@ spec:
                   httpGet:
                     path: /health
                     port: *apiPort
-                  initialDelaySeconds: 15
-            securityContext: &securityContext
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
             resources: &resources
               requests:
                 cpu: 10m
               limits:
-                memory: 256M
+                memory: 64Mi
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
           sync:
             image:
-              repository: docker.io/1password/connect-sync
-              tag: 1.8.0@sha256:2d32eaa6c371d2a975fa3983203b5cb37b80f145c5a5bdccba4dc00e63b4e4d0
+              repository: ghcr.io/1password/connect-sync
+              tag: 1.8.0@sha256:a18b490db5820a2bfa81803f49a5abc0032c544d4a1cef872a352c49d213b060
             env:
               XDG_DATA_HOME: *configDir
               OP_HTTP_PORT: &syncPort 8081
@@ -82,8 +91,9 @@ spec:
                   httpGet:
                     path: /heartbeat
                     port: *syncPort
-                  initialDelaySeconds: 15
-                  periodSeconds: 30
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
                   failureThreshold: 3
               readiness:
                 enabled: true
@@ -92,19 +102,19 @@ spec:
                   httpGet:
                     path: /health
                     port: *syncPort
-                  initialDelaySeconds: 15
-            securityContext: *securityContext
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
             resources: *resources
+            securityContext: *securityContext
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
         runAsUser: 999
         runAsGroup: 999
-        fsGroup: 999
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *apiPort
