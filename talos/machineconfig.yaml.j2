@@ -90,8 +90,10 @@ machine:
         mtu: 9000
         dhcp: true
         vlans:
-          - dhcp: false
-            vlanId: 2
+          - vlanId: 2 # IoT
+            dhcp: false
+          - vlanId: 50 # VPN
+            dhcp: false
   nodeLabels:
     intel.feature.node.kubernetes.io/gpu: "true"
   sysctls:
