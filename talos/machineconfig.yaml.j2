@@ -49,6 +49,7 @@ machine:
         nconnect=16
         noatime=True
   install:
+    image: factory.talos.dev/metal-installer-secureboot/292e18ead18d085ced96563e1c4d15645d5b5c7154c11d95e10074848b2730a8:v1.11.1
     wipe: false
   {% if ENV.HAS_NVIDIA %}
   kernel:
@@ -97,6 +98,9 @@ machine:
     fs.inotify.max_user_instances: "8192"
     fs.inotify.max_user_watches: "1048576"
     net.core.default_qdisc: fq
+    {% if ENV.HAS_NVIDIA %}
+    net.core.bpf_jit_harden: "1"
+    {% endif %}
     net.core.rmem_max: "67108864"
     net.core.wmem_max: "67108864"
     net.ipv4.neigh.default.gc_thresh1: "4096"
