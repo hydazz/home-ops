@@ -29,7 +29,7 @@ spec:
             env:
               TZ: Australia/Melbourne
               QBT_WEBUI_PORT: &port 80
-              QBT_TORRENTING_PORT: &torrentPort 54913
+              QBT_TORRENTING_PORT: 54913
             probes:
               liveness: &probes
                 enabled: true
@@ -74,19 +74,10 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        forceRename: *app
-        # primary: true
+        primary: true
         ports:
           http:
             port: *port
-            #bittorrent:
-            #  type: LoadBalancer
-            #  annotations:
-            #    lbipam.cilium.io/ips: 192.168.42.155
-            #  ports:
-            #    bittorrent-tcp:
-            #      port: *torrentPort
-            #      protocol: TCP
     route:
       app:
         hostnames:
