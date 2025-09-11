@@ -37,19 +37,58 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 32Mi
+                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {add: ["NET_ADMIN"], drop: ["ALL"]}
-        serviceAccount:
-          name: *app
+              capabilities:
+                add:
+                  - NET_ADMIN
+                drop:
+                  - ALL
     defaultPodOptions:
       hostNetwork: true
       priorityClassName: system-node-critical
       tolerations:
         - key: CriticalAddonsOnly
           operator: Exists
+    rbac:
+      roles:
+        multus:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - k8s.cni.cncf.io
+              resources:
+                - "*"
+              verbs:
+                - "*"
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+                - pods/status
+              verbs:
+                - get
+                - update
+            - apiGroups:
+                - ""
+                - events.k8s.io
+              resources:
+                - events
+              verbs:
+                - create
+                - patch
+                - update
+      bindings:
+        multus:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: *app
+          subjects:
+            - identifier: *app
+    serviceAccount:
+      multus: {}
     persistence:
       etc-cni-net-d:
         type: hostPath
