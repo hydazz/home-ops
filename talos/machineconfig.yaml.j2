@@ -78,6 +78,21 @@ machine:
       validSubnets:
         - 192.168.42.0/24
         - 2404:e80:661b:42::/64
+  network:
+    interfaces:
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - pciID: 15B3:1003 # MT27500 Family [ConnectX-3]
+              driver: mlx4_core
+          mode: active-backup
+        mtu: 9000
+        dhcp: true
+        vlans:
+          - dhcp: false
+            vlanId: 2
+  nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
   sysctls:
     fs.inotify.max_user_instances: "8192"
     fs.inotify.max_user_watches: "1048576"

@@ -6,26 +6,6 @@ machine:
     image: factory.talos.dev/metal-installer-secureboot/b0bfc42154424352765a5e0129c69366c7518a37f332b1551af2be623ceba5a0:v1.11.0
   network:
     hostname: discovery
-    interfaces:
-      - interface: bond0
-        addresses:
-          - 192.168.42.10/24
-          - 2404:e80:661b:42::10/64
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 192.168.42.1
-        bond:
-          interfaces: []
-          deviceSelectors:
-            - hardwareAddr: f4:52:14:80:7f:a0
-              driver: mlx4_core
-          mode: active-backup
-        vlans:
-          - routes: []
-            dhcp: false
-            vlanId: 2
-        dhcp: false
   nodeLabels:
     nvidia.com/gpu.present: "true"
-    intel.feature.node.kubernetes.io/gpu: "true"
   type: controlplane

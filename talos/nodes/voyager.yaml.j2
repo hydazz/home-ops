@@ -6,25 +6,4 @@ machine:
     image: factory.talos.dev/metal-installer-secureboot/292e18ead18d085ced96563e1c4d15645d5b5c7154c11d95e10074848b2730a8:v1.11.0
   network:
     hostname: voyager
-    interfaces:
-      - interface: bond0
-        addresses:
-          - 192.168.42.11/24
-          - 2404:e80:661b:42::11/64
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 192.168.42.1
-        bond:
-          interfaces: []
-          deviceSelectors:
-            - hardwareAddr: e4:1d:2d:7e:65:70
-              driver: mlx4_core
-          mode: active-backup
-        vlans:
-          - routes: []
-            dhcp: false
-            vlanId: 2
-        dhcp: false
-  nodeLabels:
-    intel.feature.node.kubernetes.io/gpu: "true"
   type: controlplane
