@@ -205,7 +205,7 @@ spec:
     xForwardedFor:
       numTrustedHops: 1
   http3: {}
-  targetSelectors:
+  targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-external
@@ -228,7 +228,7 @@ spec:
     customHeader:
       name: "CF-Connecting-IP"
   http3: {}
-  targetSelectors:
+  targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-cloudflare
