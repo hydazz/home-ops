@@ -41,22 +41,22 @@ spec:
               SPAWN_NPCS: false
               SPAWN_PROTECTION: 0
               # Plugins
-              #MINECRAFT_VERSION: 1.21.4
-              #MODRINTH_PROJECTS: |
-              #  multiverse-core
-              #  voidworld
-              #  worldedit
-              #  customnpcs
-              #PLUGINS: |
-              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsX-2.21.1.jar
-              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXAntiBuild-2.21.1.jar
-              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXChat-2.21.1.jar
-              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
-              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
+              MINECRAFT_VERSION: 1.21.8
+              MODRINTH_PROJECTS: |-
+                worldedit
+                customnpcs
+              PLUGINS: |
+                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
+                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXAntiBuild-2.21.2.jar
+                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXChat-2.21.2.jar
+                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXProtect-2.21.2.jar
+                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXSpawn-2.21.2.jar
+                https://github.com/Multiverse/Multiverse-Core/releases/download/5.2.1/multiverse-core-5.2.1.jar
+                https://github.com/aerulion/VoidWorld/releases/download/v1.0.0/VoidWorld-1.0.0.jar
               # Server
               MEMORY: ""
               TYPE: PAPER
-              VERSION: 1.21.4
+              VERSION: 1.21.8
             probes:
               liveness: &probes
                 enabled: true

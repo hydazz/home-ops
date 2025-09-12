@@ -26,7 +26,7 @@ spec:
               tag: 2025.6.0@sha256:f14b7eb0ca1958b2a32c28ff285fe2f047c08ea65f5eca02a9f3a9362e9e9877
             env:
               MINECRAFT_VERSION: 1.21.8
-              PLUGINS: |
+              PLUGINS: |-
                 https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.4.2/PAPER/ViaBackwards-5.4.2.jar
                 https://hangarcdn.papermc.io/plugins/ViaVersion/ViaRewind/versions/4.0.9/PAPER/ViaRewind-4.0.9.jar
                 https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.4.2/PAPER/ViaVersion-5.4.2.jar
