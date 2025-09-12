@@ -66,20 +66,143 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
-        serviceAccount:
-          name: *app
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-    persistence:
-      client:
-        type: secret
-        name: &clientCert "{{ .Release.Name }}-client-tls"
-      server:
-        type: secret
-        name: &serverCert "{{ .Release.Name }}-server-tls"
+    rbac:
+      roles:
+        barman-cloud:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - configmaps
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+                - delete
+            - apiGroups:
+                - coordination.k8s.io
+              resources:
+                - leases
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+                - delete
+            - apiGroups:
+                - ""
+              resources:
+                - events
+              verbs:
+                - create
+                - patch
+            - apiGroups:
+                - ""
+              resources:
+                - secrets
+              verbs:
+                - create
+                - delete
+                - get
+                - list
+                - watch
+            - apiGroups:
+                - barmancloud.cnpg.io
+              resources:
+                - objectstores
+              verbs:
+                - create
+                - delete
+                - get
+                - list
+                - patch
+                - update
+                - watch
+            - apiGroups:
+                - barmancloud.cnpg.io
+              resources:
+                - objectstores/finalizers
+              verbs:
+                - update
+            - apiGroups:
+                - barmancloud.cnpg.io
+              resources:
+                - objectstores/status
+              verbs:
+                - get
+                - patch
+                - update
+            - apiGroups:
+                - postgresql.cnpg.io
+              resources:
+                - backups
+              verbs:
+                - get
+                - list
+                - watch
+            - apiGroups:
+                - rbac.authorization.k8s.io
+              resources:
+                - rolebindings
+                - roles
+              verbs:
+                - create
+                - get
+                - list
+                - patch
+                - update
+                - watch
+      bindings:
+        barman-cloud:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: barman-cloud
+          subjects:
+            - identifier: *app
+    serviceAccount:
+      barman-cloud: {}
+    rawResources:
+      barman-cloud:
+        apiVersion: cert-manager.io/v1
+        kind: Issuer
+        spec:
+          selfSigned: {}
+      client-cert: &cert
+        apiVersion: cert-manager.io/v1
+        kind: Certificate
+        spec: &certSpec
+          commonName: "{{ .Release.Name }}-client"
+          duration: 2160h
+          isCA: false
+          issuerRef:
+            name: *app
+            kind: Issuer
+            group: cert-manager.io
+          renewBefore: 360h
+          secretName: &clientCert "{{ .Release.Name }}-client-tls"
+          usages:
+            - client auth
+      server-cert:
+        <<: *cert
+        spec:
+          <<: *certSpec
+          commonName: *app
+          dnsNames:
+            - *app
+          secretName: &serverCert "{{ .Release.Name }}-server-tls"
+          usages:
+            - server auth
     service:
       app:
         annotations:
@@ -91,3 +214,10 @@ spec:
         ports:
           http:
             port: 9090
+    persistence:
+      client:
+        type: secret
+        name: *clientCert
+      server:
+        type: secret
+        name: *serverCert
