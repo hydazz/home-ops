@@ -182,7 +182,7 @@ spec:
         apiVersion: cert-manager.io/v1
         kind: Certificate
         spec: &certSpec
-          commonName: "{{ .Release.Name }}-client"
+          commonName: barman-cloud-client
           duration: 2160h
           isCA: false
           issuerRef:
@@ -190,7 +190,7 @@ spec:
             kind: Issuer
             group: cert-manager.io
           renewBefore: 360h
-          secretName: &clientCert "{{ .Release.Name }}-client-tls"
+          secretName: &clientCert barman-cloud-client-tls
           usages:
             - client auth
       server-cert:
@@ -200,7 +200,7 @@ spec:
           commonName: *app
           dnsNames:
             - *app
-          secretName: &serverCert "{{ .Release.Name }}-server-tls"
+          secretName: &serverCert barman-cloud-server-tls
           usages:
             - server auth
     service:
