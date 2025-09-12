@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: hymc-velocity
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      velocity:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/itzg/mc-proxy
+              tag: 2025.6.0@sha256:f14b7eb0ca1958b2a32c28ff285fe2f047c08ea65f5eca02a9f3a9362e9e9877
+            env:
+              MINECRAFT_VERSION: 1.21.8
+              PLUGINS: |
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.4.2/PAPER/ViaBackwards-5.4.2.jar
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaRewind/versions/4.0.9/PAPER/ViaRewind-4.0.9.jar
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.4.2/PAPER/ViaVersion-5.4.2.jar
+              TYPE: VELOCITY
+              TZ: Australia/Melbourne
+              ICON: https://s3.${D_HS}/hymc/server-icon.png
+              VERSION: 3.4.0-SNAPSHOT
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.42.154
+        ports:
+          game:
+            port: 25565
+    persistence:
+      velocity:
+        type: configMap
+        name: velocity-configmap
+        globalMounts:
+          - path: /server/velocity.toml
+            subPath: velocity.toml
+            readOnly: true
+      forwarding-secret:
+        type: secret
+        name: velocity-secret
+        globalMounts:
+          - path: /server/forwarding.secret
+            subPath: forwarding.secret
+            readOnly: true
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /server
+            subPath: server
+          - path: /tmp
+            subPath: tmp
