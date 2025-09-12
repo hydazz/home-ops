@@ -43,18 +43,18 @@ spec:
               # Plugins
               PLUGINS: |-
                 https://download.luckperms.net/1596/bukkit/loader/LuckPerms-Bukkit-5.5.11.jar
+                https://github.com/ChanceSD/PvPManager/releases/download/3.19.10/PvPManager.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXAntiBuild-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXChat-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXProtect-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXSpawn-2.21.2.jar
+                https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar
                 https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
-              # https://dev.bukkit.org/projects/mythicmobs/files/2840724/download
-              # https://dev.bukkit.org/projects/otherdrops/files/853054/download
-              # https://dev.bukkit.org/projects/pvpmanager/files/6612954/download
-              # https://dev.bukkit.org/projects/vault/files/894359/download
-              # https://dev.bukkit.org/projects/worldedit/files/2597538/download
-              # https://dev.bukkit.org/projects/worldguard/files/956770/download
+                https://mediafilez.forgecdn.net/files/2597/538/worldedit-bukkit-6.1.9.jar
+                https://mediafilez.forgecdn.net/files/2840/724/MythicMobs-4.7.1.jar
+                https://mediafilez.forgecdn.net/files/853/54/OtherDrops.jar
+                https://mediafilez.forgecdn.net/files/956/770/worldguard-6.2.jar
               SPIGET_PLUGINS: |-
                 222 # BossShopPro
                 43424 # StatsSB
