@@ -52,7 +52,7 @@ spec:
                 https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar
                 https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
                 https://mediafilez.forgecdn.net/files/2597/538/worldedit-bukkit-6.1.9.jar
-                https://mediafilez.forgecdn.net/files/2840/724/MythicMobs-4.7.1.jar
+                https://mediafilez.forgecdn.net/files/2622/901/MythicMobs-4.4.1.jar
                 https://mediafilez.forgecdn.net/files/853/54/OtherDrops.jar
                 https://mediafilez.forgecdn.net/files/956/770/worldguard-6.2.jar
               SPIGET_PLUGINS: |-
