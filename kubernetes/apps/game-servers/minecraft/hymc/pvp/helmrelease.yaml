@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: hymc-pvp
   install:
     remediation:
       retries: -1
@@ -41,23 +41,23 @@ spec:
               SPAWN_NPCS: false
               SPAWN_PROTECTION: 0
               # Plugins
-              PLUGINS: |
-                https://dev.bukkit.org/projects/mythicmobs/files/2840724/download
-                https://dev.bukkit.org/projects/otherdrops/files/853054/download
-                https://dev.bukkit.org/projects/pvpmanager/files/6612954/download
-                https://dev.bukkit.org/projects/vault/files/894359/download
-                https://dev.bukkit.org/projects/worldedit/files/2597538/download
-                https://dev.bukkit.org/projects/worldguard/files/956770/download
-                https://download.luckperms.net/1595/bukkit/loader/LuckPerms-Bukkit-5.5.10.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsX-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXAntiBuild-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXChat-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
-                https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
-              SPIGET_PLUGINS: |
-                222 # BossShopPro
-                43424 # StatsSB
+              #PLUGINS: |
+              #  https://dev.bukkit.org/projects/mythicmobs/files/2840724/download
+              #  https://dev.bukkit.org/projects/otherdrops/files/853054/download
+              #  https://dev.bukkit.org/projects/pvpmanager/files/6612954/download
+              #  https://dev.bukkit.org/projects/vault/files/894359/download
+              #  https://dev.bukkit.org/projects/worldedit/files/2597538/download
+              #  https://dev.bukkit.org/projects/worldguard/files/956770/download
+              #  https://download.luckperms.net/1595/bukkit/loader/LuckPerms-Bukkit-5.5.10.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsX-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXAntiBuild-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXChat-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
+              #  https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
+              #SPIGET_PLUGINS: |
+              #  222 # BossShopPro
+              #  43424 # StatsSB
               # Server
               MEMORY: ""
               TYPE: CUSTOM
@@ -99,13 +99,11 @@ spec:
     service:
       app:
         ports:
-          game:
+          minecraft:
             port: 25565
     persistence:
-      config:
+      data:
         existingClaim: *app
-        globalMounts:
-          - path: /data
       tmpfs:
         type: emptyDir
         globalMounts:

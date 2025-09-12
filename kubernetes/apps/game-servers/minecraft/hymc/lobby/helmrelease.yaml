@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: hymc-lobby
   install:
     remediation:
       retries: -1
@@ -41,18 +41,18 @@ spec:
               SPAWN_NPCS: false
               SPAWN_PROTECTION: 0
               # Plugins
-              MINECRAFT_VERSION: 1.21.4
-              MODRINTH_PROJECTS: |
-                multiverse-core
-                voidworld
-                worldedit
-                customnpcs
-              PLUGINS: |
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsX-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXAntiBuild-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXChat-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
+              #MINECRAFT_VERSION: 1.21.4
+              #MODRINTH_PROJECTS: |
+              #  multiverse-core
+              #  voidworld
+              #  worldedit
+              #  customnpcs
+              #PLUGINS: |
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsX-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXAntiBuild-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXChat-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXProtect-2.21.1.jar
+              #  https://github.com/EssentialsX/Essentials/releases/download/2.21.1/EssentialsXSpawn-2.21.1.jar
               # Server
               MEMORY: ""
               TYPE: PAPER
@@ -93,13 +93,11 @@ spec:
     service:
       app:
         ports:
-          game:
+          minecraft:
             port: 25565
     persistence:
-      config:
+      data:
         existingClaim: *app
-        globalMounts:
-          - path: /data
       tmpfs:
         type: emptyDir
         globalMounts:
