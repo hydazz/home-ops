@@ -177,7 +177,8 @@ spec:
         apiVersion: cert-manager.io/v1
         kind: ClusterIssuer
         spec:
-          selfSigned: {}
+          spec:
+            selfSigned: {}
       client: &cert
         apiVersion: cert-manager.io/v1
         kind: Certificate
