@@ -173,7 +173,7 @@ spec:
     serviceAccount:
       barman-cloud: {}
     rawResources:
-      barman-cloud-issuer:
+      issuer:
         apiVersion: cert-manager.io/v1
         kind: ClusterIssuer
         spec:
