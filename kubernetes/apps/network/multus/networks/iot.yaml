@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://schemas.hydaz.com/k8s.cni.cncf.io/networkattachmentdefinition_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/k8s.cni.cncf.io/networkattachmentdefinition_v1.json
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
@@ -7,7 +7,8 @@ metadata:
 spec:
   config: |-
     {
-      "cniVersion": "1.1.0",
+      "cniVersion": "0.3.1",
+      "name": "iot",
       "plugins": [
         {
           "type": "macvlan",
@@ -16,7 +17,7 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              { "dst": "0.0.0.0/0", "gw": "192.168.2.1" }
+              {"dst": "0.0.0.0/0", "gw": "192.168.2.1"}
             ]
           }
         },
