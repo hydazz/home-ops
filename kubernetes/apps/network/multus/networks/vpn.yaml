@@ -3,12 +3,11 @@
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
-  name: multus-vpn
+  name: vpn
 spec:
   config: |-
     {
-      "cniVersion": "0.3.1",
-      "name": "multus-vpn",
+      "cniVersion": "1.1.0",
       "plugins": [
         {
           "type": "macvlan",
