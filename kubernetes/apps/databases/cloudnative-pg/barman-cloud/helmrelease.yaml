@@ -173,36 +173,38 @@ spec:
     serviceAccount:
       barman-cloud: {}
     rawResources:
-      barman-cloud:
+      issuer:
         apiVersion: cert-manager.io/v1
-        kind: Issuer
+        kind: ClusterIssuer
         spec:
           selfSigned: {}
-      client-cert: &cert
+      client: &cert
         apiVersion: cert-manager.io/v1
         kind: Certificate
-        spec: &certSpec
-          commonName: barman-cloud-client
-          duration: 2160h
-          isCA: false
-          issuerRef:
-            name: *app
-            kind: Issuer
-            group: cert-manager.io
-          renewBefore: 360h
-          secretName: &clientCert barman-cloud-client-tls
-          usages:
-            - client auth
-      server-cert:
+        spec:
+          spec: &certSpec
+            commonName: barman-cloud-client
+            duration: 2160h
+            isCA: false
+            issuerRef:
+              name: issuer
+              kind: ClusterIssuer
+              group: cert-manager.io
+            renewBefore: 360h
+            secretName: &clientCert barman-cloud-client-tls
+            usages:
+              - client auth
+      server:
         <<: *cert
         spec:
-          <<: *certSpec
-          commonName: *app
-          dnsNames:
-            - *app
-          secretName: &serverCert barman-cloud-server-tls
-          usages:
-            - server auth
+          spec:
+            <<: *certSpec
+            commonName: *app
+            dnsNames:
+              - *app
+            secretName: &serverCert barman-cloud-server-tls
+            usages:
+              - server auth
     service:
       app:
         annotations:
