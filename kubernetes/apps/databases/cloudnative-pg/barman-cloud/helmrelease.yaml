@@ -173,7 +173,7 @@ spec:
     serviceAccount:
       barman-cloud: {}
     rawResources:
-      issuer:
+      barman-cloud-issuer:
         apiVersion: cert-manager.io/v1
         kind: ClusterIssuer
         spec:
@@ -187,7 +187,7 @@ spec:
             duration: 2160h
             isCA: false
             issuerRef:
-              name: issuer
+              name: barman-cloud-issuer
               kind: ClusterIssuer
               group: cert-manager.io
             renewBefore: 360h
