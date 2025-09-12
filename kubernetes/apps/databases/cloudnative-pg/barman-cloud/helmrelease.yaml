@@ -73,8 +73,8 @@ spec:
         runAsGroup: 1000
     rbac:
       roles:
-        barman-cloud:
-          type: ClusterRole
+        leader-election-role:
+          type: Role
           rules:
             - apiGroups:
                 - ""
@@ -107,6 +107,69 @@ spec:
               verbs:
                 - create
                 - patch
+        metrics-auth-role:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - authentication.k8s.io
+              resources:
+                - tokenreviews
+              verbs:
+                - create
+            - apiGroups:
+                - authorization.k8s.io
+              resources:
+                - subjectaccessreviews
+              verbs:
+                - create
+        metrics-reader:
+          type: ClusterRole
+          rules:
+            - nonResourceURLs:
+                - /metrics
+              verbs:
+                - get
+        objectstore-editor-role:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - barmancloud.cnpg.io
+              resources:
+                - objectstores
+              verbs:
+                - create
+                - delete
+                - get
+                - list
+                - patch
+                - update
+                - watch
+            - apiGroups:
+                - barmancloud.cnpg.io
+              resources:
+                - objectstores/status
+              verbs:
+                - get
+        objectstore-viewer-role:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - barmancloud.cnpg.io
+              resources:
+                - objectstores
+              verbs:
+                - get
+                - list
+                - watch
+            - apiGroups:
+                - barmancloud.cnpg.io
+              resources:
+                - objectstores/status
+              verbs:
+                - get
+        barman-cloud:
+          type: ClusterRole
+          rules:
             - apiGroups:
                 - ""
               resources:
@@ -164,12 +227,30 @@ spec:
                 - update
                 - watch
       bindings:
-        barman-cloud:
+        leader-election-rolebinding:
+          type: RoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            identifier: leader-election-role
+          subjects: &subject
+            - kind: ServiceAccount
+              identifier: *app
+              namespace: databases
+        metrics-auth-rolebinding:
           type: ClusterRoleBinding
           roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            identifier: metrics-auth-role
+          subjects: *subject
+        cnpg-barman-cloud-binding:
+          type: ClusterRoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
             identifier: barman-cloud
-          subjects:
-            - identifier: *app
+          subjects: *subject
     serviceAccount:
       barman-cloud: {}
     rawResources:
