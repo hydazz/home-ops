@@ -16,6 +16,18 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: DaemonSet
+              name: dcgm-exporter
+            patch: |
+              - op: replace
+                path: /spec/template/spec/containers/0/env
+                value:
+                  - name: DCGM_EXPORTER_KUBERNETES
+                    value: "false"
   values:
     affinity:
       nodeAffinity:
@@ -25,9 +37,6 @@ spec:
                 - key: nvidia.com/gpu.present
                   operator: Exists
     runtimeClassName: nvidia
-    extraEnv:
-      - name: DCGM_EXPORTER_KUBERNETES
-        value: "false"
     resources:
       limits:
         memory: 1Gi
