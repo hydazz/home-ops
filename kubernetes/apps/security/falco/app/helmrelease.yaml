@@ -69,8 +69,14 @@ spec:
       load_plugins:
         - k8saudit
         - json
-    serviceMonitor:
-      create: true
+    #  metrics:
+    #    enabled: true
+    #    interval: 15m
+    #serviceMonitor:
+    #  create: true
+    #metrics:
+    #  enabled: true
+    #  interval: 15m
     grafana:
       dashboards:
         enabled: true
@@ -79,6 +85,7 @@ spec:
             namespace: observability
     falcosidekick:
       enabled: true
+      replicaCount: 1
       config:
         loki:
           hostport: http://loki-gateway.observability.svc.cluster.local
@@ -90,6 +97,7 @@ spec:
         enabled: true
       webui:
         enabled: true
+        replicaCount: 1
       grafana:
         dashboards:
           enabled: false
