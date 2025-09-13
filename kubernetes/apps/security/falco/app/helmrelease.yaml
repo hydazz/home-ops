@@ -79,10 +79,11 @@ spec:
           append: true
           exceptions:
             - name: ignore_udp_for_dragonfly
-              fields: [ k8s.pod.labels[app.kubernetes.io/name] ]
+              fields: [ k8s.pod.labels["app.kubernetes.io/name"] ]
               comps:  [ = ]
               values:
                 - [ dragonfly ]
+
             - name: ignore_udp_for_overseerr
               fields: [ k8s.deployment.name ]
               comps:  [ = ]
@@ -94,7 +95,7 @@ spec:
           append: true
           exceptions:
             - name: ignore_nc_in_dragonfly
-              fields: [ k8s.pod.labels[app.kubernetes.io/name], proc.name ]
+              fields: [ k8s.pod.labels["app.kubernetes.io/name"], proc.name ]
               comps:  [ =, = ]
               values:
                 - [ dragonfly, nc ]
