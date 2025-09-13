@@ -69,3 +69,10 @@ spec:
       load_plugins:
         - k8saudit
         - json
+    serviceMonitor:
+      enabled: true
+    grafanaDashboard:
+      enabled: true
+      namespace: observability
+      annotations:
+        grafana_folder: "Monitoring"
