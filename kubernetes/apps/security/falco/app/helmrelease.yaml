@@ -111,7 +111,7 @@ spec:
           - path: /etc/falcoctl/falcoctl.yaml
             subPath: falcoctl.yaml
             readOnly: true
-      container-socket-containerd:
+      containerd-socket:
         type: hostPath
         hostPath: /run/containerd/containerd.sock
         advancedMounts:
@@ -134,14 +134,29 @@ spec:
             app:
               - path: /host/etc
                 readOnly: true
+      plugins:
+        type: emptyDir
+        advancedMounts:
+          falco:
+            app:
+              - path: /usr/share/falco/plugins
+            falcoctl-artifact-install:
+              - path: /plugins
+            falcoctl-artifact-follow:
+              - path: /plugins
+      rules:
+        type: emptyDir
+        advancedMounts:
+          falco:
+            app:
+              - path: /etc/falco
+            falcoctl-artifact-install:
+              - path: /rulesfiles
+            falcoctl-artifact-follow:
+              - path: /rulesfiles
       tmpfs:
         type: emptyDir
-        globalMounts:
-          - path: /usr/share/falco/plugins
-            subPath: falco-plugins
-          - path: /plugins
-            subPath: plugins
-          - path: /rulesfiles
-            subPath: rulesfiles
-          - path: /root/.falco
-            subPath: root-falco
+        advancedMounts:
+          falco:
+            app:
+              - path: /root/.falco
