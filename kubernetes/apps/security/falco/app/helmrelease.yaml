@@ -87,11 +87,12 @@ spec:
       enabled: true
       replicaCount: 1
       config:
-        loki:
-          hostport: http://loki.observability.svc.cluster.local:3100
-          minimumpriority: notice
+        # entry too far behind?
+        #loki:
+        #  hostport: http://loki.observability.svc.cluster.local:3100
+        #  minimumpriority: notice
         alertmanager:
-          hostport: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+          hostport: http://alertmanager-operated.observability.svc.cluster.local:9093
           minimumpriority: warning
       serviceMonitor:
         enabled: true
