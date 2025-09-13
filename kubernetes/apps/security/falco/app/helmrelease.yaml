@@ -69,14 +69,14 @@ spec:
       load_plugins:
         - k8saudit
         - json
-    #  metrics:
-    #    enabled: true
-    #    interval: 15m
-    #serviceMonitor:
-    #  create: true
-    #metrics:
-    #  enabled: true
-    #  interval: 15m
+      metrics:
+        enabled: true
+        interval: 15m
+    serviceMonitor:
+      create: true
+    metrics:
+      enabled: true
+      interval: 15m
     grafana:
       dashboards:
         enabled: true
@@ -88,7 +88,7 @@ spec:
       replicaCount: 1
       config:
         loki:
-          hostport: http://loki-gateway.observability.svc.cluster.local
+          hostport: http://loki.observability.svc.cluster.local:3100
           minimumpriority: notice
         alertmanager:
           hostport: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
