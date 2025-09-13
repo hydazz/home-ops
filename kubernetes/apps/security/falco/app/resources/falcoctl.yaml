@@ -1,0 +1,26 @@
+---
+artifact:
+  allowedTypes:
+    - rulesfile
+    - plugin
+  follow:
+    every: 6h
+    falcoversions: http://localhost:8765/versions
+    pluginsDir: /plugins
+    refs:
+      - falco-rules:latest
+      - falco-incubating-rules:latest
+      - k8saudit-rules:latest
+    rulesfilesDir: /rulesfiles
+  install:
+    pluginsDir: /plugins
+    refs:
+      - falco-rules:latest
+      - falco-incubating-rules:latest
+      - k8saudit-rules:latest
+      - ghcr.io/falcosecurity/plugins/plugin/container:0.3.6
+    resolveDeps: true
+    rulesfilesDir: /rulesfiles
+indexes:
+  - name: falcosecurity
+    url: https://falcosecurity.github.io/falcoctl/index.yaml

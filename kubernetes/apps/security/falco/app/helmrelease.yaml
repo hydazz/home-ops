@@ -1,154 +1,147 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: falco
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: falco
-      version: 6.2.5
-      sourceRef:
-        kind: HelmRepository
-        name: falco
+  chartRef:
+    kind: OCIRepository
+    name: falco
   install:
-    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
     remediation:
       retries: 3
   values:
-    driver:
-      kind: modern_ebpf
-    tty: true
-    falcoctl:
-      artifact:
-        install:
-          enabled: true
-        follow:
-          enabled: true
-      config:
-        artifact:
-          install:
-            refs:
-              - falco-rules:latest
-              - falco-incubating-rules:latest
-              - k8saudit-rules:latest
-          follow:
-            refs:
-              - falco-rules:latest
-              - falco-incubating-rules:latest
-              - k8saudit-rules:latest
-    services:
-      - name: k8saudit-webhook
-        type: ClusterIP
+    controllers:
+      falco:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        type: daemonset
+        initContainers:
+          falcoctl-artifact-install:
+            image: &falcoctl
+              repository: docker.io/falcosecurity/falcoctl
+              tag: 0.11.3@sha256:2c4b5f1b2960eaf3329fea2fcda6689e5f3c62417c933475b7f380f4ef1c89f8
+            args:
+              - artifact
+              - install
+              - --log-format=json
+        containers:
+          app:
+            image:
+              repository: docker.io/falcosecurity/falco
+              tag: 0.41.3@sha256:5f6f325327c970430b1a73704160b2fd5b2c1396f2dc0b343b2544638b6b569c
+            args:
+              - /usr/bin/falco
+            env:
+              HOST_ROOT: /host
+              FALCO_HOSTNAME: &hostname
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              FALCO_K8S_NODE_NAME: *hostname
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 8765
+                  initialDelaySeconds: 60
+                  timeoutSeconds: 5
+                  periodSeconds: 15
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                cpu: 1
+                memory: 1Gi
+          falcoctl-artifact-follow:
+            image: *falcoctl
+            args:
+              - artifact
+              - follow
+              - --log-format=json
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+    serviceAccount:
+      falco: {}
+    service:
+      app:
         ports:
-          - port: 9765
-            targetPort: 9765
-            protocol: TCP
-            name: http
-    falco:
-      rules_files:
-        - /etc/falco/falco_rules.yaml
-        - /etc/falco/falco-incubating_rules.yaml
-        - /etc/falco/k8s_audit_rules.yaml
-        - /etc/falco/rules.d
-      plugins:
-        - name: k8saudit
-          library_path: libk8saudit.so
-          init_config: ""
-          open_params: http://:9765/k8s-audit
-        - name: json
-          library_path: libjson.so
-          init_config: ""
-      load_plugins:
-        - k8saudit
-        - json
-      metrics:
-        enabled: true
-        interval: 15m
-    customRules:
-      exceptions.yaml: |-
-        - rule: Unexpected UDP Traffic
-          enabled: false
-          override:
-            enabled: replace
-
-        - rule: Launch Suspicious Network Tool in Container
-          exceptions:
-            - name: ignore_nc_in_dragonfly
-              fields:
-                - k8s.ns.name
-                - container.image.repository
-                - proc.exepath
-                - proc.cmdline
-              comps:
-                - =
-                - =
-                - =
-                - =
-              values:
-                - - databases
-                  - docker.dragonflydb.io/dragonflydb/dragonfly
-                  - /usr/bin/nc.openbsd
-                  - "nc -q1 localhost 9999"
-          override:
-            exceptions: append
-
-        - rule: Drop and execute new binary in container
-          exceptions:
-            - name: ignore_postfix_in_mailu
-              fields:
-                - k8s.ns.name
-                - container.image.repository
-                - proc.exepath
-              comps:
-                - =
-                - =
-                - =
-              values:
-                - - mailserver
-                  - ghcr.io/mailu/postfix
-                  - /usr/libexec/postfix/master
-          override:
-            exceptions: append
+          http:
+            port: *port
+      falco-metrics:
+        ports:
+          metrics:
+            port: *port
+      k8saudit-webhook:
+        ports:
+          http:
+            port: 9765
     serviceMonitor:
-      create: true
-    metrics:
-      enabled: true
-      interval: 15m
-    grafana:
-      dashboards:
-        enabled: true
-        configMaps:
-          falco:
-            namespace: observability
-    falcosidekick:
-      enabled: true
-      replicaCount: 1
+      app:
+        serviceName: falco-metrics
+        endpoints:
+          - port: metrics
+    persistence:
       config:
-        # entry too far behind?
-        #loki:
-        #  hostport: http://loki.observability.svc.cluster.local:3100
-        #  minimumpriority: notice
-        alertmanager:
-          hostport: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
-          endpoint: /api/v2/alerts
-          minimumpriority: warning
-      serviceMonitor:
-        enabled: true
-      webui:
-        enabled: true
-        replicaCount: 1
-        existingSecret: falco-ui-secret
-      grafana:
-        dashboards:
-          enabled: false
-          configMaps:
-            falcosidekick:
-              namespace: observability
+        type: configMap
+        name: falco-configmap
+        globalMounts:
+          - path: /etc/falco/
+            subPath: falco.yaml
+            readOnly: true
+          - path: /etc/falco/rules.d
+            subPath: rules.yaml
+            readOnly: true
+          - path: /etc/falcoctl
+            subPath: falcoctl.yaml
+            readOnly: true
+      container-socket-containerd:
+        type: hostPath
+        hostPath: /run/containerd/containerd.sock
+        advancedMounts:
+          falco:
+            app:
+              - path: /host/run/containerd/containerd.sock
+      proc-fs:
+        type: hostPath
+        hostPath: /proc
+        advancedMounts:
+          falco:
+            app:
+              - path: /host/proc
+                readOnly: true
+      etc-fs:
+        type: hostPath
+        hostPath: /etc
+        advancedMounts:
+          falco:
+            app:
+              - path: /host/etc
+                readOnly: true
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /usr/share/falco/plugins
+            subPath: falco-plugins
+          - path: /plugins
+            subPath: plugins
+          - path: /rulesfiles
+            subPath: rulesfiles
+          - path: /root/.falco
+            subPath: root-falco

@@ -1,0 +1,44 @@
+---
+- rule: Unexpected UDP Traffic
+  enabled: false
+  override:
+    enabled: replace
+
+- rule: Launch Suspicious Network Tool in Container
+  exceptions:
+    - name: ignore_nc_in_dragonfly
+      fields:
+        - k8s.ns.name
+        - container.image.repository
+        - proc.exepath
+        - proc.cmdline
+      comps:
+        - =
+        - =
+        - =
+        - =
+      values:
+        - - databases
+          - docker.dragonflydb.io/dragonflydb/dragonfly
+          - /usr/bin/nc.openbsd
+          - "nc -q1 localhost 9999"
+  override:
+    exceptions: append
+
+- rule: Drop and execute new binary in container
+  exceptions:
+    - name: ignore_postfix_in_mailu
+      fields:
+        - k8s.ns.name
+        - container.image.repository
+        - proc.exepath
+      comps:
+        - =
+        - =
+        - =
+      values:
+        - - mailserver
+          - ghcr.io/mailu/postfix
+          - /usr/libexec/postfix/master
+  override:
+    exceptions: append
