@@ -69,10 +69,14 @@ spec:
       load_plugins:
         - k8saudit
         - json
+      metrics:
+        enabled: true
+        interval: 15m
     serviceMonitor:
       enabled: true
     metrics:
       enabled: true
+      interval: 15m
     grafana:
       dashboards:
         enabled: true
