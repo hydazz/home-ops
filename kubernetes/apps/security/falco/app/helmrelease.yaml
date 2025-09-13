@@ -71,8 +71,11 @@ spec:
         - json
     serviceMonitor:
       enabled: true
-    grafanaDashboard:
-      enabled: true
-      namespace: observability
-      annotations:
-        grafana_folder: "Monitoring"
+    grafana:
+      dashboards:
+        enabled: true
+        configMaps:
+          falco:
+            folder: Monitoring
+            name: falco-grafana-dashboard
+            namespace: observability
