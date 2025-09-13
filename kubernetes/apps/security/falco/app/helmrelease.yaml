@@ -73,7 +73,7 @@ spec:
         enabled: true
         interval: 15m
     serviceMonitor:
-      enabled: true
+      create: true
     metrics:
       enabled: true
       interval: 15m
