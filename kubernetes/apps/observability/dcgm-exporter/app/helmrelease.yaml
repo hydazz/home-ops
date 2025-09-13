@@ -25,9 +25,9 @@ spec:
                 - key: nvidia.com/gpu.present
                   operator: Exists
     runtimeClassName: nvidia
-    kubernetes:
-      enablePodLabels: false
-      enablePodUID: false
+    extraEnv:
+      - name: DCGM_EXPORTER_KUBERNETES
+        value: "false"
     resources:
       limits:
         memory: 1Gi
