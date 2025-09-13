@@ -74,31 +74,34 @@ spec:
         interval: 15m
     customRules:
       exceptions.yaml: |-
-        # Silence UDP alerts
-        - rule: Unexpected UDP Traffic Seen
-          append: true
+        - rule: Unexpected UDP Traffic
           exceptions:
             - name: ignore_udp_for_dragonfly
-              fields: [ k8s.pod.labels["app.kubernetes.io/name"] ]
-              comps:  [ = ]
+              fields:
+                - k8s.pod.label["app.kubernetes.io/name"]
+              comps: [ = ]
               values:
                 - [ dragonfly ]
-
             - name: ignore_udp_for_overseerr
-              fields: [ k8s.deployment.name ]
-              comps:  [ = ]
+              fields:
+                - k8s.deployment.name
+              comps: [ = ]
               values:
                 - [ overseerr ]
+          override:
+            exceptions: append
 
-        # Silence 'nc' alerts inside Dragonfly
-        - rule: Network tool launched in container
-          append: true
+        - rule: Launch Suspicious Network Tool in Container
           exceptions:
             - name: ignore_nc_in_dragonfly
-              fields: [ k8s.pod.labels["app.kubernetes.io/name"], proc.name ]
-              comps:  [ =, = ]
+              fields:
+                - k8s.pod.label["app.kubernetes.io/name"]
+                - proc.name
+              comps: [ =, = ]
               values:
                 - [ dragonfly, nc ]
+          override:
+            exceptions: append
     serviceMonitor:
       create: true
     metrics:
