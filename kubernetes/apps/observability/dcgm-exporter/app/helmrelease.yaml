@@ -25,11 +25,10 @@ spec:
                 - key: nvidia.com/gpu.present
                   operator: Exists
     runtimeClassName: nvidia
+    kubernetes:
+      enablePodLabels: false
+      enablePodUID: false
     resources:
       limits:
         memory: 1Gi
         nvidia.com/gpu: 1
-    serviceMonitor:
-      metricRelabelings:
-        - action: labeldrop
-          regex: (namespace|pod|exported_pod|exported_namespace|exported_container)
