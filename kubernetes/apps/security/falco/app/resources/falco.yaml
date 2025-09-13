@@ -8,11 +8,23 @@ buffered_outputs: false
 config_files:
   - /etc/falco/config.d
 container_engines:
+  bpm:
+    enabled: false
   cri:
     disable_async: false
     enabled: false
     sockets:
       - /run/containerd/containerd.sock
+      - /run/crio/crio.sock
+      - /run/k3s/containerd/containerd.sock
+  docker:
+    enabled: false
+  libvirt_lxc:
+    enabled: false
+  lxc:
+    enabled: false
+  podman:
+    enabled: false
 engine:
   kind: modern_ebpf
   modern_ebpf:
@@ -21,10 +33,31 @@ engine:
     drop_failed_exit: false
 falco_libs:
   thread_table_size: 262144
+file_output:
+  enabled: false
+  filename: ./events.txt
+  keep_alive: false
 grpc:
   bind_address: unix:///run/falco/falco.sock
   enabled: false
   threadiness: 0
+grpc_output:
+  enabled: false
+http_output:
+  ca_bundle: ""
+  ca_cert: ""
+  ca_path: /etc/falco/certs/
+  client_cert: /etc/falco/certs/client/client.crt
+  client_key: /etc/falco/certs/client/client.key
+  compress_uploads: false
+  echo: false
+  enabled: false
+  insecure: false
+  keep_alive: false
+  max_consecutive_timeouts: 5
+  mtls: false
+  url: ""
+  user_agent: falcosecurity/falco
 json_include_message_property: false
 json_include_output_fields_property: true
 json_include_output_property: true
@@ -39,6 +72,7 @@ load_plugins:
   - container
 log_level: info
 log_stderr: true
+log_syslog: true
 metrics:
   convert_memory_to_mb: true
   enabled: true
@@ -74,15 +108,21 @@ plugins:
           enabled: true
           sockets:
             - /run/containerd/containerd.sock
+            - /run/crio/crio.sock
+            - /run/k3s/containerd/containerd.sock
             - /run/host-containerd/containerd.sock
         docker:
-          enabled: false
+          enabled: true
+          sockets:
+            - /var/run/docker.sock
         libvirt_lxc:
-          enabled: false
+          enabled: true
         lxc:
-          enabled: false
+          enabled: true
         podman:
-          enabled: false
+          enabled: true
+          sockets:
+            - /run/podman/podman.sock
       hooks:
         - create
       label_max_len: 100
@@ -90,6 +130,10 @@ plugins:
     library_path: libcontainer.so
     name: container
 priority: debug
+program_output:
+  enabled: false
+  keep_alive: false
+  program: 'jq ''{text: .output}'' | curl -d @- -X POST https://hooks.slack.com/services/XXX'
 rule_matching: first
 rules_files:
   - /etc/falco/falco_rules.yaml
@@ -108,6 +152,8 @@ syscall_event_drops:
   threshold: 0.1
 syscall_event_timeouts:
   max_consecutives: 1000
+syslog_output:
+  enabled: true
 time_format_iso_8601: false
 watch_config_files: true
 webserver:
@@ -115,5 +161,6 @@ webserver:
   k8s_healthz_endpoint: /healthz
   listen_port: 8765
   prometheus_metrics_enabled: true
+  ssl_certificate: /etc/falco/falco.pem
   ssl_enabled: false
   threadiness: 0
