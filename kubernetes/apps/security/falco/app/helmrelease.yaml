@@ -71,6 +71,8 @@ spec:
         - json
     serviceMonitor:
       enabled: true
+    metrics:
+      enabled: true
     grafana:
       dashboards:
         enabled: true
