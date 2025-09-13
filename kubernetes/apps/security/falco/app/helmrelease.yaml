@@ -75,31 +75,22 @@ spec:
     customRules:
       exceptions.yaml: |-
         - rule: Unexpected UDP Traffic
-          exceptions:
-            - name: ignore_udp_for_dragonfly
-              fields:
-                - k8s.pod.label["app.kubernetes.io/name"]
-              comps: [ = ]
-              values:
-                - [ dragonfly ]
-            - name: ignore_udp_for_overseerr
-              fields:
-                - k8s.deployment.name
-              comps: [ = ]
-              values:
-                - [ overseerr ]
+          enabled: false
           override:
-            exceptions: append
+            enabled: replace
 
         - rule: Launch Suspicious Network Tool in Container
           exceptions:
             - name: ignore_nc_in_dragonfly
               fields:
-                - k8s.pod.label["app.kubernetes.io/name"]
-                - proc.name
-              comps: [ =, = ]
+                - k8s.pod.label[app.kubernetes.io/name]
+                - proc.cmdline
+              comps:
+                - =
+                - =
               values:
-                - [ dragonfly, nc ]
+                - - dragonfly
+                  - "nc -q1 localhost 9999"
           override:
             exceptions: append
     serviceMonitor:
