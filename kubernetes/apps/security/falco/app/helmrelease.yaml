@@ -62,7 +62,7 @@ spec:
         - name: k8saudit
           library_path: libk8saudit.so
           init_config: ""
-          open_params: "http://:9765/k8s-audit"
+          open_params: http://:9765/k8s-audit
         - name: json
           library_path: libjson.so
           init_config: ""
@@ -138,13 +138,14 @@ spec:
         #  minimumpriority: notice
         alertmanager:
           hostport: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
-          endpoint: "/api/v2/alerts"
+          endpoint: /api/v2/alerts
           minimumpriority: warning
       serviceMonitor:
         enabled: true
       webui:
         enabled: true
         replicaCount: 1
+        existingSecret: falco-ui-secret
       grafana:
         dashboards:
           enabled: false
