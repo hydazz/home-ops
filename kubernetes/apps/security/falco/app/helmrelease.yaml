@@ -86,13 +86,16 @@ spec:
                 - k8s.ns.name
                 - container.image.repository
                 - proc.exepath
+                - proc.cmdline
               comps:
+                - =
                 - =
                 - =
                 - =
               values:
                 - - databases
                   - docker.dragonflydb.io/dragonflydb/dragonfly
+                  - /usr/bin/nc.openbsd
                   - "nc -q1 localhost 9999"
           override:
             exceptions: append
@@ -135,6 +138,7 @@ spec:
         #  minimumpriority: notice
         alertmanager:
           hostport: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+          endpoint: "/api/v2/alerts"
           minimumpriority: warning
       serviceMonitor:
         enabled: true
