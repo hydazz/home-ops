@@ -118,6 +118,13 @@ spec:
           falco:
             app:
               - path: /host/run/containerd/containerd.sock
+      host-containerd-socket:
+        type: hostPath
+        hostPath: /run/host-containerd/containerd.sock
+        advancedMounts:
+          falco:
+            app:
+              - path: /host/run/host-containerd/containerd.sock
       proc-fs:
         type: hostPath
         hostPath: /proc

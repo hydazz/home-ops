@@ -64,10 +64,25 @@ plugins:
     name: json
   - init_config:
       engines:
+        bpm:
+          enabled: true
         containerd:
           enabled: true
           sockets:
             - /run/host-containerd/containerd.sock
+        cri:
+          enabled: true
+          sockets:
+            - /run/containerd/containerd.sock
+            - /run/host-containerd/containerd.sock
+        docker:
+          enabled: false
+        libvirt_lxc:
+          enabled: false
+        lxc:
+          enabled: false
+        podman:
+          enabled: false
       hooks:
         - create
       label_max_len: 100
