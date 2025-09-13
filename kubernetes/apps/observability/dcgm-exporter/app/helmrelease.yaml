@@ -23,11 +23,11 @@ spec:
               kind: DaemonSet
               name: dcgm-exporter
             patch: |
-              - op: replace
-                path: /spec/template/spec/containers/0/env
+              - op: add
+                path: /spec/template/spec/containers/0/env/-
                 value:
-                  - name: DCGM_EXPORTER_KUBERNETES
-                    value: "false"
+                  name: DCGM_EXPORTER_KUBERNETES
+                  value: "false"
   values:
     affinity:
       nodeAffinity:
