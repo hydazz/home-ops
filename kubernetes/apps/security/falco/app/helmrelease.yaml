@@ -93,6 +93,24 @@ spec:
                   - "nc -q1 localhost 9999"
           override:
             exceptions: append
+
+        - rule: Drop and execute new binary in container
+          exceptions:
+            - name: ignore_postfix_in_mailu
+              fields:
+                - k8s.ns.name
+                - container_image_repository
+                - proc.exe
+              comps:
+                - =
+                - =
+                - =
+              values:
+                - - mailserver
+                  - ghcr.io/mailu/postfix
+                  - /usr/libexec/postfix/master
+          override:
+            exceptions: append
     serviceMonitor:
       create: true
     metrics:
