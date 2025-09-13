@@ -69,19 +69,30 @@ spec:
       load_plugins:
         - k8saudit
         - json
-      metrics:
-        enabled: true
-        interval: 15m
     serviceMonitor:
       create: true
-    metrics:
-      enabled: true
-      interval: 15m
     grafana:
       dashboards:
         enabled: true
         configMaps:
           falco:
-            folder: Monitoring
-            name: falco-grafana-dashboard
             namespace: observability
+    falcosidekick:
+      enabled: true
+      config:
+        loki:
+          hostport: http://loki-gateway.observability.svc.cluster.local
+          minimumpriority: notice
+        alertmanager:
+          hostport: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+          minimumpriority: warning
+      serviceMonitor:
+        enabled: true
+      webui:
+        enabled: true
+      grafana:
+        dashboards:
+          enabled: false
+          configMaps:
+            falcosidekick:
+              namespace: observability
