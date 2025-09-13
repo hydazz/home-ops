@@ -91,7 +91,7 @@ spec:
                 - =
                 - =
               values:
-                - - mailserver
+                - - databases
                   - docker.dragonflydb.io/dragonflydb/dragonfly
                   - "nc -q1 localhost 9999"
           override:
