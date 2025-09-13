@@ -83,13 +83,16 @@ spec:
           exceptions:
             - name: ignore_nc_in_dragonfly
               fields:
-                - k8s.pod.label[app.kubernetes.io/name]
-                - proc.cmdline
+                - k8s.ns.name
+                - container.image.repository
+                - proc.exepath
               comps:
                 - =
                 - =
+                - =
               values:
-                - - dragonfly
+                - - mailserver
+                  - docker.dragonflydb.io/dragonflydb/dragonfly
                   - "nc -q1 localhost 9999"
           override:
             exceptions: append
@@ -99,8 +102,8 @@ spec:
             - name: ignore_postfix_in_mailu
               fields:
                 - k8s.ns.name
-                - container_image_repository
-                - proc.exe
+                - container.image.repository
+                - proc.exepath
               comps:
                 - =
                 - =
@@ -131,7 +134,7 @@ spec:
         #  hostport: http://loki.observability.svc.cluster.local:3100
         #  minimumpriority: notice
         alertmanager:
-          hostport: http://alertmanager-operated.observability.svc.cluster.local:9093
+          hostport: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
           minimumpriority: warning
       serviceMonitor:
         enabled: true
