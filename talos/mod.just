@@ -21,10 +21,6 @@ download-image version schematic:
         "https://factory.talos.dev/image/{{ schematic }}/{{ version }}/metal-amd64.iso"
     just log info "Downloaded Talos" version "{{ version }}" schematic "{{ schematic }}"
 
-[doc('Generate kubeconfig for Talos cluster')]
-gen-kubeconfig:
-    talosctl kubeconfig -n "{{ controller }}" -f --force-context-name main {{ justfile_dir() }}
-
 [doc('Generate schematic ID from Talos schematic')]
 gen-schematic-id node:
     export HAS_NVIDIA="$(just talos machine-nvidia {{ node }})"; \
