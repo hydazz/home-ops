@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      sidekick:
+      falco-sidekick:
         containers:
           app:
             image:
@@ -31,7 +31,7 @@ spec:
               ALERTMANAGER_MINIMUMPRIORITY: warning
               LOKI_HOSTPORT: http://loki-headless.observability.svc.cluster.local:3100
               LOKI_ENDPOINT: /loki/api/v1/push
-              LOKI_FORMAT: "json"
+              LOKI_FORMAT: text
             probes:
               liveness: &probes
                 enabled: true
@@ -62,7 +62,7 @@ spec:
         runAsGroup: 1000
     rbac:
       roles:
-        sidekick:
+        falco-sidekick:
           type: Role
           rules:
             - apiGroups:
@@ -72,18 +72,18 @@ spec:
               verbs:
                 - get
       bindings:
-        sidekick-rolebinding:
+        falco-sidekick-rolebinding:
           type: RoleBinding
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: Role
-            identifier: sidekick
+            identifier: *app
           subjects:
             - kind: ServiceAccount
               identifier: *app
               namespace: security
     serviceAccount:
-      sidekick: {}
+      falco-sidekick: {}
     service:
       app:
         annotations:
