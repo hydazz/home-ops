@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: ghcr.io/itzg/mc-proxy
-              tag: 2025.6.0@sha256:f14b7eb0ca1958b2a32c28ff285fe2f047c08ea65f5eca02a9f3a9362e9e9877
+              tag: 2025.9.1@sha256:a128af22c71f0cef238076787dda8db1eddda65a60ba8a1a69a83a7f6c5a2c15
             env:
               MINECRAFT_VERSION: 1.21.8
               PLUGINS: |-
