@@ -86,8 +86,10 @@ spec:
       falco-sidekick: {}
     service:
       app:
-        annotations:
-          prometheus.io/scrape: "true"
         ports:
           http:
             port: *port
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
