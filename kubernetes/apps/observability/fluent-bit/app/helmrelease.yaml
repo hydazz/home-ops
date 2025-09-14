@@ -19,15 +19,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    podAnnotations:
-      fluentbit.io/exclude: 'true'
-    daemonSetVolumes:
-      - name: varlog
-        hostPath:
-          path: /var/log
-    daemonSetVolumeMounts:
-      - name: varlog
-        mountPath: /var/log
     config:
       service: |-
         [SERVICE]
@@ -58,7 +49,7 @@ spec:
           path /var/log/audit/kube/*.log
           parser audit
           tag audit.*
-          ignore_older 10m
+          ignore_older true
 
       customParsers: |-
         [PARSER]
@@ -104,13 +95,6 @@ spec:
           rename k_labels_app.kubernetes.io/name app
           rename k_labels_app app
           rename k_labels_k8s-app app
-
-        [FILTER]
-          name grep
-          match audit.*
-          regex $kind ^Event$
-          regex $apiVersion audit.k8s.io/v1
-          logical_op and
 
       outputs: |-
         [OUTPUT]
