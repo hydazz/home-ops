@@ -84,19 +84,15 @@ spec:
         ports:
           http:
             port: *port
-      falco-metrics:
-        ports:
-          metrics:
-            port: *port
       k8saudit-webhook:
         ports:
           http:
             port: 9765
     serviceMonitor:
       app:
-        serviceName: falco-metrics
+        serviceName: app
         endpoints:
-          - port: metrics
+          - port: http
     persistence:
       config:
         type: configMap
