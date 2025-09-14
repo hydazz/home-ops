@@ -105,6 +105,13 @@ spec:
           rename k_labels_app app
           rename k_labels_k8s-app app
 
+        [FILTER]
+          name grep
+          match audit.*
+          regex $kind ^Event$
+          regex $apiVersion audit.k8s.io/v1
+          logical_op and
+
       outputs: |-
         [OUTPUT]
           name loki
