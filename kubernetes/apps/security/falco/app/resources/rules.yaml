@@ -40,6 +40,15 @@
         - - mailserver
           - ghcr.io/mailu/postfix
           - /usr/libexec/postfix/master
+    - name: ignore_cni_binaries
+      fields:
+        - proc.exepath
+      comps:
+        - =
+        - =
+      values:
+        - - /opt/cni/bin/multus
+          - /opt/cni/bin/loopback
   override:
     exceptions: append
 
@@ -68,5 +77,25 @@
       values:
         - - ghcr.io/home-operations/k8s-sidecar
           - /usr/local/bin/python3.13
+    - name: ignore_authentik_api_access
+      fields:
+        - k8s.ns.name
+        - container.image.repository
+        - proc.exepath
+      comps:
+        - =
+        - =
+        - =
+      values:
+        - - security
+          - ghcr.io/goauthentik/server
+          - /usr/local/bin/python3.13
+    - name: ignore_multus_cni_api_access
+      fields:
+        - proc.exepath
+      comps:
+        - =
+      values:
+        - - /opt/cni/bin/multus
   override:
     exceptions: append
