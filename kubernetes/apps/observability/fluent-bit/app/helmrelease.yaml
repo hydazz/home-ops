@@ -51,6 +51,7 @@ spec:
           kube_ca_file /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           kube_token_file /var/run/secrets/kubernetes.io/serviceaccount/token
           kube_tag_prefix kubernetes.var.log.containers.
+          buffer_size 0
           merge_log on
           merge_log_key log_processed
           merge_log_trim on
