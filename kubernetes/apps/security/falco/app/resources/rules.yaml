@@ -42,3 +42,31 @@
           - /usr/libexec/postfix/master
   override:
     exceptions: append
+
+- rule: Contact K8S API Server From Container
+  exceptions:
+    - name: ignore_fluent_bit_api_access
+      fields:
+        - k8s.ns.name
+        - container.image.repository
+        - proc.exepath
+      comps:
+        - =
+        - =
+        - =
+      values:
+        - - observability
+          - cr.fluentbit.io/fluent/fluent-bit
+          - /fluent-bit/bin/fluent-bit
+    - name: ignore_k8s_sidecar_api_access
+      fields:
+        - container.image.repository
+        - proc.exepath
+      comps:
+        - =
+        - =
+      values:
+        - - ghcr.io/home-operations/k8s-sidecar
+          - /usr/local/bin/python3.13
+  override:
+    exceptions: append
