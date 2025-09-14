@@ -19,8 +19,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    podAnnotations:
-      fluentbit.io/exclude: 'true'
     daemonSetVolumes:
       - name: varlog
         hostPath:
@@ -28,11 +26,6 @@ spec:
     daemonSetVolumeMounts:
       - name: varlog
         mountPath: /var/log
-    tolerations:
-      - operator: Exists
-        effect: NoSchedule
-    nodeSelector:
-      node-role.kubernetes.io/control-plane: ""
     config:
       service: |-
         [SERVICE]
