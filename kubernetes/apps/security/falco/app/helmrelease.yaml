@@ -90,7 +90,7 @@ spec:
             port: 9765
     serviceMonitor:
       app:
-        serviceName: app
+        serviceName: falco-app
         endpoints:
           - port: http
     persistence:
