@@ -18,9 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      falco-sidekick:
-        annotations:
-          reloader.stakater.com/auto: "true"
+      sidekick:
         containers:
           app:
             image:
@@ -28,14 +26,12 @@ spec:
               tag: 2.31.1
             env:
               DEBUG: "false"
-              #ALERTMANAGER_HOSTPORT: "http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093"
-              #ALERTMANAGER_ENDPOINT: "/api/v2/alerts"
-              #ALERTMANAGER_DROPEVENTDEFAULTPRIORITY: "critical"
-              #ALERTMANAGER_DROPEVENTTHRESHOLDS: "10000:critical, 1000:critical, 100:critical, 10:warning, 1:warning"
-              #ALERTMANAGER_MINIMUMPRIORITY: "warning"
-              #ALERTMANAGER_MUTUALTLS: "false"
-              #ALERTMANAGER_CHECKCERT: "true"
-              WEBUI_URL: "http://{{ .Release.Name }}-ui:2802"
+              ALERTMANAGER_HOSTPORT: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+              ALERTMANAGER_ENDPOINT: /api/v2/alerts
+              ALERTMANAGER_MINIMUMPRIORITY: warning
+              LOKI_HOSTPORT: http://loki-headless.observability.svc.cluster.local:3100
+              LOKI_ENDPOINT: /loki/api/v1/push
+              LOKI_FORMAT: "json"
             probes:
               liveness: &probes
                 enabled: true
@@ -59,72 +55,6 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 512Mi
-        serviceAccount:
-          falco-sidekick: {}
-      ui:
-        containers:
-          app:
-            image:
-              repository: docker.io/falcosecurity/falcosidekick-ui
-              tag: 2.2.0
-            args:
-              - -r
-              - localhost:6379
-              - -l
-              - info
-            envFrom:
-              - secretRef:
-                  name: falco-ui-secret
-            probes:
-              liveness: &uiProbes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/v1/healthz
-                    port: &uiPort 2802
-                  initialDelaySeconds: 10
-                  periodSeconds: 5
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *uiProbes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-              limits:
-                memory: 256Mi
-          # Can't use UI with dragonfly
-          redis:
-            image:
-              repository: docker.io/redis/redis-stack
-              tag: 7.2.0-v11
-            probes:
-              liveness: &redisProbes
-                enabled: true
-                custom: true
-                spec:
-                  tcpSocket:
-                    port: 6379
-                  initialDelaySeconds: 5
-                  periodSeconds: 5
-                  timeoutSeconds: 2
-                  failureThreshold: 3
-              readiness: *redisProbes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
-            resources:
-              requests:
-                cpu: 10m
-                memory: 64Mi
-              limits:
-                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -132,7 +62,7 @@ spec:
         runAsGroup: 1000
     rbac:
       roles:
-        falco-sidekick:
+        sidekick:
           type: Role
           rules:
             - apiGroups:
@@ -142,38 +72,22 @@ spec:
               verbs:
                 - get
       bindings:
-        falco-sidekick-rolebinding:
+        sidekick-rolebinding:
           type: RoleBinding
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: Role
-            identifier: falco-sidekick
+            identifier: sidekick
           subjects:
             - kind: ServiceAccount
               identifier: *app
               namespace: security
+    serviceAccount:
+      sidekick: {}
     service:
       app:
-        controller: *app
         annotations:
           prometheus.io/scrape: "true"
         ports:
           http:
             port: *port
-      ui:
-        controller: ui
-        ports:
-          http:
-            port: *uiPort
-    route:
-      app:
-        hostnames:
-          - "falco.${D_HS}"
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: ui
-                port: *uiPort
