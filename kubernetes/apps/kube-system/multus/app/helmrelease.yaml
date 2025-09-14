@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app multus
+  name: multus
 spec:
   interval: 1h
   chartRef:
@@ -84,9 +84,9 @@ spec:
         multus:
           type: ClusterRoleBinding
           roleRef:
-            identifier: *app
+            identifier: multus
           subjects:
-            - identifier: *app
+            - identifier: multus
     serviceAccount:
       multus: {}
     persistence:
@@ -100,8 +100,5 @@ spec:
         hostPath: /opt/cni/bin
         globalMounts:
           - path: /host/opt/cni/bin
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp
