@@ -43,21 +43,6 @@ spec:
           skip_empty_lines on
           skip_long_lines on
 
-        [INPUT]
-          name tail
-          alias audit
-          path /var/log/audit/kube/*.log
-          parser audit
-          tag audit.*
-          ignore_older true
-
-      customParsers: |-
-        [PARSER]
-          name audit
-          format json
-          time_key requestReceivedTimestamp
-          time_format %Y-%m-%dT%H:%M:%S.%L%z
-
       filters: |-
         [FILTER]
           name kubernetes
@@ -107,12 +92,3 @@ spec:
           labels job=fluent-bit, app=app
           structured_metadata container=k_container_name, pod=k_pod_name, namespace=k_namespace_name, host=k_host
           compress gzip
-
-        [OUTPUT]
-          name http
-          alias falco_audit
-          match audit.*
-          host falco-k8saudit-webhook.security.svc.cluster.local
-          port 9765
-          uri /k8s-audit
-          format json
