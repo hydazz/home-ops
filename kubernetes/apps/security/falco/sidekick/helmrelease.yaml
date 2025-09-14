@@ -154,16 +154,6 @@ spec:
             - kind: ServiceAccount
               identifier: *app
               namespace: security
-        falco-sidekick-ui-rolebinding:
-          type: RoleBinding
-          roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: Role
-            identifier: falco-sidekick-ui
-          subjects:
-            - kind: ServiceAccount
-              identifier: falco-sidekick-ui
-              namespace: security
     service:
       app:
         controller: *app
