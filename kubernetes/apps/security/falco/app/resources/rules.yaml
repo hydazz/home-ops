@@ -44,11 +44,10 @@
       fields:
         - proc.exepath
       comps:
-        - =
-        - =
+        - in
       values:
-        - - /opt/cni/bin/multus
-          - /opt/cni/bin/loopback
+        - - - /opt/cni/bin/multus
+            - /opt/cni/bin/loopback
   override:
     exceptions: append
 
