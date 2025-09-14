@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: docker.io/falcosecurity/falcosidekick
-              tag: 2.31.1
+              tag: 2.32.0
             env:
               DEBUG: "false"
               ALERTMANAGER_HOSTPORT: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
