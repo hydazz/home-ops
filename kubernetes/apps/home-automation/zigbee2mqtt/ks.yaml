@@ -21,9 +21,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/home-automation/zigbee2mqtt/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
       GATUS_GROUP: *namespace

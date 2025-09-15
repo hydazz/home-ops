@@ -52,7 +52,7 @@ metadata:
   labels:
     type: cloudflare-dns
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname cloudflare.${D_HS}
+    external-dns.alpha.kubernetes.io/target: &hostname cloudflare.hyde.services
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -77,7 +77,7 @@ spec:
           - kind: Secret
             name: hydaz-com-tls
           - kind: Secret
-            name: ${D_HS//./-}-tls
+            name: hyde-services-tls
           - kind: Secret
             name: ${D_HCA//./-}-tls
           - kind: Secret
@@ -99,7 +99,7 @@ metadata:
   labels:
     type: cloudflare-dns
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.${D_HS}
+    external-dns.alpha.kubernetes.io/target: &hostname external.hyde.services
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -124,7 +124,7 @@ spec:
           - kind: Secret
             name: hydaz-com-tls
           - kind: Secret
-            name: ${D_HS//./-}-tls
+            name: hyde-services-tls
           - kind: Secret
             name: ${D_HCA//./-}-tls
           - kind: Secret
@@ -144,7 +144,7 @@ kind: Gateway
 metadata:
   name: envoy-internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname internal.${D_HS}
+    external-dns.alpha.kubernetes.io/target: &hostname internal.hyde.services
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -169,7 +169,7 @@ spec:
           - kind: Secret
             name: hydaz-com-tls
           - kind: Secret
-            name: ${D_HS//./-}-tls
+            name: hyde-services-tls
           - kind: Secret
             name: ${D_HCA//./-}-tls
           - kind: Secret

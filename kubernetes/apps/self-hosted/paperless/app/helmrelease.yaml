@@ -30,7 +30,6 @@ spec:
               EMPTY_TRASH_DELAY: "0 1 * * *"
               PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
               PAPERLESS_BIND_ADDR: "0.0.0.0"
-              PAPERLESS_DBENGINE: postgresql
               PAPERLESS_DISABLE_REGULAR_LOGIN: true
               PAPERLESS_PORT: &port 8000
               PAPERLESS_REDIRECT_LOGIN_TO_SSO: true
@@ -39,7 +38,7 @@ spec:
               PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
               PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
               PAPERLESS_TIME_ZONE: Australia/Melbourne
-              PAPERLESS_URL: https://paperless.${D_HS}
+              PAPERLESS_URL: https://paperless.hyde.services
               USERMAP_GID: "1000"
               USERMAP_UID: "1000"
             envFrom:
@@ -115,7 +114,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.${D_HS}"
+          - "{{ .Release.Name }}.hyde.services"
         parentRefs:
           - name: envoy-internal
             namespace: network

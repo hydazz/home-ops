@@ -38,7 +38,7 @@ spec:
           app:
             image: *image
             env: &env
-              NEXTCLOUD_TRUSTED_DOMAINS: storage.${D_HS}
+              NEXTCLOUD_TRUSTED_DOMAINS: storage.hyde.services
               NEXTCLOUD_DATA_DIR: /var/www/html/data
               REDIS_HOST: dragonfly.databases.svc.cluster.local
               REDIS_DATABASE: "3"
@@ -48,7 +48,7 @@ spec:
               SMTP_NAME: "${EMAIL_USER}"
               SMTP_PASSWORD: "${EMAIL_PASSWORD}"
               MAIL_FROM_ADDRESS: no-reply
-              MAIL_DOMAIN: "${D_HS}"
+              MAIL_DOMAIN: "hyde.services"
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -117,7 +117,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames:
-          - storage.${D_HS}
+          - storage.hyde.services
         parentRefs:
           - name: envoy-external
             namespace: network

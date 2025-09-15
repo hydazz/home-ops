@@ -76,7 +76,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.${D_HS}"
+          - "{{ .Release.Name }}.hyde.services"
         parentRefs:
           - name: envoy-internal
             namespace: network

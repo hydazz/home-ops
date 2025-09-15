@@ -96,7 +96,7 @@ spec:
               DOMAIN_REGISTRATION: "false"
               FETCHMAIL_ENABLED: "false"
               INITIAL_ADMIN_ACCOUNT: alex
-              INITIAL_ADMIN_DOMAIN: ${D_HS}
+              INITIAL_ADMIN_DOMAIN: hyde.services
               INITIAL_ADMIN_MODE: update
               INSTANCE_ID_PATH: /data/instance
               LOGO_BACKGROUND: none
@@ -115,7 +115,7 @@ spec:
               SQLITE_DATABASE_FILE: data/main.db
               STATS_ENDPOINT: 19.{}.stats.mailu.io
               TEMPLATES_AUTO_RELOAD: "true"
-              WEBSITE: https://mail.${D_HS}
+              WEBSITE: https://mail.hyde.services
               WELCOME: "true"
               WELCOME_BODY: Welcome to Mailu, your new email service. Please change your password and update your profile.
               WELCOME_SUBJECT: Welcome to Mailu
@@ -441,7 +441,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames:
-          - mail.${D_HS}
+          - mail.hyde.services
         parentRefs:
           - name: envoy-external
             namespace: network
@@ -453,8 +453,8 @@ spec:
       autodiscover:
         hostnames:
           # ===== HS =====
-          - autodiscover.${D_HS}
-          - autoconfig.${D_HS}
+          - autodiscover.hyde.services
+          - autoconfig.hyde.services
           # ===== imagegenius.io =====
           - autodiscover.imagegenius.io
           - autoconfig.imagegenius.io
@@ -509,7 +509,7 @@ spec:
               - path: /data
       certs:
         type: secret
-        name: ${D_HS//./-}-tls
+        name: hyde-services-tls
         defaultMode: 0444
         items:
           - key: tls.crt

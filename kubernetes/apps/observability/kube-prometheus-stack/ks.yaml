@@ -17,9 +17,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: kube-prometheus-stack
       GATUS_GROUP: *namespace

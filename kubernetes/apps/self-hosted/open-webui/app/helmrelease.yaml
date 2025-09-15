@@ -30,7 +30,7 @@ spec:
               TZ: Australia/Melbourne
               OLLAMA_BASE_URL: "http://ollama.ai.svc.cluster.local:11434"
               DATA_DIR: /config
-              WEBUI_URL: "https://chat.${D_HS}"
+              WEBUI_URL: "https://chat.hyde.services"
               ENABLE_SIGNUP: "false"
               ENABLE_WEBSOCKET_SUPPORT: "true"
               WEBSOCKET_REDIS_URL: redis://dragonfly.databases.svc.cluster.local/0
@@ -61,7 +61,7 @@ spec:
     route:
       app:
         hostnames:
-          - chat.${D_HS}
+          - chat.hyde.services
         parentRefs:
           - name: envoy-cloudflare
             namespace: network

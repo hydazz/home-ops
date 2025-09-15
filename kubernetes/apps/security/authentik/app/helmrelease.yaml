@@ -54,7 +54,7 @@ spec:
         main:
           enabled: true
           hostnames:
-            - auth.${D_HS}
+            - auth.hyde.services
           parentRefs:
             - name: envoy-cloudflare
               namespace: network

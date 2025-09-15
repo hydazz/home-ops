@@ -28,7 +28,7 @@ spec:
               tag: 2.16.0@sha256:2a092f86a51f5718111097b0fced33eaa876b5904a543b7504f92357a4f75635
             env:
               TZ: Australia/Melbourne
-              TAUTULLI_HTTP_BASE_URL: https://tautulli.${D_HS}
+              TAUTULLI_HTTP_BASE_URL: https://tautulli.hyde.services
               TAUTULLI_HTTP_PORT: &port 80
             envFrom:
               - secretRef:
@@ -70,7 +70,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.${D_HS}"
+          - "{{ .Release.Name }}.hyde.services"
         parentRefs:
           - name: envoy-cloudflare
             namespace: network

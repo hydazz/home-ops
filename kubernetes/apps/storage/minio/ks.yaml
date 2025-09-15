@@ -18,9 +18,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/storage/minio/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: minio
       GATUS_GROUP: *namespace

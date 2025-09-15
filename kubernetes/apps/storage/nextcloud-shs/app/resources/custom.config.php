@@ -1,8 +1,8 @@
 <?php
 $CONFIG = array(
 	'overwriteprotocol' => 'https',
-	'overwrite.cli.url' => 'https://storage.${D_HS}',
-	'overwritehost' => 'storage.${D_HS}',
+	'overwrite.cli.url' => 'https://storage.hyde.services',
+	'overwritehost' => 'storage.hyde.services',
 	'check_data_directory_permissions' => false,
 	'default_phone_region' => 'AU',
 	'trusted_proxies' => array(
@@ -11,7 +11,7 @@ $CONFIG = array(
 	),
 	'trusted_domains' => array(
 		0 => '127.0.0.1',
-		1 => 'storage.${D_HS}',
+		1 => 'storage.hyde.services',
 	),
 	'simpleSignUpLink.shown' => false,
 	'cache_path' => '/cache',

@@ -59,7 +59,7 @@ spec:
     route:
       app:
         hostnames:
-          - homeassistant.${D_HS}
+          - homeassistant.hyde.services
         parentRefs:
           - name: envoy-cloudflare
             namespace: network

@@ -97,7 +97,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames:
-          - "{{ .Release.Name }}.${D_HS}"
+          - "{{ .Release.Name }}.hyde.services"
         parentRefs:
           - name: envoy-external
             namespace: network

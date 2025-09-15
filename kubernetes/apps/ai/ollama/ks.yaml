@@ -16,10 +16,6 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/ai/ollama/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   retryInterval: 2m
   sourceRef:

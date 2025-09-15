@@ -28,7 +28,7 @@ spec:
               TZ: Australia/Melbourne
               PMA_HOST: mariadb.databases.svc.cluster.local
               PMA_PORT: "3306"
-              PMA_ABSOLUTE_URI: https://phpmyadmin.${D_HS}
+              PMA_ABSOLUTE_URI: https://phpmyadmin.hyde.services
               UPLOAD_LIMIT: 128M
             probes:
               liveness: &probes
@@ -70,7 +70,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.${D_HS}"
+          - "{{ .Release.Name }}.hyde.services"
         parentRefs:
           - name: envoy-internal
             namespace: network

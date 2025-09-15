@@ -32,7 +32,7 @@ spec:
                 https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.4.2/PAPER/ViaVersion-5.4.2.jar
               TYPE: VELOCITY
               TZ: Australia/Melbourne
-              ICON: https://s3.${D_HS}/hymc/server-icon.png
+              ICON: https://s3.hyde.services/hymc/server-icon.png
               VERSION: 3.4.0-SNAPSHOT
             securityContext:
               allowPrivilegeEscalation: false

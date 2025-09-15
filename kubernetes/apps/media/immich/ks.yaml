@@ -49,9 +49,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/media/immich/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
       GATUS_GROUP: *namespace

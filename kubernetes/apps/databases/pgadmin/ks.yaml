@@ -19,9 +19,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/databases/pgadmin/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 256Mi

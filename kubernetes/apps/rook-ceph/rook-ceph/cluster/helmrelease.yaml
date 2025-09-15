@@ -26,7 +26,7 @@ spec:
     route:
       dashboard:
         host:
-          name: rook.${D_HS}
+          name: rook.hyde.services
           path: /
           pathType: PathPrefix
         parentRefs:

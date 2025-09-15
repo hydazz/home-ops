@@ -14,9 +14,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/network/echo/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
       GATUS_GROUP: *namespace

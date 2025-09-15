@@ -28,7 +28,7 @@ connectivity:
 endpoints:
   - name: flux-webhook
     group: external
-    url: https://flux-webhook.${D_HS}
+    url: https://flux-webhook.hyde.services
     interval: 1m
     ui:
       hide-hostname: true
