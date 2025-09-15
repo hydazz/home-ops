@@ -42,13 +42,6 @@ spec:
               NEXTCLOUD_DATA_DIR: /var/www/html/data
               REDIS_HOST: dragonfly.databases.svc.cluster.local
               REDIS_DATABASE: "3"
-              SMTP_HOST: "${EMAIL_SERVER}"
-              SMTP_PORT: "465"
-              SMTP_SECURE: ssl
-              SMTP_NAME: "${EMAIL_USER}"
-              SMTP_PASSWORD: "${EMAIL_PASSWORD}"
-              MAIL_FROM_ADDRESS: no-reply
-              MAIL_DOMAIN: "hyde.services"
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
