@@ -7,7 +7,7 @@ metadata:
 spec:
   allowFirstLastIPs: "No"
   blocks:
-    - cidr: "192.168.42.0/24"
+    - cidr: 192.168.42.0/24
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2.json
 apiVersion: cilium.io/v2
@@ -17,13 +17,26 @@ metadata:
 spec:
   allowFirstLastIPs: "No"
   blocks:
-    - cidr: "2404:e80:661b:42::/64"
+    - cidr: 2404:e80:661b:42::/64
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliuml2announcementpolicy_v2alpha1.json
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: l2-policy
+spec:
+  loadBalancerIPs: true
+  interfaces:
+    - bond0
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/os: linux
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
 kind: CiliumBGPAdvertisement
 metadata:
-  name: bgp-advertisement-config
+  name: l3-bgp-advertisement
   labels:
     advertise: bgp
 spec:
@@ -40,7 +53,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumBGPPeerConfig
 metadata:
-  name: bgp-peer-config-v4
+  name: l3-bgp-peer-config
 spec:
   families:
     - afi: ipv4
@@ -53,7 +66,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumBGPPeerConfig
 metadata:
-  name: bgp-peer-config-v6
+  name: l3-bgp-peer-config-v6
 spec:
   families:
     - afi: ipv6
@@ -66,25 +79,25 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumBGPClusterConfig
 metadata:
-  name: bgp-cluster-config
+  name: l3-bgp-cluster-config
 spec:
   nodeSelector:
     matchLabels:
       kubernetes.io/os: linux
   bgpInstances:
-    - name: instance-64514
+    - name: cilium
       localASN: 64514
       peers:
-        - name: peer-64513-v4
+        - name: unifi
           peerASN: 64513
-          peerAddress: 192.168.42.1
+          peerAddress: 192.168.1.1
           peerConfigRef:
-            name: bgp-peer-config-v4
-        - name: peer-64513-v6
+            name: l3-bgp-peer-config
+        - name: unifi-v6
           peerASN: 64513
-          peerAddress: "2404:e80:661b:42::1"
+          peerAddress: 2404:e80:661b::1
           peerConfigRef:
-            name: bgp-peer-config-v6
+            name: l3-bgp-peer-config-v6
 ---
 apiVersion: v1
 kind: Service
