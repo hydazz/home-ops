@@ -22,7 +22,5 @@ spec:
     grafanaDashboard:
       enabled: true
       folder: Databases
-      annotations:
-        name: grafana_folder
       labels:
         name: grafana_dashboard
