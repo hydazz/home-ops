@@ -39,7 +39,6 @@ spec:
           path /var/log/containers/*.log
           parser containerd
           tag kubernetes.*
-          mem_buf_limit 5MB
           skip_empty_lines on
           skip_long_lines on
 
@@ -51,7 +50,6 @@ spec:
           kube_ca_file /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           kube_token_file /var/run/secrets/kubernetes.io/serviceaccount/token
           kube_tag_prefix kubernetes.var.log.containers.
-          buffer_size 0
           merge_log on
           merge_log_key log_processed
           merge_log_trim on
@@ -92,3 +90,7 @@ spec:
           labels job=fluent-bit, namespace=$k_namespace_name, app=$app
           structured_metadata container=$k_container_name, pod=$k_pod_name, host=$k_host
           compress gzip
+    dashboards:
+      enabled: true
+    serviceMonitor:
+      enabled: true
