@@ -38,7 +38,7 @@ spec:
               RCLONE_RETENTION: 1d
               SKIP_MISSING: "false"
               SQLITE_PATH: /config/events.sqlite
-              UFP_ADDRESS: 192.168.42.1
+              UFP_ADDRESS: 192.168.1.1
               UFP_PORT: "443"
               UFP_SSL_VERIFY: "false"
             envFrom:
