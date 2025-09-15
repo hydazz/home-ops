@@ -25,7 +25,7 @@ spec:
           copy-config:
             image: &image
               repository: docker.io/library/nextcloud
-              tag: 31.0.8-fpm-alpine@sha256:1e310b0d628a923756c95fbec5c04a129011ca55060f7953bd04f3ff11b2c382
+              tag: 31.0.9-fpm-alpine@sha256:74c9b4ee69196d683ab35c44e07d803b7b9c42cd1dc96c6385cd43ae79c46394
             command:
               - sh
               - -c
