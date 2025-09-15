@@ -6,5 +6,10 @@
       matchPackageNames: ["/1password/"],
       changelogUrl: "https://github.com/1Password/connect/blob/main/CHANGELOG.md",
     },
+    {
+      description: "Changelog URL for Spegel",
+      matchPackageNames: ["/spegel/"],
+      changelogUrl: "https://github.com/spegel-org/spegel/blob/main/CHANGELOG.md",
+    },
   ],
 }
