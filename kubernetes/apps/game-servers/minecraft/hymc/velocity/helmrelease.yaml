@@ -66,14 +66,12 @@ spec:
         globalMounts:
           - path: /server/velocity.toml
             subPath: velocity.toml
-            readOnly: true
       forwarding-secret:
         type: secret
         name: velocity-secret
         globalMounts:
           - path: /server/forwarding.secret
             subPath: forwarding.secret
-            readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:

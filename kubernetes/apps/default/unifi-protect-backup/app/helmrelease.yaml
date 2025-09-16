@@ -31,15 +31,15 @@ spec:
               DETECTION_TYPES: person,vehicle,ring
               DOWNLOAD_BUFFER_SIZE: 512MiB
               FILE_STRUCTURE_FORMAT: "{camera_name}/{event.start:%d-%m-%Y}/{event.end:%I-%M-%S%p} {detection_type}.mp4"
-              MAX_EVENT_LENGTH: "7200"
-              PARALLEL_UPLOADS: "1"
+              MAX_EVENT_LENGTH: 7200
+              PARALLEL_UPLOADS: 1
               PURGE_INTERVAL: 1d
               RCLONE_DESTINATION: cloudflare:/unifi-protect
               RCLONE_RETENTION: 1d
               SKIP_MISSING: "false"
               SQLITE_PATH: /config/events.sqlite
               UFP_ADDRESS: 192.168.1.1
-              UFP_PORT: "443"
+              UFP_PORT: 443
               UFP_SSL_VERIFY: "false"
             envFrom:
               - secretRef:
@@ -67,8 +67,7 @@ spec:
         existingClaim: *app
       rclone-config:
         type: configMap
-        name: "{{ .Release.Name }}-rclone-configmap"
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/rclone.conf
             subPath: rclone.conf
-            readOnly: true

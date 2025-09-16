@@ -7,8 +7,8 @@ configMapGenerator:
     files:
       - ./prometheus-nut-exporter.json
 generatorOptions:
+  labels:
+    grafana_dashboard: "true"
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-  labels:
-    grafana_dashboard: "true"

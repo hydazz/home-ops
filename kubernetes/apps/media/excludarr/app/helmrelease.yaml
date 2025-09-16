@@ -95,7 +95,6 @@ spec:
         globalMounts:
           - path: /etc/excludarr/excludarr.yml
             subPath: excludarr.yml
-            readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:

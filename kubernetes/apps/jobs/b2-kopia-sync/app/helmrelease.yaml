@@ -95,7 +95,7 @@ spec:
               B2_PREFIX: main
             envFrom: &secret
               - secretRef:
-                  name: b2-kopia-sync-secret
+                  name: "{{ .Release.Name }}-secret"
       volsync:
         type: cronjob
         cronjob:

@@ -27,20 +27,20 @@ spec:
               repository: ghcr.io/paperless-ngx/paperless-ngx
               tag: 2.18.4@sha256:3421ebe06ed27662d014046cf5089e612de853aae0c676a2bc72f73b38080e57
             env:
-              EMPTY_TRASH_DELAY: "0 1 * * *"
+              EMPTY_TRASH_DELAY: 0 1 * * *
               PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
-              PAPERLESS_BIND_ADDR: "0.0.0.0"
-              PAPERLESS_DISABLE_REGULAR_LOGIN: true
+              PAPERLESS_BIND_ADDR: 0.0.0.0
+              PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
               PAPERLESS_PORT: &port 8000
-              PAPERLESS_REDIRECT_LOGIN_TO_SSO: true
+              PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
               PAPERLESS_REDIS: redis://dragonfly.databases.svc.cluster.local:6379
               PAPERLESS_TIKA_ENABLED: "1"
               PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
               PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
               PAPERLESS_TIME_ZONE: Australia/Melbourne
-              PAPERLESS_URL: https://paperless.hyde.services
-              USERMAP_GID: "1000"
-              USERMAP_UID: "1000"
+              PAPERLESS_URL: "https://{{ .Release.Name }}.hyde.services"
+              USERMAP_GID: 1000
+              USERMAP_UID: 1000
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"

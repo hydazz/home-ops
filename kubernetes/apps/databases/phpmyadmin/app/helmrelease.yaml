@@ -27,8 +27,8 @@ spec:
             env:
               TZ: Australia/Melbourne
               PMA_HOST: mariadb.databases.svc.cluster.local
-              PMA_PORT: "3306"
-              PMA_ABSOLUTE_URI: https://phpmyadmin.hyde.services
+              PMA_PORT: 3306
+              PMA_ABSOLUTE_URI: "https://{{ .Release.Name }}.hyde.services"
               UPLOAD_LIMIT: 128M
             probes:
               liveness: &probes

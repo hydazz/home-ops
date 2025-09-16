@@ -66,10 +66,8 @@ spec:
         globalMounts:
           - path: /config/config.yml
             subPath: config.yml
-            readOnly: true
           - path: /config/playlists.yml
             subPath: playlists.yml
-            readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:

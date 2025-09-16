@@ -520,4 +520,3 @@ spec:
           front:
             app:
               - path: /certs
-                readOnly: true

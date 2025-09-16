@@ -83,7 +83,7 @@ spec:
           - path: /var/lib/pgadmin
       server-json:
         type: configMap
-        name: "{{ .Release.Name }}-servers-configmap"
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /pgadmin4/servers.json
             subPath: servers.json

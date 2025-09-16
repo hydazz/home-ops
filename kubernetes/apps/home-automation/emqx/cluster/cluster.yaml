@@ -40,7 +40,6 @@ spec:
         - name: init-user
           mountPath: /opt/init-user.json
           subPath: init-user.json
-          readOnly: true
       extraVolumes:
         - name: init-user
           secret:

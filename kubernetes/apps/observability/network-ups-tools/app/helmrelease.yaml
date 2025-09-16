@@ -51,4 +51,3 @@ spec:
         name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /etc/nut
-            readOnly: true

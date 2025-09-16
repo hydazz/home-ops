@@ -7,7 +7,7 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
 configMapGenerator:
-  - name: kopia-repository-configmap
+  - name: kopia-configmap
     files:
       - ./resources/repository.config
 generatorOptions:
