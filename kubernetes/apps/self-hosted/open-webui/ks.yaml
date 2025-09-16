@@ -12,6 +12,10 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: databases
+    - name: dragonfly-cluster
+      namespace: databases
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
