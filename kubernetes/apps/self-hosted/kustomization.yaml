@@ -8,5 +8,6 @@ components:
 resources:
   - ./changedetection/ks.yaml
   - ./jenkins/ks.yaml
+  - ./mailu/ks.yaml
   - ./open-webui/ks.yaml
   - ./paperless/ks.yaml
