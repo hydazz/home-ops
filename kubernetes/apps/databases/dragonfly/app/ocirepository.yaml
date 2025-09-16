@@ -5,10 +5,10 @@ kind: OCIRepository
 metadata:
   name: dragonfly-operator
 spec:
-  interval: 1h
+  interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: v1.2.1
-  url: oci://ghcr.io/dragonflydb/dragonfly-operator/helm/dragonfly-operator
+    tag: 4.3.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
