@@ -14,6 +14,6 @@ customization:
       - siderolabs/mei # Intel iGPU
       - siderolabs/nfsrahead # NFS Performance
       {% if ENV.HAS_NVIDIA %}
-      - siderolabs/nonfree-kmod-nvidia-production # NVIDIA GPU
+      - siderolabs/nvidia-open-gpu-kernel-modules-production # NVIDIA GPU
       - siderolabs/nvidia-container-toolkit-production # NVIDIA GPU
       {% endif %}
