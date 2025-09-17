@@ -19,8 +19,8 @@ spec:
   values:
     controllers:
       nextcloud:
-        #annotations:
-        #  reloader.stakater.com/auto: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
         initContainers:
           copy-config:
             image: &image
