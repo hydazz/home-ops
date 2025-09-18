@@ -30,9 +30,9 @@ spec:
               - sh
               - -c
               - "cp -r /usr/src/nextcloud/config/*.php /var/www/html/config/"
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
         containers:
           app:
@@ -45,7 +45,10 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            securityContext: *securityContext
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 300m
@@ -64,7 +67,10 @@ spec:
                 done
             env: *env
             envFrom: *envFrom
-            securityContext: *securityContext
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
           nginx:
             image:
               repository: docker.io/library/nginx
