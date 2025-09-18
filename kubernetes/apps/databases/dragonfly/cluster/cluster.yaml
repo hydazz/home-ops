@@ -11,9 +11,7 @@ spec:
   replicas: 1
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
-    - --proactor_threads=2
-    - --cluster_mode=emulated
-    - --lock_on_hashtags
+    - --proactor_threads=1
     - --default_lua_flags=allow-undeclared-keys
   env:
     - name: MAX_MEMORY
