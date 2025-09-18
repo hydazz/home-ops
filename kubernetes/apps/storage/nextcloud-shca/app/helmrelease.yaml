@@ -129,23 +129,10 @@ spec:
               - identifier: app
                 port: *port
     persistence:
-      nextcloud-data:
+      data:
         existingClaim: *app
         globalMounts:
-          - path: /var/www
-            subPath: root
           - path: /var/www/html
-            subPath: html
-          - path: /var/www/html/data
-            subPath: data
-          - path: /var/www/html/config
-            subPath: config
-          - path: /var/www/html/custom_apps
-            subPath: custom_apps
-          - path: /var/www/tmp
-            subPath: tmp
-          - path: /var/www/html/themes
-            subPath: themes
       archive-nfs:
         type: nfs
         server: 192.168.42.20
@@ -173,6 +160,10 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /var/www
+            subPath: www
           - path: /cache
             subPath: cache
           - path: /var/cache/nginx
@@ -184,3 +175,4 @@ spec:
   valuesFrom:
     - kind: Secret
       name: nextcloud-shca-values
+
