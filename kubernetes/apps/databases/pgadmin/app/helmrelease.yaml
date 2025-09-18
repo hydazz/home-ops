@@ -31,19 +31,19 @@ spec:
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            #probes:
-            #  liveness: &probes
-            #    enabled: true
-            #    custom: true
-            #    spec:
-            #      httpGet:
-            #        path: /misc/ping
-            #        port: &port 80
-            #      initialDelaySeconds: 0
-            #      periodSeconds: 10
-            #      timeoutSeconds: 1
-            #      failureThreshold: 3
-            #  readiness: *probes
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /misc/ping
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               # /pgadmin4/config_distro.py: Read-only file system:
@@ -67,7 +67,7 @@ spec:
       app:
         ports:
           http:
-            port: 80
+            port: *port
     route:
       app:
         hostnames:
@@ -77,10 +77,6 @@ spec:
             namespace: network
             sectionName: https
     persistence:
-      config:
-        existingClaim: *app
-        globalMounts:
-          - path: /var/lib/pgadmin
       server-json:
         type: configMap
         name: "{{ .Release.Name }}-configmap"
@@ -90,6 +86,8 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
+          - path: /var/lib/pgadmin
+            subPath: pgadmin
           - path: /var/log/pgadmin
             subPath: logs
           - path: /tmp
