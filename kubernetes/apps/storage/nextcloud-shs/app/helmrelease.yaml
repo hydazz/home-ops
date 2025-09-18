@@ -162,8 +162,6 @@ spec:
         globalMounts:
           - path: /tmp
             subPath: tmp
-          - path: /var/www
-            subPath: www
           - path: /cache
             subPath: cache
           - path: /var/cache/nginx
