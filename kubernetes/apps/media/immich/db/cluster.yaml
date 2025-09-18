@@ -33,9 +33,8 @@ spec:
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
-      parameters: &parameters
+      parameters:
         barmanObjectName: b2
-        serverName: immich-v1
   bootstrap:
     recovery:
       source: source
@@ -43,4 +42,6 @@ spec:
     - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
-        parameters: *parameters
+        parameters:
+          barmanObjectName: b2
+          serverName: immich
