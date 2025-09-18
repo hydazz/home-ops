@@ -27,16 +27,19 @@ spec:
               repository: ghcr.io/sct/overseerr
               tag: 1.34.0@sha256:4f38f58d68555004d3f487a4c5cbe2823e6a0942d946a25a2d9391d8492240a4
             env:
-              LOG_LEVEL: info
-              PORT: &port 5055
               TZ: Australia/Melbourne
+              LOG_LEVEL: "info"
+              PORT: &port 80
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /api/v1/status
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -50,7 +53,8 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 50Mi
+              limits:
+                memory: 2Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
