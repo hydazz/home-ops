@@ -14,7 +14,7 @@ router bgp 64513
   neighbor 192.168.42.11 peer-group k8s
   neighbor 192.168.42.12 peer-group k8s
 
-  bgp listen range 2404:e80:661b:42::/64 peer-group k8s
+  bgp listen range 2403:5817:b73a:42::/64 peer-group k8s
 
   address-family ipv4 unicast
     neighbor k8s next-hop-self
@@ -22,7 +22,6 @@ router bgp 64513
   exit-address-family
 
   address-family ipv6 unicast
-    neighbor k8s activate
     neighbor k8s next-hop-self
     neighbor k8s soft-reconfiguration inbound
   exit-address-family
