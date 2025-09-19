@@ -55,9 +55,8 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 60Mi
               limits:
-                memory: 4Gi # when running maintenance
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -78,12 +77,26 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
-    persistence:
+    configMaps:
       config:
-        type: emptyDir
+        data:
+          repository.config: |-
+            {
+              "storage": {
+                "type": "filesystem",
+                "config": {
+                  "path": "/repository"
+                }
+              },
+              "hostname": "volsync.{{ .Release.Namespace }}.svc.cluster.local",
+              "username": "volsync",
+              "description": "volsync",
+              "enableActions": false
+            }
+    persistence:
       config-file:
         type: configMap
-        name: "{{ .Release.Name }}-configmap"
+        identifier: config
         globalMounts:
           - path: /config/repository.config
             subPath: repository.config
@@ -93,3 +106,10 @@ spec:
         path: /mnt/Slow/Backups/Kopia/Volsync
         globalMounts:
           - path: /repository
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/cache
+            subPath: cache
+          - path: /config/logs
+            subPath: logs
