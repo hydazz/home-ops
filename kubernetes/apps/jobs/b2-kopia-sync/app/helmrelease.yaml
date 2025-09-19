@@ -38,34 +38,6 @@ spec:
               - |
                 set -euo pipefail
 
-                # Setup environment
-                export KOPIA_CHECK_FOR_UPDATES=false
-
-                echo "=== Kopia Repository Sync ==="
-                echo "Container started at: $(date)"
-                echo
-
-                # Validate environment variables
-                echo "=== Environment Validation ==="
-                for var in KOPIA_PASSWORD B2_ACCESS_KEY_ID B2_SECRET_ACCESS_KEY B2_BUCKET B2_PREFIX; do
-                  if [[ -z "${!var:-}" ]]; then
-                    echo "ERROR: Required environment variable $var is not set"
-                    exit 1
-                  fi
-                  echo "$var: [SET]"
-                done
-                echo
-
-                # Connect to repository
-                echo "=== Connecting to Kopia Repository ==="
-                kopia repository connect filesystem \
-                  --path=/repository \
-                  --readonly \
-                  --password="${KOPIA_PASSWORD}"
-                echo "Repository connection successful"
-                echo
-
-                # Start sync
                 echo "=== Starting Kopia Sync to B2 ==="
                 echo "Target bucket: ${B2_BUCKET}"
                 echo "Target prefix: ${B2_PREFIX}"
@@ -88,14 +60,17 @@ spec:
                 echo
                 echo "=== Sync Operation Complete ==="
                 echo "Repository sync completed successfully at: $(date)"
-                printf '=%.0s' {1..50}
-                echo
             env:
               B2_BUCKET: b2backup-kopia
               B2_PREFIX: main
-            envFrom: &secret
+              TZ: Australia/Melbourne
+            envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
       volsync:
         type: cronjob
         cronjob:
@@ -107,7 +82,14 @@ spec:
             env:
               B2_BUCKET: b2backup-kopia
               B2_PREFIX: volsync
-            envFrom: *secret
+              TZ: Australia/Melbourne
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -115,9 +97,29 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-    persistence:
+    configMaps:
       config:
-        type: emptyDir
+        data:
+          repository.config: |-
+            {
+              "storage": {
+                "type": "filesystem",
+                "config": {
+                  "path": "/repository"
+                }
+              },
+              "username": "sync",
+              "hostname": "sync",
+              "enableActions": false,
+              "readonly": true
+            }
+    persistence:
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config/repository.config
+            subPath: repository.config
       repository:
         type: nfs
         server: 192.168.42.20
@@ -131,3 +133,10 @@ spec:
             app:
               - path: /repository
                 subPath: Volsync
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/cache
+            subPath: cache
+          - path: /config/logs
+            subPath: logs
