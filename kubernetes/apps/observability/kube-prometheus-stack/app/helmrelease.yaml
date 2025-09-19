@@ -58,6 +58,7 @@ spec:
               namespace: network
               sectionName: https
       prometheusSpec:
+        externalUrl: https://prometheus.hyde.services
         image:
           registry: docker.io
           repository: prompp/prompp
