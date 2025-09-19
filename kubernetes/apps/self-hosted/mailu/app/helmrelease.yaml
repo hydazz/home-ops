@@ -324,7 +324,7 @@ spec:
                       - -f
                       - -L
                       - -H
-                      - 'User-Agent: health'
+                      - "User-Agent: health"
                       - http://localhost/ping
                   initialDelaySeconds: 10
                   periodSeconds: 10

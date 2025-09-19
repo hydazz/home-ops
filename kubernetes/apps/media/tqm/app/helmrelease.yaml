@@ -29,7 +29,7 @@ spec:
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
-          timeZone: "Australia/Melbourne"
+          timeZone: Australia/Melbourne
         initContainers:
           retag: &container
             image:

@@ -7,9 +7,9 @@ metadata:
 spec:
   mariaDbRef:
     name: mariadb
-  timeZone: "Australia/Melbourne"
+  timeZone: Australia/Melbourne
   schedule:
-    cron: "0 2 * * *"
+    cron: 0 2 * * *
     suspend: false
   storage:
     s3:

@@ -179,4 +179,3 @@ spec:
   valuesFrom:
     - kind: Secret
       name: nextcloud-shca-values
-

@@ -34,7 +34,7 @@ spec:
               MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
               MINIO_SERVER_URL: https://s3.hyde.services
               MINIO_UPDATE: "off"
-              TZ: "Australia/Melbourne"
+              TZ: Australia/Melbourne
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
