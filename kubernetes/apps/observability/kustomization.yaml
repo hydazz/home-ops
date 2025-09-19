@@ -18,6 +18,5 @@ resources:
   - ./network-ups-tools/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./snmp-exporter/ks.yaml
   - ./spoodermon/ks.yaml
   - ./unpoller/ks.yaml
