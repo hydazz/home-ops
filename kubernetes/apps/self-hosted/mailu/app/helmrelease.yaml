@@ -80,9 +80,6 @@ spec:
               - |
                 flask mailu advertise
                 flask db upgrade
-
-                flask mailu admin "${INITIAL_ADMIN_ACCOUNT}" "${INITIAL_ADMIN_DOMAIN}" "${INITIAL_ADMIN_PW}" --mode "${INITIAL_ADMIN_MODE}"
-
                 exec gunicorn \
                   --threads "${CPU_COUNT:-1}" \
                   -b "[::]:8080" \
@@ -115,9 +112,6 @@ spec:
               DKIM_SELECTOR: dkim
               DOMAIN_REGISTRATION: "false"
               FETCHMAIL_ENABLED: "false"
-              INITIAL_ADMIN_ACCOUNT: alex
-              INITIAL_ADMIN_DOMAIN: hyde.services
-              INITIAL_ADMIN_MODE: update
               INSTANCE_ID_PATH: /data/instance
               LOGO_BACKGROUND: none
               LOGO_URL: none
