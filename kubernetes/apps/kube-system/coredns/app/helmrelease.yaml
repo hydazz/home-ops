@@ -26,13 +26,7 @@ spec:
       create: true
     service:
       name: kube-dns
-      clusterIPs:
-        - 10.43.0.10
-        - fd43::a
-      ipFamilies:
-        - IPv4
-        - IPv6
-      ipFamilyPolicy: PreferDualStack
+      clusterIP: 10.43.0.10
     servers:
       - zones:
           - zone: .
@@ -40,8 +34,6 @@ spec:
             use_tcp: true
         port: 53
         plugins:
-          - name: bind
-            parameters: "0.0.0.0 ::"
           - name: errors
           - name: health
             configBlock: |-
@@ -55,7 +47,7 @@ spec:
           - name: autopath
             parameters: "@kubernetes"
           - name: forward
-            parameters: . 1.1.1.1 1.0.0.1
+            parameters: . /etc/resolv.conf
           - name: cache
             configBlock: |-
               prefetch 20
