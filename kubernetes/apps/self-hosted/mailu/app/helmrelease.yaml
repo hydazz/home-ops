@@ -73,6 +73,26 @@ spec:
             image:
               repository: ghcr.io/mailu/admin
               tag: 2024.06.43@sha256:75fb5afaa356a55c9c28aace48b4cbe7f022582017f48812bf7e86a9ee67db2c
+            # Bypass Mailu's DNSSEC bullshit
+            command:
+              - sh
+              - -c
+              - |
+                flask mailu advertise
+                flask db upgrade
+
+                flask mailu admin "${INITIAL_ADMIN_ACCOUNT}" "${INITIAL_ADMIN_DOMAIN}" "${INITIAL_ADMIN_PW}" --mode "${INITIAL_ADMIN_MODE}"
+
+                exec gunicorn \
+                  --threads "${CPU_COUNT:-1}" \
+                  -b "[::]:8080" \
+                  --logger-class mailu.Logger \
+                  --log-level "${LOG_LEVEL:-INFO}" \
+                  --worker-tmp-dir /dev/shm \
+                  --error-logfile - \
+                  --access-logfile - \
+                  --preload \
+                  'mailu:create_app()'
             env:
               AUTH_RATELIMIT_EXEMPTION_LENGTH: "86400"
               AUTH_RATELIMIT_IP: 60/hour
