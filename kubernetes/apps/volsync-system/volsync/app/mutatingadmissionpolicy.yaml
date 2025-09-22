@@ -27,18 +27,21 @@ spec:
           - jobs
   matchConditions:
     - name: has-volsync-job-name-prefix
-      expression: >
+      expression: >-
         object.metadata.name.startsWith("volsync-src-")
+
     - name: has-volsync-created-by-labels
-      expression: >
+      expression: >-
         object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
     - patchType: JSONPatch
       jsonPatch:
-        expression: >
+        expression: >-
           [
+
             JSONPatch{
               op: "add", path: "/spec/template/spec/initContainers",
               value: []
@@ -53,6 +56,7 @@ spec:
               }
             }
           ]
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/mutatingadmissionpolicybinding-admissionregistration-v1beta1.json
 apiVersion: admissionregistration.k8s.io/v1beta1
@@ -81,14 +85,17 @@ spec:
           - jobs
   matchConditions:
     - name: has-volsync-job-name-prefix
-      expression: >
+      expression: >-
         object.metadata.name.startsWith("volsync-")
+
     - name: has-volsync-created-by-labels
-      expression: >
+      expression: >-
         object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+
     - name: repository-volume-does-not-exist
-      expression: >
+      expression: >-
         !object.spec.template.spec.volumes.exists(item, item.name == "repository")
+
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
@@ -96,6 +103,7 @@ spec:
       jsonPatch:
         expression: >-
           [
+
             JSONPatch{
               op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
               value: Object.spec.template.spec.containers.volumeMounts{
@@ -108,9 +116,10 @@ spec:
               value: Object.spec.template.spec.volumes{
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
-                  server: "192.168.42.20",
-                  path: "/mnt/Slow/Backups/Kopia/Volsync"
+                  server: "expanse.internal",
+                  path: "/mnt/eros/VolsyncKopia"
                 }
               }
             }
           ]
+
