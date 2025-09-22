@@ -55,12 +55,9 @@ spec:
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
-                matchExpressions:
+                matchLabels:
                   # follow plex around to mount PVC with RWO
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - plex
+                  app.kubernetes.io/name: plex
               topologyKey: kubernetes.io/hostname
       securityContext:
         runAsNonRoot: true
