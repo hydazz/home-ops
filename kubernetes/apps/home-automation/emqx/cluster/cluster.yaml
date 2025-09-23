@@ -50,3 +50,4 @@ spec:
         lbipam.cilium.io/ips: 192.168.42.153
     spec:
       type: LoadBalancer
+      externalTrafficPolicy: Local
