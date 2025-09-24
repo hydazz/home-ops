@@ -30,11 +30,8 @@ spec:
             command:
               - sh
               - -c
-              - |
-                if [ ! -e /var/www/html/index.php ]; then
-                  echo "Copying WordPress files..."
-                  cp -r /usr/src/wordpress/* /var/www/html/
-                fi
+              - |-
+                cp -r /usr/src/wordpress/* /var/www/html/
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -43,10 +40,11 @@ spec:
           app:
             image: *image
             env:
-              WORDPRESS_MEMORY_LIMIT: 512M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
               WORDPRESS_CONFIG_EXTRA: |-
                 define('DISABLE_WP_CRON', true);
+                define('WP_MEMORY_LIMIT', '256M');
+                define('WP_MAX_MEMORY_LIMIT', '512M');
             envFrom: &secret
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -80,7 +78,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: &port 8080
+                    port: &port 80
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1

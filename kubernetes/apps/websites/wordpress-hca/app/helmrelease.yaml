@@ -40,10 +40,11 @@ spec:
           app:
             image: *image
             env:
-              WORDPRESS_MEMORY_LIMIT: 256M
               WORDPRESS_AUTO_UPDATE_CORE: "false"
               WORDPRESS_CONFIG_EXTRA: |-
                 define('DISABLE_WP_CRON', true);
+                define('WP_MEMORY_LIMIT', '256M');
+                define('WP_MAX_MEMORY_LIMIT', '512M');
             envFrom: &secret
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
