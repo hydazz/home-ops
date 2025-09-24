@@ -23,6 +23,11 @@ metadata:
   name: &name hyde-services-tls
 spec:
   secretName: *name
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: self-hosted
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
