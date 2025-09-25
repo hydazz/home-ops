@@ -30,10 +30,18 @@ spec:
               OLLAMA_MODELS: /models
               OLLAMA_ORIGINS: "*"
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -58,7 +66,7 @@ spec:
       app:
         ports:
           http:
-            port: 80
+            port: *port
     route:
       app:
         hostnames:
