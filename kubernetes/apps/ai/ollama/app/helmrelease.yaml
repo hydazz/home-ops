@@ -26,10 +26,9 @@ spec:
               tag: 0.12.1@sha256:5aed793ab336d1aac9b132f4b46fddfcfa13b8911def3d275937c8acbd1763e8
             env:
               HOME: /config
-              OLLAMA_HOST: 0.0.0.0
+              OLLAMA_HOST: 0.0.0.0:80
               OLLAMA_MODELS: /models
               OLLAMA_ORIGINS: "*"
-              OLLAMA_PORT: &port 80
             probes:
               liveness:
                 enabled: true
@@ -59,7 +58,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 80
     route:
       app:
         hostnames:
