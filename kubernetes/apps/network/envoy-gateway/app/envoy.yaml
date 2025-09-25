@@ -227,7 +227,7 @@ spec:
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: envoy
+  name: envoy-cloudflare
 spec:
   clientIPDetection:
     customHeader:
