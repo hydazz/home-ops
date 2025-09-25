@@ -19,21 +19,20 @@ spec:
   values:
     controllers:
       immich:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.143.1@sha256:a5935f03b93137952c38b14a47148525023f4c36a2db174d8266a9d3b37e7e3b
             env: &env
-              DB_PORT: "5432"
-              ENABLE_MAPBOX: "false"
-              IMMICH_MACHINE_LEARNING_URL: http://localhost:3003
+              DB_PORT: 5432
+              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003
               IMMICH_MEDIA_LOCATION: /photos
-              IMMICH_SERVER_URL: http://localhost:2283
-              LOG_LEVEL: verbose
-              NODE_ENV: "production"
+              IMMICH_PORT: &port 80
               REDIS_HOSTNAME: dragonfly.databases.svc.cluster.local
-              REDIS_PORT: "6379"
+              REDIS_PORT: 6379
             envFrom:
               - secretRef:
                   name: &secret "{{ .Release.Name }}-secret"
@@ -44,7 +43,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: &port 2283
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -60,16 +59,21 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
-          machine-learning:
+      machine-learning:
+        #enabled: false
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.143.1@sha256:cc94659771d7e394d6406ebb0664069f2523062fda4f934def31648e903c4de2
-            envFrom:
-              - secretRef:
-                  name: *secret
             env:
               MPLCONFIGDIR: "/cache/matplotlib"
               <<: *env
+            envFrom:
+              - secretRef:
+                  name: *secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -89,9 +93,15 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
+        controller: immich
         ports:
           http:
             port: *port
+      machine-learning:
+        controller: machine-learning
+        ports:
+          http:
+            port: 3003
     route:
       app:
         annotations:
@@ -102,6 +112,10 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       library:
         type: nfs
@@ -111,8 +125,10 @@ spec:
           - path: /photos
       machine-learning-cache:
         existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /cache
+        advancedMounts:
+          machine-learning:
+            app:
+              - path: /cache
       tmpfs:
         type: emptyDir
         globalMounts:
