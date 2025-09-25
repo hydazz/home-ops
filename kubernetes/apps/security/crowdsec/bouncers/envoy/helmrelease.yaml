@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crowdsec-envoy-bouncer
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: crowdsec-envoy-bouncer
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      crowdsec-envoy-bouncer:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kdwils/envoy-proxy-bouncer
+              tag: v0.2.1@sha256:2ee26a0989c037a611394fe04fb6c037b87b33f54ffc2c3d295d3d18b588edd9
+            env:
+              ENVOY_BOUNCER_BOUNCER_APIURL: http://crowdsec-service.security.svc.cluster.local:8080
+              ENVOY_BOUNCER_BOUNCER_APIKEY: 4q63lKgU5b4T7iX2NHI6ZuWHFNbFxCna1vm+mj7HSVw
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+    service:
+      app:
+        ports:
+          http:
+            port: 8080
