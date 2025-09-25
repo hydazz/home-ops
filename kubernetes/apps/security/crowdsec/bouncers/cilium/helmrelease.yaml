@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hydazz/crowdsec-cilium-bouncer
-              tag: 0.0.2@sha256:5cf46375d1d31c8d1cfc3050518b41102e3b24357eb7a0a0d6d4ce5623b2d83f
+              tag: 0.0.3@sha256:d086393190e2335bd088a4cc9cfecacc14d0f804211518340dd08b5c59f9cd75
             env:
               CROWDSEC_URL: http://crowdsec-service.security.svc.cluster.local:8080
               CROWDSEC_BOUNCER_API_KEY: 4q63lKgU5b4T7iX2NHI6ZuWHFNbFxCna1vm+mj7HSVw
