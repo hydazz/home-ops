@@ -31,3 +31,9 @@ spec:
           accessModes:
             - ReadWriteOnce
           size: 100Mi
+    # here just to get it to shut up
+    agent:
+      acquisition:
+        - namespace: self-hosted
+          podName: mailu-dovecot-*
+          program: dovecot
