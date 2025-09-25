@@ -37,3 +37,4 @@ spec:
         - namespace: self-hosted
           podName: mailu-dovecot-*
           program: dovecot
+          poll_without_inotify: true

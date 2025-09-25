@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crowdsec-cilium-bouncer
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: crowdsec-cilium-bouncer
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      crowdsec-cilium-bouncer:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/hydazz/crowdsec-cilium-bouncer
+              tag: 0.0.2@sha256:5cf46375d1d31c8d1cfc3050518b41102e3b24357eb7a0a0d6d4ce5623b2d83f
+            env:
+              CROWDSEC_URL: http://crowdsec-service.security.svc.cluster.local:8080
+              CROWDSEC_BOUNCER_API_KEY: 4q63lKgU5b4T7iX2NHI6ZuWHFNbFxCna1vm+mj7HSVw
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+    rbac:
+      roles:
+        crowdsec-cilium-bouncer:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - cilium.io
+              resources:
+                - ciliumclusterwidenetworkpolicies
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+      bindings:
+        crowdsec-cilium-bouncer:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: crowdsec-cilium-bouncer
+          subjects:
+            - identifier: crowdsec-cilium-bouncer
+    serviceAccount:
+      crowdsec-cilium-bouncer: {}
