@@ -28,7 +28,7 @@ spec:
               tag: v1.143.1@sha256:a5935f03b93137952c38b14a47148525023f4c36a2db174d8266a9d3b37e7e3b
             env: &env
               DB_PORT: 5432
-              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local:3003
+              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.media.svc.cluster.local
               IMMICH_MEDIA_LOCATION: /photos
               IMMICH_PORT: &port 80
               REDIS_HOSTNAME: dragonfly.databases.svc.cluster.local
@@ -60,7 +60,6 @@ spec:
               limits:
                 memory: 2Gi
       machine-learning:
-        #enabled: false
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -101,7 +100,7 @@ spec:
         controller: machine-learning
         ports:
           http:
-            port: 3003
+            port: *port
     route:
       app:
         annotations:
