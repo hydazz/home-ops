@@ -25,27 +25,22 @@ spec:
               repository: docker.io/clusterzx/paperless-ai
               tag: 3.0.7@sha256:25e1c501891e2d409f1df92e64e4e20b379a0197b7cd35cf98b49184d9da6814
             env:
-              ADD_AI_PROCESSED_TAG: no
-              AI_PROCESSED_TAG_NAME: ai-processed
-              AI_PROVIDER: openai
-              DISABLE_AUTOMATIC_PROCESSING: no
-              OPENAI_MODEL: gpt-4o-mini
               PAPERLESS_AI_PORT: &port 80
-              PAPERLESS_API_URL: http://paperless.self-hosted.svc.cluster.local/api
-              PAPERLESS_USERNAME: ai
-              PROCESS_ONLY_NEW_DOCUMENTS: yes
-              PROCESS_PREDEFINED_DOCUMENTS: no
-              SCAN_INTERVAL: "*/30 * * * *"
-              USE_EXISTING_DATA: no
-              USE_PROMPT_TAGS: no
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              RAG_SERVICE_ENABLED: false
+              TZ: Australia/Melbourne
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
                 cpu: 10m
@@ -82,6 +77,12 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /app/data
+      env:
+        type: secret
+        name: paperless-ai-secret
+        globalMounts:
+          - path: /app/data/.env
+            subPath: .env
       tmpfs:
         type: emptyDir
         globalMounts:
