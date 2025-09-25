@@ -27,7 +27,7 @@ spec:
               repository: ghcr.io/mailu/nginx
               tag: 2024.06.43@sha256:33ec8e12608d9b0dbb7532f7aa3706bea9f831a9b2450ef69ca15371cf3c448e
             env:
-              LETSENCRYPT_SHORTCHAIN: "false"
+              LETSENCRYPT_SHORTCHAIN: false
               REAL_IP_FROM: 0.0.0.0/0
               REAL_IP_HEADER: X-Forwarded-For
               WEBDAV: none
@@ -77,7 +77,7 @@ spec:
             command:
               - sh
               - -c
-              - |
+              - |-
                 flask mailu advertise
                 flask db upgrade
                 exec gunicorn \
@@ -175,7 +175,7 @@ spec:
               repository: ghcr.io/mailu/postfix
               tag: 2024.06.43@sha256:f7395355bb68f402740b417cad9e4acb0830607f3bb535822316c2f9f05e6f00
             env:
-              REJECT_UNLISTED_RECIPIENT: "yes"
+              REJECT_UNLISTED_RECIPIENT: yes
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
@@ -221,7 +221,7 @@ spec:
               tag: 2024.06.43@sha256:f96b93175e6d67e94bf498137d9688e3108abe65e87438afc98f07fac3ce7b05
             env:
               COMPRESSION: lz4
-              COMPRESSION_LEVEL: "6"
+              COMPRESSION_LEVEL: 6
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"
@@ -270,7 +270,7 @@ spec:
             env:
               ANTIVIRUS: none
               ANTIVIRUS_ACTION: discard
-              SCAN_MACROS: "false"
+              SCAN_MACROS: false
             envFrom:
               - configMapRef:
                   name: "{{ .Release.Name }}-env-configmap"

@@ -25,6 +25,8 @@ spec:
               repository: ghcr.io/home-operations/home-assistant
               tag: 2025.9.4@sha256:55c7db16301626265c6c8132985137ca0798303773dafa244e562353baa93a6f
             env:
+              HASS_HTTP_TRUSTED_PROXY_1: 192.168.42.0/24
+              HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
               TZ: Australia/Melbourne
             securityContext:
               allowPrivilegeEscalation: false

@@ -27,8 +27,8 @@ spec:
               tag: 37
             env:
               HTTP_PORT: &port 80
-              LOG_WITHOUT_NEWLINE: true
               LOG_IGNORE_PATH: /healthz
+              LOG_WITHOUT_NEWLINE: true
               PROMETHEUS_ENABLED: true
             probes:
               liveness: &probes

@@ -27,10 +27,10 @@ spec:
               repository: ghcr.io/twin/gatus
               tag: v5.24.3@sha256:19b064c8be229df4848475f5e07f7dcd19cabbe8c27ea7ed6ff0e5af8e2050b6
             env:
-              TZ: Australia/Melbourne
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               GATUS_WEB_PORT: &port 80
+              TZ: Australia/Melbourne
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"

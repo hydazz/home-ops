@@ -27,7 +27,6 @@ spec:
               repository: ghcr.io/hydazz/unifi-protect-backup
               tag: 0.14.0@sha256:91604591567ebf6b6f083febea11e9aa62d9ab74f334a0bfc4719a9e41d5a4f7
             env:
-              TZ: Australia/Melbourne
               DETECTION_TYPES: person,vehicle,ring
               DOWNLOAD_BUFFER_SIZE: 512MiB
               FILE_STRUCTURE_FORMAT: "{camera_name}/{event.start:%d-%m-%Y}/{event.end:%I-%M-%S%p} {detection_type}.mp4"
@@ -36,11 +35,12 @@ spec:
               PURGE_INTERVAL: 1d
               RCLONE_DESTINATION: cloudflare:/unifi-protect
               RCLONE_RETENTION: 1d
-              SKIP_MISSING: "false"
+              SKIP_MISSING: false
               SQLITE_PATH: /config/events.sqlite
+              TZ: Australia/Melbourne
               UFP_ADDRESS: 192.168.1.1
               UFP_PORT: 443
-              UFP_SSL_VERIFY: "false"
+              UFP_SSL_VERIFY: false
             envFrom:
               - secretRef:
                   name: unifi-protect-secret

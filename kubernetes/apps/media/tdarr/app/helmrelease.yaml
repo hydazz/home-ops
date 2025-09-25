@@ -25,14 +25,14 @@ spec:
               repository: ghcr.io/haveagitgat/tdarr
               tag: 2.46.01@sha256:1376fc2c1bcbd8c3eabc210d1531cd4287334facfbf3a78e4b10387be0a4d223
             env:
-              TZ: Australia/Melbourne
-              PUID: 1000
               PGID: 1000
+              PUID: 1000
+              TZ: Australia/Melbourne
+              inContainer: true
+              internalNode: false
               serverIP: 0.0.0.0
               serverPort: &serverPort 8266
-              webUIPort: &port 8265
-              internalNode: "false"
-              inContainer: "true"
+              webUIPort: &port 80
             probes:
               liveness: &probes
                 enabled: true
@@ -72,20 +72,20 @@ spec:
               repository: ghcr.io/haveagitgat/tdarr_node
               tag: 2.46.01@sha256:1ecdd628d424a98773e61a6fd85ec1533da0259baa1aa8c806960cfe2b56aa1b
             env:
-              TZ: Australia/Melbourne
-              PUID: 1000
               PGID: 1000
-              serverIP: tdarr.media.svc.cluster.local
-              serverPort: *serverPort
-              inContainer: "true"
+              PUID: 1000
+              TZ: Australia/Melbourne
+              healthcheckcpuWorkers: 4
+              healthcheckgpuWorkers: 0
+              inContainer: true
               nodeName:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
-              transcodegpuWorkers: 2
+              serverIP: tdarr.media.svc.cluster.local
+              serverPort: *serverPort
               transcodecpuWorkers: 0
-              healthcheckgpuWorkers: 0
-              healthcheckcpuWorkers: 4
+              transcodegpuWorkers: 2
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false

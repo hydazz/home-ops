@@ -19,21 +19,23 @@ spec:
   values:
     controllers:
       minio:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: quay.io/minio/minio
               tag: RELEASE.2025-04-22T22-12-26Z@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
             env:
-              MINIO_API_CORS_ALLOW_ORIGIN: "https://{{ .Release.Name }}.hyde.services,https://s3.hyde.services"
-              MINIO_BROWSER_REDIRECT_URL: "https://{{ .Release.Name }}.hyde.services"
+              MINIO_API_CORS_ALLOW_ORIGIN: https://{{ .Release.Name }}.hyde.services,https://s3.hyde.services
+              MINIO_BROWSER_REDIRECT_URL: https://{{ .Release.Name }}.hyde.services
               MINIO_IDENTITY_OPENID_CONFIG_URL: https://auth.hyde.services/application/o/minio/.well-known/openid-configuration
               MINIO_IDENTITY_OPENID_DISPLAY_NAME: authentik
               MINIO_PROMETHEUS_AUTH_TYPE: public
               MINIO_PROMETHEUS_JOB_ID: *app
               MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
               MINIO_SERVER_URL: https://s3.hyde.services
-              MINIO_UPDATE: "off"
+              MINIO_UPDATE: off
               TZ: Australia/Melbourne
             envFrom:
               - secretRef:

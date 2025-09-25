@@ -18,13 +18,13 @@ spec:
       retries: 3
   values:
     global:
+      deploymentAnnotations:
+        reloader.stakater.com/auto: "true"
       deploymentStrategy:
         type: RollingUpdate
       envFrom:
         - secretRef:
             name: authentik-secret
-      deploymentAnnotations:
-        reloader.stakater.com/auto: "true"
     authentik:
       redis:
         host: dragonfly.databases.svc.cluster.local

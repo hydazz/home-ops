@@ -29,10 +29,10 @@ spec:
             env:
               FOLDER: /config
               LABEL: gatus.io/enabled
+              METHOD: WATCH
               NAMESPACE: ALL
               RESOURCE: both
               UNIQUE_FILENAMES: true
-              METHOD: WATCH
             restartPolicy: Always
             resources:
               requests:
@@ -45,15 +45,15 @@ spec:
               repository: ghcr.io/twin/gatus
               tag: v5.24.3@sha256:19b064c8be229df4848475f5e07f7dcd19cabbe8c27ea7ed6ff0e5af8e2050b6
             env:
-              TZ: Australia/Melbourne
-              GATUS_CONFIG_PATH: /config
-              GATUS_DELAY_START_SECONDS: 5
-              GATUS_WEB_PORT: &port 80
               D_HCA: ${D_HCA}
+              D_LMVCA: ${D_LMVCA}
               D_SN: ${D_SN}
               D_TACA: ${D_TACA}
               D_TAN: ${D_TAN}
-              D_LMVCA: ${D_LMVCA}
+              GATUS_CONFIG_PATH: /config
+              GATUS_DELAY_START_SECONDS: 5
+              GATUS_WEB_PORT: &port 80
+              TZ: Australia/Melbourne
             probes:
               liveness: &probes
                 enabled: true

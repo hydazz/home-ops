@@ -25,9 +25,9 @@ spec:
               repository: docker.io/jenkins/jenkins
               tag: 2.529-jdk21@sha256:79819be1386ffecd2cd030c9c1b69907fdfab99d5b110b3240bfc51cb90272c0
             args:
-              - "--httpPort=8080"
+              - --httpPort=80
             env:
-              JENKINS_OPTS: "--webroot=/var/jenkins_cache/war"
+              JENKINS_OPTS: --webroot=/var/jenkins_cache/war
             probes:
               liveness: &probes
                 enabled: true
@@ -35,7 +35,7 @@ spec:
                 spec:
                   httpGet:
                     path: /login
-                    port: &port 8080
+                    port: &port 80
                   failureThreshold: 5
                   periodSeconds: 10
                   timeoutSeconds: 5

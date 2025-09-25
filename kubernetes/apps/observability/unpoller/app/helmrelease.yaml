@@ -19,6 +19,8 @@ spec:
   values:
     controllers:
       unpoller:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -26,10 +28,10 @@ spec:
               tag: v2.15.4@sha256:788a890f2dc5aef3e99ce430917221c43b4e084464d38bc6537a8c7294ef8770
             env:
               TZ: Australia/Melbourne
+              UP_INFLUXDB_DISABLE: true
+              UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
               UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_URL: https://192.168.1.1
-              UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
-              UP_INFLUXDB_DISABLE: true
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"

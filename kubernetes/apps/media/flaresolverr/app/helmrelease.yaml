@@ -19,8 +19,6 @@ spec:
   values:
     controllers:
       flaresolverr:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -29,6 +27,7 @@ spec:
             env:
               TZ: Australia/Melbourne
               LOG_LEVEL: INFO
+              PORT: &port 80
             probes:
               liveness: &probes
                 enabled: true
@@ -36,22 +35,35 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: &port 8191
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              #readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 512m
                 memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              #readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
           http:
             port: *port
+    persistence:
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp

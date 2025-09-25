@@ -27,13 +27,14 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.6.30@sha256:b9f7930a5eea6a3284f45ab6d20f9e1e02a5cd6da6b57b962b05422de5233f23
             env:
-              TZ: Australia/Melbourne
-              OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
               DATA_DIR: /config
-              WEBUI_URL: https://chat.hyde.services
-              ENABLE_SIGNUP: "false"
-              ENABLE_WEBSOCKET_SUPPORT: "true"
+              ENABLE_SIGNUP: false
+              ENABLE_WEBSOCKET_SUPPORT: true
+              OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
+              PORT: &port 80
+              TZ: Australia/Melbourne
               WEBSOCKET_REDIS_URL: redis://dragonfly.databases.svc.cluster.local/0
+              WEBUI_URL: https://chat.hyde.services
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -57,7 +58,7 @@ spec:
       app:
         ports:
           http:
-            port: 8080
+            port: *port
     route:
       app:
         hostnames:

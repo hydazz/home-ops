@@ -26,11 +26,11 @@ spec:
               repository: ghcr.io/dgtlmoon/changedetection.io
               tag: 0.50.14@sha256:d8113bf66f47895d29c6935000bbac4c0f33d79588ae37d9ed6000ed328c5833
             env:
-              TZ: Australia/Melbourne
               BASE_URL: "{{ .Release.Name }}.hyde.services"
-              USE_X_SETTINGS: "1"
-              PORT: &port 5000
               PLAYWRIGHT_DRIVER_URL: ws://localhost:3000/chrome?stealth=1&--disable-web-security=true&--user-data-dir=~/browserless-cache-123
+              PORT: &port 80
+              TZ: Australia/Melbourne
+              USE_X_SETTINGS: 1
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -47,16 +47,16 @@ spec:
               repository: ghcr.io/browserless/chrome
               tag: v2.36.0@sha256:30ef9f9dfe6ac6ea90553b4a2d90b750927e207fabec44a536f0f53f00668d52
             env:
-              SCREEN_WIDTH: "1920"
-              SCREEN_HEIGHT: "1024"
-              SCREEN_DEPTH: "16"
-              ENABLE_DEBUGGER: "false"
-              PREBOOT_CHROME: "true"
-              CONNECTION_TIMEOUT: "300000"
-              MAX_CONCURRENT_SESSIONS: "10"
-              CHROME_REFRESH_TIME: "600000"
-              DEFAULT_BLOCK_ADS: "true"
-              DEFAULT_STEALTH: "true"
+              CHROME_REFRESH_TIME: 600000
+              CONNECTION_TIMEOUT: 300000
+              DEFAULT_BLOCK_ADS: true
+              DEFAULT_STEALTH: true
+              ENABLE_DEBUGGER: false
+              MAX_CONCURRENT_SESSIONS: 10
+              PREBOOT_CHROME: true
+              SCREEN_DEPTH: 16
+              SCREEN_HEIGHT: 1024
+              SCREEN_WIDTH: 1920
             securityContext:
               allowPrivilegeEscalation: false
             resources:

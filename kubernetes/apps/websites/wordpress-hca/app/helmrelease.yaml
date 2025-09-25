@@ -40,7 +40,7 @@ spec:
           app:
             image: *image
             env:
-              WORDPRESS_AUTO_UPDATE_CORE: "false"
+              WORDPRESS_AUTO_UPDATE_CORE: false
               WORDPRESS_CONFIG_EXTRA: |-
                 define('DISABLE_WP_CRON', true);
                 define('WP_MEMORY_LIMIT', '256M');

@@ -45,7 +45,7 @@ spec:
               MODRINTH_PROJECTS: |-
                 worldedit
                 customnpcs
-              PLUGINS: |
+              PLUGINS: |-
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXAntiBuild-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXChat-2.21.2.jar
