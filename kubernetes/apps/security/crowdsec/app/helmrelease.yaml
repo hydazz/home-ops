@@ -26,6 +26,13 @@ spec:
       env:
         - name: TZ
           value: Australia/Melbourne
+        - name: ENROLL_INSTANCE_NAME
+          value: home-ops
+          #- name: ENROLL_KEY
+          #  valueFrom:
+          #    secretKeyRef:
+          #      name: crowdsec-keys
+          #      key: ENROLL_KEY
       persistentVolume:
         config:
           enabled: true
