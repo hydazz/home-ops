@@ -36,8 +36,12 @@ spec:
       additionalAcquisition:
         - source: loki
           url: http://loki-headless.observability.svc.cluster.local:3100
-          query: |
+          query: |-
             {app=~".+"} | container =~ `nginx`
+            | json
+            | line_format "{{ .log }}"
+            | regexp "^\\S+\\s+\\S+\\s+\\S+\\s+(?P<message>.+)$"
+            | line_format "{{ .message }}"
           labels:
             type: nginx
       env:
