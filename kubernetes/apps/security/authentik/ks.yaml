@@ -9,15 +9,13 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/external
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: databases
     - name: dragonfly-cluster
       namespace: databases
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-  components:
-    - ../../../../components/gatus/external
   interval: 1h
   path: ./kubernetes/apps/security/authentik/app
   postBuild:
