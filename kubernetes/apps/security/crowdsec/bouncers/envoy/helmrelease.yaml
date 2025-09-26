@@ -25,8 +25,10 @@ spec:
               repository: ghcr.io/kdwils/envoy-proxy-bouncer
               tag: v0.2.2@sha256:b487ae9b1a43bf37308b43c42b625f24a13392907ef28ae22209ece6d5fc802d
             env:
-              ENVOY_BOUNCER_BOUNCER_APIURL: http://crowdsec-service.security.svc.cluster.local:8080
               ENVOY_BOUNCER_BOUNCER_APIKEY: 4q63lKgU5b4T7iX2NHI6ZuWHFNbFxCna1vm+mj7HSVw
+              ENVOY_BOUNCER_BOUNCER_ENABLED: true
+              ENVOY_BOUNCER_BOUNCER_LAPIURL: http://crowdsec-service.security.svc.cluster.local:8080
+              ENVOY_BOUNCER_TRUSTEDPROXIES: 192.168.42.0/24,10.42.0.0/16
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
