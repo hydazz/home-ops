@@ -29,6 +29,8 @@ spec:
               ENVOY_BOUNCER_BOUNCER_LAPIURL: http://crowdsec-service.security.svc.cluster.local:8080
               ENVOY_BOUNCER_TRUSTEDPROXIES: 192.168.42.0/24,10.42.0.0/16
               ENVOY_BOUNCER_BOUNCER_METRICS: true
+              ENVOY_BOUNCER_WAF_ENABLED: true
+              ENVOY_BOUNCER_WAF_APPSECURL: http://crowdsec-appsec-service.security.svc.cluster.local:7422
             envFrom:
               - secretRef:
                   name: crowdsec-envoy-bouncer-secret
