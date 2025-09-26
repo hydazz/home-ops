@@ -52,6 +52,10 @@ spec:
           enabled: false
         config:
           enabled: false
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
     agent:
       isDeployment: true
       additionalAcquisition:
@@ -74,3 +78,7 @@ spec:
             crowdsecurity/http-cve
             crowdsecurity/nginx
             crowdsecurity/wordpress
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
