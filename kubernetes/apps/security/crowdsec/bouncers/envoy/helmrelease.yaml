@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kdwils/envoy-proxy-bouncer
-              tag: v0.2.1@sha256:2ee26a0989c037a611394fe04fb6c037b87b33f54ffc2c3d295d3d18b588edd9
+              tag: v0.2.2@sha256:b487ae9b1a43bf37308b43c42b625f24a13392907ef28ae22209ece6d5fc802d
             env:
               ENVOY_BOUNCER_BOUNCER_APIURL: http://crowdsec-service.security.svc.cluster.local:8080
               ENVOY_BOUNCER_BOUNCER_APIKEY: 4q63lKgU5b4T7iX2NHI6ZuWHFNbFxCna1vm+mj7HSVw
