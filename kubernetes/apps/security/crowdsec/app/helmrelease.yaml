@@ -23,8 +23,9 @@ spec:
   values:
     container_runtime: containerd
     lapi:
-      dashboard:
-        enabled: false
+      env:
+        - name: TZ
+          value: Australia/Melbourne
       persistentVolume:
         config:
           enabled: true
@@ -35,8 +36,15 @@ spec:
       additionalAcquisition:
         - source: loki
           url: http://loki-headless.observability.svc.cluster.local:3100
-          no_ready_check: true
           query: |
             {app=~".+"} | container =~ `nginx`
           labels:
-            program: nginx
+            type: nginx
+      env:
+        - name: TZ
+          value: Australia/Melbourne
+        - name: COLLECTIONS
+          value: >-
+            crowdsecurity/nginx
+            crowdsecurity/base-http-scenarios
+            crowdsecurity/http-cve
