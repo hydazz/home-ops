@@ -23,6 +23,62 @@ spec:
   values:
     container_runtime: containerd
     config:
+      parsers:
+        s01-parse:
+          envoy-logs.yaml: |-
+            filter: "evt.Parsed.program startsWith 'envoy'"
+            onsuccess: next_stage
+            name: hydaz/envoy-logs
+            description: "Parse envoy access logs"
+            statics:
+              - parsed: json
+                expression: UnmarshalJSON(evt.Line.Raw, evt.Unmarshaled, "envoy")
+              - target: evt.StrTime
+                expression: evt.Unmarshaled.envoy.start_time
+              - meta: log_type
+                expression: "'http_access-log'"
+              - meta: service
+                expression: "'http'"
+              - meta: http_path
+                expression: evt.Unmarshaled.envoy["x-envoy-origin-path"]
+              - parsed: request
+                expression: evt.Meta.http_path
+              - meta: http_verb
+                expression: evt.Unmarshaled.envoy.method
+              - parsed: verb
+                expression: evt.Unmarshaled.envoy.method
+              - meta: http_status
+                expression: evt.Unmarshaled.envoy.response_code
+              - parsed: status
+                expression: evt.Unmarshaled.envoy.response_code
+              - meta: protocol
+                expression: evt.Unmarshaled.envoy.protocol
+              - parsed: http_version
+                expression: TrimPrefix(evt.Unmarshaled.envoy.protocol, "HTTP/")
+              - meta: http_user_agent
+                expression: evt.Unmarshaled.envoy["user-agent"]
+              - parsed: http_user_agent
+                expression: evt.Meta.http_user_agent
+              - meta: source_ip
+                expression: Split(evt.Unmarshaled.envoy.downstream_remote_address, ":")[0]
+              - parsed: remote_addr
+                expression: evt.Meta.source_ip
+              - meta: target_fqdn
+                expression: evt.Unmarshaled.envoy[":authority"]
+              - meta: envoy_route
+                expression: evt.Unmarshaled.envoy.route_name
+              - meta: envoy_upstream_cluster
+                expression: evt.Unmarshaled.envoy.upstream_cluster
+              - meta: envoy_upstream_host
+                expression: evt.Unmarshaled.envoy.upstream_host
+              - meta: bytes_sent
+                expression: evt.Unmarshaled.envoy.bytes_sent
+              - meta: bytes_received
+                expression: evt.Unmarshaled.envoy.bytes_received
+              - meta: duration_ms
+                expression: evt.Unmarshaled.envoy.duration
+              - meta: request_id
+                expression: evt.Unmarshaled.envoy["x-request-id"]
       config.yaml.local: |-
         api:
           server:
