@@ -9,7 +9,7 @@
         --bsod: #0078d7;
         --bsod-dim: #0066b8;
         --text: #fff;
-        --text-dim: #d9e6f7;
+        --text-dim: rgba(255, 255, 255, 0.85);
         --mono: #eaf3ff;
         --kbd: rgba(255, 255, 255, 0.15);
       }
@@ -29,71 +29,127 @@
         font-family: "Segoe UI", "Segoe UI Symbol", "Calibri", Roboto, Arial,
           Helvetica, sans-serif;
         line-height: 1.4;
+        overflow-x: hidden;
+      }
+
+      /* Subtle fade-in animation */
+      .main > div:first-child {
+        animation: fadeInUp 0.6s ease-out;
+      }
+      .layout {
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       .main {
         min-height: 100%;
         display: grid;
         align-content: center;
         justify-items: start;
-        padding: clamp(24px, 5vw, 64px);
-        gap: 24px;
+        padding: clamp(20px, 4vw, 48px);
+        gap: clamp(20px, 4vw, 32px);
+        max-width: 1400px;
+        margin: 0 auto;
       }
       .emoji {
-        font-size: clamp(64px, 12vw, 140px);
+        font-size: clamp(72px, 15vw, 160px);
         line-height: 0.8;
-        margin: 0 0 20px;
-        filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.15));
+        margin: 0 0 clamp(16px, 4vw, 24px);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))
+          drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         user-select: none;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
       h1 {
-        margin: 0 0 8px;
+        margin: 0 0 clamp(8px, 2vw, 12px);
         font-weight: 600;
-        font-size: clamp(22px, 3.6vw, 38px);
-        letter-spacing: 0.2px;
+        font-size: clamp(24px, 4vw, 42px);
+        letter-spacing: 0.3px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        line-height: 1.1;
       }
       .lede {
         margin: 0;
-        font-size: clamp(16px, 2.4vw, 20px);
+        font-size: clamp(16px, 2.8vw, 22px);
         color: var(--text-dim);
-        max-width: 70ch;
+        max-width: 65ch;
+        line-height: 1.5;
+        font-weight: 400;
       }
       .layout {
-        width: min(1200px, 100%);
+        width: 100%;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: clamp(16px, 3vw, 24px);
       }
-      @media (min-width: 880px) {
+      @media (min-width: 768px) {
         .layout {
-          grid-template-columns: 1.2fr 0.8fr;
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (min-width: 1024px) {
+        .layout {
+          grid-template-columns: 1.3fr 0.7fr;
+          gap: 28px;
         }
       }
       .card {
-        background: rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        padding: 16px 18px;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1) inset,
-          0 2px 0 rgba(255, 255, 255, 0.04);
+        background: rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 16px;
+        padding: clamp(16px, 4vw, 24px) clamp(18px, 4vw, 28px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) inset,
+          0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 12px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(8px);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) inset,
+          0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 20px rgba(0, 0, 0, 0.2);
       }
       .card h2 {
-        margin: 0 0 10px;
-        font-size: 16px;
-        font-weight: 600;
+        margin: 0 0 clamp(12px, 3vw, 16px);
+        font-size: clamp(14px, 3.5vw, 18px);
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.6px;
-        opacity: 0.9;
+        letter-spacing: 0.8px;
+        opacity: 0.95;
+        color: rgba(255, 255, 255, 0.9);
       }
       .kv {
         display: grid;
-        grid-template-columns: 180px 1fr;
-        gap: 6px 14px;
+        grid-template-columns: clamp(140px, 30vw, 200px) 1fr;
+        gap: clamp(6px, 2vw, 8px) clamp(12px, 3vw, 16px);
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           "Liberation Mono", "Courier New", monospace;
-        font-size: 13.5px;
+        font-size: clamp(13px, 3vw, 15px);
         color: var(--mono);
         word-break: break-word;
         white-space: pre-wrap;
+        line-height: 1.4;
+      }
+      @media (max-width: 480px) {
+        .kv {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+        .kv .k {
+          font-weight: 600;
+          margin-top: 8px;
+        }
+        .kv .k:first-child {
+          margin-top: 0;
+        }
       }
       .kv .k {
         opacity: 0.9;
@@ -106,26 +162,49 @@
         border: 1px solid rgba(255, 255, 255, 0.35);
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
-        padding: 10px 14px;
-        border-radius: 10px;
+        padding: clamp(12px, 3vw, 14px) clamp(16px, 4vw, 20px);
+        border-radius: 12px;
         font-weight: 600;
         cursor: pointer;
-        font-size: 14px;
-        transition: transform 0.04s ease, background 0.15s ease,
-          border-color 0.15s ease;
+        font-size: clamp(14px, 3.5vw, 16px);
+        transition: transform 0.1s ease, background 0.2s ease,
+          border-color 0.2s ease, box-shadow 0.2s ease;
         text-decoration: none;
         display: inline-block;
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
       }
       .btn:hover {
-        background: rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.45);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       }
       .btn:active {
         transform: translateY(1px);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      }
+      .btn:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.6);
+        outline-offset: 2px;
+      }
+      .btn:focus:not(:focus-visible) {
+        outline: none;
       }
       .actions {
         display: flex;
-        gap: 10px;
+        gap: clamp(8px, 2vw, 12px);
         flex-wrap: wrap;
+        margin-top: clamp(12px, 3vw, 16px);
+      }
+      @media (max-width: 480px) {
+        .actions {
+          flex-direction: column;
+        }
+        .actions .btn {
+          width: 100%;
+          text-align: center;
+        }
       }
       .blink {
         position: relative;
@@ -146,6 +225,47 @@
         100% {
           opacity: 0;
         }
+      }
+      .help-list {
+        margin: 0 0 clamp(6px, 2vw, 8px) clamp(16px, 4vw, 20px);
+        padding: 0;
+        line-height: 1.5;
+      }
+      .help-list li {
+        margin-bottom: clamp(8px, 2vw, 12px);
+        font-size: clamp(14px, 3.2vw, 16px);
+      }
+      .help-list li:last-child {
+        margin-bottom: 0;
+      }
+      .help-list code {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+
+      /* Custom scrollbar for webkit browsers */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      /* Selection styling */
+      ::selection {
+        background: rgba(255, 255, 255, 0.2);
+        color: inherit;
       }
     </style>
   </head>
@@ -179,7 +299,7 @@
             <div class="v">{{ . }}</div>
             {{ end }}
           </div>
-          <div class="actions" style="margin-top: 10px">
+          <div class="actions">
             <button class="btn" onclick="location.reload()">Retry</button>
             <a id="emailBtn" class="btn" href="#">Email Details</a>
           </div>
@@ -241,7 +361,7 @@
           <h2 id="help-title">What can I do?</h2>
           <ul style="margin: 0 0 6px 18px; padding: 0">
             <li>
-              Make sure you’re not running a scanner, crawler, or exploit probe.
+              Make sure you're not running a scanner, crawler, or exploit probe.
             </li>
             <li>
               Slow down: rapid-fire requests and error storms trigger defenses.
