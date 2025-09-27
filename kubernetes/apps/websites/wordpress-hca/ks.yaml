@@ -30,7 +30,7 @@ spec:
       GATUS_GROUP: *namespace
       GATUS_SUBDOMAIN: www
       GATUS_DOMAIN: "${D_HCA}"
-      VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository

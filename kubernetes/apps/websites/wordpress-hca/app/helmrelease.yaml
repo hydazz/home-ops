@@ -136,6 +136,8 @@ spec:
             subPath: wordpress.ini
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf
+      backup:
+        existingClaim: "{{ .Release.Name }}-backup"
       tmpfs:
         type: emptyDir
         globalMounts:
