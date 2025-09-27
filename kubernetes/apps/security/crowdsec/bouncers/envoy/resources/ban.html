@@ -2,76 +2,318 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Access Blocked</title>
+    <title>Access Denied</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
+      :root {
+        --bsod: #0078d7;
+        --bsod-dim: #0066b8;
+        --text: #fff;
+        --text-dim: #d9e6f7;
+        --mono: #eaf3ff;
+        --kbd: rgba(255, 255, 255, 0.15);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
       body {
-        font-family: sans-serif;
-        background: #0f172a;
-        color: #e2e8f0;
+        height: 100%;
         margin: 0;
-        padding: 0;
-        display: flex;
-        min-height: 100vh;
-        align-items: center;
-        justify-content: center;
+        background: radial-gradient(
+          1200px 800px at 30% 20%,
+          var(--bsod),
+          var(--bsod-dim)
+        );
+        color: var(--text);
+        font-family: "Segoe UI", "Segoe UI Symbol", "Calibri", Roboto, Arial,
+          Helvetica, sans-serif;
+        line-height: 1.4;
       }
-      main {
-        max-width: 560px;
-        padding: 2rem;
-        background: rgba(15, 23, 42, 0.85);
-        border-radius: 12px;
-        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.75);
+
+      .main {
+        min-height: 100%;
+        display: grid;
+        align-content: center;
+        justify-items: start;
+        padding: clamp(24px, 5vw, 64px);
+        gap: 24px;
       }
+
+      .emoji {
+        font-size: clamp(64px, 12vw, 140px);
+        line-height: 0.8;
+        margin: 0 0 20px;
+        filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.15));
+        user-select: none;
+      }
+
       h1 {
-        margin-top: 0;
-        font-size: 2rem;
+        margin: 0 0 8px;
+        font-weight: 600;
+        font-size: clamp(22px, 3.6vw, 38px);
+        letter-spacing: 0.2px;
       }
-      .details {
-        margin: 1.5rem 0;
-        padding: 1rem;
-        background: rgba(15, 23, 42, 0.6);
-        border-radius: 8px;
+
+      .lede {
+        margin: 0;
+        font-size: clamp(16px, 2.4vw, 20px);
+        color: var(--text-dim);
+        max-width: 70ch;
       }
-      dt {
-        font-weight: bold;
+
+      .layout {
+        width: min(1200px, 100%);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
       }
-      dd {
-        margin: 0 0 0.75rem 0;
+
+      @media (min-width: 880px) {
+        .layout {
+          grid-template-columns: 1.2fr 0.8fr;
+        }
       }
-      footer {
-        font-size: 0.85rem;
-        color: #94a3b8;
-        margin-top: 1.5rem;
+
+      .card {
+        background: rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 16px 18px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1) inset,
+          0 2px 0 rgba(255, 255, 255, 0.04);
+      }
+
+      .card h2 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        opacity: 0.9;
+      }
+
+      .kv {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 6px 14px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 13.5px;
+        color: var(--mono);
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+
+      .kv .k {
+        opacity: 0.9;
+      }
+
+      .kv .v {
+        opacity: 1;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+        transition: transform 0.04s ease, background 0.15s ease,
+          border-color 0.15s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .small {
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      .blink {
+        position: relative;
+        display: inline-block;
+      }
+
+      .blink::after {
+        content: "█";
+        margin-left: 6px;
+        opacity: 0.75;
+        animation: caret 1.2s steps(1, end) infinite;
+      }
+
+      @keyframes caret {
+        0%,
+        49% {
+          opacity: 0.75;
+        }
+
+        50%,
+        100% {
+          opacity: 0;
+        }
       }
     </style>
   </head>
+
   <body>
-    <main>
-      <h1>Access Blocked</h1>
-      <p>Your request was stopped by CrowdSec to protect this service.</p>
-      <section class="details">
-        <dl>
-          <dt>IP Address</dt>
-          <dd>{{ .IP }}</dd>
-          {{ if .Decision }}
-          <dt>Reason</dt>
-          <dd>{{ .Decision.Scenario }}</dd>
-          <dt>Decision Scope</dt>
-          <dd>{{ .Decision.Scope }} &mdash; {{ .Decision.Value }}</dd>
-          {{ if .Decision.Until }}
-          <dt>Decision Expires</dt>
-          <dd>{{ .Decision.Until }}</dd>
-          {{ end }} {{ end }} {{ if .Request.Path }}
-          <dt>Request Path</dt>
-          <dd>{{ .Request.Path }}</dd>
-          {{ end }}
-        </dl>
-      </section>
-      <p>
-        If you believe this is a mistake, contact the site administrator and
-        include the timestamp below.
-      </p>
-      <footer>Reference: {{ .Timestamp }}</footer>
+    <main class="main" role="main" aria-labelledby="page-title">
+      <div>
+        <div class="emoji" aria-hidden="true">:(</div>
+        <h1 id="page-title" class="blink">Access Denied</h1>
+        <p class="lede">
+          This request was blocked by an automated security policy. If you think
+          this is a false positive, share the diagnostics below.
+        </p>
+      </div>
+
+      <div class="layout">
+        <section class="card" aria-labelledby="summary-title">
+          <h2 id="summary-title">Summary</h2>
+          <div class="kv" id="summary-kv">
+            <div class="k">Action</div>
+            <div class="v">{{ .Action }}</div>
+            <div class="k">Reason</div>
+            <div class="v">{{ .Reason }}</div>
+            <div class="k">Client IP</div>
+            <div class="v">{{ .IP }}</div>
+            <div class="k">Timestamp</div>
+            <div class="v">{{ .Timestamp }}</div>
+          </div>
+          <div class="actions" style="margin-top: 10px">
+            <button class="btn" onclick="location.reload()">Retry</button>
+
+            <a id="emailBtn" class="btn" href="#">Email Details</a>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="decision-title">
+          <h2 id="decision-title">Decision</h2>
+          <div class="kv" id="decision-kv">
+            <div class="k">Scenario</div>
+            <div class="v">{{ .Decision.Scenario }}</div>
+            <div class="k">Origin</div>
+            <div class="v">{{ .Decision.Origin }}</div>
+            <div class="k">Scope</div>
+            <div class="v">{{ .Decision.Scope }}</div>
+            <div class="k">Value</div>
+            <div class="v">{{ .Decision.Value }}</div>
+            <div class="k">Duration</div>
+            <div class="v">{{ .Decision.Duration }}</div>
+            <div class="k">Until</div>
+            <div class="v">{{ .Decision.Until }}</div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="request-title">
+          <h2 id="request-title">Request</h2>
+          <div class="kv" id="request-kv">
+            <div class="k">Method</div>
+            <div class="v">{{ .Request.Method }}</div>
+            <div class="k">Path</div>
+            <div class="v">{{ .Request.Path }}</div>
+            <div class="k">URL</div>
+            <div class="v">{{ .Request.URL }}</div>
+            <div class="k">Scheme</div>
+            <div class="v">{{ .Request.Scheme }}</div>
+            <div class="k">Host</div>
+            <div class="v">{{ .Request.Host }}</div>
+            <div class="k">Protocol</div>
+            <div class="v">{{ .Request.Protocol }}</div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="help-title">
+          <h2 id="help-title">What can I do?</h2>
+          <ul style="margin: 0 0 6px 18px; padding: 0">
+            <li>
+              Make sure you’re not running a scanner, crawler, or exploit probe.
+            </li>
+            <li>
+              Slow down: rapid-fire requests and error storms trigger defenses.
+            </li>
+            <li>Turn off VPN/Tor or risky proxies and try again.</li>
+            <li>
+              Respect <code>/robots.txt</code> and stick to documented
+              endpoints.
+            </li>
+            <li>
+              If you believe this is a mistake, click
+              <code>Email Details</code> to report the false positive.
+            </li>
+          </ul>
+        </section>
+      </div>
     </main>
+
+    <script>
+      function kvToObject(id) {
+        const node = document.getElementById(id);
+        const out = {};
+        if (!node) return out;
+        const kids = [...node.children];
+        for (let i = 0; i < kids.length; i += 2) {
+          const k = kids[i]?.textContent?.trim();
+          const v = kids[i + 1]?.textContent ?? "";
+          if (k) out[k] = v;
+        }
+        return out;
+      }
+      function buildDetailsText() {
+        const summary = kvToObject("summary-kv"),
+          decision = kvToObject("decision-kv"),
+          request = kvToObject("request-kv");
+        return [
+          "Access Denied / Blocked",
+          "========================",
+          `Action: {{ .Action }}`,
+          `Reason: {{ .Reason }}`,
+          `Client IP: {{ .IP }}`,
+          `Timestamp: {{ .Timestamp }}`,
+          "",
+          "Decision:",
+          JSON.stringify(decision, null, 2),
+          "",
+          "Request:",
+          JSON.stringify(request, null, 2),
+        ].join("\n");
+      }
+      (function initEmailBtn() {
+        const btn = document.getElementById("emailBtn");
+        if (!btn) return;
+        const hostRaw = "{{ .Request.Host }}";
+        const host = hostRaw.replace(/:.*/, "");
+        const to = `security@hyde.services`;
+        const subj =
+          `Access Denied on ${host} - {{ .Decision.Scenario }}`.slice(0, 150);
+        const body = buildDetailsText();
+        const href = `mailto:${encodeURIComponent(
+          to
+        )}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(
+          body
+        )}`;
+        btn.setAttribute("href", href);
+      })();
+    </script>
   </body>
 </html>
