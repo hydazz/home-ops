@@ -13,11 +13,9 @@
         --mono: #eaf3ff;
         --kbd: rgba(255, 255, 255, 0.15);
       }
-
       * {
         box-sizing: border-box;
       }
-
       html,
       body {
         height: 100%;
@@ -32,7 +30,6 @@
           Helvetica, sans-serif;
         line-height: 1.4;
       }
-
       .main {
         min-height: 100%;
         display: grid;
@@ -41,7 +38,6 @@
         padding: clamp(24px, 5vw, 64px);
         gap: 24px;
       }
-
       .emoji {
         font-size: clamp(64px, 12vw, 140px);
         line-height: 0.8;
@@ -49,34 +45,29 @@
         filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.15));
         user-select: none;
       }
-
       h1 {
         margin: 0 0 8px;
         font-weight: 600;
         font-size: clamp(22px, 3.6vw, 38px);
         letter-spacing: 0.2px;
       }
-
       .lede {
         margin: 0;
         font-size: clamp(16px, 2.4vw, 20px);
         color: var(--text-dim);
         max-width: 70ch;
       }
-
       .layout {
         width: min(1200px, 100%);
         display: grid;
         grid-template-columns: 1fr;
         gap: 18px;
       }
-
       @media (min-width: 880px) {
         .layout {
           grid-template-columns: 1.2fr 0.8fr;
         }
       }
-
       .card {
         background: rgba(0, 0, 0, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.15);
@@ -85,7 +76,6 @@
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1) inset,
           0 2px 0 rgba(255, 255, 255, 0.04);
       }
-
       .card h2 {
         margin: 0 0 10px;
         font-size: 16px;
@@ -94,7 +84,6 @@
         letter-spacing: 0.6px;
         opacity: 0.9;
       }
-
       .kv {
         display: grid;
         grid-template-columns: 180px 1fr;
@@ -106,15 +95,12 @@
         word-break: break-word;
         white-space: pre-wrap;
       }
-
       .kv .k {
         opacity: 0.9;
       }
-
       .kv .v {
         opacity: 1;
       }
-
       .btn {
         appearance: none;
         border: 1px solid rgba(255, 255, 255, 0.35);
@@ -130,44 +116,32 @@
         text-decoration: none;
         display: inline-block;
       }
-
       .btn:hover {
         background: rgba(255, 255, 255, 0.16);
       }
-
       .btn:active {
         transform: translateY(1px);
       }
-
       .actions {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
       }
-
-      .small {
-        font-size: 12px;
-        opacity: 0.9;
-      }
-
       .blink {
         position: relative;
         display: inline-block;
       }
-
       .blink::after {
         content: "█";
         margin-left: 6px;
         opacity: 0.75;
         animation: caret 1.2s steps(1, end) infinite;
       }
-
       @keyframes caret {
         0%,
         49% {
           opacity: 0.75;
         }
-
         50%,
         100% {
           opacity: 0;
@@ -191,57 +165,77 @@
         <section class="card" aria-labelledby="summary-title">
           <h2 id="summary-title">Summary</h2>
           <div class="kv" id="summary-kv">
+            {{ with .Action }}
             <div class="k">Action</div>
-            <div class="v">{{ .Action }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Reason }}
             <div class="k">Reason</div>
-            <div class="v">{{ .Reason }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .IP }}
             <div class="k">Client IP</div>
-            <div class="v">{{ .IP }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Timestamp }}
             <div class="k">Timestamp</div>
-            <div class="v">{{ .Timestamp }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}
           </div>
           <div class="actions" style="margin-top: 10px">
             <button class="btn" onclick="location.reload()">Retry</button>
-
             <a id="emailBtn" class="btn" href="#">Email Details</a>
           </div>
         </section>
 
+        {{ with .Decision }}
         <section class="card" aria-labelledby="decision-title">
           <h2 id="decision-title">Decision</h2>
           <div class="kv" id="decision-kv">
+            {{ with .Scenario }}
             <div class="k">Scenario</div>
-            <div class="v">{{ .Decision.Scenario }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Origin }}
             <div class="k">Origin</div>
-            <div class="v">{{ .Decision.Origin }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Scope }}
             <div class="k">Scope</div>
-            <div class="v">{{ .Decision.Scope }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Value }}
             <div class="k">Value</div>
-            <div class="v">{{ .Decision.Value }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Duration }}
             <div class="k">Duration</div>
-            <div class="v">{{ .Decision.Duration }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Until }}
             <div class="k">Until</div>
-            <div class="v">{{ .Decision.Until }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}
           </div>
         </section>
-
+        {{ end }} {{ with .Request }}
         <section class="card" aria-labelledby="request-title">
           <h2 id="request-title">Request</h2>
           <div class="kv" id="request-kv">
+            {{ with .Method }}
             <div class="k">Method</div>
-            <div class="v">{{ .Request.Method }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Path }}
             <div class="k">Path</div>
-            <div class="v">{{ .Request.Path }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .URL }}
             <div class="k">URL</div>
-            <div class="v">{{ .Request.URL }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Scheme }}
             <div class="k">Scheme</div>
-            <div class="v">{{ .Request.Scheme }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Host }}
             <div class="k">Host</div>
-            <div class="v">{{ .Request.Host }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Protocol }}
             <div class="k">Protocol</div>
-            <div class="v">{{ .Request.Protocol }}</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}
           </div>
         </section>
+        {{ end }}
 
         <section class="card" aria-labelledby="help-title">
           <h2 id="help-title">What can I do?</h2>
@@ -279,17 +273,18 @@
         }
         return out;
       }
+
       function buildDetailsText() {
-        const summary = kvToObject("summary-kv"),
-          decision = kvToObject("decision-kv"),
-          request = kvToObject("request-kv");
+        const summary = kvToObject("summary-kv");
+        const decision = kvToObject("decision-kv");
+        const request = kvToObject("request-kv");
+        const summaryLines = Object.entries(summary).map(
+          ([k, v]) => `${k}: ${v}`
+        );
         return [
           "Access Denied / Blocked",
           "========================",
-          `Action: {{ .Action }}`,
-          `Reason: {{ .Reason }}`,
-          `Client IP: {{ .IP }}`,
-          `Timestamp: {{ .Timestamp }}`,
+          ...summaryLines,
           "",
           "Decision:",
           JSON.stringify(decision, null, 2),
@@ -298,15 +293,23 @@
           JSON.stringify(request, null, 2),
         ].join("\n");
       }
+
       (function initEmailBtn() {
         const btn = document.getElementById("emailBtn");
         if (!btn) return;
-        const hostRaw = "{{ .Request.Host }}";
-        const host = hostRaw.replace(/:.*/, "");
-        const to = `security@hyde.services`;
-        const subj =
-          `Access Denied on ${host} - {{ .Decision.Scenario }}`.slice(0, 150);
+
+        const decision = kvToObject("decision-kv");
+        const request = kvToObject("request-kv");
+
+        const host = (request["Host"] || "").replace(/:.*/, "");
+        const scenario = decision["Scenario"] || "";
+
+        const to = "security@hyde.services";
+        const subj = `Access Denied on ${host || "unknown-host"}${
+          scenario ? " - " + scenario : ""
+        }`.slice(0, 150);
         const body = buildDetailsText();
+
         const href = `mailto:${encodeURIComponent(
           to
         )}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(
