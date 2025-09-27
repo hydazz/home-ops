@@ -44,22 +44,15 @@ spec:
               - parsed: request
                 expression: evt.Unmarshaled.envoy["x-envoy-origin-path"]
               - parsed: status
-                expression: evt.Unmarshaled.envoy.response_code
+                expression: Sprintf('%.0f', evt.Unmarshaled.envoy.response_code)
               - parsed: body_bytes_sent
-                expression: evt.Unmarshaled.envoy.bytes_sent
+                expression: Sprintf('%.0f', evt.Unmarshaled.envoy.bytes_sent)
               - parsed: http_user_agent
                 expression: evt.Unmarshaled.envoy["user-agent"]
               - parsed: target_fqdn
                 expression: evt.Unmarshaled.envoy[":authority"]
               - parsed: remote_addr
-                expression: |
-                  Trim(
-                    Split(
-                      Trim(evt.Unmarshaled.envoy.downstream_remote_address, "[]"),
-                      ":"
-                    )[0],
-                    "[]"
-                  )
+                expression: evt.Unmarshaled.envoy["x-forwarded-for"]
               - meta: service
                 value: http
               - meta: log_type
@@ -77,9 +70,9 @@ spec:
               - meta: source_ip
                 expression: evt.Parsed.remote_addr
               - meta: bytes_received
-                expression: evt.Unmarshaled.envoy.bytes_received
+                expression: Sprintf('%.0f', evt.Unmarshaled.envoy.bytes_received)
               - meta: duration_ms
-                expression: evt.Unmarshaled.envoy.duration
+                expression: Sprintf('%.0f', evt.Unmarshaled.envoy.duration)
               - meta: request_id
                 expression: evt.Unmarshaled.envoy["x-request-id"]
       config.yaml.local: |-
