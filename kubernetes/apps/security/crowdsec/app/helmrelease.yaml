@@ -122,13 +122,16 @@ spec:
           labels:
             type: envoy
       env:
-        - name: TZ
-          value: Australia/Melbourne
         - name: COLLECTIONS
           value: >-
             crowdsecurity/base-http-scenarios
             crowdsecurity/http-cve
             crowdsecurity/wordpress
+        - name: SCENARIOS
+          value: >-
+            crowdsecurity/http-bf-wordpress_bf_xmlrpc
+        - name: TZ
+          value: Australia/Melbourne
       metrics:
         enabled: true
         serviceMonitor:
@@ -143,9 +146,12 @@ spec:
           labels:
             type: appsec
       env:
+        - name: APPSEC_CONFIGS
+          value: >-
+            crowdsecurity/appsec-default
         - name: COLLECTIONS
           value: >-
             crowdsecurity/appsec-virtual-patching
             crowdsecurity/appsec-wordpress
-        - name: APPSEC_CONFIGS
-          value: crowdsecurity/appsec-default
+        - name: TZ
+          value: Australia/Melbourne
