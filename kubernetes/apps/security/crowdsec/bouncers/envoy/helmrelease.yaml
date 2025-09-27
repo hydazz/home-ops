@@ -19,13 +19,14 @@ spec:
   values:
     controllers:
       crowdsec-envoy-bouncer:
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/kdwils/envoy-proxy-bouncer
-              tag: v0.2.2@sha256:b487ae9b1a43bf37308b43c42b625f24a13392907ef28ae22209ece6d5fc802d
+              repository: ghcr.io/hydazz/envoy-proxy-bouncer
+              tag: sha-ff4abf2bbe904ce58335849138efac29ad4393f1
             env:
               ENVOY_BOUNCER_BOUNCER_ENABLED: true
               ENVOY_BOUNCER_BOUNCER_LAPIURL: http://crowdsec-service.security.svc.cluster.local:8080
@@ -55,3 +56,10 @@ spec:
         ports:
           http:
             port: 8080
+    persistence:
+      ban:
+        type: configMap
+        name: "{{ .Release.Name }}-configmap"
+        globalMounts:
+          - path: /ban.html
+            subPath: ban.html
