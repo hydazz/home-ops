@@ -121,13 +121,13 @@ spec:
         - source: loki
           url: http://loki-headless.observability.svc.cluster.local:3100
           query: |-
-            {app=~".+"} | container =~ `nginx`
+            {app=~"envoy"}
             | json
             | line_format "{{ .log }}"
             | regexp "^\\S+\\s+\\S+\\s+\\S+\\s+(?P<message>.+)$"
             | line_format "{{ .message }}"
           labels:
-            type: nginx
+            type: envoy
       env:
         - name: TZ
           value: Australia/Melbourne
@@ -135,7 +135,6 @@ spec:
           value: >-
             crowdsecurity/base-http-scenarios
             crowdsecurity/http-cve
-            crowdsecurity/nginx
             crowdsecurity/wordpress
       metrics:
         enabled: true
