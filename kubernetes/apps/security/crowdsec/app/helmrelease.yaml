@@ -26,7 +26,7 @@ spec:
       parsers:
         s01-parse:
           envoy-logs.yaml: |-
-            filter: "evt.Parsed.program startsWith 'envoy'"
+            filter: "evt.Parsed.program startsWith 'envoy' && evt.Line.Raw contains ':authority'"
             onsuccess: next_stage
             name: hydaz/envoy-logs
             description: "Parse Envoy access logs to match nginx parser outputs"
@@ -114,7 +114,7 @@ spec:
         - source: loki
           url: http://loki-headless.observability.svc.cluster.local:3100
           query: |-
-            {app=~"envoy"}
+            {app="envoy"}
             | json
             | line_format "{{ .log }}"
             | regexp "^\\S+\\s+\\S+\\s+\\S+\\s+(?P<message>.+)$"
