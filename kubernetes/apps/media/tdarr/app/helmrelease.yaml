@@ -63,42 +63,6 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 1Gi
-      worker:
-        pod:
-          runtimeClassName: nvidia
-        containers:
-          app:
-            image:
-              repository: ghcr.io/haveagitgat/tdarr_node
-              tag: 2.46.01@sha256:1ecdd628d424a98773e61a6fd85ec1533da0259baa1aa8c806960cfe2b56aa1b
-            env:
-              PGID: 1000
-              PUID: 1000
-              TZ: Australia/Melbourne
-              healthcheckcpuWorkers: 4
-              healthcheckgpuWorkers: 0
-              inContainer: true
-              nodeName:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: spec.nodeName
-              serverIP: tdarr.media.svc.cluster.local
-              serverPort: *serverPort
-              transcodecpuWorkers: 0
-              transcodegpuWorkers: 2
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-            #  capabilities:
-            #    drop:
-            #      - ALL
-            resources:
-              requests:
-                cpu: 10m
-                memory: 512Mi
-              limits:
-                memory: 8Gi
-                nvidia.com/gpu: 1
     defaultPodOptions:
       securityContext:
         #    runAsNonRoot: false
@@ -125,20 +89,14 @@ spec:
     persistence:
       config:
         existingClaim: *app
-        advancedMounts:
-          tdarr:
-            app:
-              - path: /app/server
-                subPath: server
-              - path: /app/configs
-                subPath: config
+        globalMounts:
+          - path: /app/server
+            subPath: server
+          - path: /app/configs
+            subPath: config
       media:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media/Plex Media
         globalMounts:
           - path: /media
-      transcode:
-        type: emptyDir
-        globalMounts:
-          - path: /transcode

@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tdarr-worker
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: tdarr-worker
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      nvidia-worker:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/haveagitgat/tdarr_node
+              tag: 2.46.01@sha256:1ecdd628d424a98773e61a6fd85ec1533da0259baa1aa8c806960cfe2b56aa1b
+            env:
+              PGID: 1000
+              PUID: 1000
+              TZ: Australia/Melbourne
+              healthcheckcpuWorkers: 4
+              healthcheckgpuWorkers: 0
+              inContainer: true
+              nodeName:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              serverIP: tdarr.media.svc.cluster.local
+              serverPort: 8266
+              transcodecpuWorkers: 0
+              transcodegpuWorkers: 2
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+            #  capabilities:
+            #    drop:
+            #      - ALL
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+              limits:
+                memory: 8Gi
+                nvidia.com/gpu: 1
+        pod:
+          runtimeClassName: nvidia
+    defaultPodOptions:
+      securityContext:
+        #    runAsNonRoot: false
+        #    runAsUser: 1000
+        #    runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      media:
+        type: nfs
+        server: 192.168.42.20
+        path: /mnt/Slow/Media/Plex Media
+        globalMounts:
+          - path: /media
+      transcode:
+        type: emptyDir
+        globalMounts:
+          - path: /transcode
