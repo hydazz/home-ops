@@ -61,6 +61,7 @@ spec:
           merge_log on
           merge_log_key log_processed
           merge_log_trim on
+          keep_log off
           k8s-logging.parser on
           k8s-logging.exclude off
           labels on
@@ -79,6 +80,13 @@ spec:
           operation lift
           nested_under k_labels
           add_prefix k_labels_
+
+        [FILTER]
+          name modify
+          match kubernetes.*
+          remove time
+          remove stream
+          remove logtag
 
         [FILTER]
           name modify
