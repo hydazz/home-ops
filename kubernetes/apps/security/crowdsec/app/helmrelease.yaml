@@ -84,12 +84,12 @@ spec:
               allowed_ranges:
                 - 10.42.0.0/16
         db_config:
-          type:     postgresql
-          user:     ${DB_USERNAME}
+          type: postgresql
+          user: ${DB_USERNAME}
           password: ${DB_PASSWORD}
-          db_name:  ${DB_NAME}
-          host:     ${DB_HOST}
-          port:     5432
+          db_name: ${DB_NAME}
+          host: ${DB_HOST}
+          port: 5432
     lapi:
       env:
         - name: TZ
@@ -116,8 +116,6 @@ spec:
           query: |-
             {app="envoy"}
             | json
-            | line_format "{{ .log }}"
-            | regexp "^\\S+\\s+\\S+\\s+\\S+\\s+(?P<message>.+)$"
             | line_format "{{ .message }}"
           labels:
             type: envoy
@@ -151,8 +149,12 @@ spec:
             crowdsecurity/appsec-default
         - name: COLLECTIONS
           value: >-
-            crowdsecurity/appsec-virtual-patching
             crowdsecurity/appsec-generic-rules
+            crowdsecurity/appsec-virtual-patching
             crowdsecurity/appsec-wordpress
         - name: TZ
           value: Australia/Melbourne
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
