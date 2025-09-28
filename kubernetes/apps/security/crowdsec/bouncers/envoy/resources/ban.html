@@ -32,7 +32,6 @@
         overflow-x: hidden;
       }
 
-      /* Subtle fade-in animation */
       .main > div:first-child {
         animation: fadeInUp 0.6s ease-out;
       }
@@ -62,8 +61,6 @@
       }
       .emoji {
         font-size: clamp(72px, 15vw, 160px);
-        line-height: 0.8;
-        margin: 0 0 clamp(16px, 4vw, 24px);
         filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))
           drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         user-select: none;
@@ -81,7 +78,6 @@
         margin: 0;
         font-size: clamp(16px, 2.8vw, 22px);
         color: var(--text-dim);
-        max-width: 65ch;
         line-height: 1.5;
         font-weight: 400;
       }
@@ -98,7 +94,6 @@
       }
       @media (min-width: 1024px) {
         .layout {
-          grid-template-columns: 1.3fr 0.7fr;
           gap: 28px;
         }
       }
@@ -128,7 +123,7 @@
       }
       .kv {
         display: grid;
-        grid-template-columns: clamp(140px, 30vw, 200px) 1fr;
+        grid-template-columns: clamp(0px, 16vw, 85px) 1fr;
         gap: clamp(6px, 2vw, 8px) clamp(12px, 3vw, 16px);
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           "Liberation Mono", "Courier New", monospace;
@@ -247,7 +242,6 @@
           "Liberation Mono", "Courier New", monospace;
       }
 
-      /* Custom scrollbar for webkit browsers */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -262,7 +256,6 @@
         background: rgba(255, 255, 255, 0.4);
       }
 
-      /* Selection styling */
       ::selection {
         background: rgba(255, 255, 255, 0.2);
         color: inherit;
@@ -274,7 +267,7 @@
     <main class="main" role="main" aria-labelledby="page-title">
       <div>
         <div class="emoji" aria-hidden="true">:(</div>
-        <h1 id="page-title" class="blink">Access Denied</h1>
+        <h1 id="page-title" class="blink">Request Rejected</h1>
         <p class="lede">
           This request was blocked by an automated security policy. If you think
           this is a false positive, share the diagnostics below.
@@ -285,13 +278,13 @@
         <section class="card" aria-labelledby="summary-title">
           <h2 id="summary-title">Summary</h2>
           <div class="kv" id="summary-kv">
-            {{ with .Action }}
+            {{ with .Action }} {{ if ne . "ban" }}
             <div class="k">Action</div>
             <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Reason }}
+            {{ end }} {{ end }} {{ with .Reason }} {{ if ne . "ban" }}
             <div class="k">Reason</div>
             <div class="v">{{ . }}</div>
-            {{ end }} {{ with .IP }}
+            {{ end }} {{ end }} {{ with .IP }}
             <div class="k">Client IP</div>
             <div class="v">{{ . }}</div>
             {{ end }} {{ with .Timestamp }}
@@ -301,7 +294,7 @@
           </div>
           <div class="actions">
             <button class="btn" onclick="location.reload()">Retry</button>
-            <a id="emailBtn" class="btn" href="#">Email Details</a>
+            <a id="emailBtn" class="btn" href="#">Report False Positive</a>
           </div>
         </section>
 
@@ -337,9 +330,6 @@
             {{ with .Method }}
             <div class="k">Method</div>
             <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Path }}
-            <div class="k">Path</div>
-            <div class="v">{{ . }}</div>
             {{ end }} {{ with .URL }}
             <div class="k">URL</div>
             <div class="v">{{ . }}</div>
@@ -348,6 +338,9 @@
             <div class="v">{{ . }}</div>
             {{ end }} {{ with .Host }}
             <div class="k">Host</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Path }}
+            <div class="k">Path</div>
             <div class="v">{{ . }}</div>
             {{ end }} {{ with .Protocol }}
             <div class="k">Protocol</div>
@@ -359,21 +352,23 @@
 
         <section class="card" aria-labelledby="help-title">
           <h2 id="help-title">What can I do?</h2>
-          <ul style="margin: 0 0 6px 18px; padding: 0">
+          <ul class="help-list">
+            <li>Stop trying to hack things. Seriously. We see you.</li>
             <li>
-              Make sure you're not running a scanner, crawler, or exploit probe.
+              If you're legitimately browsing (unlikely, but possible), wait a
+              bit and try again slower.
             </li>
             <li>
-              Slow down: rapid-fire requests and error storms trigger defenses.
-            </li>
-            <li>Turn off VPN/Tor or risky proxies and try again.</li>
-            <li>
-              Respect <code>/robots.txt</code> and stick to documented
-              endpoints.
+              Turn off that sketchy VPN/Tor exit node you're using to "browse
+              anonymously."
             </li>
             <li>
-              If you believe this is a mistake, click
-              <code>Email Details</code> to report the false positive.
+              Read <code>/robots.txt</code> like a civilised internet citizen
+              instead of carpet-bombing endpoints.
+            </li>
+            <li>
+              If you're actually innocent (doubt it), check if you accidentally
+              triggered our security rules and try a different approach.
             </li>
           </ul>
         </section>
@@ -398,19 +393,32 @@
         const summary = kvToObject("summary-kv");
         const decision = kvToObject("decision-kv");
         const request = kvToObject("request-kv");
-        const summaryLines = Object.entries(summary).map(
-          ([k, v]) => `${k}: ${v}`
-        );
+
+        const url =
+          request["URL"] ||
+          `${request["Scheme"] || "https"}://${request["Host"] || "unknown"}${
+            request["Path"] || ""
+          }`;
+        const timestamp = summary["Timestamp"] || "unknown time";
+        const clientIP = summary["Client IP"] || "unknown IP";
+        const scenario = decision["Scenario"] || "security rule";
+
         return [
-          "Access Denied / Blocked",
-          "========================",
-          ...summaryLines,
+          "Hi,",
           "",
-          "Decision:",
-          JSON.stringify(decision, null, 2),
+          `I've been blocked from accessing ${url} and believe this may be a false positive.`,
           "",
-          "Request:",
-          JSON.stringify(request, null, 2),
+          `I was trying to access the site at ${timestamp} and received an access denied page. I'm a legitimate user and wasn't doing anything malicious.`,
+          "",
+          "Technical details for your review:",
+          `- Blocked URL: ${url}`,
+          `- Time: ${timestamp}`,
+          `- My IP: ${clientIP}`,
+          `- Security rule triggered: ${scenario}`,
+          "",
+          "Could you please review this block and whitelist my access if appropriate?",
+          "",
+          "Thanks!",
         ].join("\n");
       }
 
