@@ -30,7 +30,7 @@ spec:
               DATA_DIR: /config
               ENABLE_SIGNUP: false
               ENABLE_WEBSOCKET_SUPPORT: true
-              OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
+              OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local
               PORT: &port 80
               TZ: Australia/Melbourne
               WEBSOCKET_REDIS_URL: redis://dragonfly.databases.svc.cluster.local/0
