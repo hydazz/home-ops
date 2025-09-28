@@ -7,9 +7,6 @@ machine:
     {% if ENV.IS_CONTROLLER %}
     key: op://K8s/talos/MACHINE_CA_KEY
     {% endif %}
-  certSANs:
-    - 127.0.0.1
-    - 192.168.42.100
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -87,8 +84,8 @@ machine:
             - pciID: 15B3:1003 # MT27500 Family [ConnectX-3]
               driver: mlx4_core
           mode: active-backup
-        mtu: 9000
         dhcp: true
+        mtu: 9000
         dhcpOptions:
           ipv4: true
           ipv6: true
@@ -96,11 +93,14 @@ machine:
           - # IoT
             vlanId: 2
             dhcp: false
+            mtu: 9000
           - # VPN
             vlanId: 50
             dhcp: false
+            mtu: 9000
   nodeLabels:
     intel.feature.node.kubernetes.io/gpu: "true"
+    topology.kubernetes.io/region: kubernetes
   sysctls:
     fs.inotify.max_user_instances: "8192"
     fs.inotify.max_user_watches: "1048576"
@@ -133,7 +133,7 @@ cluster:
     {% endif %}
   clusterName: kubernetes
   controlPlane:
-    endpoint: https://192.168.42.100:6443
+    endpoint: https://k8s.internal:6443
   id: op://K8s/talos/CLUSTER_ID
   network:
     cni:
@@ -159,8 +159,7 @@ cluster:
       rules:
         - level: Metadata
     certSANs:
-      - 127.0.0.1
-      - 192.168.42.100
+      - k8s.internal
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
@@ -208,12 +207,6 @@ cluster:
   secretboxEncryptionSecret: op://K8s/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: op://K8s/talos/CLUSTER_SERVICEACCOUNT_KEY
-  discovery:
-    enabled: true
-    registries:
-      kubernetes:
-        disabled: true
-      service: {}
   {% endif %}
 ---
 apiVersion: v1alpha1

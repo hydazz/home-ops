@@ -91,6 +91,7 @@ kind: Service
 metadata:
   name: kube-api
   annotations:
+    external-dns.alpha.kubernetes.io/hostname: k8s.hyde.services
     lbipam.cilium.io/ips: 192.168.42.100
 spec:
   type: LoadBalancer
