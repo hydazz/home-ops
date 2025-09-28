@@ -6,12 +6,25 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
       :root {
-        --bsod: #0078d7;
-        --bsod-dim: #0066b8;
-        --text: #fff;
-        --text-dim: rgba(255, 255, 255, 0.85);
-        --mono: #eaf3ff;
-        --kbd: rgba(255, 255, 255, 0.15);
+        --bg: rgba(51, 118, 208);
+        --text: #ffffff;
+        --surface: rgba(0, 0, 0, 0.15);
+        --surface-2: rgba(0, 0, 0, 0.25);
+        --outline: rgba(255, 255, 255, 0.28);
+        --radius-lg: 16px;
+        --radius-md: 12px;
+        --elev-1: 0 1px 2px rgba(0, 0, 0, 0.24), 0 1px 3px rgba(0, 0, 0, 0.12);
+        --elev-2: 0 3px 6px rgba(0, 0, 0, 0.22), 0 2px 4px rgba(0, 0, 0, 0.12);
+        --elev-3: 0 6px 10px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.12);
+      }
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) {
+          --bg: rgba(76, 148, 245);
+          --text: #000000;
+          --surface: rgba(255, 255, 255, 0.3);
+          --surface-2: rgba(255, 255, 255, 0.25);
+          --outline: rgba(0, 0, 0, 0.18);
+        }
       }
       * {
         box-sizing: border-box;
@@ -20,11 +33,7 @@
       body {
         height: 100%;
         margin: 0;
-        background: radial-gradient(
-          1200px 800px at 30% 20%,
-          var(--bsod),
-          var(--bsod-dim)
-        );
+        background-color: var(--bg);
         color: var(--text);
         font-family: "Segoe UI", "Segoe UI Symbol", "Calibri", Roboto, Arial,
           Helvetica, sans-serif;
@@ -32,23 +41,6 @@
         overflow-x: hidden;
       }
 
-      .main > div:first-child {
-        animation: fadeInUp 0.6s ease-out;
-      }
-      .layout {
-        animation: fadeInUp 0.8s ease-out 0.2s both;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
       .main {
         min-height: 100%;
         display: grid;
@@ -61,23 +53,20 @@
       }
       .emoji {
         font-size: clamp(72px, 15vw, 160px);
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))
-          drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         user-select: none;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
       h1 {
         margin: 0 0 clamp(8px, 2vw, 12px);
-        font-weight: 600;
+        font-weight: 700;
         font-size: clamp(24px, 4vw, 42px);
-        letter-spacing: 0.3px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        letter-spacing: 0.2px;
         line-height: 1.1;
+        color: var(--text);
       }
       .lede {
         margin: 0;
         font-size: clamp(16px, 2.8vw, 22px);
-        color: var(--text-dim);
+        color: var(--text);
         line-height: 1.5;
         font-weight: 400;
       }
@@ -98,40 +87,58 @@
         }
       }
       .card {
-        background: rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 16px;
+        position: relative;
+        background: var(--surface);
+        border-radius: var(--radius-lg);
         padding: clamp(16px, 4vw, 24px) clamp(18px, 4vw, 28px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) inset,
-          0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 12px rgba(0, 0, 0, 0.15);
-        backdrop-filter: blur(8px);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: var(--elev-1);
+        border: 1px solid var(--outline);
+        transition: transform 0.18s ease, box-shadow 0.18s ease,
+          border-color 0.18s ease, background-color 0.18s ease;
+        will-change: transform, box-shadow;
+        overflow: clip;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.06);
+        pointer-events: none;
+      }
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) .card::before {
+          background: rgba(255, 255, 255, 0.1);
+        }
       }
       .card:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) inset,
-          0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--elev-2);
+      }
+      .card:active {
+        box-shadow: var(--elev-1);
+      }
+      .card:focus-within {
+        box-shadow: var(--elev-3);
+        border-color: rgba(0, 0, 0, 0.25);
       }
       .card h2 {
         margin: 0 0 clamp(12px, 3vw, 16px);
         font-size: clamp(14px, 3.5vw, 18px);
-        font-weight: 700;
+        font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        opacity: 0.95;
-        color: rgba(255, 255, 255, 0.9);
+        color: var(--text);
       }
       .kv {
         display: grid;
-        grid-template-columns: clamp(0px, 16vw, 85px) 1fr;
-        gap: clamp(6px, 2vw, 8px) clamp(12px, 3vw, 16px);
+        grid-template-columns: clamp(0px, 16vw, 110px) 1fr;
+        gap: clamp(6px, 2vw, 10px) clamp(12px, 3vw, 18px);
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           "Liberation Mono", "Courier New", monospace;
         font-size: clamp(13px, 3vw, 15px);
-        color: var(--mono);
+        color: var(--text);
         word-break: break-word;
         white-space: pre-wrap;
-        line-height: 1.4;
+        line-height: 1.45;
       }
       @media (max-width: 480px) {
         .kv {
@@ -139,48 +146,44 @@
           gap: 4px;
         }
         .kv .k {
-          font-weight: 600;
+          font-weight: 700;
           margin-top: 8px;
         }
         .kv .k:first-child {
           margin-top: 0;
         }
       }
-      .kv .k {
-        opacity: 0.9;
-      }
-      .kv .v {
-        opacity: 1;
-      }
+
       .btn {
         appearance: none;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
+        border: 1px solid var(--outline);
+        background: var(--surface-2);
+        color: var(--text);
         padding: clamp(12px, 3vw, 14px) clamp(16px, 4vw, 20px);
-        border-radius: 12px;
-        font-weight: 600;
+        border-radius: var(--radius-md);
+        font-weight: 700;
         cursor: pointer;
         font-size: clamp(14px, 3.5vw, 16px);
-        transition: transform 0.1s ease, background 0.2s ease,
-          border-color 0.2s ease, box-shadow 0.2s ease;
-        text-decoration: none;
-        display: inline-block;
         min-height: 44px;
         min-width: 44px;
-        touch-action: manipulation;
+        transition: transform 0.08s ease, box-shadow 0.18s ease,
+          filter 0.18s ease, border-color 0.18s ease,
+          background-color 0.18s ease;
+        box-shadow: var(--elev-1);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
       .btn:hover {
-        background: rgba(255, 255, 255, 0.18);
-        border-color: rgba(255, 255, 255, 0.45);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        box-shadow: var(--elev-2);
       }
       .btn:active {
         transform: translateY(1px);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--elev-1);
       }
       .btn:focus {
-        outline: 2px solid rgba(255, 255, 255, 0.6);
+        outline: 2px solid rgba(0, 0, 0, 0.25);
         outline-offset: 2px;
       }
       .btn:focus:not(:focus-visible) {
@@ -206,15 +209,15 @@
         display: inline-block;
       }
       .blink::after {
-        content: "█";
+        content: "|";
         margin-left: 6px;
-        opacity: 0.75;
         animation: caret 1.2s steps(1, end) infinite;
+        color: var(--text);
       }
       @keyframes caret {
         0%,
         49% {
-          opacity: 0.75;
+          opacity: 1;
         }
         50%,
         100% {
@@ -242,23 +245,9 @@
           "Liberation Mono", "Courier New", monospace;
       }
 
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.2);
-      }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.4);
-      }
-
       ::selection {
-        background: rgba(255, 255, 255, 0.2);
-        color: inherit;
+        background: rgba(0, 0, 0, 0.2);
+        color: var(--text);
       }
     </style>
   </head>
