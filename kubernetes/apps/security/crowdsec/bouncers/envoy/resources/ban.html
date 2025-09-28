@@ -17,6 +17,7 @@
         --elev-2: 0 3px 6px rgba(0, 0, 0, 0.22), 0 2px 4px rgba(0, 0, 0, 0.12);
         --elev-3: 0 6px 10px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.12);
       }
+
       @media (prefers-color-scheme: light) {
         :root:not([data-theme]) {
           --bg: rgba(76, 148, 245);
@@ -26,9 +27,11 @@
           --outline: rgba(0, 0, 0, 0.18);
         }
       }
+
       * {
         box-sizing: border-box;
       }
+
       html,
       body {
         height: 100%;
@@ -51,10 +54,12 @@
         max-width: 1400px;
         margin: 0 auto;
       }
+
       .emoji {
         font-size: clamp(72px, 15vw, 160px);
         user-select: none;
       }
+
       h1 {
         margin: 0 0 clamp(8px, 2vw, 12px);
         font-weight: 700;
@@ -63,6 +68,7 @@
         line-height: 1.1;
         color: var(--text);
       }
+
       .lede {
         margin: 0;
         font-size: clamp(16px, 2.8vw, 22px);
@@ -70,12 +76,14 @@
         line-height: 1.5;
         font-weight: 400;
       }
+
       .layout {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr;
         gap: clamp(16px, 3vw, 24px);
       }
+
       @media (min-width: 768px) {
         .layout {
           grid-template-columns: 1fr 1fr;
@@ -86,6 +94,7 @@
           gap: 28px;
         }
       }
+
       .card {
         position: relative;
         background: var(--surface);
@@ -98,6 +107,7 @@
         will-change: transform, box-shadow;
         overflow: clip;
       }
+
       .card::before {
         content: "";
         position: absolute;
@@ -105,21 +115,25 @@
         background: rgba(0, 0, 0, 0.06);
         pointer-events: none;
       }
+
       @media (prefers-color-scheme: light) {
         :root:not([data-theme]) .card::before {
           background: rgba(255, 255, 255, 0.1);
         }
       }
+
       .card:hover {
         box-shadow: var(--elev-2);
       }
       .card:active {
         box-shadow: var(--elev-1);
       }
+
       .card:focus-within {
         box-shadow: var(--elev-3);
         border-color: rgba(0, 0, 0, 0.25);
       }
+
       .card h2 {
         margin: 0 0 clamp(12px, 3vw, 16px);
         font-size: clamp(14px, 3.5vw, 18px);
@@ -128,6 +142,7 @@
         letter-spacing: 0.8px;
         color: var(--text);
       }
+
       .kv {
         display: grid;
         grid-template-columns: clamp(0px, 16vw, 110px) 1fr;
@@ -140,6 +155,7 @@
         white-space: pre-wrap;
         line-height: 1.45;
       }
+
       @media (max-width: 480px) {
         .kv {
           grid-template-columns: 1fr;
@@ -166,15 +182,15 @@
         font-size: clamp(14px, 3.5vw, 16px);
         min-height: 44px;
         min-width: 44px;
-        transition: transform 0.08s ease, box-shadow 0.18s ease,
-          filter 0.18s ease, border-color 0.18s ease,
-          background-color 0.18s ease;
+        transition: transform 0.08s ease, box-shadow 0.18s ease, filter 0.18s ease,
+          border-color 0.18s ease, background-color 0.18s ease;
         box-shadow: var(--elev-1);
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
       }
+
       .btn:hover {
         box-shadow: var(--elev-2);
       }
@@ -189,12 +205,14 @@
       .btn:focus:not(:focus-visible) {
         outline: none;
       }
+
       .actions {
         display: flex;
         gap: clamp(8px, 2vw, 12px);
         flex-wrap: wrap;
         margin-top: clamp(12px, 3vw, 16px);
       }
+
       @media (max-width: 480px) {
         .actions {
           flex-direction: column;
@@ -204,6 +222,7 @@
           text-align: center;
         }
       }
+
       .blink {
         position: relative;
         display: inline-block;
@@ -214,6 +233,7 @@
         animation: caret 1.2s steps(1, end) infinite;
         color: var(--text);
       }
+
       @keyframes caret {
         0%,
         49% {
@@ -224,11 +244,13 @@
           opacity: 0;
         }
       }
+
       .help-list {
         margin: 0 0 clamp(6px, 2vw, 8px) clamp(16px, 4vw, 20px);
         padding: 0;
         line-height: 1.5;
       }
+
       .help-list li {
         margin-bottom: clamp(8px, 2vw, 12px);
         font-size: clamp(14px, 3.2vw, 16px);
@@ -236,6 +258,7 @@
       .help-list li:last-child {
         margin-bottom: 0;
       }
+
       .help-list code {
         background: rgba(255, 255, 255, 0.15);
         padding: 2px 6px;
@@ -251,38 +274,25 @@
       }
     </style>
   </head>
-
   <body>
     <main class="main" role="main" aria-labelledby="page-title">
       <div>
         <div class="emoji" aria-hidden="true">:(</div>
         <h1 id="page-title" class="blink">Request Rejected</h1>
-        <p class="lede">
-          This request was blocked by an automated security policy. If you think
-          this is a false positive, share the diagnostics below.
-        </p>
+        <p class="lede">This request was blocked by an automated security policy. If you think this is a false positive, share the diagnostics below.</p>
       </div>
 
       <div class="layout">
         <section class="card" aria-labelledby="summary-title">
           <h2 id="summary-title">Summary</h2>
           <div class="kv" id="summary-kv">
-            {{ with .Action }} {{ if ne . "ban" }}
-            <div class="k">Action</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ end }} {{ with .Reason }} {{ if ne . "ban" }}
-            <div class="k">Reason</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ end }} {{ with .IP }}
-            <div class="k">Client IP</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Timestamp }}
-            <div class="k">Timestamp</div>
-            <div class="v">{{ . }}</div>
-            {{ end }}
+            {{ with .Action }}{{ if ne . "ban" }}<div class="k">Action</div><div class="v">{{ . }}</div>{{ end }}{{ end }}
+            {{ with .Reason }}{{ if ne . "ban" }}<div class="k">Reason</div><div class="v">{{ . }}</div>{{ end }}{{ end }}
+            {{ with .IP }}<div class="k">Client IP</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Timestamp }}<div class="k">Timestamp</div><div class="v">{{ . }}</div>{{ end }}
           </div>
           <div class="actions">
-            <button class="btn" onclick="location.reload()">Retry</button>
+            <button id="retryBtn" class="btn" type="button">Retry</button>
             <a id="emailBtn" class="btn" href="#">Report False Positive</a>
           </div>
         </section>
@@ -291,50 +301,26 @@
         <section class="card" aria-labelledby="decision-title">
           <h2 id="decision-title">Decision</h2>
           <div class="kv" id="decision-kv">
-            {{ with .Scenario }}
-            <div class="k">Scenario</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Origin }}
-            <div class="k">Origin</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Scope }}
-            <div class="k">Scope</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Value }}
-            <div class="k">Value</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Duration }}
-            <div class="k">Duration</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Until }}
-            <div class="k">Until</div>
-            <div class="v">{{ . }}</div>
-            {{ end }}
+            {{ with .Scenario }}<div class="k">Scenario</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Origin }}<div class="k">Origin</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Scope }}<div class="k">Scope</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Value }}<div class="k">Value</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Duration }}<div class="k">Duration</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Until }}<div class="k">Until</div><div class="v">{{ . }}</div>{{ end }}
           </div>
         </section>
-        {{ end }} {{ with .Request }}
+        {{ end }}
+
+        {{ with .Request }}
         <section class="card" aria-labelledby="request-title">
           <h2 id="request-title">Request</h2>
           <div class="kv" id="request-kv">
-            {{ with .Method }}
-            <div class="k">Method</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .URL }}
-            <div class="k">URL</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Scheme }}
-            <div class="k">Scheme</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Host }}
-            <div class="k">Host</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Path }}
-            <div class="k">Path</div>
-            <div class="v">{{ . }}</div>
-            {{ end }} {{ with .Protocol }}
-            <div class="k">Protocol</div>
-            <div class="v">{{ . }}</div>
-            {{ end }}
+            {{ with .Method }}<div class="k">Method</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .URL }}<div class="k">URL</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Scheme }}<div class="k">Scheme</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Host }}<div class="k">Host</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Path }}<div class="k">Path</div><div class="v">{{ . }}</div>{{ end }}
+        {{ with .Protocol }}<div class="k">Protocol</div><div class="v">{{ . }}</div>{{ end }}
           </div>
         </section>
         {{ end }}
@@ -343,42 +329,30 @@
           <h2 id="help-title">What can I do?</h2>
           <ul class="help-list">
             <li>Stop trying to hack things. Seriously. We see you.</li>
-            <li>
-              If you're legitimately browsing (unlikely, but possible), wait a
-              bit and try again slower.
-            </li>
-            <li>
-              Turn off that sketchy VPN/Tor exit node you're using to "browse
-              anonymously."
-            </li>
-            <li>
-              Read <code>/robots.txt</code> like a civilised internet citizen
-              instead of carpet-bombing endpoints.
-            </li>
-            <li>
-              If you're actually innocent (doubt it), check if you accidentally
-              triggered our security rules and try a different approach.
-            </li>
+            <li>If you're legitimately browsing (unlikely, but possible), wait a bit and try again slower.</li>
+            <li>Turn off that sketchy VPN/Tor exit node you're using to "browse anonymously."</li>
+            <li>Read <code>/robots.txt</code> like a civilised internet citizen instead of carpet-bombing endpoints.</li>
+            <li>If you're actually innocent (doubt it), check if you accidentally triggered our security rules and try a different approach.</li>
           </ul>
         </section>
       </div>
     </main>
 
     <script>
-      function kvToObject(id) {
-        const node = document.getElementById(id);
-        const out = {};
-        if (!node) return out;
-        const kids = [...node.children];
-        for (let i = 0; i < kids.length; i += 2) {
-          const k = kids[i]?.textContent?.trim();
-          const v = kids[i + 1]?.textContent ?? "";
-          if (k) out[k] = v;
-        }
-        return out;
-      }
+      document.addEventListener("DOMContentLoaded", () => {
+        const kvToObject = (id) => {
+          const n = document.getElementById(id);
+          if (!n) return {};
+          const out = {};
+          const c = n.children;
+          for (let i = 0; i < c.length; i += 2) {
+            const k = c[i]?.textContent?.trim();
+            const v = c[i + 1]?.textContent || "";
+            if (k) out[k] = v;
+          }
+          return out;
+        };
 
-      function buildDetailsText() {
         const summary = kvToObject("summary-kv");
         const decision = kvToObject("decision-kv");
         const request = kvToObject("request-kv");
@@ -392,48 +366,42 @@
         const clientIP = summary["Client IP"] || "unknown IP";
         const scenario = decision["Scenario"] || "security rule";
 
-        return [
-          "Hi,",
-          "",
-          `I've been blocked from accessing ${url} and believe this may be a false positive.`,
-          "",
-          `I was trying to access the site at ${timestamp} and received an access denied page. I'm a legitimate user and wasn't doing anything malicious.`,
-          "",
-          "Technical details for your review:",
-          `- Blocked URL: ${url}`,
-          `- Time: ${timestamp}`,
-          `- My IP: ${clientIP}`,
-          `- Security rule triggered: ${scenario}`,
-          "",
-          "Could you please review this block and whitelist my access if appropriate?",
-          "",
-          "Thanks!",
-        ].join("\n");
-      }
+        const buildBody = () =>
+          [
+            "Hi,",
+            "",
+            `I've been blocked from accessing ${url} and believe this may be a false positive.`,
+            "",
+            `I was trying to access the site at ${timestamp} and received an access denied page. I'm a legitimate user and wasn't doing anything malicious.`,
+            "",
+            "Technical details for your review:",
+            `- Blocked URL: ${url}`,
+            `- Time: ${timestamp}`,
+            `- My IP: ${clientIP}`,
+            `- Security rule triggered: ${scenario}`,
+            "",
+            "Could you please review this block and whitelist my access if appropriate?",
+            "",
+            "Thanks!",
+          ].join("\n");
 
-      (function initEmailBtn() {
-        const btn = document.getElementById("emailBtn");
-        if (!btn) return;
+        const emailBtn = document.getElementById("emailBtn");
+        if (emailBtn) {
+          const host = (request["Host"] || "").replace(/:.*/, "");
+          const subj = `Access Denied on ${host || "unknown-host"}${
+            scenario ? " - " + scenario : ""
+          }`.slice(0, 150);
+          const body = buildBody();
+          const to = "security@hyde.services";
+          const href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(
+            subj
+          )}&body=${encodeURIComponent(body)}`;
+          emailBtn.href = href;
+        }
 
-        const decision = kvToObject("decision-kv");
-        const request = kvToObject("request-kv");
-
-        const host = (request["Host"] || "").replace(/:.*/, "");
-        const scenario = decision["Scenario"] || "";
-
-        const to = "security@hyde.services";
-        const subj = `Access Denied on ${host || "unknown-host"}${
-          scenario ? " - " + scenario : ""
-        }`.slice(0, 150);
-        const body = buildDetailsText();
-
-        const href = `mailto:${encodeURIComponent(
-          to
-        )}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(
-          body
-        )}`;
-        btn.setAttribute("href", href);
-      })();
+        const retryBtn = document.getElementById("retryBtn");
+        if (retryBtn) retryBtn.addEventListener("click", () => location.reload());
+      });
     </script>
   </body>
 </html>
