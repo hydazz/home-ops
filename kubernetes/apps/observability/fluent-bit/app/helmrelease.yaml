@@ -32,12 +32,20 @@ spec:
           http_port {{ .Values.metricsPort }}
           health_check on
 
+      customParsers: |-
+        [PARSER]
+            Name        cri
+            Format      regex
+            Regex       ^(?<time>[^ ]+) (?<stream>stdout|stderr) F (?<log>.*)$
+            Time_Key    time
+            Time_Format %Y-%m-%dT%H:%M:%S.%L
+
       inputs: |-
         [INPUT]
           name tail
           alias kubernetes
           path /var/log/containers/*.log
-          parser containerd
+          parser cri
           tag kubernetes.*
           skip_empty_lines on
           skip_long_lines on
