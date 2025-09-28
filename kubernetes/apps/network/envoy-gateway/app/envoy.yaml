@@ -272,7 +272,7 @@ spec:
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: envoy-bouncer-policy
+  name: crowdsec-envoy-bouncer
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
