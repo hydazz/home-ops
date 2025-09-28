@@ -42,10 +42,9 @@ spec:
             env:
               WORDPRESS_AUTO_UPDATE_CORE: false
               WORDPRESS_CONFIG_EXTRA: |-
-                define('DISABLE_WP_CRON', true);
                 define('WP_MEMORY_LIMIT', '256M');
                 define('WP_MAX_MEMORY_LIMIT', '512M');
-            envFrom: &secret
+            envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             securityContext: *securityContext
@@ -55,18 +54,6 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 1Gi
-          cron:
-            image: *image
-            command:
-              - sh
-              - -c
-              - |
-                while :; do
-                  wp cron event run --due-now --path=/var/www/html || true
-                  sleep 300
-                done
-            envFrom: *secret
-            securityContext: *securityContext
           nginx:
             image:
               repository: docker.io/library/nginx
