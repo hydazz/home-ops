@@ -51,10 +51,10 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 300m
-                memory: 512Mi
+                cpu: 15m
+                memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 1Gi
           cron:
             image: *image
             command:
@@ -94,10 +94,9 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
                 memory: 128Mi
               limits:
-                cpu: 500m
                 memory: 256Mi
     defaultPodOptions:
       securityContext:

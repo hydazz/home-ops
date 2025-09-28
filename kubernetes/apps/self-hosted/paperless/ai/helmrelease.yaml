@@ -44,10 +44,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 1Gi
+                memory: 2Gi
               limits:
-                cpu: 2
-                memory: 4Gi
+                memory: 3Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -86,6 +85,8 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
+          - path: /app/public/images
+            subPath: images
           - path: /tmp
             subPath: tmp
           - path: /app/logs

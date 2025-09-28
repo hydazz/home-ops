@@ -39,5 +39,5 @@ spec:
     runtimeClassName: nvidia
     resources:
       limits:
-        memory: 1Gi
+        memory: 1Gi # This does indeed use this much RAM doing nothing
         nvidia.com/gpu: 1

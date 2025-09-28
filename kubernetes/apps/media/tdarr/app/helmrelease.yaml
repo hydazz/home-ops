@@ -59,10 +59,10 @@ spec:
             #      - ALL
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
                 memory: 512Mi
               limits:
-                memory: 2Gi
+                memory: 1Gi
       worker:
         pod:
           runtimeClassName: nvidia
@@ -94,9 +94,10 @@ spec:
             #      - ALL
             resources:
               requests:
-                cpu: 50m
-                memory: 1Gi
+                cpu: 10m
+                memory: 512Mi
               limits:
+                memory: 8Gi
                 nvidia.com/gpu: 1
     defaultPodOptions:
       securityContext:

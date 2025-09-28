@@ -41,9 +41,11 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
               limits:
-                cpu: 200m
-                memory: 200Mi
+                memory: 64Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

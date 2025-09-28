@@ -32,10 +32,9 @@ spec:
               privileged: true
             resources:
               requests:
-                cpu: 25m
+                cpu: 10m
               limits:
-                cpu: 100m
-                memory: 128Mi
+                memory: 32Mi
     defaultPodOptions:
       nodeSelector:
         kubernetes.io/hostname: titan

@@ -65,7 +65,7 @@ spec:
               #capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 50m
+                cpu: 10m
                 memory: 1Gi
               limits:
                 memory: 2Gi
@@ -80,9 +80,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 400Mi
+                memory: 256Mi
               limits:
-                memory: 800Mi
+                memory: 512Mi
           gotenberg:
             image:
               repository: docker.io/gotenberg/gotenberg
@@ -99,9 +99,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 50Mi
+                memory: 64Mi
               limits:
-                memory: 100Mi
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         fsGroup: 1000
