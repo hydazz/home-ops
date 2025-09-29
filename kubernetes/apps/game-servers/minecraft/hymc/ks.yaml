@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/defaults
+    - ../../../../../components/defaults
   interval: 1h
   path: ./kubernetes/apps/game-servers/minecraft/hymc/velocity
   prune: true
@@ -35,7 +35,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
-    - ../../../../components/defaults
+    - ../../../../../components/defaults
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -67,7 +67,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
-    - ../../../../components/defaults
+    - ../../../../../components/defaults
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
