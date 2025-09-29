@@ -10,16 +10,17 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/defaults
     - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/apps/self-hosted/changedetection/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 128Mi
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
   prune: true
   retryInterval: 2m
   sourceRef:

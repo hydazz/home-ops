@@ -9,10 +9,4 @@ spec:
   chartRef:
     kind: OCIRepository
     name: reflector
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+

@@ -10,6 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/defaults
     - ../../../../components/gatus/external
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
@@ -21,15 +22,15 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/storage/nextcloud-shca/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
+      GATUS_DOMAIN: ${D_HCA}
       GATUS_GROUP: *namespace
       GATUS_SUBDOMAIN: storage
-      GATUS_DOMAIN: "${D_HCA}"
       VOLSYNC_CAPACITY: 2Gi
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
   prune: true
   retryInterval: 2m
   sourceRef:

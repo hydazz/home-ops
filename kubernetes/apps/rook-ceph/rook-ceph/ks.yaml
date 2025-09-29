@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
@@ -36,12 +38,18 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/defaults
     - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph
       namespace: *namespace
     - name: volsync
       namespace: volsync-system
+  healthCheckExprs:
+    - apiVersion: ceph.rook.io/v1
+      current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']
+      failed: status.ceph.health == 'HEALTH_ERR'
+      kind: CephCluster
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
@@ -51,18 +59,13 @@ spec:
       kind: CephCluster
       name: rook-ceph
       namespace: *namespace
-  healthCheckExprs:
-    - apiVersion: ceph.rook.io/v1
-      kind: CephCluster
-      failed: status.ceph.health == 'HEALTH_ERR'
-      current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']
   interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: rook
       GATUS_GROUP: *namespace
+      GATUS_SUBDOMAIN: rook
   prune: true
   retryInterval: 2m
   sourceRef:

@@ -5,19 +5,10 @@ kind: HelmRelease
 metadata:
   name: fluent-bit
 spec:
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: fluent-bit
-  maxHistory: 2
-  interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     config:
       service: |-

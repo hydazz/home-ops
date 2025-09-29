@@ -9,15 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: loki
-  install:
-    crds: Skip
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    crds: Skip
-    remediation:
-      retries: 3
   values:
     deploymentMode: SingleBinary
     loki:
@@ -66,7 +57,7 @@ spec:
       persistence:
         enabled: true
         storageClass: ceph-block
-        size: 20Gi
+        size: 50Gi
     gateway:
       replicas: 0
     backend:

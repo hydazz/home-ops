@@ -9,13 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: b2-kopia-sync
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     controllers:
       main:

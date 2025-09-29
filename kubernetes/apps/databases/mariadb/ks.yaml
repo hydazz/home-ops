@@ -9,8 +9,10 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/databases/mariadb/crds
+  components:
+    - ../../../../components/defaults
   interval: 1h
+  path: ./kubernetes/apps/databases/mariadb/crds
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -31,11 +33,13 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: mariadb-operator-crds
       namespace: databases
-  path: ./kubernetes/apps/databases/mariadb/app
   interval: 1h
+  path: ./kubernetes/apps/databases/mariadb/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -56,13 +60,15 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: mariadb-operator
       namespace: databases
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  path: ./kubernetes/apps/databases/mariadb/cluster
   interval: 1h
+  path: ./kubernetes/apps/databases/mariadb/cluster
   prune: true
   retryInterval: 2m
   sourceRef:

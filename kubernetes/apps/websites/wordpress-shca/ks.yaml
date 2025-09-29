@@ -10,6 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/defaults
     - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
@@ -22,15 +23,15 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/websites/wordpress-shca/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
+      GATUS_DOMAIN: ${D_HCA}
       GATUS_GROUP: *namespace
       GATUS_SUBDOMAIN: store
-      GATUS_DOMAIN: "${D_HCA}"
       VOLSYNC_CAPACITY: 2Gi
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
   prune: true
   sourceRef:
     kind: GitRepository

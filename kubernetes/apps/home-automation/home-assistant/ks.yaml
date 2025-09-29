@@ -10,6 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/defaults
     - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
@@ -22,8 +23,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: homeassistant
       GATUS_GROUP: *namespace
+      GATUS_SUBDOMAIN: homeassistant
       VOLSYNC_CAPACITY: 4Gi
   prune: true
   retryInterval: 2m

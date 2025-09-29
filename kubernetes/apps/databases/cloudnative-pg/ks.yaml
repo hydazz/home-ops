@@ -9,8 +9,10 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/databases/cloudnative-pg/app
+  components:
+    - ../../../../components/defaults
   interval: 1h
+  path: ./kubernetes/apps/databases/cloudnative-pg/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -31,13 +33,15 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
     - name: cloudnative-pg
       namespace: *namespace
-  path: ./kubernetes/apps/databases/cloudnative-pg/barman-cloud
   interval: 1h
+  path: ./kubernetes/apps/databases/cloudnative-pg/barman-cloud
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -58,6 +62,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace
@@ -67,9 +73,9 @@ spec:
       namespace: openebs-system
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+      kind: Cluster
   interval: 1h
   path: ./kubernetes/apps/databases/cloudnative-pg/cluster
   prune: true

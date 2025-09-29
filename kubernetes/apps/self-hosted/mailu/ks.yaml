@@ -10,6 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/defaults
     - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
@@ -22,19 +23,19 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/self-hosted/mailu/app
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: mail
       GATUS_GROUP: *namespace
-      VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_STORAGECLASS: ceph-filesystem
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
+      GATUS_SUBDOMAIN: mail
       VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_PUID: "0"
+      VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_PGID: "0"
+      VOLSYNC_PUID: "0"
+      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
+      VOLSYNC_STORAGECLASS: ceph-filesystem
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
   prune: true
   retryInterval: 2m
   sourceRef:
