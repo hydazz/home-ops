@@ -139,6 +139,13 @@ cluster:
   clusterName: kubernetes
   controlPlane:
     endpoint: https://k8s.internal:6443
+  discovery:
+    enabled: true
+    registries:
+      kubernetes:
+        disabled: true
+      service:
+        disabled: false
   id: op://K8s/talos/CLUSTER_ID
   network:
     cni:
