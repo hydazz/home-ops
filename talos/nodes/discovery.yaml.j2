@@ -6,6 +6,10 @@ machine:
     image: factory.talos.dev/metal-installer-secureboot/b8933d048b99664dec02d2f2b802a13020c59e5d2e1a57a5982e1bd9ee0d392f:v1.11.2
   network:
     hostname: discovery
+    interfaces:
+      - interface: bond0
+        bond:
+          primary: enp6s0 # MT27500 Family [ConnectX-3]
   nodeLabels:
     nvidia.com/gpu.present: "true"
   type: controlplane

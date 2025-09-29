@@ -83,7 +83,12 @@ machine:
           deviceSelectors:
             - pciID: 15B3:1003 # MT27500 Family [ConnectX-3]
               driver: mlx4_core
+            - pciID: 10EC:812* # RTL8125/6 2.5/5GbE Controller
+              driver: r8169
+          miimon: 100
           mode: active-backup
+          primary: enp5s0 # MT27500 Family [ConnectX-3]
+          primaryReselect: better
         dhcp: true
         mtu: 9000
         dhcpOptions:
