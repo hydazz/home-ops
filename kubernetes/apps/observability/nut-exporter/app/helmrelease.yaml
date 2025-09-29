@@ -21,7 +21,7 @@ spec:
               TZ: Australia/Melbourne
             args:
               - --nut.vars_enable=
-              - --nut.server=nut-server.observability.svc.cluster.local
+              - --nut.server=192.168.3.2
             probes:
               liveness:
                 enabled: true
