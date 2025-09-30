@@ -44,8 +44,6 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -73,6 +71,10 @@ spec:
               - sourceLabels:
                   - instance
                 targetLabel: instance
+                replacement: "5px"
+              - sourceLabels:
+                  - instance
+                targetLabel: ups
                 replacement: "5px"
           - interval: 30s
             path: /metrics

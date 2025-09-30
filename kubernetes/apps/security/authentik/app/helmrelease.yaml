@@ -26,7 +26,7 @@ spec:
     server:
       resources:
         requests:
-          cpu: 10m
+          cpu: 20m
           memory: 512Mi
         limits:
           memory: 1Gi
@@ -46,7 +46,7 @@ spec:
     worker:
       resources:
         requests:
-          cpu: 10m
+          cpu: 50m
           memory: 1Gi
         limits:
           memory: 2Gi
