@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/defaults
   interval: 1h
   path: ./kubernetes/apps/databases/mariadb/crds
   prune: true
@@ -33,8 +31,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/defaults
   dependsOn:
     - name: mariadb-operator-crds
       namespace: databases
@@ -60,8 +56,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/defaults
   dependsOn:
     - name: mariadb-operator
       namespace: databases

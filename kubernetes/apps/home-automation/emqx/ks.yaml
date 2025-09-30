@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/defaults
   dependsOn:
     - name: onepassword
       namespace: external-secrets
@@ -35,8 +33,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/defaults
   dependsOn:
     - name: emqx
   interval: 30m

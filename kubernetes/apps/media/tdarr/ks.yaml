@@ -10,7 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/defaults
     - ../../../../components/gatus/guarded
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
@@ -45,7 +44,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/defaults
     - ../../../../components/nfs-scaler
   dependsOn:
     - name: nvidia-device-plugin

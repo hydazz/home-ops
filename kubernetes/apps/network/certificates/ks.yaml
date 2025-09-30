@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/defaults
   interval: 1h
   path: ./kubernetes/apps/network/certificates/import
   postBuild:
@@ -37,8 +35,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/defaults
   dependsOn:
     - name: certificates-import
       namespace: network
