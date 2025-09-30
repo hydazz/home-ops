@@ -6,6 +6,8 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 1h
   path: ./kubernetes/apps
   prune: true
@@ -24,6 +26,8 @@ metadata:
   name: private-apps
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 1h
   path: ./kubernetes/apps
   prune: true
