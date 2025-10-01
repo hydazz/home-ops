@@ -6,13 +6,9 @@ metadata:
   name: crowdsec
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: crowdsec
-      version: 0.20.0
-      sourceRef:
-        kind: HelmRepository
-        name: crowdsec
+  chartRef:
+    kind: OCIRepository
+    name: crowdsec
   values:
     container_runtime: containerd
     config:
