@@ -16,8 +16,6 @@ ui:
   header: Status
   logo: https://avatars.githubusercontent.com/u/53986978
   link: https://github.com/hydazz
-  hide-hostname: true
-  hide-url: true
   buttons:
     - name: Github
       link: https://github.com/hydazz
