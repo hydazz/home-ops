@@ -23,20 +23,12 @@ spec:
           http_port {{ .Values.metricsPort }}
           health_check on
 
-      customParsers: |-
-        [PARSER]
-            Name        cri
-            Format      regex
-            Regex       ^(?<time>[^ ]+) (?<stream>stdout|stderr) F (?<log>.*)$
-            Time_Key    time
-            Time_Format %Y-%m-%dT%H:%M:%S.%L
-
       inputs: |-
         [INPUT]
           name tail
           alias kubernetes
           path /var/log/containers/*.log
-          parser cri
+          parser containerd
           tag kubernetes.*
           skip_empty_lines on
           skip_long_lines on
@@ -52,7 +44,6 @@ spec:
           merge_log on
           merge_log_key log_processed
           merge_log_trim on
-          keep_log off
           k8s-logging.parser on
           k8s-logging.exclude off
           labels on
@@ -75,16 +66,17 @@ spec:
         [FILTER]
           name modify
           match kubernetes.*
-          remove time
-          remove stream
-          remove logtag
-
-        [FILTER]
-          name modify
-          match kubernetes.*
           rename k_labels_app.kubernetes.io/name app
           rename k_labels_app app
           rename k_labels_k8s-app app
+
+      customParsers: |-
+        [PARSER]
+          name containerd
+          format regex
+          regex ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$
+          time_key time
+          time_format %Y-%m-%dT%H:%M:%S.%L%z
 
       outputs: |-
         [OUTPUT]
