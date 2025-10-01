@@ -37,7 +37,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/nfs-scaler
   dependsOn:
     - name: immich-database
@@ -51,7 +50,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_GROUP: *namespace
   prune: true
   retryInterval: 2m
   sourceRef:

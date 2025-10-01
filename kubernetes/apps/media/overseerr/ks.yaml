@@ -10,7 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -20,7 +19,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 128Mi
   prune: true
   retryInterval: 2m

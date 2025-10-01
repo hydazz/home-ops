@@ -1,39 +1,28 @@
 ---
-web:
-  port: ${GATUS_WEB_PORT}
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+
+metrics: true
 
 storage:
   type: sqlite
   path: /data/sqlite.db
   caching: true
 
-metrics: true
-
 ui:
   title: Status | Gatus
   header: Status
   logo: https://avatars.githubusercontent.com/u/53986978
   link: https://github.com/hydazz
+  hide-hostname: true
+  hide-url: true
   buttons:
     - name: Github
       link: https://github.com/hydazz
     - name: Homelab
       link: https://github.com/hydazz/home-ops
 
-connectivity:
-  checker:
-    target: 1.1.1.1:53
-    interval: 1m
-
-endpoints:
-  - name: flux-webhook
-    group: external
-    url: https://flux-webhook.hyde.services
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 404"
+web:
+  port: ${GATUS_WEB_PORT}

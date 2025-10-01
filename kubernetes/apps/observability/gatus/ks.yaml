@@ -14,7 +14,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: status
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
