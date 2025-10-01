@@ -18,11 +18,9 @@ spec:
       APP: *app
       GATUS_GROUP: *namespace
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: false
