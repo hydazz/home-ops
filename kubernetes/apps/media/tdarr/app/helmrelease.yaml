@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app tdarr
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: tdarr
+  interval: 1h
   values:
     controllers:
       tdarr:

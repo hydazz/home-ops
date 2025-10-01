@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app wordpress-lmvca
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: wordpress-lmvca
+  interval: 1h
   values:
     controllers:
       wordpress:

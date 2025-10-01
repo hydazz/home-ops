@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app jenkins
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: jenkins
+  interval: 1h
   values:
     controllers:
       jenkins:

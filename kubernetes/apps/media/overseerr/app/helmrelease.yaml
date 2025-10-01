@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app overseerr
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: overseerr
+  interval: 1h
   values:
     controllers:
       overseerr:

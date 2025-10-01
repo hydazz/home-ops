@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app minio
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: minio
+  interval: 1h
   values:
     controllers:
       minio:

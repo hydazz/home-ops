@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app wordpress-hca
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: wordpress-hca
+  interval: 1h
   values:
     controllers:
       wordpress:

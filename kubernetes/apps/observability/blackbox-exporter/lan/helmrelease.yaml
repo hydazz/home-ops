@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app blackbox-exporter-lan
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: blackbox-exporter-lan
+  interval: 1h
   values:
     fullnameOverride: *app
     securityContext:

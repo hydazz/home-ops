@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app kometa
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: kometa
+  interval: 1h
   values:
     controllers:
       kometa:

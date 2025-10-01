@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: emqx
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: emqx-operator
+  interval: 1h
   values:
     fullnameOverride: emqx-operator
     replicaCount: 1

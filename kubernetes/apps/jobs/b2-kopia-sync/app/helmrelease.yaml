@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: b2-kopia-sync
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: b2-kopia-sync
+  interval: 1h
   values:
     controllers:
       main:

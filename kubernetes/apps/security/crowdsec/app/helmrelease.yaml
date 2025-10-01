@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: crowdsec
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: crowdsec
+  interval: 1h
   values:
     container_runtime: containerd
     config:

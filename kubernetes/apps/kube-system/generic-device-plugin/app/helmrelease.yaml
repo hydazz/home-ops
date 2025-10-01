@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: generic-device-plugin
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: generic-device-plugin
+  interval: 1h
   values:
     controllers:
       generic-device-plugin:

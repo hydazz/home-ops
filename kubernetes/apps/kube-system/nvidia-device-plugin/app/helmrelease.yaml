@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: nvidia-device-plugin
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: nvidia-device-plugin
+  interval: 1h
   values:
     runtimeClassName: nvidia
     affinity:

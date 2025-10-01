@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app open-webui
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: open-webui
+  interval: 1h
   values:
     controllers:
       open-webui:

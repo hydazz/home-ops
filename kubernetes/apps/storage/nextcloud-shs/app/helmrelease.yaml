@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app nextcloud-shs
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: nextcloud-shs
+  interval: 1h
   values:
     controllers:
       nextcloud:

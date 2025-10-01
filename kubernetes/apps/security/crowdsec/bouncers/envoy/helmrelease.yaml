@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: crowdsec-envoy-bouncer
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: crowdsec-envoy-bouncer
+  interval: 1h
   values:
     controllers:
       crowdsec-envoy-bouncer:
