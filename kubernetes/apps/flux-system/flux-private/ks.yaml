@@ -6,9 +6,6 @@ metadata:
   name: &app flux-private
   namespace: &namespace flux-system
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: flux-instance
       namespace: *namespace

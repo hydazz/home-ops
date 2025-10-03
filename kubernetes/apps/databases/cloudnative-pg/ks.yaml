@@ -6,9 +6,6 @@ metadata:
   name: &app cloudnative-pg
   namespace: &namespace databases
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/databases/cloudnative-pg/app
   prune: true
@@ -26,9 +23,6 @@ metadata:
   name: &app cloudnative-pg-barman-cloud
   namespace: &namespace databases
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
@@ -51,9 +45,6 @@ metadata:
   name: &app cloudnative-pg-cluster
   namespace: &namespace databases
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace

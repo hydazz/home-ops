@@ -6,9 +6,6 @@ metadata:
   name: &app mariadb-operator
   namespace: &namespace databases
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/databases/mariadb/app
   prune: true
@@ -26,9 +23,6 @@ metadata:
   name: &app mariadb-cluster
   namespace: &namespace databases
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: mariadb-operator
       namespace: databases

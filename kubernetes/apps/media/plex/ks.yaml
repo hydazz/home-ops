@@ -6,9 +6,6 @@ metadata:
   name: &app plex
   namespace: &namespace media
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
@@ -38,9 +35,6 @@ metadata:
   name: &app plex-tools
   namespace: &namespace media
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/media/plex/tools
   prune: true

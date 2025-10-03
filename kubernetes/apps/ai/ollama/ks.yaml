@@ -6,9 +6,6 @@ metadata:
   name: &app ollama
   namespace: &namespace ai
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: nvidia-device-plugin
       namespace: kube-system

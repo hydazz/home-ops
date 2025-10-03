@@ -6,9 +6,6 @@ metadata:
   name: &app cert-manager
   namespace: &namespace cert-manager
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   healthCheckExprs:
     - apiVersion: cert-manager.io/v1
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')

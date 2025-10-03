@@ -6,9 +6,6 @@ metadata:
   name: &app tdarr
   namespace: &namespace media
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
@@ -36,9 +33,6 @@ metadata:
   name: &app tdarr-worker
   namespace: &namespace media
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/nfs-scaler
   dependsOn:

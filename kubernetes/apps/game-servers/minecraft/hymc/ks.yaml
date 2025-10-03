@@ -6,9 +6,6 @@ metadata:
   name: &app hymc-velocity
   namespace: &namespace game-servers
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/game-servers/minecraft/hymc/velocity
   prune: true
@@ -26,9 +23,6 @@ metadata:
   name: &app hymc-lobby
   namespace: &namespace game-servers
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
   dependsOn:
@@ -55,9 +49,6 @@ metadata:
   name: &app hymc-pvp
   namespace: &namespace game-servers
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../../components/volsync
   dependsOn:
