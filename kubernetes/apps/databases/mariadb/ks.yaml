@@ -22,7 +22,6 @@ metadata:
 spec:
   dependsOn:
     - name: mariadb-operator
-      namespace: databases
     - name: rook-ceph-cluster
       namespace: rook-ceph
   healthCheckExprs:

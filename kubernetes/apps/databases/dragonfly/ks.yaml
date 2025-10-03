@@ -22,7 +22,6 @@ metadata:
 spec:
   dependsOn:
     - name: dragonfly-operator
-      namespace: databases
   healthCheckExprs:
     - apiVersion: dragonflydb.io/v1alpha1
       current: status.phase == 'Ready'

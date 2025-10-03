@@ -34,6 +34,7 @@
     "ai": "robot",
     "cert-manager": "guard",
     "databases": "database",
+    "default": "home",
     "external-secrets": "secure",
     "flux-system": "pipe",
     "game-servers": "controller",
@@ -50,7 +51,7 @@
     "self-hosted": "server",
     "storage": "container",
     "system-upgrade": "update",
-    "volsync-system": "aws",
+    "volsync-system": "aws"
   },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
@@ -59,6 +60,7 @@
       "./kubeconfig"
     ]
   },
+  "window.zoomLevel": 0,
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"

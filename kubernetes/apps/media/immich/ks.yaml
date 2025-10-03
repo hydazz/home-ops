@@ -29,7 +29,6 @@ spec:
     - ../../../../components/nfs-scaler
   dependsOn:
     - name: immich-database
-      namespace: media
     - name: dragonfly-cluster
       namespace: databases
     - name: rook-ceph-cluster

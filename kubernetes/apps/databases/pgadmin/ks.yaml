@@ -7,7 +7,6 @@ metadata:
 spec:
   dependsOn:
     - name: cloudnative-pg
-      namespace: databases
   interval: 1h
   path: ./kubernetes/apps/databases/pgadmin/app
   prune: true

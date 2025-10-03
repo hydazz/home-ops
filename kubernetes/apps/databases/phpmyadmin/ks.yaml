@@ -7,7 +7,6 @@ metadata:
 spec:
   dependsOn:
     - name: mariadb-cluster
-      namespace: databases
   interval: 1h
   path: ./kubernetes/apps/databases/phpmyadmin/app
   prune: true
