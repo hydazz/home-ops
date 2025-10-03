@@ -68,7 +68,6 @@ spec:
         type: cronjob
         cronjob:
           <<: *cronJobSpec
-          #schedule: "0 4 * * *"
         containers:
           app:
             <<: *container
