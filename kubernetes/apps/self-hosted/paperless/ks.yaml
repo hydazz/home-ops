@@ -10,7 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/guarded
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
@@ -25,7 +24,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_GROUP: *namespace
       VOLSYNC_CAPACITY: 128Mi
     substituteFrom:
       - kind: Secret
@@ -52,6 +50,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: paperless
+      namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/self-hosted/paperless/ai
   postBuild:

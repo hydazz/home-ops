@@ -14,9 +14,6 @@ spec:
       namespace: databases
   interval: 1h
   path: ./kubernetes/apps/databases/pgadmin/app
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository

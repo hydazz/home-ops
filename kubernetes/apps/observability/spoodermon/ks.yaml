@@ -11,10 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/observability/spoodermon/app
-  postBuild:
-    substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: spoodermon
   prune: true
   sourceRef:
     kind: GitRepository

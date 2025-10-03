@@ -33,8 +33,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph
       namespace: *namespace
@@ -56,11 +54,6 @@ spec:
       namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
-  postBuild:
-    substitute:
-      APP: *app
-      GATUS_GROUP: *namespace
-      GATUS_SUBDOMAIN: rook
   prune: true
   sourceRef:
     kind: GitRepository

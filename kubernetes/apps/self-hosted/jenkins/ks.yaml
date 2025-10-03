@@ -10,7 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -25,9 +24,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_DOMAIN: imagegenius.io
-      GATUS_GROUP: *namespace
-      GATUS_SUBDOMAIN: ci
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret

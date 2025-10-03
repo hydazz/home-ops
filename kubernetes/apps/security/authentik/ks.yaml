@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/gatus/external
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: databases
@@ -18,11 +16,6 @@ spec:
       namespace: databases
   interval: 1h
   path: ./kubernetes/apps/security/authentik/app
-  postBuild:
-    substitute:
-      APP: *app
-      GATUS_GROUP: *namespace
-      GATUS_SUBDOMAIN: auth
   prune: true
   sourceRef:
     kind: GitRepository

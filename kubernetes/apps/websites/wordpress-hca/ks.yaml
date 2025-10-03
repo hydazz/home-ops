@@ -10,7 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: mariadb-cluster
@@ -24,9 +23,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_DOMAIN: ${D_HCA}
-      GATUS_GROUP: *namespace
-      GATUS_SUBDOMAIN: www
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret

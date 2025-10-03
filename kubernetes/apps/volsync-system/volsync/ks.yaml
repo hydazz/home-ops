@@ -21,9 +21,6 @@ spec:
       namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/volsync-system/volsync/app
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -46,9 +43,6 @@ spec:
       namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/volsync-system/volsync/maintenance
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
