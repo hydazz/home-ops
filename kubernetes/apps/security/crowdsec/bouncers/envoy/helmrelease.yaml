@@ -12,9 +12,9 @@ spec:
   values:
     controllers:
       crowdsec-envoy-bouncer:
-        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+        replicas: 2
         containers:
           app:
             image:

@@ -125,6 +125,9 @@ spec:
           enabled: true
     appsec:
       enabled: true
+      replicas: 2
+      strategy:
+        type: RollingUpdate
       acquisitions:
         - source: appsec
           listen_addr: "0.0.0.0:7422"
