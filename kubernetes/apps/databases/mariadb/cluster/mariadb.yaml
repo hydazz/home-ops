@@ -5,31 +5,37 @@ kind: MariaDB
 metadata:
   name: mariadb
 spec:
+  bootstrapFrom:
+    s3:
+      accessKeyIdSecretKeyRef:
+        name: mariadb-secret
+        key: B2_ACCESS_KEY_ID
+      bucket: b2backup-k8s
+      endpoint: s3.us-east-005.backblazeb2.com
+      prefix: mariadb
+      secretAccessKeySecretKeyRef:
+        name: mariadb-secret
+        key: B2_SECRET_ACCESS_KEY
+      tls:
+        enabled: true
+  galera:
+    enabled: true
   # renovate: datasource=docker depName=docker.io/library/mariadb
   image: docker.io/library/mariadb:12.0.2@sha256:03a03a6817bb9eaa21e5aed1b734d432ec3f80021f5a2de1795475f158217545
+  metrics:
+    enabled: true
   replicas: 3
-  updateStrategy:
-    autoUpdateDataPlane: true
+  resources:
+    limits:
+      memory: 2Gi
+    requests:
+      cpu: 10m
+      memory: 512Mi
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: root-password
   storage:
     size: 8Gi
     storageClassName: openebs-hostpath
-  bootstrapFrom:
-    s3:
-      endpoint: s3.us-east-005.backblazeb2.com
-      bucket: b2backup-k8s
-      prefix: mariadb
-      tls:
-        enabled: true
-      accessKeyIdSecretKeyRef:
-        name: mariadb-secret
-        key: B2_ACCESS_KEY_ID
-      secretAccessKeySecretKeyRef:
-        name: mariadb-secret
-        key: B2_SECRET_ACCESS_KEY
-  galera:
-    enabled: true
-  metrics:
-    enabled: true
+  updateStrategy:
+    autoUpdateDataPlane: true

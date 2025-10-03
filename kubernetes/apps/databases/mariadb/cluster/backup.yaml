@@ -5,24 +5,24 @@ kind: Backup
 metadata:
   name: mariadb-backup
 spec:
+  compression: bzip2
   mariaDbRef:
     name: mariadb
-  timeZone: Australia/Melbourne
+  maxRetention: 168h # 7 days
   schedule:
     cron: 0 2 * * *
     suspend: false
   storage:
     s3:
-      endpoint: s3.us-east-005.backblazeb2.com
-      bucket: b2backup-k8s
-      prefix: mariadb
-      tls:
-        enabled: true
       accessKeyIdSecretKeyRef:
         name: mariadb-secret
         key: B2_ACCESS_KEY_ID
+      bucket: b2backup-k8s
+      endpoint: s3.us-east-005.backblazeb2.com
+      prefix: mariadb
       secretAccessKeySecretKeyRef:
         name: mariadb-secret
         key: B2_SECRET_ACCESS_KEY
-  compression: bzip2
-  maxRetention: 168h # 7 days
+      tls:
+        enabled: true
+  timeZone: Australia/Melbourne

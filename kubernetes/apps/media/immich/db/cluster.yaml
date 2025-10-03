@@ -7,37 +7,10 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 1
-  # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.5-0.4.2@sha256:4a6f5ca2212018322823a92250230d471e2fa33c287ed8b400bd58a3cc3a4e6b
-  primaryUpdateStrategy: unsupervised
-  storage:
-    size: 2Gi
-    storageClass: ceph-block
-  superuserSecret:
-    name: immich-db-secret
-  enableSuperuserAccess: true
-  postgresql:
-    parameters:
-      max_connections: "200"
-      shared_buffers: 256MB
-    shared_preload_libraries:
-      - vchord.so
-  resources:
-    requests:
-      cpu: 500m
-    limits:
-      memory: 4Gi
-  monitoring:
-    enablePodMonitor: true
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: b2
   bootstrap:
     recovery:
       source: source
+  enableSuperuserAccess: true
   externalClusters:
     - name: source
       plugin:
@@ -45,3 +18,31 @@ spec:
         parameters:
           barmanObjectName: b2
           serverName: immich
+  # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.5-0.4.2@sha256:4a6f5ca2212018322823a92250230d471e2fa33c287ed8b400bd58a3cc3a4e6b
+  instances: 1
+  monitoring:
+    enablePodMonitor: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: b2
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+    shared_preload_libraries:
+      - vchord.so
+  primaryUpdateStrategy: unsupervised
+  resources:
+    requests:
+      cpu: 20m
+      memory: 256Mi
+    limits:
+      memory: 2Gi
+  storage:
+    size: 2Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: immich-db-secret
