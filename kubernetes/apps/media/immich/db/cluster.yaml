@@ -30,7 +30,7 @@ spec:
         barmanObjectName: b2
   postgresql:
     parameters:
-      max_connections: "200"
+      max_connections: "50"
       shared_buffers: 256MB
     shared_preload_libraries:
       - vchord.so

@@ -32,13 +32,15 @@ spec:
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
+  primaryUpdateMethod: switchover
   primaryUpdateStrategy: unsupervised
   resources:
-    limits:
-      memory: 2Gi
     requests:
       cpu: 50m
       memory: 512Mi
+    limits:
+      hugepages-2Mi: 1Gi
+      memory: 2Gi
   storage:
     size: 8Gi
     storageClass: openebs-hostpath

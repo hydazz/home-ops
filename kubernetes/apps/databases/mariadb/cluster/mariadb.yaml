@@ -26,11 +26,11 @@ spec:
     enabled: true
   replicas: 3
   resources:
-    limits:
-      memory: 2Gi
     requests:
       cpu: 10m
       memory: 512Mi
+    limits:
+      memory: 2Gi
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: root-password
