@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app mailu
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: mailu
+  interval: 1h
   values:
     controllers:
       front:

@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: external-secrets
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: external-secrets
+  interval: 1h
   values:
     installCRDs: true
     leaderElect: true
@@ -19,15 +19,12 @@ spec:
         repository: ghcr.io/external-secrets/external-secrets
       serviceMonitor:
         enabled: true
-        interval: 1m
     certController:
       image:
         repository: ghcr.io/external-secrets/external-secrets
       serviceMonitor:
         enabled: true
-        interval: 1m
     serviceMonitor:
       enabled: true
-      interval: 1m
     grafanaDashboard:
       enabled: true

@@ -5,14 +5,10 @@ kind: HelmRelease
 metadata:
   name: crowdsec
 spec:
+  chartRef:
+    kind: OCIRepository
+    name: crowdsec
   interval: 1h
-  chart:
-    spec:
-      chart: crowdsec
-      version: 0.20.0
-      sourceRef:
-        kind: HelmRepository
-        name: crowdsec
   values:
     container_runtime: containerd
     config:
@@ -109,7 +105,7 @@ spec:
           query: |-
             {app="envoy"}
             | json
-            | line_format "{{ .message }}"
+            | line_format "{{ .log }}"
           labels:
             type: envoy
       env:

@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: tdarr-worker
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: tdarr-worker
+  interval: 1h
   values:
     controllers:
       nvidia-worker:

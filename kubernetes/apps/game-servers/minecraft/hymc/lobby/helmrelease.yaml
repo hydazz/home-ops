@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app hymc-lobby
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: hymc-lobby
+  interval: 1h
   values:
     controllers:
       lobby:

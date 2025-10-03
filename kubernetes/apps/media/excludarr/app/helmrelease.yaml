@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: excludarr
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: excludarr
+  interval: 1h
   values:
     controllers:
       excludarr:

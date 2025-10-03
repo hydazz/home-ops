@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app wordpress-shca
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: wordpress-shca
+  interval: 1h
   values:
     controllers:
       wordpress:
@@ -19,7 +19,7 @@ spec:
           wordpress-init:
             image: &image
               repository: ghcr.io/hydazz/wordpress
-              tag: 6.8.2@sha256:7c376c2d8047fa3779ef123cf81810de0bbfb3b685aadb94a30a5c22c525e602
+              tag: 6.8.3@sha256:5b2252429bc3c8c161337e7189cb098ad9180e0207d7a2965c3b90ced9776f2c
             command:
               - sh
               - -c

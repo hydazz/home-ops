@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: dcgm-exporter
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: dcgm-exporter
+  interval: 1h
   postRenderers:
     - kustomize:
         patches:

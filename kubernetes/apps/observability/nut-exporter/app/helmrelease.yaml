@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: &app nut-exporter
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: nut-exporter
+  interval: 1h
   values:
     controllers:
       nut-exporter:
