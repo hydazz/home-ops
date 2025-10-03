@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: self-hosted
 components:
   - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./changedetection/ks.yaml
   - ./jenkins/ks.yaml

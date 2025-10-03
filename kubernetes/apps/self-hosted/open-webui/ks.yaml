@@ -3,8 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app open-webui
-  namespace: &namespace self-hosted
+  name: open-webui
 spec:
   components:
     - ../../../../components/volsync
@@ -19,7 +18,7 @@ spec:
   path: ./kubernetes/apps/self-hosted/open-webui/app
   postBuild:
     substitute:
-      APP: *app
+      APP: open-webui
       VOLSYNC_CAPACITY: 128Mi
     substituteFrom:
       - kind: Secret
@@ -29,5 +28,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

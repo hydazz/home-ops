@@ -3,8 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app nextcloud-shca
-  namespace: &namespace storage
+  name: nextcloud-shca
 spec:
   components:
     - ../../../../components/nfs-scaler
@@ -18,7 +17,7 @@ spec:
   path: ./kubernetes/apps/storage/nextcloud-shca/app
   postBuild:
     substitute:
-      APP: *app
+      APP: nextcloud-shca
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
@@ -28,5 +27,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

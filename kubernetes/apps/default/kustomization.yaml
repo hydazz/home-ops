@@ -5,5 +5,7 @@ kind: Kustomization
 namespace: default
 components:
   - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./unifi-protect-backup/ks.yaml

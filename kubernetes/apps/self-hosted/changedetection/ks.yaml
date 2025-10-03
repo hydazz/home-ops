@@ -3,8 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app changedetection
-  namespace: &namespace self-hosted
+  name: changedetection
 spec:
   components:
     - ../../../../components/volsync
@@ -12,7 +11,7 @@ spec:
   path: ./kubernetes/apps/self-hosted/changedetection/app
   postBuild:
     substitute:
-      APP: *app
+      APP: changedetection
       VOLSYNC_CAPACITY: 128Mi
     substituteFrom:
       - kind: Secret
@@ -22,5 +21,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

@@ -3,8 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tdarr
-  namespace: &namespace media
+  name: tdarr
 spec:
   components:
     - ../../../../components/nfs-scaler
@@ -16,22 +15,20 @@ spec:
   path: ./kubernetes/apps/media/tdarr/app
   postBuild:
     substitute:
-      APP: *app
+      APP: tdarr
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tdarr-worker
-  namespace: &namespace media
+  name: tdarr-worker
 spec:
   components:
     - ../../../../components/nfs-scaler
@@ -42,11 +39,10 @@ spec:
   path: ./kubernetes/apps/media/tdarr/worker
   postBuild:
     substitute:
-      APP: *app
+      APP: tdarr-worker
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

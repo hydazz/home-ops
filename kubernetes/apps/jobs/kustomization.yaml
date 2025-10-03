@@ -5,5 +5,7 @@ kind: Kustomization
 namespace: jobs
 components:
   - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./b2-kopia-sync/ks.yaml

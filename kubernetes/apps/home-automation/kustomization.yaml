@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: home-automation
 components:
   - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./emqx/ks.yaml # https://github.com/blackjid/home-ops
   - ./esphome/ks.yaml

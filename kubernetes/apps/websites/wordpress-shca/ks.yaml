@@ -3,8 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app wordpress-shca
-  namespace: &namespace websites
+  name: wordpress-shca
 spec:
   components:
     - ../../../../components/volsync
@@ -19,7 +18,7 @@ spec:
   path: ./kubernetes/apps/websites/wordpress-shca/app
   postBuild:
     substitute:
-      APP: *app
+      APP: wordpress-shca
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
@@ -29,5 +28,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

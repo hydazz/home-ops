@@ -5,5 +5,7 @@ kind: Kustomization
 namespace: game-servers
 components:
   - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./minecraft

@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: storage
 components:
   - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./minio/ks.yaml
   - ./nextcloud-shca/ks.yaml
