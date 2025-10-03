@@ -18,8 +18,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/hydazz/envoy-proxy-bouncer
-              tag: sha-0a69317d4d48eb22bb2f3a24ed89c7ec25ae2acd
+              repository: ghcr.io/kdwils/envoy-proxy-bouncer
+              tag: sha-f15a754a0ef913724a148a48b462c03d444b2fb7
             env:
               ENVOY_BOUNCER_BOUNCER_ENABLED: true
               ENVOY_BOUNCER_BOUNCER_LAPIURL: http://crowdsec-service.security.svc.cluster.local:8080
@@ -27,7 +27,7 @@ spec:
               ENVOY_BOUNCER_BOUNCER_METRICS: true
               ENVOY_BOUNCER_WAF_ENABLED: true
               ENVOY_BOUNCER_WAF_APPSECURL: http://crowdsec-appsec-service.security.svc.cluster.local:7422
-              ENVOY_BOUNCER_SERVER_BANTEMPLATEPATH: /ban.html
+              ENVOY_BOUNCER_TEMPLATES_DENIEDTEMPLATEPATH: /ban.html
             envFrom:
               - secretRef:
                   name: crowdsec-envoy-bouncer-secret
