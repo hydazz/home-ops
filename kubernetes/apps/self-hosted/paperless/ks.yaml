@@ -21,9 +21,6 @@ spec:
     substitute:
       APP: paperless
       VOLSYNC_CAPACITY: 128Mi
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
   prune: true
   sourceRef:
     kind: GitRepository
@@ -47,9 +44,6 @@ spec:
     substitute:
       APP: paperless-ai
       VOLSYNC_CAPACITY: 128Mi
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
   prune: true
   sourceRef:
     kind: GitRepository
