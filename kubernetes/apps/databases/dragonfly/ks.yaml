@@ -23,6 +23,11 @@ spec:
   dependsOn:
     - name: dragonfly-operator
       namespace: databases
+  healthCheckExprs:
+    - apiVersion: dragonflydb.io/v1alpha1
+      current: status.phase == 'Ready'
+      failed: status.phase == 'Error'
+      kind: Dragonfly
   interval: 1h
   path: ./kubernetes/apps/databases/dragonfly/cluster
   prune: true

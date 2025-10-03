@@ -25,6 +25,11 @@ spec:
       namespace: databases
     - name: rook-ceph-cluster
       namespace: rook-ceph
+  healthCheckExprs:
+    - apiVersion: k8s.mariadb.com/v1alpha1
+      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+      kind: MariaDB
   interval: 1h
   path: ./kubernetes/apps/databases/mariadb/cluster
   prune: true
