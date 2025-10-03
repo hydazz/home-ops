@@ -5,10 +5,20 @@ kind: Kustomization
 metadata:
   name: nvidia-device-plugin
 spec:
+  healthCheckExprs:
+    - apiVersion: apps/v1
+      current: status.desiredNumberScheduled == status.numberReady
+      failed: status.desiredNumberScheduled != status.numberReady
+      kind: DaemonSet
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
       name: nvidia-device-plugin
+      namespace: kube-system
+    - apiVersion: apps/v1
+      kind: DaemonSet
+      name: nvidia-device-plugin
+      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/kube-system/nvidia-device-plugin/app
   prune: true
