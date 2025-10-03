@@ -14,10 +14,6 @@ spec:
       namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/flux-system/flux-private/app
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
   prune: true
   retryInterval: 2m
   sourceRef:

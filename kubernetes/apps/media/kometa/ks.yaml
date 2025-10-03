@@ -14,10 +14,6 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media/kometa/app
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
   prune: true
   retryInterval: 2m
   sourceRef:
