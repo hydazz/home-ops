@@ -109,7 +109,6 @@ spec:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           gatus.home-operations.com/enabled: "true"
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
             ui:
               hide-hostname: true
               hide-url: true

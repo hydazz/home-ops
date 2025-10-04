@@ -145,6 +145,8 @@ metadata:
   name: envoy-internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.hyde.services
+    gatus.home-operations.com/endpoint: |
+      guarded: true
 spec:
   gatewayClassName: envoy
   infrastructure:

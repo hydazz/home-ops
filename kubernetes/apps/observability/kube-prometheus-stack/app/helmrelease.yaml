@@ -17,12 +17,6 @@ spec:
           enabled: true
           annotations:
             gatus.home-operations.com/enabled: "true"
-            gatus.home-operations.com/endpoint: |-
-              conditions: ["len([BODY]) == 0"]
-              dns:
-                query-name: {{ .Release.Name }}.hyde.services
-                query-type: A
-              url: 1.1.1.1
           hostnames:
             - alertmanager.hyde.services
           parentRefs:
@@ -54,12 +48,6 @@ spec:
           enabled: true
           annotations:
             gatus.home-operations.com/enabled: "true"
-            gatus.home-operations.com/endpoint: |-
-              conditions: ["len([BODY]) == 0"]
-              dns:
-                query-name: {{ .Release.Name }}.hyde.services
-                query-type: A
-              url: 1.1.1.1
           hostnames:
             - prometheus.hyde.services
           parentRefs:

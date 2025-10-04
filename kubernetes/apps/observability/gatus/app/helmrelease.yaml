@@ -19,9 +19,6 @@ spec:
             image:
               repository: ghcr.io/home-operations/gatus-sidecar
               tag: 0.0.5@sha256:59c439d8d6fffcdd1e277618f461892f8a285ac4abd22f2ee73c534b9ef2e890
-            args:
-              - --auto-group=true
-              - --auto-routes=false
             resources:
               requests:
                 cpu: 10m
@@ -80,8 +77,6 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/enabled: "true"
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:
@@ -94,13 +89,30 @@ spec:
           type: ClusterRole
           rules:
             - apiGroups:
+                - ""
+              resources:
+                - services
+              verbs:
+                - get
+                - list
+                - watch
+            - apiGroups:
+                - networking.k8s.io
+              resources:
+                - ingresses
+              verbs:
+                - get
+                - list
+                - watch
+            - apiGroups:
                 - gateway.networking.k8s.io
               resources:
                 - httproutes
+                - gateways
               verbs:
                 - get
-                - watch
                 - list
+                - watch
       bindings:
         gatus:
           type: ClusterRoleBinding
