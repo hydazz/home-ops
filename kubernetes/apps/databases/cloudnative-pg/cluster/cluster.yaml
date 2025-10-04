@@ -21,6 +21,21 @@ spec:
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
   imageName: ghcr.io/cloudnative-pg/postgresql:16.9@sha256:7f3990485b139ccf9e2222c8f106d97ac0331f313cb5278e7018ef38686bb561
   instances: 3
+  managed:
+    services:
+      additional:
+        # create a stub service for gatus to monitor
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: postgres
+              annotations:
+                gatus.home-operations.com/enabled: "true"
+                gatus.home-operations.com/endpoint: |-
+                  interval: 15s
+                  conditions:
+                    - "[CONNECTED] == true"
+                    - "[RESPONSE_TIME] < 200"
   monitoring:
     enablePodMonitor: true
   plugins:

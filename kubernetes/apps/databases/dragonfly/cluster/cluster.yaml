@@ -5,10 +5,6 @@ kind: Dragonfly
 metadata:
   name: dragonfly
 spec:
-  labels:
-    dragonflydb.io/cluster: dragonfly
-  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.34.1@sha256:99eb2dd14ca00b983c302d0a15d15176dccd5a9e85a375bcc5157e1cadd73099
-  replicas: 1
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=1
@@ -17,11 +13,21 @@ spec:
     - name: MAX_MEMORY
       valueFrom:
         resourceFieldRef:
-          resource: limits.memory
           divisor: 1Mi
+          resource: limits.memory
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.34.1@sha256:99eb2dd14ca00b983c302d0a15d15176dccd5a9e85a375bcc5157e1cadd73099
+  replicas: 1
   resources:
     requests:
       cpu: 20m
       memory: 64Mi
     limits:
       memory: 256Mi
+  serviceSpec:
+    annotations:
+      gatus.home-operations.com/enabled: "true"
+      gatus.home-operations.com/endpoint: |-
+        interval: 15s
+        conditions:
+          - "[CONNECTED] == true"
+          - "[RESPONSE_TIME] < 50"

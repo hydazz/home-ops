@@ -38,7 +38,7 @@ spec:
     metadata:
       annotations:
         gatus.home-operations.com/enabled: "true"
-        gatus.home-operations.com/endpoint: |
+        gatus.home-operations.com/endpoint: |-
           interval: 15s
           conditions:
             - "[CONNECTED] == true"
