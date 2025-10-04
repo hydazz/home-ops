@@ -10,7 +10,6 @@ resources:
 configMapGenerator:
   - name: wordpress-hca-configmap
     files:
-      - ./resources/default.conf
       - ./resources/www.conf
       - ./resources/wordpress.ini
 generatorOptions:
