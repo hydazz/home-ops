@@ -10,7 +10,6 @@ replacements:
 resources:
   - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
-  - ./excludarr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./immich/ks.yaml
   - ./kometa/ks.yaml
