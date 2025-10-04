@@ -24,7 +24,7 @@ spec:
               - sh
               - -c
               - |-
-                cp -r /usr/src/wordpress/* /var/www/html/
+                cp -r /usr/src/wordpress/. /var/www/html/
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
