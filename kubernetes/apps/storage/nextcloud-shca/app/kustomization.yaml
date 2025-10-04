@@ -6,13 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-configMapGenerator:
-  - name: nextcloud-shca-configmap
-    files:
-      - ./resources/custom.config.php
-      - ./resources/nextcloud.ini
-      - ./resources/www.conf
-      - ./resources/default.conf
 secretGenerator:
   - name: nextcloud-shca-values
     files:
