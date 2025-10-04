@@ -24,7 +24,7 @@ spec:
               - sh
               - -c
               - |-
-                cp -r /usr/src/wordpress/. /var/www/html/
+                cp -r /usr/src/wordpress/* /var/www/html/
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -115,10 +115,10 @@ spec:
             pm.process_idle_timeout = 15s
             request_terminate_timeout = 300s
     persistence:
-      wp-content:
+      data:
         existingClaim: *app
         globalMounts:
-          - path: /var/www/html/wp-content
+          - path: /var/www/html
       configs:
         type: configMap
         identifier: config
@@ -132,8 +132,6 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
-          - path: /var/www/html
-            subPath: html
           - path: /var/run
             subPath: run
           - path: /tmp
