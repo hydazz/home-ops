@@ -19,7 +19,7 @@ spec:
           barmanObjectName: b2
           serverName: postgres
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.9@sha256:7f3990485b139ccf9e2222c8f106d97ac0331f313cb5278e7018ef38686bb561
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.10@sha256:fd8d76cfb72d3d2a03b04cace8e544a4fb8af0e59088be59a82b5c8c76c66898
   instances: 3
   managed:
     services:
@@ -35,7 +35,7 @@ spec:
                   interval: 15s
                   conditions:
                     - "[CONNECTED] == true"
-                    - "[RESPONSE_TIME] < 200"
+                    - "[RESPONSE_TIME] < 10"
   monitoring:
     enablePodMonitor: true
   plugins:
