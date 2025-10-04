@@ -30,10 +30,10 @@ spec:
         containers:
           app:
             image: *image
-            env: &env
+            env:
               NEXTCLOUD_TRUSTED_DOMAINS: storage.hyde.services
               NEXTCLOUD_DATA_DIR: /var/www/html/data
-            envFrom: &envFrom
+            envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             probes:
@@ -62,22 +62,6 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-          cron:
-            image: *image
-            command:
-              - sh
-              - -c
-              - |
-                while :; do
-                  php cron.php || true
-                  sleep 300
-                done
-            env: *env
-            envFrom: *envFrom
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -95,6 +79,9 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           gatus.home-operations.com/enabled: "true"
+          # use gatus to run cron jobs (imo least jank method)
+          gatus.home-operations.com/endpoint: |-
+            url: https://storage.hyde.services/cron.php
         hostnames:
           - storage.hyde.services
         parentRefs:
@@ -102,18 +89,15 @@ spec:
             namespace: network
             sectionName: https
         rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /settings/ajax/checksetup
-            backendRefs:
-              - identifier: app
-                port: *port
-            timeouts:
-              request: 300s
           - backendRefs:
               - identifier: app
                 port: *port
+            filters:
+              - type: ResponseHeaderModifier
+                responseHeaderModifier:
+                  add:
+                    - name: Strict-Transport-Security
+                      value: "max-age=31536000; includeSubDomains; preload"
     configMaps:
       config:
         data:
