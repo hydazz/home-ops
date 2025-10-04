@@ -53,8 +53,8 @@ metadata:
     type: cloudflare-dns
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname cloudflare.hyde.services
-    gatus.home-operations.com/endpoint: |
-      group: Cloudflare
+    gatus.home-operations.com/endpoint: |-
+      group: envoy-cloudflare
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -102,8 +102,8 @@ metadata:
     type: cloudflare-dns
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname external.hyde.services
-    gatus.home-operations.com/endpoint: |
-      group: External
+    gatus.home-operations.com/endpoint: |-
+      group: envoy-external
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -149,8 +149,8 @@ metadata:
   name: envoy-internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.hyde.services
-    gatus.home-operations.com/endpoint: |
-      group: Internal
+    gatus.home-operations.com/endpoint: |-
+      group: envoy-internal
       guarded: true
       ui:
         hide-hostname: true
