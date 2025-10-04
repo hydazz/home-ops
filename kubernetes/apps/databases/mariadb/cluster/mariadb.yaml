@@ -34,6 +34,15 @@ spec:
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: root-password
+  service:
+    metadata:
+      annotations:
+        gatus.home-operations.com/enabled: "true"
+        gatus.home-operations.com/endpoint: |
+          interval: 15s
+          conditions:
+            - "[CONNECTED] == true"
+            - "[RESPONSE_TIME] < 100"
   storage:
     size: 8Gi
     storageClassName: openebs-hostpath
