@@ -88,6 +88,30 @@ spec:
           - name: envoy-cloudflare
             namespace: network
             sectionName: https
+    configMaps:
+      config:
+        data:
+          wordpress.ini: |
+            upload_max_filesize = 100M
+            post_max_size = 100M
+            memory_limit = 512M
+            max_execution_time = 180
+            max_input_vars = 4000
+            expose_php = Off
+            opcache.enable = 1
+            opcache.memory_consumption = 128
+            opcache.max_accelerated_files = 15000
+            opcache.revalidate_freq = 30
+          www.conf: |
+            [www]
+            pm = dynamic
+            pm.max_children = 6
+            pm.start_servers = 3
+            pm.min_spare_servers = 2
+            pm.max_spare_servers = 4
+            pm.max_requests = 400
+            pm.process_idle_timeout = 15s
+            request_terminate_timeout = 300s
     persistence:
       wp-content:
         existingClaim: *app
@@ -95,7 +119,7 @@ spec:
           - path: /var/www/html/wp-content
       configs:
         type: configMap
-        name: "{{ .Release.Name }}-configmap"
+        identifier: config
         globalMounts:
           - path: /usr/local/etc/php-fpm.d/www.conf
             subPath: www.conf
