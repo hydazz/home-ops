@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+resources:
+  - ./service.yaml
+  - ./httproute.yaml
+patches:
+  - target:
+      kind: HelmRelease
+      name: ${APP}
+    patch: |-
+      apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      metadata:
+        name: ${APP}
+      spec:
+        postRenderers:
+          - kustomize:
+              patches:
+                - target:
+                    kind: Deployment
+                    name: ${APP}
+                  patch: |-
+                    - op: add
+                      path: /spec/template/spec/containers/-
+                      value:
+                        name: code-server
+                        image: ghcr.io/coder/code-server:4.104.2@sha256:6edc8e2d2849749c1a1a5eff8e76563b96db407e68899c143473a6004d0a6b5a
+                        args:
+                          - --auth
+                          - none
+                          - --disable-telemetry
+                          - --disable-update-check
+                          - --user-data-dir
+                          - /mnt/.code-server
+                          - --extensions-dir
+                          - /mnt/.code-server
+                          - --port
+                          - "80"
+                          - /mnt
+                        ports:
+                          - name: code-server
+                            containerPort: 80
+                            protocol: TCP
+                        volumeMounts:
+                          - name: ${APP}
+                            mountPath: /mnt
+                          - name: code-server-tmpfs
+                            mountPath: /tmp
+                          - name: code-server-tmpfs
+                            mountPath: /nonexistent
+                        securityContext:
+                          allowPrivilegeEscalation: false
+                          readOnlyRootFilesystem: true
+                          capabilities:
+                            drop: ["ALL"]
+                        resources:
+                          requests:
+                            cpu: 10m
+                          limits:
+                            memory: 512Mi
+                    - op: add
+                      path: /spec/template/spec/volumes/-
+                      value:
+                        name: code-server-tmpfs
+                        emptyDir: {}
