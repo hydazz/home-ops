@@ -3,15 +3,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app hymc-pvp
+  name: &app hymc-lobby
 spec:
   chartRef:
     kind: OCIRepository
-    name: hymc-pvp
+    name: hymc-lobby
   interval: 1h
   values:
     controllers:
-      pvp:
+      lobby:
         containers:
           app:
             image:
@@ -22,55 +22,53 @@ spec:
               # Properties
               ALLOW_NETHER: false
               ANNOUNCE_PLAYER_ACHIEVEMENTS: false
-              DIFFICULTY: normal
+              DIFFICULTY: peaceful
               EULA: true
               FORCE_GAMEMODE: true
               GENERATE_STRUCTURES: false
-              MODE: survival
+              MODE: adventure
               ONLINE_MODE: false
-              PVP: true
+              PVP: false
+              SERVER_PORT: &port 25565
               SPAWN_ANIMALS: false
               SPAWN_MONSTERS: false
               SPAWN_NPCS: false
               SPAWN_PROTECTION: 0
               # Plugins
+              MINECRAFT_VERSION: 1.21.8
+              MODRINTH_PROJECTS: |-
+                worldedit
+                customnpcs
               PLUGINS: |-
-                https://download.luckperms.net/1596/bukkit/loader/LuckPerms-Bukkit-5.5.11.jar
-                https://github.com/ChanceSD/PvPManager/releases/download/3.19.10/PvPManager.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXAntiBuild-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXChat-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXProtect-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXSpawn-2.21.2.jar
-                https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar
-                https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
-                https://mediafilez.forgecdn.net/files/2597/538/worldedit-bukkit-6.1.9.jar
-                https://mediafilez.forgecdn.net/files/2622/901/MythicMobs-4.4.1.jar
-                https://mediafilez.forgecdn.net/files/853/54/OtherDrops.jar
-                https://mediafilez.forgecdn.net/files/956/770/worldguard-6.2.jar
-              SPIGET_PLUGINS: |-
-                222 # BossShopPro
-                43424 # StatsSB
+                https://github.com/Multiverse/Multiverse-Core/releases/download/5.2.1/multiverse-core-5.2.1.jar
+                https://github.com/aerulion/VoidWorld/releases/download/v1.0.0/VoidWorld-1.0.0.jar
               # Server
               MEMORY: ""
-              TYPE: CUSTOM
-              CUSTOM_SERVER: https://downloads.hpfxd.com/v2/projects/pandaspigot/versions/1.8.8/builds/174/downloads/paperclip
-              VERSION: 1.8.8
+              TYPE: PAPER
+              VERSION: 1.21.8
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
-                  periodSeconds: 60
-                  exec: &mc-health {command: ["mc-health"]}
+                  exec:
+                    command:
+                      - mc-health
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               readiness: *probes
               startup:
-                <<: *probes
+                enabled: true
                 spec:
-                  initialDelaySeconds: 60
-                  periodSeconds: 1
-                  failureThreshold: 300
-                  exec: *mc-health
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -78,9 +76,9 @@ spec:
             resources:
               requests:
                 cpu: 50m
-                memory: 512Mi
-              limits:
                 memory: 1Gi
+              limits:
+                memory: 2Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -92,7 +90,7 @@ spec:
       app:
         ports:
           minecraft:
-            port: 25565
+            port: *port
     persistence:
       data:
         existingClaim: *app

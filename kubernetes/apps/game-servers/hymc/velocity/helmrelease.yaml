@@ -31,6 +31,18 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &port 25565
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
                 cpu: 30m
@@ -50,7 +62,7 @@ spec:
         externalTrafficPolicy: Local
         ports:
           minecraft:
-            port: 25565
+            port: *port
     persistence:
       velocity:
         type: configMap

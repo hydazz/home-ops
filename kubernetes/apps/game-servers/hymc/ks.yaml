@@ -6,7 +6,7 @@ metadata:
   name: hymc-velocity
 spec:
   interval: 1h
-  path: ./kubernetes/apps/game-servers/minecraft/hymc/velocity
+  path: ./kubernetes/apps/game-servers/hymc/velocity
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,12 +21,13 @@ metadata:
   name: hymc-lobby
 spec:
   components:
-    - ../../../../../components/volsync
+    - ../../../../components/volsync
   dependsOn:
+    - name: hymc-velocity
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/game-servers/minecraft/hymc/lobby
+  path: ./kubernetes/apps/game-servers/hymc/lobby
   postBuild:
     substitute:
       APP: hymc-lobby
@@ -45,12 +46,13 @@ metadata:
   name: hymc-pvp
 spec:
   components:
-    - ../../../../../components/volsync
+    - ../../../../components/volsync
   dependsOn:
+    - name: hymc-velocity
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/game-servers/minecraft/hymc/pvp
+  path: ./kubernetes/apps/game-servers/hymc/pvp
   postBuild:
     substitute:
       APP: hymc-pvp
