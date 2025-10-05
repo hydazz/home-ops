@@ -72,10 +72,6 @@ spec:
                   - instance
                 targetLabel: instance
                 replacement: "5px"
-              - sourceLabels:
-                  - instance
-                targetLabel: ups
-                replacement: "5px"
           - interval: 30s
             path: /metrics
             port: http

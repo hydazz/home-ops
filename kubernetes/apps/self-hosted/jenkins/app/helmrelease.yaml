@@ -21,6 +21,7 @@ spec:
               - --httpPort=80
             env:
               JENKINS_OPTS: --webroot=/var/jenkins_cache/war
+              JAVA_OPTS: -Xmx1536m -Xms512m
             probes:
               liveness: &probes
                 enabled: true
@@ -29,16 +30,16 @@ spec:
                   httpGet:
                     path: /login
                     port: &port 80
-                  failureThreshold: 5
+                  initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               readiness: *probes
               startup:
                 enabled: true
                 spec:
-                  failureThreshold: 12
+                  failureThreshold: 30
                   periodSeconds: 10
-                  timeoutSeconds: 5
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
