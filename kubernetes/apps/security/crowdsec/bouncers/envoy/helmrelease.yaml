@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kdwils/envoy-proxy-bouncer
-              tag: sha-f15a754a0ef913724a148a48b462c03d444b2fb7
+              tag: v0.3.0@sha256:96faf02497090cfe5cb5950ce21db1aed5a28d5c4d24ced28c28b2590c2fe7b2
             env:
               ENVOY_BOUNCER_BOUNCER_ENABLED: true
               ENVOY_BOUNCER_BOUNCER_LAPIURL: http://crowdsec-service.security.svc.cluster.local:8080
