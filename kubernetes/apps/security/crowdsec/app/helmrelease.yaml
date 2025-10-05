@@ -41,7 +41,7 @@ spec:
               - parsed: target_fqdn
                 expression: evt.Unmarshaled.envoy[":authority"]
               - parsed: remote_addr
-                expression: evt.Unmarshaled.envoy["x-forwarded-for"]
+                expression: Split(evt.Unmarshaled.envoy["x-forwarded-for"], ",")[0]
               - meta: service
                 value: http
               - meta: log_type
@@ -99,7 +99,10 @@ spec:
           enabled: true
     agent:
       isDeployment: true
+      strategy:
+        type: RollingUpdate
       additionalAcquisition:
+        # loki is used as the built in log file acquisition sucks
         - source: loki
           url: http://loki-headless.observability.svc.cluster.local:3100
           query: |-
@@ -125,7 +128,6 @@ spec:
           enabled: true
     appsec:
       enabled: true
-      replicas: 2
       strategy:
         type: RollingUpdate
       acquisitions:
