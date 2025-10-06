@@ -25,6 +25,7 @@ settings:
   sync_mode: sync
   show_unmanaged: true
   show_filtered: false
+  show_unfiltered: false
   show_missing: true
   run_again_delay: 2
   asset_directory: /config/assets
@@ -52,7 +53,10 @@ settings:
   item_refresh_delay: 0
   custom_repo:
   prioritize_assets: false
+  overlay_artwork_filetype: webp_lossy
+  overlay_artwork_quality: 90
   playlist_report: false
+  save_report: false
   show_unconfigured: true
   playlist_exclude_users:
   run_order:
@@ -65,6 +69,7 @@ plex:
   url: http://plex.media.svc.cluster.local:32400
   token: <<PLEX_API_KEY>>
   timeout: 120
+  verify_ssl: false
   clean_bundles: false
   empty_trash: false
   optimize: false
@@ -75,6 +80,7 @@ tmdb:
   language: en
   cache_expiration: 60
   region: AU
+
 trakt:
   client_id: <<TRAKT_CLIENT_ID>>
   client_secret: <<TRAKT_CLIENT_SECRET>>

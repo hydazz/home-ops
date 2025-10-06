@@ -49,9 +49,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-    service:
-      app:
-        enabled: false
     persistence:
       config:
         existingClaim: *app
@@ -68,3 +65,5 @@ spec:
         globalMounts:
           - path: /config/logs
             subPath: logs
+          - path: /tmp
+            subPath: tmp
