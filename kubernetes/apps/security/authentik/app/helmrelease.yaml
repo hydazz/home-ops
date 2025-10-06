@@ -37,6 +37,9 @@ spec:
       route:
         main:
           enabled: true
+          annotations:
+            gatus.home-operations.com/endpoint: |-
+              name: authentik
           hostnames:
             - auth.hyde.services
           parentRefs:

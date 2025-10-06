@@ -457,6 +457,8 @@ spec:
               - name: mailu-front
                 port: *port
       autodiscover:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         hostnames:
           # ===== HS =====
           - autodiscover.hyde.services
