@@ -17,8 +17,6 @@ spec:
       enabled: true
     route:
       dashboard:
-        annotations:
-          gatus.home-operations.com/enabled: "true"
         host:
           name: rook.hyde.services
           path: /

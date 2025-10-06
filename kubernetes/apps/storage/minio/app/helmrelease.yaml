@@ -87,8 +87,6 @@ spec:
             scrapeTimeout: 10s
     route:
       console:
-        annotations:
-          gatus.home-operations.com/enabled: "true"
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:

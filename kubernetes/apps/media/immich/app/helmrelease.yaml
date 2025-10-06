@@ -98,7 +98,6 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
-          gatus.home-operations.com/enabled: "true"
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:

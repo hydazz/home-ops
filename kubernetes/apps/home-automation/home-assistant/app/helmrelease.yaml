@@ -54,8 +54,6 @@ spec:
             port: 8123
     route:
       app:
-        annotations:
-          gatus.home-operations.com/enabled: "true"
         hostnames:
           - homeassistant.hyde.services
         parentRefs:

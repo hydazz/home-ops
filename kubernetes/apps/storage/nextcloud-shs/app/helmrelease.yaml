@@ -83,7 +83,6 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
-          gatus.home-operations.com/enabled: "true"
           # use gatus to run cron jobs (imo least jank method)
           gatus.home-operations.com/endpoint: |-
             url: https://storage.hyde.services/cron.php

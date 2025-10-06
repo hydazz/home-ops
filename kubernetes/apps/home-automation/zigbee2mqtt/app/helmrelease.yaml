@@ -71,8 +71,6 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gatus.home-operations.com/enabled: "true"
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:
