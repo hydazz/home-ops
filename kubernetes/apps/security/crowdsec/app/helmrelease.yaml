@@ -79,7 +79,37 @@ spec:
           db_name: ${DB_NAME}
           host: ${DB_HOST}
           port: 5432
+      notifications:
+        pushover.yaml: |-
+          type: http
+          name: pushover
+          log_level: debug
+          url: https://api.pushover.net/1/messages.json
+          method: POST
+          headers:
+            Content-Type: application/json
+          format: |
+            {
+              "token": "{{ env "CROWDSEC_PUSHOVER_TOKEN" }}",
+              "user": "{{ env "PUSHOVER_USER_KEY" }}",
+              "title": "🚨 CrowdSec Security Alert",
+              "html": "1",
+              "message": "{{range . -}}{{$alert := . -}}{{range .Decisions -}}<b>🔒 Threat Detected</b>\n\n<b>IP Address:</b> {{.Value}}\n<b>Action:</b> {{.Type | title}} for {{.Duration}}\n<b>Scenario:</b> {{.Scenario}}\n<b>Timestamp:</b> {{$alert.StartAt}}\n\n{{if $alert.Source.Cn -}}<b>🌍 Location:</b> {{$alert.Source.Cn}}{{if $alert.Source.Range}} ({{$alert.Source.Range}}){{end}}\n{{else}}<b>🌍 Location:</b> Unknown\n{{end}}\n<b>🔗 Analysis:</b>\n• <a href=\"https://www.shodan.io/host/{{.Value}}\">Shodan Report</a>\n• <a href=\"https://www.whois.com/whois/{{.Value}}\">WHOIS Lookup</a>{{end -}}{{end -}}"
+            }
+      profiles.yaml: |-
+        name: default_ip_remediation
+        debug: false
+        filters:
+          - Alert.Remediation == true && Alert.GetScope() == "Ip"
+        notifications:
+          - pushover
+        decisions:
+          - type: ban
+            duration: 24h
+        on_success: break
     lapi:
+      strategy:
+        type: RollingUpdate
       env:
         - name: TZ
           value: Australia/Melbourne
