@@ -20,12 +20,12 @@ spec:
             image: &image
               repository: ghcr.io/hydazz/wordpress
               tag: 6.8.3@sha256:83eb16ac09f7b83b1f2398b4ada62613445ad542828e98c6e5a973023a72b5cc
+            # .htaccess needs to be created manually, before this container runs!
             command:
               - sh
               - -c
               - |-
                 cp -r /usr/src/wordpress/* /var/www/html/
-                cp -n /usr/src/wordpress/.htaccess /var/www/html/
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -135,6 +135,8 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
+          - path: /var/www/html
+            subPath: html
           - path: /var/run
             subPath: run
           - path: /tmp
