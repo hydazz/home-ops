@@ -15,7 +15,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          # tar: .: Cannot change mode to rwxrwxrwx: Operation not permitted
           wordpress-init:
             image: &image
               repository: ghcr.io/hydazz/wordpress
@@ -24,6 +23,11 @@ spec:
               - sh
               - -c
               - |-
+                cp -n /usr/src/wordpress/.htaccess /persistent/.htaccess
+                for file in .htaccess robots.txt; do
+                  touch /persistent/$file
+                  ln -fs /persistent/$file /var/www/html/$file
+                done
                 cp -r /usr/src/wordpress/* /var/www/html/
             securityContext: &securityContext
               allowPrivilegeEscalation: false
@@ -119,9 +123,8 @@ spec:
         globalMounts:
           - path: /var/www/html/wp-content
             subPath: wp-content
-          # On initial setup .htaccess needs to be created inside the PVC before starting the pod
-          - path: /var/www/html/.htaccess
-            subPath: .htaccess
+          - path: /persistent
+            subPath: persistent
       configs:
         type: configMap
         identifier: config
