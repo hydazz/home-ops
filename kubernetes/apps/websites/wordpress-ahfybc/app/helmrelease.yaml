@@ -1,0 +1,141 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app wordpress-ahfybc
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: wordpress-ahfybc
+  interval: 1h
+  values:
+    controllers:
+      wordpress:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          # tar: .: Cannot change mode to rwxrwxrwx: Operation not permitted
+          wordpress-init:
+            image: &image
+              repository: ghcr.io/hydazz/wordpress
+              tag: 6.8.3@sha256:83eb16ac09f7b83b1f2398b4ada62613445ad542828e98c6e5a973023a72b5cc
+            command:
+              - sh
+              - -c
+              - |-
+                cp -r /usr/src/wordpress/* /var/www/html/
+                cp -n /usr/src/wordpress/.htaccess /var/www/html/
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+        containers:
+          app:
+            image: *image
+            env:
+              WORDPRESS_AUTO_UPDATE_CORE: false
+              WORDPRESS_CONFIG_EXTRA: |-
+                define('WP_MEMORY_LIMIT', '256M');
+                define('WP_MAX_MEMORY_LIMIT', '512M');
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 80
+                    httpHeaders:
+                      - name: Host
+                        value: ${D_AHFYBC}
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 150m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            ui:
+              hide-hostname: true
+              hide-url: true
+        hostnames:
+          - ${D_AHFYBC}
+          - www.${D_AHFYBC}
+        parentRefs:
+          - name: envoy-cloudflare
+            namespace: network
+            sectionName: https
+    configMaps:
+      config:
+        data:
+          wordpress.ini: |
+            upload_max_filesize = 100M
+            post_max_size = 100M
+            memory_limit = 512M
+            max_execution_time = 180
+            max_input_vars = 4000
+            expose_php = Off
+            opcache.enable = 1
+            opcache.memory_consumption = 128
+            opcache.max_accelerated_files = 15000
+            opcache.revalidate_freq = 30
+          www.conf: |
+            [www]
+            pm = dynamic
+            pm.max_children = 6
+            pm.start_servers = 3
+            pm.min_spare_servers = 2
+            pm.max_spare_servers = 4
+            pm.max_requests = 400
+            pm.process_idle_timeout = 15s
+            request_terminate_timeout = 300s
+    persistence:
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /var/www/html/wp-content
+            subPath: wp-content
+          - path: /var/www/html/.htaccess
+            subPath: .htaccess
+      configs:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /usr/local/etc/php-fpm.d/www.conf
+            subPath: www.conf
+          - path: /usr/local/etc/php/conf.d/wordpress.ini
+            subPath: wordpress.ini
+      backup:
+        existingClaim: "{{ .Release.Name }}-backup"
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/run
+            subPath: run
+          - path: /tmp
+            subPath: tmp
