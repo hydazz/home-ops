@@ -89,18 +89,19 @@ spec:
           headers:
             Content-Type: application/json
           format: |-
-            {
+            {{range . -}}{{$alert := . -}}{{range .Decisions -}}{
               "token": "{{ env "CROWDSEC_PUSHOVER_TOKEN" }}",
               "user": "{{ env "PUSHOVER_USER_KEY" }}",
-              "title": "🚨 CrowdSec Security Alert",
+              "title": "🚨 CrowdSec Alert: {{.Value}}",
               "html": "1",
-              "url": "https://app.crowdsec.net/cti/{{range . -}}{{$alert := . -}}{{range .Decisions -}}{{.Value}}{{end -}}{{end -}}",
-              "url_title": "View in CrowdSec Console",
-              "message": "{{range . -}}{{$alert := . -}}{{range .Decisions -}}<b>🔒 Security Threat Detected</b>
-
+              "url": "https://www.virustotal.com/gui/ip-address/{{.Value}}",
+              "url_title": "View in VirusTotal",
+              "message": "
             <b>🌐 Target Information:</b>
-            • <b>IP Address:</b> {{.Value}}{{$domain := GetMeta $alert "target_fqdn" | join ", "}}{{if ne $domain ""}}
-            • <b>Domain:</b> {{$domain}}{{end}}{{$path := GetMeta $alert "http_path" | join ", "}}{{if ne $path ""}}
+            • <b>IP Address:</b> {{.Value}}
+            {{- $domain := GetMeta $alert "target_fqdn" | join ", "}}{{if ne $domain ""}}
+            • <b>Domain:</b> {{$domain}}{{end}}
+            {{- $path := GetMeta $alert "http_path" | join ", "}}{{if ne $path ""}}
             • <b>Path:</b> {{$path}}{{end}}
 
             <b>🛡️ Action Taken:</b>
@@ -109,20 +110,25 @@ spec:
             • <b>Scenario:</b> {{.Scenario}}
             • <b>Timestamp:</b> {{$alert.StartAt}}
 
-            <b>📊 Request Details:</b>{{$verb := GetMeta $alert "http_verb" | join ", "}}{{if ne $verb ""}}
-            • <b>Method:</b> {{$verb}}{{end}}{{$status := GetMeta $alert "http_status" | join ", "}}{{if ne $status ""}}
-            • <b>Status:</b> {{$status}}{{end}}{{$agent := GetMeta $alert "http_user_agent" | join ", "}}{{if ne $agent ""}}
+            <b>📊 Request Details:</b>
+            {{- $verb := GetMeta $alert "http_verb" | join ", "}}{{if ne $verb ""}}
+            • <b>Method:</b> {{$verb}}{{end}}
+            {{- $status := GetMeta $alert "http_status" | join ", "}}{{if ne $status ""}}
+            • <b>Status:</b> {{$status}}{{end}}
+            {{- $agent := GetMeta $alert "http_user_agent" | join ", "}}{{if ne $agent ""}}
             • <b>User Agent:</b> {{$agent}}{{end}}
 
-            <b>🌍 Geographic Info:</b>{{if $alert.Source.Cn}}
-            • <b>Country:</b> {{$alert.Source.Cn}}{{end}}{{$asnOrg := GetMeta $alert "ASNOrg" | join ", "}}{{$asnNum := GetMeta $alert "ASNNumber" | join ", "}}{{if and (ne $asnOrg "") (ne $asnNum "")}}
-            • <b>ASN:</b> {{$asnOrg}} ({{$asnNum}}){{end}}
+            <b>🌍 Geographic Info:</b>
+            {{- if $alert.Source.Cn}}
+            • <b>Country:</b> {{$alert.Source.Cn}}{{end}}
+            {{- $asnOrg := GetMeta $alert "ASNOrg" | join ", "}}
+            {{- if ne $asnOrg ""}}
+            • <b>ASN:</b> {{$asnOrg}}{{end}}
 
             <b>🔗 Investigation Links:</b>
-            • <a href=\"https://www.shodan.io/host/{{.Value}}\">🔎 Shodan Report</a>
-            • <a href=\"https://www.whois.com/whois/{{.Value}}\">📋 WHOIS Lookup</a>
-            • <a href=\"https://app.crowdsec.net/cti/{{.Value}}\">🛡️ CrowdSec CTI</a>
-            • <a href=\"https://www.abuseipdb.com/check/{{.Value}}\">🚨 AbuseIPDB</a>{{end -}}{{end -}}"
+            • <a href=\"https://www.abuseipdb.com/check/{{.Value}}\">🚨 AbuseIPDB</a>
+            • <a href=\"https://ipinfo.io/{{.Value}}\">🌍 IPinfo</a>
+            {{end}}{{end}}"
             }
       profiles.yaml: |-
         name: default_ip_remediation
