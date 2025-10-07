@@ -24,7 +24,7 @@ spec:
               - -c
               - |-
                 cp -n /usr/src/wordpress/.htaccess /persistent/.htaccess
-                for file in .htaccess robots.txt; do
+                for file in .htaccess; do
                   touch /persistent/$file
                   ln -fs /persistent/$file /var/www/html/$file
                 done
@@ -37,7 +37,6 @@ spec:
           app:
             image: *image
             env:
-              WORDPRESS_AUTO_UPDATE_CORE: false
               WORDPRESS_CONFIG_EXTRA: |-
                 define('WP_MEMORY_LIMIT', '256M');
                 define('WP_MAX_MEMORY_LIMIT', '512M');
