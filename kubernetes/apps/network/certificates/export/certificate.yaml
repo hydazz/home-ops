@@ -126,3 +126,18 @@ spec:
   dnsNames:
     - ${D_LMVCA}
     - "*.${D_LMVCA}"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name ${D_AHFYBC//./-}-tls
+spec:
+  secretName: *name
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: ${D_AHFYBC}
+  dnsNames:
+    - ${D_AHFYBC}
+    - "*.${D_AHFYBC}"
