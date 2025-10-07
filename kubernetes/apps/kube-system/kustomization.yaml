@@ -12,7 +12,7 @@ resources:
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
   - ./generic-device-plugin/ks.yaml
-  - ./intel-device-plugin-operator/ks.yaml
+  - ./intel-gpu-resource-driver/ks.yaml
   - ./metrics-server/ks.yaml
   - ./multus/ks.yaml
   - ./nvidia-device-plugin/ks.yaml

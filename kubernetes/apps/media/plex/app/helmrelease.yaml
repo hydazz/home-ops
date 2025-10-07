@@ -44,11 +44,12 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: 50m
                 memory: 4Gi
               limits:
-                gpu.intel.com/i915: 1
                 memory: 12Gi
     defaultPodOptions:
       affinity:
@@ -62,6 +63,9 @@ spec:
                     operator: In
                     values:
                       - discovery
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: plex-gpu
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
