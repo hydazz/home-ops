@@ -117,7 +117,11 @@ spec:
       data:
         existingClaim: *app
         globalMounts:
-          - path: /var/www/html
+          - path: /var/www/html/wp-content
+            subPath: wp-content
+          # On initial setup .htaccess needs to be created inside the PVC before starting the pod
+          - path: /var/www/html/.htaccess
+            subPath: .htaccess
       configs:
         type: configMap
         identifier: config
@@ -131,6 +135,8 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
+          - path: /var/www/html
+            subPath: html
           - path: /var/run
             subPath: run
           - path: /tmp
