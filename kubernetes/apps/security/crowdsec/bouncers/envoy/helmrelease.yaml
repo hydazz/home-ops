@@ -14,7 +14,7 @@ spec:
       crowdsec-envoy-bouncer:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 2
+        strategy: RollingUpdate
         containers:
           app:
             image:
