@@ -66,6 +66,8 @@ spec:
                 expression: evt.Unmarshaled.envoy["x-request-id"]
       config.yaml.local: |-
         api:
+          client:
+            unregister_on_exit: true
           server:
             auto_registration:
               enabled: true
@@ -79,6 +81,14 @@ spec:
           db_name: ${DB_NAME}
           host: ${DB_HOST}
           port: 5432
+      agent_config.yaml.local: |-
+        api:
+          client:
+            unregister_on_exit: true
+      appsec_config.yaml.local: |-
+        api:
+          client:
+            unregister_on_exit: true
       notifications:
         pushover.yaml: |-
           type: http
