@@ -99,31 +99,32 @@ spec:
               "message": "
             <b>🌐 Target Information:</b>
             • <b>IP Address:</b> {{.Value}}
-            {{- $domain := GetMeta $alert "target_fqdn" | join ", "}}{{if ne $domain ""}}
-            • <b>Domain:</b> {{$domain}}{{end}}
-            {{- $path := GetMeta $alert "http_path" | join ", "}}{{if ne $path ""}}
-            • <b>Path:</b> {{$path}}{{end}}
+            {{- $domains := GetMeta $alert "target_fqdn" | uniq | join ", "}}{{if ne $domains ""}}
+            • <b>Domain(s):</b> {{$domains}}{{end}}
+            {{- $paths := GetMeta $alert "http_path" | uniq | join ", "}}{{if ne $paths ""}}
+            • <b>Path(s):</b> {{$paths}}{{end}}
 
             <b>🛡️ Action Taken:</b>
             • <b>Type:</b> {{.Type | title}}
             • <b>Duration:</b> {{.Duration}}
             • <b>Scenario:</b> {{.Scenario}}
             • <b>Timestamp:</b> {{$alert.StartAt}}
+            • <b>Event Count:</b> {{len $alert.Events}}
 
             <b>📊 Request Details:</b>
-            {{- $verb := GetMeta $alert "http_verb" | join ", "}}{{if ne $verb ""}}
-            • <b>Method:</b> {{$verb}}{{end}}
-            {{- $status := GetMeta $alert "http_status" | join ", "}}{{if ne $status ""}}
-            • <b>Status:</b> {{$status}}{{end}}
-            {{- $agent := GetMeta $alert "http_user_agent" | join ", "}}{{if ne $agent ""}}
-            • <b>User Agent:</b> {{$agent}}{{end}}
+            {{- $methods := GetMeta $alert "http_verb" | uniq | join ", "}}{{if ne $methods ""}}
+            • <b>Method(s):</b> {{$methods}}{{end}}
+            {{- $statuses := GetMeta $alert "http_status" | uniq | join ", "}}{{if ne $statuses ""}}
+            • <b>Status(es):</b> {{$statuses}}{{end}}
+            {{- $agents := GetMeta $alert "http_user_agent" | uniq}}{{if $agents}}{{if le (len $agents) 3}}
+            • <b>User Agent(s):</b> {{$agents | join ", "}}{{else}}
+            • <b>User Agents:</b> {{len $agents}} unique agents{{end}}{{end}}
 
             <b>🌍 Geographic Info:</b>
             {{- if $alert.Source.Cn}}
             • <b>Country:</b> {{$alert.Source.Cn}}{{end}}
-            {{- $asnOrg := GetMeta $alert "ASNOrg" | join ", "}}
-            {{- if ne $asnOrg ""}}
-            • <b>ASN:</b> {{$asnOrg}}{{end}}
+            {{- $asnOrgs := GetMeta $alert "ASNOrg" | uniq | join ", "}}{{if ne $asnOrgs ""}}
+            • <b>ASN:</b> {{$asnOrgs}}{{end}}
 
             <b>🔗 Investigation Links:</b>
             • <a href=\"https://www.abuseipdb.com/check/{{.Value}}\">🚨 AbuseIPDB</a>
