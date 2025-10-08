@@ -18,7 +18,7 @@ spec:
     data:
       compression: bzip2
     wal:
-      compression: bzip2
+      compression: zstd
       maxParallel: 8
   retentionPolicy: 7d
 ---
