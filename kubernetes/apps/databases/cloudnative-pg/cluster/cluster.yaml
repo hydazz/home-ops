@@ -54,7 +54,27 @@ spec:
   postgresql:
     parameters:
       max_connections: "200"
-      shared_buffers: 256MB
+      shared_buffers: 1GB
+      effective_cache_size: 1500MB
+      work_mem: 8MB
+      maintenance_work_mem: 256MB
+      autovacuum_work_mem: 128MB
+      autovacuum_max_workers: "3"
+      autovacuum_naptime: 30s
+      autovacuum_vacuum_cost_limit: "800"
+      autovacuum_vacuum_scale_factor: "0.1"
+      checkpoint_timeout: 15min
+      max_wal_size: 4GB
+      min_wal_size: 1GB
+      wal_compression: zstd
+      random_page_cost: "1.3"
+      default_statistics_target: "200"
+      effective_io_concurrency: "200"
+      max_parallel_workers: "4"
+      max_parallel_workers_per_gather: "4"
+      max_parallel_maintenance_workers: "4"
+      hot_standby_feedback: "on"
+      huge_pages: try
   monitoring:
     enablePodMonitor: true
   primaryUpdateMethod: switchover
