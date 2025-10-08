@@ -77,5 +77,4 @@ spec:
       huge_pages: try
   monitoring:
     enablePodMonitor: true
-  primaryUpdateMethod: switchover
   primaryUpdateStrategy: unsupervised
