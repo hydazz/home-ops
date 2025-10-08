@@ -5,10 +5,8 @@ kind: Backup
 metadata:
   name: mariadb-backup
 spec:
-  compression: bzip2
   mariaDbRef:
     name: mariadb
-  maxRetention: 168h # 7 days
   schedule:
     cron: 0 2 * * *
     suspend: false
@@ -25,4 +23,6 @@ spec:
         key: B2_SECRET_ACCESS_KEY
       tls:
         enabled: true
+  compression: bzip2
+  maxRetention: 168h # 7 days
   timeZone: Australia/Melbourne

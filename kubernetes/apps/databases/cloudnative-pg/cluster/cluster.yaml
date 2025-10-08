@@ -7,20 +7,19 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  bootstrap:
-    recovery:
-      source: source
-  enableSuperuserAccess: true
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: b2
-          serverName: postgres
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
   imageName: ghcr.io/cloudnative-pg/postgresql:16.10@sha256:fd8d76cfb72d3d2a03b04cace8e544a4fb8af0e59088be59a82b5c8c76c66898
   instances: 3
+  storage:
+    size: 8Gi
+    storageClass: openebs-hostpath
+  resources:
+    requests:
+      cpu: 50m
+      memory: 512Mi
+    limits:
+      hugepages-2Mi: 1Gi
+      memory: 2Gi
   managed:
     services:
       additional:
@@ -34,8 +33,19 @@ spec:
                   interval: 15s
                   conditions:
                     - "[CONNECTED] == true"
-  monitoring:
-    enablePodMonitor: true
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: cloudnative-pg-secret
+  bootstrap:
+    recovery:
+      source: source
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: b2
+          serverName: postgres
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
@@ -45,17 +55,7 @@ spec:
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
+  monitoring:
+    enablePodMonitor: true
   primaryUpdateMethod: switchover
   primaryUpdateStrategy: unsupervised
-  resources:
-    requests:
-      cpu: 50m
-      memory: 512Mi
-    limits:
-      hugepages-2Mi: 1Gi
-      memory: 2Gi
-  storage:
-    size: 8Gi
-    storageClass: openebs-hostpath
-  superuserSecret:
-    name: cloudnative-pg-secret

@@ -5,16 +5,6 @@ kind: Dragonfly
 metadata:
   name: dragonfly
 spec:
-  args:
-    - --maxmemory=$(MAX_MEMORY)Mi
-    - --proactor_threads=1
-    - --default_lua_flags=allow-undeclared-keys
-  env:
-    - name: MAX_MEMORY
-      valueFrom:
-        resourceFieldRef:
-          divisor: 1Mi
-          resource: limits.memory
   image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.34.1@sha256:99eb2dd14ca00b983c302d0a15d15176dccd5a9e85a375bcc5157e1cadd73099
   replicas: 1
   resources:
@@ -29,3 +19,13 @@ spec:
         interval: 15s
         conditions:
           - "[CONNECTED] == true"
+  args:
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=1
+    - --default_lua_flags=allow-undeclared-keys
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          divisor: 1Mi
+          resource: limits.memory

@@ -6,8 +6,6 @@ metadata:
   name: b2
 spec:
   configuration:
-    data:
-      compression: bzip2
     destinationPath: s3://b2backup-k8s/cnpg/
     endpointURL: https://s3.us-east-005.backblazeb2.com
     s3Credentials:
@@ -17,6 +15,8 @@ spec:
       secretAccessKey:
         name: cloudnative-pg-secret
         key: B2_SECRET_ACCESS_KEY
+    data:
+      compression: bzip2
     wal:
       compression: bzip2
       maxParallel: 8
@@ -28,10 +28,10 @@ kind: ScheduledBackup
 metadata:
   name: postgres-backup
 spec:
-  backupOwnerReference: self
   cluster:
     name: postgres
+  schedule: "@daily"
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
-  schedule: "@daily"
+  backupOwnerReference: self
