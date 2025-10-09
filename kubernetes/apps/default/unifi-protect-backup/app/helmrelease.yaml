@@ -54,15 +54,21 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-    service:
-      app:
-        enabled: false
+    configMaps:
+      config:
+        data:
+          rclone.conf: |-
+            [cloudflare]
+            type = s3
+            provider = Cloudflare
+            endpoint = https://ff6f87cc1940578fbe957a7b39b0ae72.r2.cloudflarestorage.com
+            env_auth = true
     persistence:
       config:
         existingClaim: *app
-      rclone-config:
+      config-file:
         type: configMap
-        name: "{{ .Release.Name }}-configmap"
+        identifier: config
         globalMounts:
           - path: /config/rclone.conf
             subPath: rclone.conf

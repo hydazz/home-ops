@@ -69,10 +69,46 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
+    configMaps:
+      config:
+        data:
+          servers.json: |-
+            {
+              "Servers": {
+                "1": {
+                  "Name": "postgres",
+                  "Group": "Servers",
+                  "Host": "postgres-rw.databases.svc.cluster.local",
+                  "Port": 5432,
+                  "MaintenanceDB": "postgres",
+                  "Username": "postgres",
+                  "SSLMode": "disable",
+                  "SSLCompression": 0,
+                  "Timeout": 10,
+                  "UseSSHTunnel": 0,
+                  "TunnelPort": "22",
+                  "TunnelAuthentication": 0
+                },
+                "2": {
+                  "Name": "immich",
+                  "Group": "Servers",
+                  "Host": "immich-rw.media.svc.cluster.local",
+                  "Port": 5432,
+                  "MaintenanceDB": "postgres",
+                  "Username": "postgres",
+                  "SSLMode": "disable",
+                  "SSLCompression": 0,
+                  "Timeout": 10,
+                  "UseSSHTunnel": 0,
+                  "TunnelPort": "22",
+                  "TunnelAuthentication": 0
+                }
+              }
+            }
     persistence:
-      server-json:
+      config-file:
         type: configMap
-        name: "{{ .Release.Name }}-configmap"
+        identifier: config
         globalMounts:
           - path: /pgadmin4/servers.json
             subPath: servers.json
