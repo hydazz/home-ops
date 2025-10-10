@@ -8,7 +8,7 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.10-0.5.3@sha256:0c2cac415c224a6b019537b014b2e4784b087cc097bbbc9b0e527fbb4d767e6e
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.6-0.5.3@sha256:bc5fbeba82a75de3f25d06b1dda8a7de42711ab2a0adcfca140d8344bf4d1b62
   instances: 3
   storage:
     size: 16Gi
