@@ -57,8 +57,5 @@ spec:
           http:
             port: *port
     persistence:
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp

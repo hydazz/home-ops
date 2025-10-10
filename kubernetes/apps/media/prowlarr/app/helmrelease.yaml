@@ -78,8 +78,5 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp

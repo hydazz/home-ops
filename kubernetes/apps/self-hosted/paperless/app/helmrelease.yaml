@@ -131,8 +131,5 @@ spec:
           paperless:
             app:
               - path: /usr/src/paperless/media
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp

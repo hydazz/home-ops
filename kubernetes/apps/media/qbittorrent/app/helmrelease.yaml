@@ -87,8 +87,5 @@ spec:
         path: /mnt/Slow/Media
         globalMounts:
           - path: /data
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp
