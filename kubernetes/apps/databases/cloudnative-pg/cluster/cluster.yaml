@@ -8,7 +8,7 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.10@sha256:fd8d76cfb72d3d2a03b04cace8e544a4fb8af0e59088be59a82b5c8c76c66898
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.10-0.5.3@sha256:0c2cac415c224a6b019537b014b2e4784b087cc097bbbc9b0e527fbb4d767e6e
   instances: 3
   storage:
     size: 16Gi
@@ -75,6 +75,8 @@ spec:
       max_parallel_maintenance_workers: "4"
       hot_standby_feedback: "on"
       huge_pages: try
+    shared_preload_libraries:
+      - vchord.so
   monitoring:
     enablePodMonitor: true
   primaryUpdateStrategy: unsupervised
