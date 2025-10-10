@@ -11,7 +11,7 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.10@sha256:fd8d76cfb72d3d2a03b04cace8e544a4fb8af0e59088be59a82b5c8c76c66898
   instances: 3
   storage:
-    size: 8Gi
+    size: 16Gi
     storageClass: openebs-hostpath
   resources:
     requests:
