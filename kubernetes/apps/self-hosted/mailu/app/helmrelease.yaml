@@ -258,7 +258,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/rspamd
-              tag: 2024.06.43@sha256:cc883bfadfa2d64fce7fb2000589668a006e4a374a42539f901d2cc017a805d0
+              tag: 2024.06.44@sha256:65462aae8ae7b6caba8d35c074699617a8025a63edf1238121ad50bee20bd4d2
             env:
               ANTIVIRUS: none
               ANTIVIRUS_ACTION: discard
