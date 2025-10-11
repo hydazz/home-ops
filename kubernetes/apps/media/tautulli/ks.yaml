@@ -15,7 +15,7 @@ spec:
   postBuild:
     substitute:
       APP: tautulli
-      VOLSYNC_CAPACITY: 256Mi
+      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

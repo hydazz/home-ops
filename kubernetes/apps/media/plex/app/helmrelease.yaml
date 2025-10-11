@@ -112,10 +112,6 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
       media:
         type: nfs
         server: 192.168.42.20
@@ -125,8 +121,6 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Logs
-            subPath: logs
           - path: /transcode
             subPath: transcode
           - path: /tmp

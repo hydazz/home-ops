@@ -60,10 +60,5 @@ spec:
             subPath: config.yml
           - path: /config/playlists.yml
             subPath: playlists.yml
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /config/logs
-            subPath: logs
-          - path: /tmp
-            subPath: tmp

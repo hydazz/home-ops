@@ -70,12 +70,5 @@ spec:
         existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/.venv
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /config/logs
-            subPath: logs
-          - path: /config/tts
-            subPath: tts
-          - path: /tmp
-            subPath: tmp

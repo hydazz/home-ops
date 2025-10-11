@@ -72,16 +72,5 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /config/cache
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /config/logs
-            subPath: logs
-          - path: /config/backups
-            subPath: backups
-          - path: /tmp
-            subPath: tmp

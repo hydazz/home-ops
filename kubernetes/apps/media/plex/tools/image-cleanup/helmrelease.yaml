@@ -65,7 +65,3 @@ spec:
         existingClaim: plex
         globalMounts:
           - path: /data
-      plex-cache:
-        existingClaim: plex-cache
-        globalMounts:
-          - path: /data/Library/Application Support/Plex Media Server/Cache
