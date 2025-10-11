@@ -65,7 +65,7 @@ spec:
     route:
       app:
         hostnames:
-          - "ci.imagegenius.io"
+          - ci.imagegenius.io
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
