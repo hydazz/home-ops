@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/nginx
-              tag: 2024.06.43@sha256:33ec8e12608d9b0dbb7532f7aa3706bea9f831a9b2450ef69ca15371cf3c448e
+              tag: 2024.06.44@sha256:a1eb6c0ccdae288618557fc5b5eba0bded9aae1bb8545fbe066986cbe5d5061f
             env:
               LETSENCRYPT_SHORTCHAIN: false
               REAL_IP_FROM: 0.0.0.0/0
