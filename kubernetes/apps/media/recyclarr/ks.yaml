@@ -5,17 +5,11 @@ kind: Kustomization
 metadata:
   name: recyclarr
 spec:
-  components:
-    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media/recyclarr/app
-  postBuild:
-    substitute:
-      APP: recyclarr
-      VOLSYNC_CAPACITY: 256Mi
   prune: true
   sourceRef:
     kind: GitRepository
