@@ -211,7 +211,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/dovecot
-              tag: 2024.06.43@sha256:f96b93175e6d67e94bf498137d9688e3108abe65e87438afc98f07fac3ce7b05
+              tag: 2024.06.44@sha256:ead2c24e20ae44d7ca9aa620aab54b2febfbfe2c6c72614ce28ce1e0a8b8bf2e
             env:
               COMPRESSION: lz4
               COMPRESSION_LEVEL: 6
