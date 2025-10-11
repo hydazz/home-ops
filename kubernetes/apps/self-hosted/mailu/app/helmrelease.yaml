@@ -65,7 +65,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/admin
-              tag: 2024.06.43@sha256:75fb5afaa356a55c9c28aace48b4cbe7f022582017f48812bf7e86a9ee67db2c
+              tag: 2024.06.44@sha256:34f58a371ecc80e48cfb7e75cf33cbeeaa909d4a170cd857765ec0f3a897e50a
             # Bypass Mailu's DNSSEC bullshit
             command:
               - sh
