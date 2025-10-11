@@ -166,7 +166,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mailu/postfix
-              tag: 2024.06.43@sha256:f7395355bb68f402740b417cad9e4acb0830607f3bb535822316c2f9f05e6f00
+              tag: 2024.06.44@sha256:2f2f0de99f68f7e186a3e02eb625e63627d7a1e0621cbc354cf118249c6849b6
             env:
               REJECT_UNLISTED_RECIPIENT: yes
             envFrom:
