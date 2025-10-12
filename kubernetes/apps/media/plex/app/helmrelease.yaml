@@ -52,20 +52,9 @@ spec:
               limits:
                 memory: 12Gi
     defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  # discovery has better cooling
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - discovery
       resourceClaims:
         - name: gpu
-          resourceClaimTemplateName: plex-gpu
+          resourceClaimTemplateName: plex
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
