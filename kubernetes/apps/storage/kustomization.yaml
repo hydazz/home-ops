@@ -4,10 +4,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: storage
 components:
-  - ../../components/namespace
-replacements:
-  - path: ../../components/replacements/ks.yaml
+  - ../../components/alerts
+  - ../../components/cluster-secrets
 resources:
   - ./minio/ks.yaml
+  - ./namespace.yaml
   - ./nextcloud-shca/ks.yaml
   - ./nextcloud-shs/ks.yaml
