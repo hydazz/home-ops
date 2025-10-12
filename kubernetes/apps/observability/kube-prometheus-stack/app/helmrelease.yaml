@@ -74,7 +74,7 @@ spec:
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         retention: 14d
-        retentionSize: 20GB
+        retentionSize: 50GB
         resources:
           requests:
             cpu: 100m
@@ -86,7 +86,7 @@ spec:
               storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 20Gi
+                  storage: 50Gi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
