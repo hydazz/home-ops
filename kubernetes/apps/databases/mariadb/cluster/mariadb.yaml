@@ -21,6 +21,7 @@ spec:
     metadata:
       annotations:
         gatus.home-operations.com/endpoint: |-
+          group: services
           interval: 15s
           conditions:
             - "[CONNECTED] == true"
