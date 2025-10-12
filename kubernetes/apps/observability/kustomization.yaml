@@ -19,5 +19,4 @@ resources:
   - ./nut-exporter/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./spoodermon/ks.yaml
   - ./unpoller/ks.yaml
