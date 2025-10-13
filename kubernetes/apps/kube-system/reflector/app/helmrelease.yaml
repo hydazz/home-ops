@@ -9,4 +9,3 @@ spec:
     kind: OCIRepository
     name: reflector
   interval: 1h
-
