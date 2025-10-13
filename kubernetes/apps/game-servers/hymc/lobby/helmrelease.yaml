@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app hymc-lobby
+  name: hymc-lobby
 spec:
   chartRef:
     kind: OCIRepository
@@ -93,7 +93,7 @@ spec:
             port: *port
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
       tmpfs:
         type: emptyDir
         globalMounts:

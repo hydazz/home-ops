@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app wordpress-shca
+  name: wordpress-shca
 spec:
   chartRef:
     kind: OCIRepository
@@ -131,7 +131,7 @@ spec:
             request_terminate_timeout = 300s
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /var/www/html/wp-content
             subPath: wp-content

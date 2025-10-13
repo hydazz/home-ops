@@ -113,8 +113,6 @@ spec:
                 port: *s3Port
     persistence:
       data:
-        existingClaim: *app
-        globalMounts:
-          - path: /data
+        existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir

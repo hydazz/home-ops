@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app maddy
+  name: maddy
 spec:
   chartRef:
     kind: OCIRepository
@@ -213,7 +213,7 @@ spec:
             }
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
       cache:
         type: emptyDir
       config-file:

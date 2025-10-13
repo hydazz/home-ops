@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app nextcloud-shca
+  name: nextcloud-shca
 spec:
   chartRef:
     kind: OCIRepository
@@ -159,7 +159,7 @@ spec:
             RemoteIPInternalProxy 10.42.0.0/16
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /var/www/html
       archive-nfs:

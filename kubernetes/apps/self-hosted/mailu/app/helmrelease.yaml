@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app mailu
+  name: mailu
 spec:
   chartRef:
     kind: OCIRepository
@@ -476,7 +476,7 @@ spec:
         rules: *rules
     persistence:
       admin-data:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           admin:
             app:
@@ -485,7 +485,7 @@ spec:
               - path: /dkim
                 subPath: dkim
       dovecot-data:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           dovecot:
             app:

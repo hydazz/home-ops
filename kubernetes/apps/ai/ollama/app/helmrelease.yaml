@@ -72,5 +72,3 @@ spec:
         type: emptyDir
       models:
         existingClaim: "{{ .Release.Name }}-models"
-        globalMounts:
-          - path: /models

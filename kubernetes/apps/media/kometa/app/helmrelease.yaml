@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app kometa
+  name: kometa
 spec:
   chartRef:
     kind: OCIRepository
@@ -51,7 +51,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
       files:
         type: configMap
         name: "{{ .Release.Name }}-configmap"

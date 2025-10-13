@@ -109,12 +109,10 @@ spec:
               - identifier: app
                 port: *port
     persistence:
-      library:
+      photos:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media/Immich
-        globalMounts:
-          - path: /photos
       machine-learning-cache:
         existingClaim: "{{ .Release.Name }}-cache"
         advancedMounts:

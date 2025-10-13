@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app zigbee2mqtt
+  name: zigbee2mqtt
 spec:
   chartRef:
     kind: OCIRepository
@@ -78,7 +78,5 @@ spec:
             namespace: network
             sectionName: https
     persistence:
-      data:
-        existingClaim: *app
-        globalMounts:
-          - path: /config
+      config:
+        existingClaim: "{{ .Release.Name }}"
