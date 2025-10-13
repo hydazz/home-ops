@@ -108,6 +108,10 @@ spec:
             }
 
             msgpipeline local_routing {
+              # Reject incoming mail to no-reply addresses.
+              destination /^no-reply@.+$/ {
+                reject 550 5.7.1 "This is a no-reply address. Please do not send emails here."
+              }
               destination postmaster $(local_domains) {
                 modify {
                   replace_rcpt &local_rewrites
