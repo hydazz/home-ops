@@ -82,7 +82,9 @@ spec:
 
             $(hostname) = {env:MADDY_HOSTNAME}
             $(primary_domain) = {env:MADDY_DOMAIN}
-            $(local_domains) = $(primary_domain) imagegenius.io ${D_HCA} ${D_SN} ${D_TACA} ${D_TAN} ${D_LMVCA} ${D_AHFYBC}
+            $(local_domains) = $(primary_domain) imagegenius.io ${D_SN} ${D_TACA} ${D_TAN} ${D_LMVCA} ${D_AHFYBC}
+            $(external_domains) = ${D_HCA}
+            $(sender_domains) = $(local_domains) $(external_domains)
 
             tls file /certs/tls.crt /certs/tls.key
             hostname $(hostname)
@@ -134,11 +136,11 @@ spec:
                 dkim
                 spf
               }
-              source $(local_domains) {
+              source $(sender_domains) {
                 reject 501 5.1.8 "Use Submission for outgoing SMTP"
               }
               default_source {
-                destination postmaster $(local_domains) {
+                destination $(local_domains) {
                   deliver_to &local_routing
                 }
                 default_destination {
@@ -152,19 +154,19 @@ spec:
                 all rate 50 1s
               }
               auth &local_authdb
-              source $(local_domains) {
+              source $(sender_domains) {
                 check {
                   authorize_sender {
                     prepare_email &local_rewrites
                     user_to_email identity
                   }
                 }
-                destination postmaster $(local_domains) {
+                destination $(local_domains) {
                   deliver_to &local_routing
                 }
                 default_destination {
                   modify {
-                    dkim $(primary_domain) $(local_domains) default
+                    dkim $(sender_domains) default
                   }
                   deliver_to &remote_queue
                 }
