@@ -21,7 +21,7 @@ spec:
               ROUNDCUBEMAIL_DB_TYPE: sqlite
               ROUNDCUBEMAIL_DEFAULT_HOST: ssl://mail.hyde.services
               ROUNDCUBEMAIL_DEFAULT_PORT: 993
-              ROUNDCUBEMAIL_PLUGINS: archive,zipdownload,managesieve,password,redundant_attachments,filesystem_attachments,jqueryui,emoticons,database_attachments
+              ROUNDCUBEMAIL_PLUGINS: archive,zipdownload,managesieve,password,redundant_attachments,jqueryui,emoticons
               ROUNDCUBEMAIL_SKIN: elastic
               ROUNDCUBEMAIL_SMTP_PORT: 587
               ROUNDCUBEMAIL_SMTP_SERVER: tls://mail.hyde.services
@@ -34,7 +34,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: &port 80
+                    port: &port 8000
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -69,10 +69,16 @@ spec:
             namespace: network
             sectionName: https
     persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /var/roundcube
       tmpfs:
         type: emptyDir
         globalMounts:
-          - path: /tmp/
+          - path: /var/www/html
+            subPath: html
+          - path: /var/run
+            subPath: run
+          - path: /tmp
             subPath: tmp
-          - path: /var/roundcube/db
-            subPath: db
