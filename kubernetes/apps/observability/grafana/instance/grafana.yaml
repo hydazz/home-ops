@@ -21,9 +21,12 @@ spec:
       mode: console
     news:
       news_feed_enabled: "false"
+    plugins:
+      plugin_admin_enabled: "false"
     security:
-      admin_user: admin
+      angular_support_enabled: "true"
     server:
+      enable_gzip: "true"
       root_url: https://grafana.hyde.services
   deployment:
     metadata:
@@ -55,10 +58,10 @@ spec:
                 - name: REQ_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-secret
+                      name: grafana-admin-password-secret
                       key: GF_SECURITY_ADMIN_PASSWORD
                 - name: REQ_URL
-                  value: http://localhost:3000/api/admin/provisioning/datasources/reload
+                  value: http://localhost:3000/api/admin/provisioning/dashboards/reload
                 - name: REQ_USERNAME
                   value: admin
                 - name: UNIQUE_FILENAMES
@@ -79,7 +82,7 @@ spec:
                 - name: GF_SECURITY_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-secret
+                      name: grafana-admin-password-secret
                       key: GF_SECURITY_ADMIN_PASSWORD
               securityContext:
                 allowPrivilegeEscalation: false
@@ -87,7 +90,8 @@ spec:
                 capabilities: {drop: ["ALL"]}
               volumeMounts:
                 - name: grafana-sidecar-provider
-                  mountPath: /etc/grafana/provisioning/dashboards
+                  mountPath: /etc/grafana/provisioning/dashboards/sidecar-provider.yaml
+                  subPath: provider.yaml
                 - name: grafana-sidecar-dashboards
                   mountPath: /var/lib/grafana/dashboards
                 - name: tmpfs
@@ -106,3 +110,4 @@ spec:
               emptyDir: {}
             - name: tmpfs
               emptyDir: {}
+  disableDefaultSecurityContext: All
