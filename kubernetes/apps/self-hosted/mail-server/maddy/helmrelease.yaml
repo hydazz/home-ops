@@ -88,7 +88,6 @@ spec:
             $(sender_domains) = $(local_domains) $(external_domains)
 
             tls file /certs/tls.crt /certs/tls.key
-            hostname $(hostname)
 
             auth.pass_table local_authdb {
               table sql_table {
@@ -103,17 +102,19 @@ spec:
               dsn /data/imapsql.db
             }
 
-            table.chain local_rewrites {
-              optional_step regexp "(.+)\+(.+)@(.+)" "$1@$3"
-              optional_step static {
-                entry postmaster postmaster@$(primary_domain)
-              }
-            }
+            hostname $(hostname)
 
             msgpipeline local_routing {
+              dmarc yes
+              check {
+                require_mx_record
+                dkim
+                spf
+              }
               destination postmaster $(local_domains) {
                 modify {
-                  replace_rcpt &local_rewrites
+                  replace_rcpt regexp "(.+)\+(.+)@(.+)" "$1@$3"
+                  replace_rcpt file /data/aliases
                 }
                 deliver_to &local_mailboxes
               }
@@ -127,17 +128,11 @@ spec:
                 all rate 50 1s
                 all concurrency 20
               }
-              dmarc yes
-              check {
-                require_mx_record
-                dkim
-                spf
-              }
               source $(sender_domains) {
                 reject 501 5.1.8 "Use Submission for outgoing SMTP"
               }
               default_source {
-                destination $(local_domains) {
+                destination postmaster $(local_domains) {
                   deliver_to &local_routing
                 }
                 default_destination {
@@ -152,13 +147,7 @@ spec:
               }
               auth &local_authdb
               source $(sender_domains) {
-                check {
-                  authorize_sender {
-                    prepare_email &local_rewrites
-                    user_to_email identity
-                  }
-                }
-                destination $(local_domains) {
+                destination postmaster $(local_domains) {
                   deliver_to &local_routing
                 }
                 default_destination {
@@ -182,7 +171,7 @@ spec:
                 dane
                 mtasts {
                   cache fs
-                  fs_dir /cache/mtasts_cache/
+                  fs_dir mtasts_cache/
                 }
                 local_policy {
                   min_tls_level encrypted
@@ -211,14 +200,20 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
-      cache:
-        type: emptyDir
       config-file:
         type: configMap
         identifier: config
         globalMounts:
           - path: /data/maddy.conf
             subPath: maddy.conf
+      config-aliases:
+        type: secret
+        name: maddy-secret
+        globalMounts:
+          - path: /data/aliases
+            subPath: aliases
+      cache:
+        type: emptyDir
       certs:
         type: secret
         name: hyde-services-tls
