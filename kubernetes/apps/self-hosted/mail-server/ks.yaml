@@ -11,7 +11,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/self-hosted/maddy/app
+  path: ./kubernetes/apps/self-hosted/mail-server/maddy
   postBuild:
     substitute:
       APP: maddy
@@ -19,6 +19,26 @@ spec:
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: self-hosted
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: roundcube
+spec:
+  dependsOn:
+    - name: maddy
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  interval: 1h
+  path: ./kubernetes/apps/self-hosted/mail-server/roundcube
   prune: true
   sourceRef:
     kind: GitRepository

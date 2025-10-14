@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: roundcube
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: roundcube
+  interval: 1h
+  values:
+    controllers:
+      roundcube:
+        containers:
+          app:
+            image:
+              repository: docker.io/roundcube/roundcubemail
+              tag: 1.6.11-apache-nonroot@sha256:fcb4cd1f6111160596ca5433ea8178645b886fecabeb30d900aeebb4d7bde0c2
+            env:
+              ROUNDCUBEMAIL_DB_TYPE: sqlite
+              ROUNDCUBEMAIL_DEFAULT_HOST: ssl://mail.hyde.services
+              ROUNDCUBEMAIL_DEFAULT_PORT: 993
+              ROUNDCUBEMAIL_PLUGINS: archive,zipdownload,managesieve,password,redundant_attachments,filesystem_attachments,jqueryui,emoticons,database_attachments
+              ROUNDCUBEMAIL_SKIN: elastic
+              ROUNDCUBEMAIL_SMTP_PORT: 587
+              ROUNDCUBEMAIL_SMTP_SERVER: tls://mail.hyde.services
+              ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE: 25M
+              TZ: Australia/Melbourne
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - webmail.hyde.services
+        parentRefs:
+          - name: envoy-cloudflare
+            namespace: network
+            sectionName: https
+    persistence:
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp/
+            subPath: tmp
+          - path: /var/roundcube/db
+            subPath: db
