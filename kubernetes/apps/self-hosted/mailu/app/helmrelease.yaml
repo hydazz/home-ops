@@ -428,11 +428,11 @@ spec:
           http:
             port: 80
       mail:
-        type: LoadBalancer
+        #type: LoadBalancer
         controller: front
-        annotations:
-          lbipam.cilium.io/ips: 192.168.42.150
-        externalTrafficPolicy: Local
+        #annotations:
+        #  lbipam.cilium.io/ips: 192.168.42.150
+        #externalTrafficPolicy: Local
         ports:
           imap: *imap
           imaps: *imaps
