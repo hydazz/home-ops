@@ -12,4 +12,3 @@ resources:
   - ./wordpress-ahfybc/ks.yaml
   - ./wordpress-hca/ks.yaml
   - ./wordpress-lmvca/ks.yaml
-  - ./wordpress-shca/ks.yaml
