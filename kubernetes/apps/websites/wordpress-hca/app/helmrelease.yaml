@@ -40,19 +40,6 @@ spec:
               WORDPRESS_CONFIG_EXTRA: |-
                 define('WP_MEMORY_LIMIT', '256M');
                 define('WP_MAX_MEMORY_LIMIT', '512M');
-
-                // WP Mail SMTP
-                define('WPMS_MAILER', getenv('WPMS_MAILER'));
-                define('WPMS_MAIL_FROM', getenv('WPMS_MAIL_FROM'));
-                define('WPMS_MAIL_FROM_NAME', getenv('WPMS_MAIL_FROM_NAME'));
-                define('WPMS_ON', true);
-                define('WPMS_SMTP_AUTH', true);
-                define('WPMS_SMTP_AUTOTLS', true);
-                define('WPMS_SMTP_HOST', getenv('WPMS_SMTP_HOST'));
-                define('WPMS_SMTP_PASS', getenv('WPMS_SMTP_PASS'));
-                define('WPMS_SMTP_PORT', getenv('WPMS_SMTP_PORT'));
-                define('WPMS_SMTP_USER', getenv('WPMS_SMTP_USER'));
-                define('WPMS_SSL', getenv('WPMS_SSL'));
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
