@@ -116,7 +116,14 @@ spec:
                   replace_rcpt regexp "(.+)\+(.+)@(.+)" "$1@$3"
                   replace_rcpt file /data/aliases
                 }
-                deliver_to &local_mailboxes
+                reroute {
+                  destination postmaster $(local_domains) {
+                    deliver_to &local_mailboxes
+                  }
+                  default_destination {
+                    deliver_to &remote_queue
+                  }
+                }
               }
               default_destination {
                 reject 550 5.1.1 "User doesn't exist"
