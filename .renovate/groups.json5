@@ -68,16 +68,6 @@
       minimumGroupSize: 5,
     },
     {
-      description: "Mailu Group",
-      groupName: "mailu",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/mailu/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 6,
-    },
-    {
       description: "Rook-Ceph Group",
       groupName: "rook-ceph",
       matchDatasources: ["docker"],
