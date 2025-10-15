@@ -11,7 +11,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/self-hosted/mail-server/maddy
+  path: ./kubernetes/apps/self-hosted/maddy/app
   postBuild:
     substitute:
       APP: maddy
@@ -31,14 +31,12 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: roundcube
+  name: maddy-tools
 spec:
   dependsOn:
     - name: maddy
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/self-hosted/mail-server/roundcube
+  path: ./kubernetes/apps/self-hosted/maddy/tools
   prune: true
   sourceRef:
     kind: GitRepository

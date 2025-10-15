@@ -20,13 +20,13 @@ spec:
               repository: ghcr.io/foxcpp/maddy
               tag: 0.8.1@sha256:55636d8a29588eea62d81d51acdafe38e0f694fb91801ab12dc1ed8c47b6439d
             env:
-              MADDY_HOSTNAME: mail.hyde.services
-              MADDY_DOMAIN: hyde.services
-              SMTP_PORT: &smtpPort 25
-              SUBMISSION_PORT: &submissionPort 587
-              SUBMISSIONS_PORT: &submissionsPort 465
-              IMAP_PORT: &imapPort 143
               IMAPS_PORT: &imapsPort 993
+              IMAP_PORT: &imapPort 143
+              MADDY_DOMAIN: hyde.services
+              MADDY_HOSTNAME: mail.hyde.services
+              SMTP_PORT: &smtpPort 25
+              SUBMISSIONS_PORT: &submissionsPort 465
+              SUBMISSION_PORT: &submissionPort 587
             probes:
               liveness: &probes
                 enabled: true
