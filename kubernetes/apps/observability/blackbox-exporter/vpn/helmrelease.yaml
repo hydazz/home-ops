@@ -3,14 +3,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app blackbox-exporter-vpn
+  name: blackbox-exporter-vpn
 spec:
   chartRef:
     kind: OCIRepository
     name: blackbox-exporter-vpn
   interval: 1h
   values:
-    fullnameOverride: *app
+    fullnameOverride: blackbox-exporter-vpn
     strategy:
       type: Recreate
     podAnnotations:
@@ -55,7 +55,7 @@ spec:
       rules:
         - alert: VpnProbeFailed
           expr: |-
-            probe_success == 0
+            probe_success{service="blackbox-exporter-vpn"} == 0
           for: 15m
           labels:
             severity: critical
