@@ -18,6 +18,6 @@ spec:
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-operated.observability.svc.cluster.local:9090
-        query: probe_success{instance=~".+:2049"}
+        query: probe_success{instance="192.168.42.20:2049",service="blackbox-exporter-lan"}
         threshold: "1"
         ignoreNullValues: "0"
