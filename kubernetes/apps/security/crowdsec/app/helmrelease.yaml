@@ -56,6 +56,15 @@ spec:
                 expression: evt.Parsed.http_user_agent
               - meta: target_fqdn
                 expression: evt.Parsed.target_fqdn
+        s02-enrich:
+          envoy-418-whitelist.yaml: |-
+            name: hydaz/envoy-418-whitelist
+            description: "Whitelist 418 responses from the envoy bouncer to prevent processing already banned IPs"
+            filter: "evt.Meta.service == 'http' && evt.Meta.log_type == 'http_access-log'"
+            whitelist:
+              reason: "Envoy bouncer response to already banned IPs"
+              expression:
+                - "evt.Meta.http_status == '418'"
       config.yaml.local: |-
         api:
           client:
