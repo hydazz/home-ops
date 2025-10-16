@@ -94,54 +94,51 @@ spec:
         pushover.yaml: |-
           type: http
           name: pushover
-          log_level: debug
+          log_level: info
           url: https://api.pushover.net/1/messages.json
           method: POST
           headers:
             Content-Type: application/json
           format: |-
-            {{range . -}}{{$alert := . -}}{{range .Decisions -}}{
+            {{- range . -}}
+              {{- $alert   := . -}}
+              {{- $domains := (GetMeta $alert "target_fqdn") -}}
+              {{- $paths   := (GetMeta $alert "http_path" | uniq | join "<br>") -}}
+              {{- $asn     := (index (GetMeta $alert "ASNOrg") 0) -}}
+              {{- $methods := (index (GetMeta $alert "http_verb") 0) -}}
+              {{- $status  := (index (GetMeta $alert "http_status") 0) -}}
+              {{- $ua      := (index (GetMeta $alert "http_user_agent") 0) -}}
+              {{- $domain  := (index $domains 0) -}}
+              {{- range .Decisions -}}
+            {
               "token": "{{ env "CROWDSEC_PUSHOVER_TOKEN" }}",
               "user": "{{ env "PUSHOVER_USER_KEY" }}",
-              "title": "🚨 CrowdSec Alert: {{.Value}}",
+              "title": "🛡️ CrowdSec: {{ .Value }}",
               "html": "1",
-              "url": "https://www.virustotal.com/gui/ip-address/{{.Value}}",
-              "url_title": "View in VirusTotal",
-              "message": "
-            <b>🌐 Target Information:</b>
-            • <b>IP Address:</b> {{.Value}}
-            {{- $domains := GetMeta $alert "target_fqdn" | uniq | join ", "}}{{if ne $domains ""}}
-            • <b>Domain(s):</b> {{$domains}}{{end}}
-            {{- $paths := GetMeta $alert "http_path" | uniq | join ", "}}{{if ne $paths ""}}
-            • <b>Path(s):</b> {{$paths}}{{end}}
+              "url": "https://www.abuseipdb.com/check/{{ .Value }}",
+              "url_title": "AbuseIPDB",
+              "message": "<b>🧠 Scenario:</b> {{ .Scenario }}<br>
+              <b>Action:</b> {{ .Type | title }} · <b>Duration:</b> {{ .Duration }} · <b>Events:</b> {{ len $alert.Events }}<br><br>
 
-            <b>🛡️ Action Taken:</b>
-            • <b>Type:</b> {{.Type | title}}
-            • <b>Duration:</b> {{.Duration}}
-            • <b>Scenario:</b> {{.Scenario}}
-            • <b>Timestamp:</b> {{$alert.StartAt}}
-            • <b>Event Count:</b> {{len $alert.Events}}
+              <b>🌐 Target:</b><br>
+              <b>IP:</b> {{ .Value }}<br>
+              {{- if $domain -}}<b>Domain:</b> {{ $domain }}<br>{{- end -}}
+              {{- if ne $paths "" -}}<b>Paths:</b><br>{{ $paths }}<br>{{- end -}}
+              <br>
+              {{- if or $methods $status $ua -}}
+              <b>📊 Request:</b><br>
+              {{- if $methods -}}<b>Method:</b> {{ $methods }}<br>{{- end -}}
+              {{- if $status -}}<b>Status:</b> {{ $status }}<br>{{- end -}}
+              {{- if $ua -}}<b>User Agent:</b> {{ $ua }}<br>{{- end -}}
+              <br>
+              {{- end -}}
 
-            <b>📊 Request Details:</b>
-            {{- $methods := GetMeta $alert "http_verb" | uniq | join ", "}}{{if ne $methods ""}}
-            • <b>Method(s):</b> {{$methods}}{{end}}
-            {{- $statuses := GetMeta $alert "http_status" | uniq | join ", "}}{{if ne $statuses ""}}
-            • <b>Status(es):</b> {{$statuses}}{{end}}
-            {{- $agents := GetMeta $alert "http_user_agent" | uniq}}{{if $agents}}{{if le (len $agents) 3}}
-            • <b>User Agent(s):</b> {{$agents | join ", "}}{{else}}
-            • <b>User Agents:</b> {{len $agents}} unique agents{{end}}{{end}}
-
-            <b>🌍 Geographic Info:</b>
-            {{- if $alert.Source.Cn}}
-            • <b>Country:</b> {{$alert.Source.Cn}}{{end}}
-            {{- $asnOrgs := GetMeta $alert "ASNOrg" | uniq | join ", "}}{{if ne $asnOrgs ""}}
-            • <b>ASN:</b> {{$asnOrgs}}{{end}}
-
-            <b>🔗 Investigation Links:</b>
-            • <a href=\"https://www.abuseipdb.com/check/{{.Value}}\">🚨 AbuseIPDB</a>
-            • <a href=\"https://ipinfo.io/{{.Value}}\">🌍 IPinfo</a>
-            {{end}}{{end}}"
+              <b>🌍 Network:</b><br>
+              {{- if $alert.Source.Cn -}}<b>Country:</b> {{ $alert.Source.Cn }}<br>{{- end -}}
+              {{- if $asn -}}<b>ASN:</b> {{ $asn }}{{- end -}}"
             }
+              {{- end -}}
+            {{- end -}}
       profiles.yaml: |-
         name: default_ip_remediation
         debug: false
