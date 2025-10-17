@@ -25,7 +25,6 @@ spec:
                 https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.5.0/PAPER/ViaVersion-5.5.0.jar
               TYPE: VELOCITY
               TZ: Australia/Melbourne
-              ICON: https://s3.hyde.services/hymc/server-icon.png
               VERSION: 3.4.0-SNAPSHOT
             securityContext:
               allowPrivilegeEscalation: false
@@ -54,6 +53,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         type: LoadBalancer
