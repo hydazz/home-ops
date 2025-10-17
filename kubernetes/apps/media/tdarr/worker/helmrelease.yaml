@@ -17,9 +17,13 @@ spec:
             image:
               repository: ghcr.io/haveagitgat/tdarr_node
               tag: 2.49.01@sha256:34f9cca6dcc0eb0dc10aff63faa587947ff0e0b9e7a0a8c0db02891fcd394fca
+            command:
+              # bypass supervisor
+              - /usr/bin/node
+            args:
+              - --max-old-space-size=16384
+              - /app/Tdarr_Node/srcug/main.js
             env:
-              PGID: 1000
-              PUID: 1000
               TZ: Australia/Melbourne
               healthcheckcpuWorkers: 4
               healthcheckgpuWorkers: 0
@@ -34,10 +38,8 @@ spec:
               transcodegpuWorkers: 2
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-            #  capabilities:
-            #    drop:
-            #      - ALL
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
@@ -45,23 +47,27 @@ spec:
               limits:
                 memory: 8Gi
                 nvidia.com/gpu: 1
-        pod:
-          runtimeClassName: nvidia
     defaultPodOptions:
+      runtimeClassName: nvidia
       securityContext:
-        #    runAsNonRoot: false
-        #    runAsUser: 1000
-        #    runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
+        runAsNonRoot: false
+        runAsUser: 1000
+        runAsGroup: 1000
     persistence:
       media:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media/Plex Media
-        globalMounts:
-          - path: /media
       transcode:
         type: emptyDir
+      tmpfs:
+        type: emptyDir
         globalMounts:
-          - path: /transcode
+          - path: /app/logs
+            subPath: logs
+          - path: /app/configs
+            subPath: configs
+          - path: /app/Tdarr_Node/assets/app/plugins
+            subPath: plugins
+          - path: /tmp
+            subPath: tmp
