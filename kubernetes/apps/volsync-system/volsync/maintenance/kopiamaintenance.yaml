@@ -11,8 +11,7 @@ spec:
     schedule: 30 3 * * *
   repository:
     repository: volsync-maintenance-secret
-  resources:
-    requests:
-      memory: 128Mi
-    limits:
-      memory: 2Gi
+  cacheCapacity: 2Gi
+  cacheStorageClassName: openebs-hostpath
+  cacheAccessModes:
+    - ReadWriteOnce

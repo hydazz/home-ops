@@ -13,7 +13,7 @@ spec:
       - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}
     cacheAccessModes:
       - ${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}
-    cacheCapacity: ${VOLSYNC_CACHE_CAPACITY:=1Gi} # Usage is the same for every cache (global repo size)
+    cacheCapacity: ${VOLSYNC_CACHE_CAPACITY:=2Gi} # Usage is the same for every cache (global repo size)
     cacheStorageClassName: ${VOLSYNC_CACHE_SNAPSHOTCLASS:=openebs-hostpath}
     compression: zstd
     copyMethod: Snapshot
