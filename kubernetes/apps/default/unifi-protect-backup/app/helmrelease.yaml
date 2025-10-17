@@ -24,8 +24,8 @@ spec:
               DOWNLOAD_BUFFER_SIZE: 512MiB
               FILE_STRUCTURE_FORMAT: "{camera_name}/{event.start:%d-%m-%Y}/{event.end:%I-%M-%S%p} {detection_type}.mp4"
               MAX_EVENT_LENGTH: 7200
-              PARALLEL_UPLOADS: 1
-              PURGE_INTERVAL: 1d
+              PARALLEL_UPLOADS: 4
+              PURGE_INTERVAL: 1h
               RCLONE_DESTINATION: cloudflare:/unifi-protect
               RCLONE_RETENTION: 1d
               SKIP_MISSING: false
@@ -39,7 +39,7 @@ spec:
                   name: unifi-protect-secret
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
@@ -72,3 +72,5 @@ spec:
         globalMounts:
           - path: /config/rclone.conf
             subPath: rclone.conf
+      tmp:
+        type: emptyDir
