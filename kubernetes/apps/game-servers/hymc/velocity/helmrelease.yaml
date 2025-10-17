@@ -64,7 +64,9 @@ spec:
           minecraft:
             port: *port
     persistence:
-      velocity:
+      server:
+        existingClaim: "{{ .Release.Name }}"
+      config-file:
         type: configMap
         name: velocity-configmap
         globalMounts:
@@ -76,10 +78,5 @@ spec:
         globalMounts:
           - path: /server/forwarding.secret
             subPath: forwarding.secret
-      tmpfs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /server
-            subPath: server
-          - path: /tmp
-            subPath: tmp

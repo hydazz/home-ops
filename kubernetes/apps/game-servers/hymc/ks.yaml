@@ -5,8 +5,17 @@ kind: Kustomization
 metadata:
   name: hymc-velocity
 spec:
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/game-servers/hymc/velocity
+  postBuild:
+    substitute:
+      APP: hymc-velocity
+      VOLSYNC_CAPACITY: 512Mi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -24,7 +33,6 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: hymc-velocity
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
@@ -50,7 +58,6 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: hymc-velocity
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
