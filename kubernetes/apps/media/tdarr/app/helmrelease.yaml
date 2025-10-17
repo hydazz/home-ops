@@ -19,14 +19,13 @@ spec:
               tag: 2.49.01@sha256:a1a7ac0bd80560c7853c47c8cb174e51b2867ac332102b6fbe1616ef97fbad2e
             command:
               # bypass supervisor
-              - node
+              - /usr/bin/node
             args:
               - --max-old-space-size=16384
               - /app/Tdarr_Server/srcug/main.js
             env:
               TZ: Australia/Melbourne
               inContainer: true
-              internalNode: false
               serverIP: 0.0.0.0
               serverPort: &serverPort 8266
               webUIPort: &port 80
@@ -50,7 +49,7 @@ spec:
                   periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
@@ -92,3 +91,10 @@ spec:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media/Plex Media
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/logs
+            subPath: logs
+          - path: /tmp
+            subPath: tmp
