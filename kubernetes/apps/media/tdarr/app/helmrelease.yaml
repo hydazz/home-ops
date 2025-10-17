@@ -17,9 +17,13 @@ spec:
             image:
               repository: ghcr.io/haveagitgat/tdarr
               tag: 2.49.01@sha256:a1a7ac0bd80560c7853c47c8cb174e51b2867ac332102b6fbe1616ef97fbad2e
+            command:
+              # bypass supervisor
+              - node
+            args:
+              - --max-old-space-size=16384
+              - /app/Tdarr_Server/srcug/main.js
             env:
-              PGID: 1000
-              PUID: 1000
               TZ: Australia/Melbourne
               inContainer: true
               internalNode: false
@@ -47,9 +51,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-            #  capabilities:
-            #    drop:
-            #      - ALL
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 30m
@@ -58,9 +60,9 @@ spec:
                 memory: 1Gi
     defaultPodOptions:
       securityContext:
-        #    runAsNonRoot: false
-        #    runAsUser: 1000
-        #    runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
@@ -90,5 +92,3 @@ spec:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media/Plex Media
-        globalMounts:
-          - path: /media
