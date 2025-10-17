@@ -44,7 +44,7 @@ spec:
                 cpu: 10m
                 memory: 32Mi
               limits:
-                memory: 4Gi
+                memory: 2Gi
                 nvidia.com/gpu: 1
     defaultPodOptions:
       runtimeClassName: nvidia
@@ -52,8 +52,6 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -72,3 +70,5 @@ spec:
         type: emptyDir
       models:
         existingClaim: "{{ .Release.Name }}-models"
+      tmp:
+        type: emptyDir
