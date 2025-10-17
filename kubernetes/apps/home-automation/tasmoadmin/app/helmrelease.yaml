@@ -37,7 +37,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               # s6-bullshit
-              # readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: false
               # capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -54,13 +54,13 @@ spec:
             "ips": ["192.168.2.3/24"],
             "mac": "3e:59:e4:f7:43:03"
           }]
-        # s6-bullshit
-        # securityContext:
+      # s6-bullshit
+      securityContext:
         # runAsNonRoot: true
         # runAsUser: 1000
         # runAsGroup: 1000
-        # fsGroup: 1000
-        # fsGroupChangePolicy: OnRootMismatch
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
