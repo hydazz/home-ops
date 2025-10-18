@@ -9,6 +9,31 @@ spec:
     kind: OCIRepository
     name: nvidia-gpu-resource-driver
   interval: 1h
+  postRenderers:
+    - kustomize:
+        # Fix CDI path
+        patches:
+          - target:
+              kind: DaemonSet
+              name: nvidia-dra-driver-gpu-kubelet-plugin
+            patch: |
+              - op: replace
+                path: /spec/template/spec/containers/0/volumeMounts/2/mountPath
+                value: "/var/cdi/static"
+          - target:
+              kind: DaemonSet
+              name: nvidia-dra-driver-gpu-kubelet-plugin
+            patch: |
+              - op: replace
+                path: /spec/template/spec/volumes/2/hostPath/path
+                value: "/var/cdi/static"
+          - target:
+              kind: DaemonSet
+              name: nvidia-dra-driver-gpu-kubelet-plugin
+            patch: |
+              - op: replace
+                path: /spec/template/spec/containers/0/env/3/value
+                value: "/var/cdi/static"
   values:
     gpuResourcesEnabledOverride: true
     image:
