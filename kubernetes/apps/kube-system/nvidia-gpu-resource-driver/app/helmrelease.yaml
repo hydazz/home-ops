@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nvidia-gpu-resource-driver
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: nvidia-gpu-resource-driver
+  interval: 1h
+  values:
+    gpuResourcesEnabledOverride: true
+    image:
+      repository: ghcr.io/hydazz/k8s-dra-driver-gpu
+      tag: v25.8.0-dev@sha256:e49ee7160a2a99d2e7278c879595329fe96eac15afc94ee7e36a6b5fcdbb3ada
+    resources:
+      gpus:
+        enabled: true
+      computeDomains:
+        enabled: false

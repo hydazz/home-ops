@@ -34,7 +34,7 @@ spec:
   components:
     - ../../../../components/nfs-scaler
   dependsOn:
-    - name: nvidia-device-plugin
+    - name: nvidia-gpu-resource-driver
       namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/media/tdarr/worker

@@ -3,12 +3,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: nvidia-device-plugin
+  name: nvidia-gpu-resource-driver
 spec:
   interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.17.4
-  url: oci://ghcr.io/home-operations/charts-mirror/nvidia-device-plugin
+    tag: 25.3.2
+  url: oci://ghcr.io/hydazz/charts-mirror/nvidia-dra-driver-gpu

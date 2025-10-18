@@ -40,14 +40,17 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: 10m
                 memory: 32Mi
               limits:
                 memory: 2Gi
-                nvidia.com/gpu: 1
     defaultPodOptions:
-      runtimeClassName: nvidia
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: ollama
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
