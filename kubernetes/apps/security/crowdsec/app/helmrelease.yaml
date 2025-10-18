@@ -101,14 +101,18 @@ spec:
             Content-Type: application/json
           format: |-
             {{- range . -}}
-              {{- $alert   := . -}}
-              {{- $domains := (GetMeta $alert "target_fqdn") -}}
-              {{- $paths   := (GetMeta $alert "http_path" | uniq | join "<br>") -}}
-              {{- $asn     := (index (GetMeta $alert "ASNOrg") 0) -}}
-              {{- $methods := (index (GetMeta $alert "http_verb") 0) -}}
-              {{- $status  := (index (GetMeta $alert "http_status") 0) -}}
-              {{- $ua      := (index (GetMeta $alert "http_user_agent") 0) -}}
-              {{- $domain  := (index $domains 0) -}}
+              {{- $alert := . -}}
+              {{- $domains := GetMeta $alert "target_fqdn" -}}
+              {{- $domain := "" -}}{{- if $domains }}{{- $domain = index $domains 0 -}}{{- end -}}
+              {{- $paths := GetMeta $alert "http_path" | uniq | join "<br>" -}}
+              {{- $ASNs := GetMeta $alert "ASNOrg" -}}
+              {{- $ASN := "" -}}{{- if $ASNs }}{{- $ASN = index $ASNs 0 -}}{{- end -}}
+              {{- $methods := GetMeta $alert "http_verb" -}}
+              {{- $method := "" -}}{{- if $methods }}{{- $method = index $methods 0 -}}{{- end -}}
+              {{- $statuses := GetMeta $alert "http_status" -}}
+              {{- $status := "" -}}{{- if $statuses }}{{- $status = index $statuses 0 -}}{{- end -}}
+              {{- $UAs := GetMeta $alert "http_user_agent" -}}
+              {{- $UA := "" -}}{{- if $UAs }}{{- $UA = index $UAs 0 -}}{{- end -}}
               {{- range .Decisions -}}
             {
               "token": "{{ env "CROWDSEC_PUSHOVER_TOKEN" }}",
@@ -117,25 +121,24 @@ spec:
               "html": "1",
               "url": "https://www.abuseipdb.com/check/{{ .Value }}",
               "url_title": "AbuseIPDB",
-              "message": "<b>🧠 Scenario:</b> {{ .Scenario }}<br>
-              <b>Action:</b> {{ .Type | title }} · <b>Duration:</b> {{ .Duration }} · <b>Events:</b> {{ len $alert.Events }}<br><br>
+              "message": "<b>🧠 Scenario:</b> {{ .Scenario }}
 
-              <b>🌐 Target:</b><br>
-              <b>IP:</b> {{ .Value }}<br>
-              {{- if $domain -}}<b>Domain:</b> {{ $domain }}<br>{{- end -}}
-              {{- if ne $paths "" -}}<b>Paths:</b><br>{{ $paths }}<br>{{- end -}}
-              <br>
-              {{- if or $methods $status $ua -}}
-              <b>📊 Request:</b><br>
-              {{- if $methods -}}<b>Method:</b> {{ $methods }}<br>{{- end -}}
-              {{- if $status -}}<b>Status:</b> {{ $status }}<br>{{- end -}}
-              {{- if $ua -}}<b>User Agent:</b> {{ $ua }}<br>{{- end -}}
-              <br>
-              {{- end -}}
+              <b>Action:</b> {{ .Type | title }} · <b>Duration:</b> {{ .Duration }} · <b>Events:</b> {{ len $alert.Events }}
 
-              <b>🌍 Network:</b><br>
-              {{- if $alert.Source.Cn -}}<b>Country:</b> {{ $alert.Source.Cn }}<br>{{- end -}}
-              {{- if $asn -}}<b>ASN:</b> {{ $asn }}{{- end -}}"
+              <b>🌐 Target:</b>
+              <b>IP:</b> {{ .Value }}
+              <b>Domain:</b> {{ $domain }}
+              <b>Paths:</b>
+              {{ $paths }}
+
+              <b>📊 Request:</b>
+              <b>Method:</b> {{ $method }}
+              <b>Status:</b> {{ $status }}
+              <b>User Agent:</b> {{ $UA }}
+
+              <b>🌍 Network:</b>
+              <b>Country:</b> {{ $alert.Source.Cn }}
+              <b>ASN:</b> {{ $ASN }}"
             }
               {{- end -}}
             {{- end -}}
