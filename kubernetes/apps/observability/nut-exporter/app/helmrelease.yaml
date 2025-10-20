@@ -47,18 +47,17 @@ spec:
     service:
       app:
         ports:
-          http:
+          metrics:
             port: 9199
     serviceMonitor:
-      nut-exporter:
-        enabled: true
-        serviceName: *app
+      app:
+        serviceName: nut-exporter
         endpoints:
-          - interval: 30s
-            path: /ups_metrics
-            port: http
+          - port: metrics
             scheme: http
-            scrapeTimeout: 30s
+            path: /ups_metrics
+            interval: 1m
+            scrapeTimeout: 10s
             relabelings:
               # stops the graphs changing when the pod name changes
               - action: replace
@@ -72,8 +71,3 @@ spec:
                   - instance
                 targetLabel: instance
                 replacement: "5px"
-          - interval: 30s
-            path: /metrics
-            port: http
-            scheme: http
-            scrapeTimeout: 30s
