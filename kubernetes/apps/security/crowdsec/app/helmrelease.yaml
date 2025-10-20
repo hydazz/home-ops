@@ -67,9 +67,17 @@ spec:
             description: "Whitelist 418 responses from the envoy bouncer to prevent processing already banned IPs"
             filter: "evt.Meta.service == 'http' && evt.Meta.log_type == 'http_access-log'"
             whitelist:
-              reason: "Envoy bouncer response to already banned IPs"
+              reason: "envoy bouncer response to already banned ips"
               expression:
                 - "evt.Meta.http_status == '418'"
+          wordpress-api-whitelist.yaml: |-
+            name: hydaz/wordpress-api-whitelist
+            description: "Whitelist legitimate WordPress API calls"
+            filter: "evt.Meta.service == 'http' && evt.Meta.log_type == 'http_access-log'"
+            whitelist:
+              reason: "legitimate wordpress api call"
+              expression:
+                - "evt.Meta.http_path contains '/wp-json/wp/v2/posts' && evt.Meta.http_path contains 'context=edit' && evt.Meta.http_status == '200'"
       config.yaml.local: |-
         api:
           client:
