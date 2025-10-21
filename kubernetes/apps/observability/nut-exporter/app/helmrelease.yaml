@@ -47,14 +47,12 @@ spec:
     service:
       app:
         ports:
-          metrics:
+          http:
             port: 9199
     serviceMonitor:
       app:
-        serviceName: nut-exporter
         endpoints:
-          - port: metrics
-            scheme: http
+          - port: http
             path: /ups_metrics
             interval: 1m
             scrapeTimeout: 10s

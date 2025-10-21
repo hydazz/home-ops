@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app minio
+  name: minio
 spec:
   chartRef:
     kind: OCIRepository
@@ -20,12 +20,10 @@ spec:
               repository: quay.io/minio/minio
               tag: RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
             env:
-              MINIO_API_CORS_ALLOW_ORIGIN: https://{{ .Release.Name }}.hyde.services,https://s3.hyde.services
-              MINIO_BROWSER_REDIRECT_URL: https://{{ .Release.Name }}.hyde.services
-              MINIO_IDENTITY_OPENID_CONFIG_URL: https://auth.hyde.services/application/o/minio/.well-known/openid-configuration
-              MINIO_IDENTITY_OPENID_DISPLAY_NAME: authentik
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.hyde.services,https://s3.hyde.services
+              MINIO_BROWSER_REDIRECT_URL: https://minio.hyde.services
               MINIO_PROMETHEUS_AUTH_TYPE: public
-              MINIO_PROMETHEUS_JOB_ID: *app
+              MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
               MINIO_SERVER_URL: https://s3.hyde.services
               MINIO_UPDATE: off
@@ -69,24 +67,21 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      main:
+      app:
         ports:
           http:
             port: &port 9001
-          api:
+          s3:
             port: *s3Port
     serviceMonitor:
       app:
-        serviceName: *app
-        enabled: true
         endpoints:
           - port: s3
-            scheme: http
             path: /minio/v2/metrics/cluster
             interval: 1m
             scrapeTimeout: 10s
     route:
-      console:
+      app:
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:
@@ -95,9 +90,9 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: app
                 port: *port
-      s3-api:
+      s3:
         annotations:
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           gatus.home-operations.com/enabled: "false"
@@ -109,7 +104,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: app
                 port: *s3Port
     persistence:
       data:
