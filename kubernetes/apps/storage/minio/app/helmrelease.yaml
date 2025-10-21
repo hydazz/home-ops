@@ -90,7 +90,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: app
+              - identifier: app
                 port: *port
       s3:
         annotations:
@@ -104,7 +104,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: app
+              - identifier: app
                 port: *s3Port
     persistence:
       data:
