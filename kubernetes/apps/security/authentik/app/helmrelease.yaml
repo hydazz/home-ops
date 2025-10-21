@@ -45,7 +45,6 @@ spec:
           parentRefs:
             - name: envoy-cloudflare
               namespace: network
-              sectionName: https
     worker:
       resources:
         requests:
