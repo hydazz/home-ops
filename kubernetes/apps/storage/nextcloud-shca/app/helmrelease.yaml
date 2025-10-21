@@ -108,7 +108,7 @@ spec:
     configMaps:
       config:
         data:
-          custom.config.php: |
+          custom.config.php: |-
             <?php
             $CONFIG = array(
             	'overwriteprotocol' => 'https',
@@ -136,7 +136,7 @@ spec:
             		'dbindex' => 3,
             	),
             );
-          nextcloud.ini: |
+          php.ini: |-
             session.save_handler = redis
             session.save_path = "tcp://dragonfly.databases.svc.cluster.local:6379"
             redis.session.locking_enabled = 1
@@ -146,7 +146,7 @@ spec:
             post_max_size = 16G
             memory_limit = 512M
             max_execution_time = 3600
-          www.conf: |
+          www.conf: |-
             [www]
             listen = 127.0.0.1:9000
             pm = dynamic
@@ -154,7 +154,7 @@ spec:
             pm.start_servers = 12
             pm.min_spare_servers = 6
             pm.max_spare_servers = 18
-          remoteip.conf: |
+          remoteip.conf: |-
             RemoteIPHeader X-Forwarded-For
             RemoteIPInternalProxy 10.42.0.0/16
     persistence:
@@ -180,8 +180,8 @@ spec:
         globalMounts:
           - path: /var/www/html/config/custom.config.php
             subPath: custom.config.php
-          - path: /usr/local/etc/php/conf.d/nextcloud.ini
-            subPath: nextcloud.ini
+          - path: /usr/local/etc/php/conf.d/php.ini
+            subPath: php.ini
           - path: /usr/local/etc/php-fpm.d/www.conf
             subPath: www.conf
           - path: /etc/apache2/conf-available/remoteip.conf

@@ -15,7 +15,7 @@ spec:
           - target:
               kind: DaemonSet
               name: dcgm-exporter
-            patch: |
+            patch: |-
               - op: replace
                 path: /spec/template/spec/containers/0/env/0/value
                 value: "false"

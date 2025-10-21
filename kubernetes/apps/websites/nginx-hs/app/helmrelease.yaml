@@ -65,7 +65,7 @@ spec:
     configMaps:
       config:
         data:
-          default.conf: |
+          default.conf: |-
             server {
                 listen 80;
                 server_name _;

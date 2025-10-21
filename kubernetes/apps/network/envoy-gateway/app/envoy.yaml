@@ -326,5 +326,5 @@ spec:
         - group: ""
           kind: Service
           name: crowdsec-envoy-bouncer
-          port: 8080
           namespace: security
+          port: 8080

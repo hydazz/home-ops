@@ -95,7 +95,7 @@ spec:
     configMaps:
       config:
         data:
-          wordpress.ini: |
+          php.ini: |-
             upload_max_filesize = 100M
             post_max_size = 100M
             memory_limit = 512M
@@ -106,7 +106,7 @@ spec:
             opcache.memory_consumption = 128
             opcache.max_accelerated_files = 15000
             opcache.revalidate_freq = 30
-          www.conf: |
+          www.conf: |-
             [www]
             pm = dynamic
             pm.max_children = 6
@@ -130,8 +130,8 @@ spec:
         globalMounts:
           - path: /usr/local/etc/php-fpm.d/www.conf
             subPath: www.conf
-          - path: /usr/local/etc/php/conf.d/wordpress.ini
-            subPath: wordpress.ini
+          - path: /usr/local/etc/php/conf.d/php.ini
+            subPath: php.ini
       backup:
         existingClaim: "{{ .Release.Name }}-backup"
       tmpfs:
