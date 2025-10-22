@@ -15,9 +15,6 @@ spec:
       route:
         main:
           enabled: true
-          annotations:
-            gatus.home-operations.com/endpoint: |-
-              name: alertmanager
           hostnames:
             - alertmanager.hyde.services
           parentRefs:
@@ -44,9 +41,6 @@ spec:
       route:
         main:
           enabled: true
-          annotations:
-            gatus.home-operations.com/endpoint: |-
-              name: prometheus
           hostnames:
             - prometheus.hyde.services
           parentRefs:
