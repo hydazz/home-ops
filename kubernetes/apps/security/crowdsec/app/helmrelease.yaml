@@ -80,8 +80,6 @@ spec:
                 - "evt.Meta.http_path contains '/wp-json/wp/v2/posts' && evt.Meta.http_path contains 'context=edit' && evt.Meta.http_status == '200'"
       config.yaml.local: |-
         api:
-          client:
-            unregister_on_exit: true
           server:
             auto_registration:
               enabled: true
@@ -103,65 +101,11 @@ spec:
         api:
           client:
             unregister_on_exit: true
-      notifications:
-        pushover.yaml: |-
-          type: http
-          name: pushover
-          log_level: info
-          url: https://api.pushover.net/1/messages.json
-          method: POST
-          headers:
-            Content-Type: application/json
-          format: |-
-            {{- range . -}}
-              {{- $alert := . -}}
-              {{- $domains := GetMeta $alert "target_fqdn" -}}
-              {{- $domain := "" -}}{{- if $domains }}{{- $domain = index $domains 0 -}}{{- end -}}
-              {{- $paths := GetMeta $alert "http_path" | uniq | join "<br>" -}}
-              {{- $ASNs := GetMeta $alert "ASNOrg" -}}
-              {{- $ASN := "" -}}{{- if $ASNs }}{{- $ASN = index $ASNs 0 -}}{{- end -}}
-              {{- $methods := GetMeta $alert "http_verb" -}}
-              {{- $method := "" -}}{{- if $methods }}{{- $method = index $methods 0 -}}{{- end -}}
-              {{- $statuses := GetMeta $alert "http_status" -}}
-              {{- $status := "" -}}{{- if $statuses }}{{- $status = index $statuses 0 -}}{{- end -}}
-              {{- $UAs := GetMeta $alert "http_user_agent" -}}
-              {{- $UA := "" -}}{{- if $UAs }}{{- $UA = index $UAs 0 -}}{{- end -}}
-              {{- range .Decisions -}}
-            {
-              "token": "{{ env "CROWDSEC_PUSHOVER_TOKEN" }}",
-              "user": "{{ env "PUSHOVER_USER_KEY" }}",
-              "title": "🛡️ CrowdSec: {{ .Value }}",
-              "html": "1",
-              "url": "https://www.abuseipdb.com/check/{{ .Value }}",
-              "url_title": "AbuseIPDB",
-              "message": "<b>🧠 Scenario:</b> {{ .Scenario }}
-
-              <b>Action:</b> {{ .Type | title }} · <b>Duration:</b> {{ .Duration }} · <b>Events:</b> {{ len $alert.Events }}
-
-              <b>🌐 Target:</b>
-              <b>IP:</b> {{ .Value }}
-              <b>Domain:</b> {{ $domain }}
-              <b>Paths:</b>
-              {{ $paths }}
-
-              <b>📊 Request:</b>
-              <b>Method:</b> {{ $method }}
-              <b>Status:</b> {{ $status }}
-              <b>User Agent:</b> {{ $UA }}
-
-              <b>🌍 Network:</b>
-              <b>Country:</b> {{ $alert.Source.Cn }}
-              <b>ASN:</b> {{ $ASN }}"
-            }
-              {{- end -}}
-            {{- end -}}
       profiles.yaml: |-
         name: default_ip_remediation
         debug: false
         filters:
           - Alert.Remediation == true && Alert.GetScope() == "Ip"
-        notifications:
-          - pushover
         decisions:
           - type: ban
             duration: 24h
