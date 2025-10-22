@@ -7,7 +7,6 @@ components:
   - ../../components/alerts
   - ../../components/cluster-secrets
 resources:
-  - ./minio/ks.yaml
   - ./namespace.yaml
   - ./nextcloud-shca/ks.yaml
   - ./nextcloud-shs/ks.yaml
