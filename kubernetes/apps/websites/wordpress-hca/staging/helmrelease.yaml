@@ -1,0 +1,141 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: staging-hca
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: staging-hca
+  interval: 1h
+  values:
+    controllers:
+      wordpress:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          wordpress-init:
+            image: &image
+              repository: ghcr.io/hydazz/wordpress
+              tag: 6.8.3@sha256:0d9f07365b1c2813b33e1b705bc2070e275f5cb4aa711dba1137405c628620cf
+            command:
+              - sh
+              - -c
+              - |-
+                cp -n /usr/src/wordpress/.htaccess /persistent/.htaccess
+                for file in .htaccess; do
+                  touch /persistent/$file
+                  ln -fs /persistent/$file /var/www/html/$file
+                done
+                cp -r /usr/src/wordpress/* /var/www/html/
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+        containers:
+          app:
+            image: *image
+            env:
+              WORDPRESS_CONFIG_EXTRA: |-
+                define('WP_MEMORY_LIMIT', '256M');
+                define('WP_MAX_MEMORY_LIMIT', '512M');
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 80
+                    httpHeaders:
+                      - name: Host
+                        value: staging.${D_HCA}
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 150m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            ui:
+              hide-hostname: true
+              hide-url: true
+        hostnames:
+          - staging.${D_HCA}
+        parentRefs:
+          - name: envoy-cloudflare
+            namespace: network
+    configMaps:
+      config:
+        data:
+          php.ini: |-
+            upload_max_filesize = 100M
+            post_max_size = 100M
+            memory_limit = 512M
+            max_execution_time = 180
+            max_input_vars = 4000
+            expose_php = Off
+            opcache.enable = 1
+            opcache.memory_consumption = 128
+            opcache.max_accelerated_files = 15000
+            opcache.revalidate_freq = 30
+          www.conf: |-
+            [www]
+            pm = dynamic
+            pm.max_children = 6
+            pm.start_servers = 3
+            pm.min_spare_servers = 2
+            pm.max_spare_servers = 4
+            pm.max_requests = 400
+            pm.process_idle_timeout = 15s
+            request_terminate_timeout = 300s
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/www/html/wp-content
+            subPath: wp-content
+          - path: /persistent
+            subPath: persistent
+      configs:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /usr/local/etc/php-fpm.d/www.conf
+            subPath: www.conf
+          - path: /usr/local/etc/php/conf.d/php.ini
+            subPath: php.ini
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/www/html
+            subPath: html
+          - path: /var/run
+            subPath: run
+          - path: /tmp
+            subPath: tmp
