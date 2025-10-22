@@ -13,46 +13,73 @@ spec:
     global:
       deploymentAnnotations:
         reloader.stakater.com/auto: "true"
-      deploymentStrategy:
-        type: RollingUpdate
+      env:
+        - name: AUTHENTIK_LISTEN__TRUSTED_PROXY_CIDRS
+          value: 10.42.0.0/16
+        - name: AUTHENTIK_STORAGE__MEDIA__BACKEND
+          value: file
       envFrom:
         - secretRef:
             name: authentik-secret
-    authentik:
-      redis:
-        host: dragonfly.databases.svc.cluster.local
-        port: "6379"
-        db: "2"
+      volumeMounts:
+        - name: media
+          mountPath: /media
+          subPath: media
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: authentik
+    geoip:
+      enabled: true
+      existingSecret:
+        secretName: authentik-secret
+        accountId: GEOIP_ACCOUNT_ID
+        licenseKey: GEOIP_LICENSE_KEY
+    prometheus:
+      rules:
+        enabled: true
+    # Separate Redis is used for isolation and session persistence
+    redis:
+      enabled: true
+      auth:
+        enabled: false
+      master:
+        persistence:
+          enabled: true
+          size: 64Mi
+        resources:
+          limits:
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
     server:
-      resources:
-        requests:
-          cpu: 20m
-          memory: 512Mi
-        limits:
-          memory: 1Gi
       metrics:
         enabled: true
         serviceMonitor:
           enabled: true
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 20m
+          memory: 512Mi
       route:
         main:
           enabled: true
-          annotations:
-            gatus.home-operations.com/endpoint: |-
-              name: authentik
           hostnames:
             - auth.hyde.services
           parentRefs:
             - name: envoy-cloudflare
               namespace: network
     worker:
-      resources:
-        requests:
-          cpu: 50m
-          memory: 1Gi
-        limits:
-          memory: 2Gi
       metrics:
         enabled: true
         serviceMonitor:
           enabled: true
+      resources:
+        limits:
+          memory: 2Gi
+        requests:
+          cpu: 50m
+          memory: 1Gi

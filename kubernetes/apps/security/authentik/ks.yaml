@@ -5,13 +5,22 @@ kind: Kustomization
 metadata:
   name: authentik
 spec:
+  components:
+    - ../../../../components/volsync
   dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: cloudnative-pg-cluster
-      namespace: databases
-    - name: dragonfly-cluster
       namespace: databases
   interval: 1h
   path: ./kubernetes/apps/security/authentik/app
+  postBuild:
+    substitute:
+      APP: authentik
+      VOLSYNC_ACCESSMODES: ReadWriteMany
+      VOLSYNC_CAPACITY: 128Mi
+      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
+      VOLSYNC_STORAGECLASS: ceph-filesystem
   prune: true
   sourceRef:
     kind: GitRepository
