@@ -66,6 +66,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
           - requests.hyde.services
+          - overseerr.hyde.services
         parentRefs:
           - name: envoy-cloudflare
             namespace: network
