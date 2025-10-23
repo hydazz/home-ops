@@ -24,7 +24,6 @@ spec:
               - ecosystem.config.js
             env:
               PAPERLESS_AI_PORT: &port 80
-              RAG_SERVICE_ENABLED: false
               TZ: Australia/Melbourne
             probes:
               liveness: &probes
@@ -42,9 +41,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 2Gi
+                memory: 256Mi
               limits:
-                memory: 3Gi
+                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -75,7 +74,7 @@ spec:
           - path: /app/data
       env:
         type: secret
-        name: paperless-ai-secret
+        name: "{{ .Release.Name }}-secret"
         globalMounts:
           - path: /app/data/.env
             subPath: .env
