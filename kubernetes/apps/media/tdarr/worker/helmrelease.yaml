@@ -15,8 +15,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/haveagitgat/tdarr_node
-              tag: 2.50.01@sha256:f924f71c5cfeb2befdd3ded539abc3b9ae149ee24430f24b4e5240122a507113
+              repository: ghcr.io/haveagitgat/tdarr
+              tag: 2.50.01@sha256:67d6a456d3c7963d2bc50318275843015af76e1f4dced3b1c5a91f8874d230bf
             command:
               # bypass supervisor
               - /usr/bin/node
