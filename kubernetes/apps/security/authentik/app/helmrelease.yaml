@@ -44,26 +44,26 @@ spec:
       auth:
         enabled: false
       master:
-        persistence:
-          enabled: true
-          size: 64Mi
         resources:
-          limits:
-            memory: 128Mi
           requests:
             cpu: 10m
             memory: 64Mi
+          limits:
+            memory: 128Mi
+        persistence:
+          enabled: true
+          size: 256Mi
     server:
       metrics:
         enabled: true
         serviceMonitor:
           enabled: true
       resources:
-        limits:
-          memory: 1Gi
         requests:
           cpu: 20m
           memory: 512Mi
+        limits:
+          memory: 1Gi
       route:
         main:
           enabled: true
@@ -78,8 +78,8 @@ spec:
         serviceMonitor:
           enabled: true
       resources:
-        limits:
-          memory: 2Gi
         requests:
           cpu: 50m
           memory: 1Gi
+        limits:
+          memory: 2Gi
