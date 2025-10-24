@@ -1,7 +1,7 @@
 ---
-# yaml-language-server: $schema=https://schemas.hydaz.com/k8s.mariadb.com/backup_v1alpha1.json
+# yaml-language-server: $schema=https://schemas.hydaz.com/k8s.mariadb.com/physicalbackup_v1alpha1.json
 apiVersion: k8s.mariadb.com/v1alpha1
-kind: Backup
+kind: PhysicalBackup
 metadata:
   name: mariadb-backup
 spec:
@@ -9,7 +9,6 @@ spec:
     name: mariadb
   schedule:
     cron: 0 2 * * *
-    suspend: false
   storage:
     s3:
       accessKeyIdSecretKeyRef:
@@ -25,4 +24,11 @@ spec:
         enabled: true
   compression: bzip2
   maxRetention: 168h # 7 days
-  timeZone: Australia/Melbourne
+  stagingStorage:
+    persistentVolumeClaim:
+      resources:
+        requests:
+          storage: 4Gi
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: openebs-hostpath
