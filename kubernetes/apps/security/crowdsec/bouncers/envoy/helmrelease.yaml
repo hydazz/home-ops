@@ -18,8 +18,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/hydazz/envoy-proxy-bouncer
-              tag: sha-5a335b8512b52b11af20ea45299539464669740e
+              repository: ghcr.io/kdwils/envoy-proxy-bouncer
+              tag: v0.3.1@sha256:470ea62f0298a54578c55d6db771324485e4fa62c449653e372409b1bb9ba41c
             env:
               ENVOY_BOUNCER_BOUNCER_BANSTATUSCODE: 418
               ENVOY_BOUNCER_BOUNCER_ENABLED: true
