@@ -60,3 +60,21 @@ spec:
     namespace: flux-system
   targetNamespace: databases
   wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudnative-pg-tools
+spec:
+  dependsOn:
+    - name: cloudnative-pg
+  interval: 1h
+  path: ./kubernetes/apps/databases/cloudnative-pg/tools
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: databases
+  wait: false

@@ -10,5 +10,3 @@ resources:
   - ./dragonfly/ks.yaml
   - ./mariadb/ks.yaml
   - ./namespace.yaml
-  - ./pgadmin/ks.yaml
-  - ./phpmyadmin/ks.yaml
