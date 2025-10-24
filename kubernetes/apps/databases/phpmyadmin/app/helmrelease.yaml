@@ -19,7 +19,7 @@ spec:
               tag: 5.2.3@sha256:42a200db07b4e70fbf32c594ad4521cf16399b8e54bbb5adceae98e7566dfbeb
             env:
               PMA_ABSOLUTE_URI: https://phpmyadmin.hyde.services
-              PMA_HOST: mariadb.databases.svc.cluster.local
+              PMA_HOST: mariadb-replica-primary.databases.svc.cluster.local
               PMA_PORT: 3306
               TZ: Australia/Melbourne
               UPLOAD_LIMIT: 128M

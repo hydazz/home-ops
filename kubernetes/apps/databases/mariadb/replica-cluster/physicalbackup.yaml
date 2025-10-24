@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://schemas.hydaz.com/k8s.mariadb.com/physicalbackup_v1alpha1.json
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: PhysicalBackup
+metadata:
+  name: mariadb-replica-backup
+spec:
+  mariaDbRef:
+    name: mariadb-replica
+  schedule:
+    cron: 0 2 * * *
+  storage:
+    s3:
+      accessKeyIdSecretKeyRef:
+        name: mariadb-secret
+        key: B2_ACCESS_KEY_ID
+      bucket: b2backup-k8s
+      endpoint: s3.us-east-005.backblazeb2.com
+      prefix: mariadb-replica
+      secretAccessKeySecretKeyRef:
+        name: mariadb-secret
+        key: B2_SECRET_ACCESS_KEY
+      tls:
+        enabled: true
+  compression: bzip2
+  maxRetention: 168h # 7 days
+  stagingStorage:
+    persistentVolumeClaim:
+      resources:
+        requests:
+          storage: 4Gi
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: openebs-hostpath
