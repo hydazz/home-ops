@@ -29,12 +29,12 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: authentik
-    geoip:
-      enabled: true
-      existingSecret:
-        secretName: authentik-secret
-        accountId: GEOIP_ACCOUNT_ID
-        licenseKey: GEOIP_LICENSE_KEY
+    #geoip:
+    #  enabled: true
+    #  existingSecret:
+    #    secretName: authentik-secret
+    #    accountId: GEOIP_ACCOUNT_ID
+    #    licenseKey: GEOIP_LICENSE_KEY
     prometheus:
       rules:
         enabled: true
