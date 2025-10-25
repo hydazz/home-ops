@@ -50,5 +50,14 @@
       matchPackageNames: ["/external-dns/", "/gateway-api/", "/prometheus-operator/"],
       ignoreTests: true,
     },
+    {
+      description: "Auto-merge ChangeDetection.io Patches",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["patch"],
+      matchPackageNames: ["ghcr.io/dgtlmoon/changedetection.io"],
+      ignoreTests: true,
+    },
   ],
 }
