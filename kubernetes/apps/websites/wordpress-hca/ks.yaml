@@ -6,6 +6,7 @@ metadata:
   name: wordpress-hca
 spec:
   components:
+    - ../../../../components/isolate
     - ../../../../components/volsync
   dependsOn:
     - name: mariadb-cluster
@@ -38,6 +39,7 @@ metadata:
   name: staging-hca
 spec:
   components:
+    - ../../../../components/isolate
     - ../../../../components/volsync
   dependsOn:
     - name: mariadb-cluster
