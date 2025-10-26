@@ -7,11 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./prometheusrule.yaml
-configMapGenerator:
-  - name: nut-exporter-dashboard
-    files:
-      - ./resources/nut-exporter.json
-generatorOptions:
-  disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled
+  - ./scrapeconfig.yaml

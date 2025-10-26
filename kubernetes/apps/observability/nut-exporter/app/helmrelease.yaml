@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app nut-exporter
+  name: nut-exporter
 spec:
   chartRef:
     kind: OCIRepository
@@ -20,8 +20,7 @@ spec:
             env:
               TZ: Australia/Melbourne
             args:
-              - --nut.vars_enable=
-              - --nut.server=192.168.3.2
+              - --nut.vars_enable=battery.charge,battery.voltage,battery.voltage.nominal,input.voltage,input.voltage.nominal,ups.load,ups.status
             probes:
               liveness:
                 enabled: true
@@ -49,23 +48,3 @@ spec:
         ports:
           http:
             port: 9199
-    serviceMonitor:
-      app:
-        endpoints:
-          - port: http
-            path: /ups_metrics
-            interval: 1m
-            scrapeTimeout: 10s
-            relabelings:
-              # stops the graphs changing when the pod name changes
-              - action: replace
-                regex: (.*)
-                replacement: *app
-                sourceLabels:
-                  - __meta_kubernetes_pod_name
-                targetLabel: pod
-            metricRelabelings:
-              - sourceLabels:
-                  - instance
-                targetLabel: instance
-                replacement: "5px"
