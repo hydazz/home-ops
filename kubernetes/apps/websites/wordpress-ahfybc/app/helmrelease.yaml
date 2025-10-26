@@ -131,8 +131,6 @@ spec:
             subPath: www.conf
           - path: /usr/local/etc/php/conf.d/php.ini
             subPath: php.ini
-      backup:
-        existingClaim: "{{ .Release.Name }}-backup"
       tmpfs:
         type: emptyDir
         globalMounts:
