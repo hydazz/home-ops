@@ -1,6 +1,5 @@
 ---
 version: v1alpha1
-persist: true
 machine:
   ca:
     crt: op://K8s/talos/MACHINE_CA_CRT
@@ -101,11 +100,9 @@ machine:
           - # IoT
             vlanId: 2
             dhcp: false
-            mtu: 9000
           - # VPN
             vlanId: 50
             dhcp: false
-            mtu: 9000
   nodeLabels:
     node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: kubernetes
