@@ -164,7 +164,7 @@ spec:
         path: /mnt/Fast/Alex
         globalMounts:
           - path: /var/www/html/data/alex/files
-      configs:
+      config-file:
         type: configMap
         identifier: config
         globalMounts:

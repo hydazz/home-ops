@@ -123,7 +123,7 @@ spec:
             subPath: wp-content
           - path: /persistent
             subPath: persistent
-      configs:
+      config-file:
         type: configMap
         identifier: config
         globalMounts:

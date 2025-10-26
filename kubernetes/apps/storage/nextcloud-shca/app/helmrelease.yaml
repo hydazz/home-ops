@@ -9,6 +9,9 @@ spec:
     kind: OCIRepository
     name: nextcloud-shca
   interval: 1h
+  valuesFrom:
+    - kind: Secret
+      name: nextcloud-shca-values
   values:
     controllers:
       nextcloud:
@@ -173,7 +176,7 @@ spec:
         path: /mnt/Fast/Public
         globalMounts:
           - path: /mnt/Public
-      configs:
+      config-file:
         type: configMap
         identifier: config
         globalMounts:
@@ -195,7 +198,3 @@ spec:
           - path: /var/run
             subPath: run
 
-  # some mounts with sensitive names
-  valuesFrom:
-    - kind: Secret
-      name: nextcloud-shca-values
