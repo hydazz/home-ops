@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./backup.yaml
   - ./cluster.yaml
-  - ./externalsecret.yaml
   - ./prometheusrule.yaml
