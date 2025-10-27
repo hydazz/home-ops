@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kdwils/envoy-proxy-bouncer
-              tag: v0.3.1@sha256:470ea62f0298a54578c55d6db771324485e4fa62c449653e372409b1bb9ba41c
+              tag: v0.4.0@sha256:3259b0be3c8645334e01f3ac0c2bc3efbbe35d465059046e9c64801d951df98f
             env:
               ENVOY_BOUNCER_BOUNCER_BANSTATUSCODE: 418
               ENVOY_BOUNCER_BOUNCER_ENABLED: true
