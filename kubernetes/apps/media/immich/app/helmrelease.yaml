@@ -26,6 +26,7 @@ spec:
               IMMICH_PORT: &port 80
               REDIS_HOSTNAME: dragonfly.databases.svc.cluster.local
               REDIS_PORT: 6379
+              REDIS_DBINDEX: 4
             envFrom:
               - secretRef:
                   name: &secret "{{ .Release.Name }}-secret"

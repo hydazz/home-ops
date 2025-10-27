@@ -135,12 +135,12 @@ spec:
             	'redis' => array(
             		'host' => 'dragonfly.databases.svc.cluster.local',
             		'port' => 6379,
-            		'dbindex' => 3,
+            		'dbindex' => 2,
             	),
             );
           php.ini: |-
             session.save_handler = redis
-            session.save_path = "tcp://dragonfly.databases.svc.cluster.local:6379"
+            session.save_path = "tcp://dragonfly.databases.svc.cluster.local:6379/2"
             redis.session.locking_enabled = 1
             redis.session.lock_retries = -1
             redis.session.lock_wait_time = 10000

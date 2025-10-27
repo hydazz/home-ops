@@ -38,21 +38,6 @@ spec:
     prometheus:
       rules:
         enabled: true
-    # Separate Redis is used for isolation and session persistence
-    redis:
-      enabled: true
-      auth:
-        enabled: false
-      master:
-        resources:
-          requests:
-            cpu: 10m
-            memory: 64Mi
-          limits:
-            memory: 128Mi
-        persistence:
-          enabled: true
-          size: 256Mi
     server:
       metrics:
         enabled: true
