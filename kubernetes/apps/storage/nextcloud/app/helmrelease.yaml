@@ -3,11 +3,11 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: nextcloud-shs
+  name: nextcloud
 spec:
   chartRef:
     kind: OCIRepository
-    name: nextcloud-shs
+    name: nextcloud
   interval: 1h
   values:
     controllers:

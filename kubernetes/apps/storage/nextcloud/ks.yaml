@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: nextcloud-shs
+  name: nextcloud
 spec:
   components:
     - ../../../../components/nfs-scaler
@@ -16,10 +16,10 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/storage/nextcloud-shs/app
+  path: ./kubernetes/apps/storage/nextcloud/app
   postBuild:
     substitute:
-      APP: nextcloud-shs
+      APP: nextcloud
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:

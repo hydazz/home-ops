@@ -9,4 +9,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./nextcloud-shca/ks.yaml
-#  - ./nextcloud-shs/ks.yaml
+  - ./nextcloud/ks.yaml
