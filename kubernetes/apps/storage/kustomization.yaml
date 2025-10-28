@@ -8,5 +8,5 @@ components:
   - ../../components/cluster-secrets
 resources:
   - ./namespace.yaml
-  - ./nextcloud-shca/ks.yaml
+  #  - ./nextcloud-shca/ks.yaml
   - ./nextcloud/ks.yaml
