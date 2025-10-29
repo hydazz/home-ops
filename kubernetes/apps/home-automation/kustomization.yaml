@@ -6,9 +6,9 @@ namespace: home-automation
 components:
   - ../../components/alerts
 resources:
-  - ./emqx/ks.yaml # https://github.com/blackjid/home-ops
   - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
+  - ./mosquitto/ks.yaml
   - ./namespace.yaml
   - ./tasmoadmin/ks.yaml
   - ./zigbee2mqtt/ks.yaml
