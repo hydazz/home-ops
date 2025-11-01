@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -10,102 +10,63 @@ spec:
     name: hymc-pvp
   interval: 1h
   values:
-    controllers:
-      pvp:
-        containers:
-          app:
-            image:
-              repository: ghcr.io/itzg/minecraft-server
-              tag: 2025.10.5@sha256:0062e45ec8aa8bdbeeb6b4ad0e15df804c4525f0e208b66d899ab677230ee0e9
-            env:
-              TZ: Australia/Melbourne
-              # Properties
-              ALLOW_NETHER: false
-              ANNOUNCE_PLAYER_ACHIEVEMENTS: false
-              DIFFICULTY: normal
-              EULA: true
-              FORCE_GAMEMODE: true
-              GENERATE_STRUCTURES: false
-              MODE: survival
-              ONLINE_MODE: false
-              PVP: true
-              SERVER_PORT: &port 25565
-              SPAWN_ANIMALS: false
-              SPAWN_MONSTERS: false
-              SPAWN_NPCS: false
-              SPAWN_PROTECTION: 0
-              # Plugins
-              PLUGINS: |-
-                https://download.luckperms.net/1606/bukkit/loader/LuckPerms-Bukkit-5.5.17.jar
-                https://github.com/ChanceSD/PvPManager/releases/download/3.19.10/PvPManager.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXAntiBuild-2.21.2.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXChat-2.21.2.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXProtect-2.21.2.jar
-                https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXSpawn-2.21.2.jar
-                https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar
-                https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
-                https://mediafilez.forgecdn.net/files/2597/538/worldedit-bukkit-6.1.9.jar
-                https://mediafilez.forgecdn.net/files/2622/901/MythicMobs-4.4.1.jar
-                https://mediafilez.forgecdn.net/files/853/54/OtherDrops.jar
-                https://mediafilez.forgecdn.net/files/956/770/worldguard-6.2.jar
-              SPIGET_PLUGINS: |-
-                222 # BossShopPro
-                43424 # StatsSB
-              # Server
-              MEMORY: ""
-              TYPE: CUSTOM
-              CUSTOM_SERVER: https://downloads.hpfxd.com/v2/projects/pandaspigot/versions/1.8.8/builds/174/downloads/paperclip
-              VERSION: 1.8.8
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - mc-health
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
-            resources:
-              requests:
-                cpu: 50m
-                memory: 512Mi
-              limits:
-                memory: 1Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-    service:
-      app:
-        ports:
-          minecraft:
-            port: *port
+    image:
+      repository: ghcr.io/itzg/minecraft-server
+      tag: 2025.10.5@sha256:0062e45ec8aa8bdbeeb6b4ad0e15df804c4525f0e208b66d899ab677230ee0e9
+    extraEnv:
+      TZ: Australia/Melbourne
+    minecraftServer:
+      allowNether: false
+      announcePlayerAchievements: false
+      difficulty: normal
+      eula: true
+      forceGameMode: true
+      gameMode: survival
+      generateStructures: false
+      memory: 512M
+      onlineMode: false
+      pluginUrls:
+        - https://download.luckperms.net/1606/bukkit/loader/LuckPerms-Bukkit-5.5.17.jar
+        - https://github.com/ChanceSD/PvPManager/releases/download/3.19.10/PvPManager.jar
+        - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
+        - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXAntiBuild-2.21.2.jar
+        - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXChat-2.21.2.jar
+        - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXProtect-2.21.2.jar
+        - https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXSpawn-2.21.2.jar
+        - https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar
+        - https://github.com/xtkq-is-not-available/VoidGen/releases/download/v2.2.1/VoidGen-2.2.1.jar
+        - https://mediafilez.forgecdn.net/files/2597/538/worldedit-bukkit-6.1.9.jar
+        - https://mediafilez.forgecdn.net/files/2622/901/MythicMobs-4.4.1.jar
+        - https://mediafilez.forgecdn.net/files/853/54/OtherDrops.jar
+        - https://mediafilez.forgecdn.net/files/956/770/worldguard-6.2.jar
+      pvp: true
+      spawnAnimals: false
+      spawnMonsters: false
+      spawnNPCs: false
+      spawnProtection: 0
+      spigetResources:
+        - 222 # BossShopPro
+        - 43424 # StatsSB
+      type: SPIGOT
+      spigotDownloadUrl: https://downloads.hpfxd.com/v2/projects/pandaspigot/versions/1.8.8/builds/174/downloads/paperclip
+      version: 1.8.8
+    resources:
+      requests:
+        cpu: 50m
+        memory: 512Mi
+      limits:
+        memory: 1Gi
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities: {drop: ["ALL"]}
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
     persistence:
-      data:
-        existingClaim: "{{ .Release.Name }}"
-      tmpfs:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp
-          - path: /data/logs
-            subPath: logs
-          - path: /data/cache
-            subPath: cache
+      dataDir:
+        enabled: true
+        existingClaim: hymc-pvp

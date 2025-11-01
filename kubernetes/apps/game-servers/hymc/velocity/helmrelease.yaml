@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -10,74 +10,96 @@ spec:
     name: hymc-velocity
   interval: 1h
   values:
-    controllers:
-      velocity:
-        containers:
-          app:
-            image:
-              repository: ghcr.io/itzg/mc-proxy
-              tag: 2025.9.1@sha256:a128af22c71f0cef238076787dda8db1eddda65a60ba8a1a69a83a7f6c5a2c15
-            env:
-              MINECRAFT_VERSION: 1.21.8
-              PLUGINS: |-
-                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.5.0/PAPER/ViaBackwards-5.5.0.jar
-                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaRewind/versions/4.0.9/PAPER/ViaRewind-4.0.9.jar
-                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.5.0/PAPER/ViaVersion-5.5.0.jar
-              TYPE: VELOCITY
-              TZ: Australia/Melbourne
-              VERSION: 3.4.0-SNAPSHOT
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  tcpSocket:
-                    port: &port 25565
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-            resources:
-              requests:
-                cpu: 30m
-                memory: 1Gi
-              limits:
-                memory: 2Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-    service:
-      app:
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.42.154
-        externalTrafficPolicy: Local
-        ports:
-          minecraft:
-            port: *port
+    image:
+      repository: ghcr.io/itzg/mc-proxy
+      tag: 2025.9.1@sha256:a128af22c71f0cef238076787dda8db1eddda65a60ba8a1a69a83a7f6c5a2c15
+    extraEnv:
+      TZ: Australia/Melbourne
+    minecraftProxy:
+      type: VELOCITY
+      velocityVersion: 3.4.0-SNAPSHOT
+      onlineMode: true
+      memory: 1G
+      plugins:
+        - https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.5.0/PAPER/ViaBackwards-5.5.0.jar
+        - https://hangarcdn.papermc.io/plugins/ViaVersion/ViaRewind/versions/4.0.9/PAPER/ViaRewind-4.0.9.jar
+        - https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.5.0/PAPER/ViaVersion-5.5.0.jar
+      serviceType: LoadBalancer
+      serviceAnnotations:
+        lbipam.cilium.io/ips: 192.168.42.154
+      externalTrafficPolicy: Local
+      configFilePath: /server/velocity.toml
+      config: |-
+        config-version = "2.7"
+        bind = "0.0.0.0:25565"
+        motd = "<#09add3>A Velocity Server"
+        show-max-players = 100
+        online-mode = true
+        force-key-authentication = true
+        prevent-client-proxy-connections = false
+        player-info-forwarding-mode = "legacy"
+        forwarding-secret-file = "forwarding.secret"
+        announce-forge = false
+        kick-existing-players = false
+        ping-passthrough = "DISABLED"
+        enable-player-address-logging = true
+
+        [servers]
+        lobby = "hymc-lobby-minecraft.game-servers.svc.cluster.local:25565"
+        pvp = "hymc-pvp-minecraft.game-servers.svc.cluster.local:25565"
+        try = ["lobby"]
+
+        [forced-hosts]
+
+        [advanced]
+        read-timeout = 30000
+        tcp-fast-open = false
+        compression-level = -1
+        compression-threshold = 256
+        login-ratelimit = 3000
+        connection-timeout = 5000
+        log-player-connections = true
+        bungee-plugin-message-channel = true
+        show-ping-requests = false
+        accepts-transfers = false
+        failover-on-unexpected-server-disconnect = true
+        announce-proxy-commands = true
+        haproxy-protocol = false
+        log-command-executions = false
+
+        [query]
+        port = 25577
+        show-plugins = false
+        map = "Velocity"
+        enabled = true
+    resources:
+      requests:
+        cpu: 30m
+        memory: 1Gi
+      limits:
+        memory: 2Gi
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities: {drop: ["ALL"]}
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
     persistence:
-      server:
-        existingClaim: "{{ .Release.Name }}"
-      config-file:
-        type: configMap
-        name: velocity-configmap
-        globalMounts:
-          - path: /server/velocity.toml
-            subPath: velocity.toml
-      forwarding-secret:
-        type: secret
-        name: velocity-secret
-        globalMounts:
-          - path: /server/forwarding.secret
+      dataDir:
+        enabled: true
+        existingClaim: hymc-velocity
+    extraVolumes:
+      - volumeMounts:
+          - name: forwarding-secret
+            mountPath: /server/forwarding.secret
             subPath: forwarding.secret
-      tmp:
-        type: emptyDir
+        volumes:
+          - name: forwarding-secret
+            secret:
+              secretName: &secret velocity-secret
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
