@@ -49,6 +49,7 @@ spec:
     innodb_autoinc_lock_mode=2
     innodb_buffer_pool_size=1600MB
     max_allowed_packet=1GB
+    log_warnings=0
   bootstrapFrom:
     s3:
       accessKeyIdSecretKeyRef:
