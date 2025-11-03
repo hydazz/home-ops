@@ -10,6 +10,15 @@ spec:
   replicas: 3
   replication:
     enabled: true
+    replica:
+      replPasswordSecretKeyRef:
+        name: mariadb-secret
+        key: REPLICATION_PASSWORD
+      bootstrapFrom:
+        physicalBackupTemplateRef:
+          name: mariadb-backup
+      recovery:
+        enabled: true
   storage:
     size: 16Gi
     storageClassName: openebs-hostpath
