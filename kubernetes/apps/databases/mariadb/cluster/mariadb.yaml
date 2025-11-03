@@ -69,8 +69,8 @@ spec:
           requests:
             storage: 4Gi
         accessModes:
-          - ReadWriteOnce
-        storageClassName: openebs-hostpath
+          - ReadWriteMany
+        storageClassName: ceph-filesystem
   metrics:
     enabled: true
   updateStrategy:
