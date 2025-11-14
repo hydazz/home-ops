@@ -11,7 +11,7 @@ spec:
   interval: 1h
   values:
     global:
-      imageRegistry: mirror.gcr.io
+      imageRepository: mirror.gcr.io/envoyproxy/envoy
     config:
       envoyGateway:
         provider:
