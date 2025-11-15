@@ -65,14 +65,6 @@ machine:
         ImageVolume: true
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.34.2
-    extraMounts:
-      - destination: /var/openebs/local
-        type: bind
-        source: /var/openebs/local
-        options:
-          - bind
-          - rshared
-          - rw
     nodeIP:
       validSubnets:
         - 192.168.42.0/24
@@ -218,6 +210,11 @@ cluster:
   serviceAccount:
     key: op://K8s/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-hostpath
+volumeType: directory
 ---
 apiVersion: v1alpha1
 kind: WatchdogTimerConfig
