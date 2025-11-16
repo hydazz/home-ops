@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app home-ops-runner
+  name: &name home-ops-runner
 spec:
   chartRef:
     kind: OCIRepository
@@ -44,8 +44,8 @@ spec:
               - mountPath: /var/run/secrets/talos.dev
                 name: talos
                 readOnly: true
-        serviceAccountName: *app
+        serviceAccountName: *name
         volumes:
           - name: talos
             secret:
-              secretName: *app
+              secretName: *name
