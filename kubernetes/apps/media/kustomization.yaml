@@ -10,7 +10,7 @@ resources:
   - ./cross-seed/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./immich/ks.yaml
-  - ./jellyseerr/ks.yaml
+  - ./seerr/ks.yaml
   - ./kometa/ks.yaml
   - ./lidarr/ks.yaml
   - ./namespace.yaml
