@@ -7,7 +7,6 @@ metadata:
 spec:
   components:
     - ../../../../components/volsync
-    #    - ../../../../components/code-server
   dependsOn:
     - name: multus-networks
       namespace: kube-system

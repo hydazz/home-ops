@@ -12,6 +12,8 @@ spec:
   values:
     controllers:
       esphome:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -29,6 +31,27 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 4Gi
+          code-server:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.105.1@sha256:2d48970bd2084aa34a522d772b6a437981ea80407465b3bf7958553985c570e1
+            args:
+              - --auth
+              - none
+              - --disable-telemetry
+              - --disable-update-check
+              - --user-data-dir
+              - /config/.code-server
+              - --extensions-dir
+              - /config/.code-server
+              - --port
+              - "12321"
+              - /config
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |-
@@ -39,7 +62,6 @@ spec:
             "mac": "3e:59:e4:f7:43:02"
           }]
       securityContext:
-        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
@@ -48,7 +70,11 @@ spec:
       app:
         ports:
           http:
-            port: 6052
+            port: &port 6052
+      code-server:
+        ports:
+          http:
+            port: &codePort 12321
     route:
       app:
         hostnames:
@@ -56,6 +82,23 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /code/
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - identifier: code-server
+                port: *codePort
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
@@ -63,3 +106,25 @@ spec:
         existingClaim: "{{ .Release.Name }}-cache"
       tmp:
         type: emptyDir
+        advancedMounts:
+          esphome:
+            code-server:
+              - path: /tmp
+                subPath: tmp
+              - path: /nonexistent
+                subPath: nonexistent
+      secrets:
+        type: secret
+        name: esphome-secret
+        globalMounts:
+          - path: /config/secrets.yaml
+            subPath: secrets.yaml
+      deploy-key:
+        type: secret
+        name: esphome-secret
+        defaultMode: 256
+        advancedMounts:
+          esphome:
+            code-server:
+              - path: /home/coder/.ssh/id_ed25519
+                subPath: id_ed25519
