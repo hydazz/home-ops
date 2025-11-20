@@ -47,9 +47,14 @@ spec:
               - --port
               - "12321"
               - /config
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
+                memory: 128Mi
               limits:
                 memory: 512Mi
     defaultPodOptions:
@@ -62,6 +67,7 @@ spec:
             "mac": "3e:59:e4:f7:43:02"
           }]
       securityContext:
+        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
@@ -104,15 +110,6 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       cache:
         existingClaim: "{{ .Release.Name }}-cache"
-      tmp:
-        type: emptyDir
-        advancedMounts:
-          esphome:
-            code-server:
-              - path: /tmp
-                subPath: tmp
-              - path: /nonexistent
-                subPath: nonexistent
       secrets:
         type: secret
         name: esphome-secret
@@ -128,3 +125,14 @@ spec:
             code-server:
               - path: /home/coder/.ssh/id_ed25519
                 subPath: id_ed25519
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          esphome:
+            code-server:
+              - path: /nonexistent
+                subPath: nonexistent
+              - path: /home/coder
+                subPath: coder
+      tmp:
+        type: emptyDir
