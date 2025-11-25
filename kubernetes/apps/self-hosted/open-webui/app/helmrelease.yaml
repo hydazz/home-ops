@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: 0.6.39@sha256:17712aae07768cffc1a5d7de9d0dde5986cf27679987c1b3bad074ef46db7aa1
+              tag: 0.6.40@sha256:c13ea534284fa52b282fb2780ffc34a42cc66495234789be8327a9f3d35b53dd
             env:
               CORS_ALLOW_ORIGIN: https://chat.hyde.services
               DATA_DIR: /config
