@@ -9,6 +9,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./nginx-hs/ks.yaml
-  - ./wordpress-ahfybc/ks.yaml
-  - ./wordpress-hca/ks.yaml
-  - ./wordpress-lmvca/ks.yaml
+  - ./wordpress/ks.yaml
