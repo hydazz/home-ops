@@ -77,4 +77,3 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: databases
-  wait: false

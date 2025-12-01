@@ -16,7 +16,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: false
   patches:
     - # Add Kustomization defaults for all child Kustomizations
       patch: |-
@@ -74,7 +73,6 @@ spec:
     kind: GitRepository
     name: flux-private
     namespace: flux-system
-  wait: false
   patches:
     - # Add Kustomization defaults for all child Kustomizations
       patch: |-
