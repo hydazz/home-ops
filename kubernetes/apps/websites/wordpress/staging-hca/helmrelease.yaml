@@ -80,15 +80,10 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            ui:
-              hide-hostname: true
-              hide-url: true
         hostnames:
           - staging.${D_HCA}
         parentRefs:
-          - name: envoy-cloudflare
+          - name: envoy-internal
             namespace: network
     configMaps:
       config:
