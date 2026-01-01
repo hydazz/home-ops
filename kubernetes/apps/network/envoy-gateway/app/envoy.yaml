@@ -97,37 +97,6 @@ spec:
           - kind: Secret
             name: ${D_AHFYBC//./-}-tls
 ---
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: EnvoyPatchPolicy
-metadata:
-  name: envoy-cloudflare
-spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: Gateway
-    name: envoy-cloudflare
-  type: JSONPatch
-  jsonPatches:
-    - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network/envoy-cloudflare/https
-      operation: &operation
-        op: add
-        jsonPath: ..filters[*].typed_config.http_filters[?(@.name=="envoy.filters.http.compressor.zstd")].typed_config
-        value:
-          "@type": type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
-          choose_first: true
-          compressor_library:
-            name: envoy.compression.zstd.compressor
-            typed_config:
-              "@type": type.googleapis.com/envoy.extensions.compression.zstd.compressor.v3.Zstd
-          response_direction_config:
-            remove_accept_encoding_header: true
-    - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network/envoy-cloudflare/https-quic
-      operation: *operation
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -181,36 +150,6 @@ spec:
           - kind: Secret
             name: ${D_AHFYBC//./-}-tls
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: EnvoyPatchPolicy
-metadata:
-  name: envoy-external
-spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: Gateway
-    name: envoy-external
-  type: JSONPatch
-  jsonPatches:
-    - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network/envoy-external/https
-      operation: &operation
-        op: add
-        jsonPath: ..filters[*].typed_config.http_filters[?(@.name=="envoy.filters.http.compressor.zstd")].typed_config
-        value:
-          "@type": type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
-          choose_first: true
-          compressor_library:
-            name: envoy.compression.zstd.compressor
-            typed_config:
-              "@type": type.googleapis.com/envoy.extensions.compression.zstd.compressor.v3.Zstd
-          response_direction_config:
-            remove_accept_encoding_header: true
-    - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network/envoy-external/https-quic
-      operation: *operation
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -262,36 +201,6 @@ spec:
           - kind: Secret
             name: ${D_LMVCA//./-}-tls
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: EnvoyPatchPolicy
-metadata:
-  name: envoy-internal
-spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: Gateway
-    name: envoy-internal
-  type: JSONPatch
-  jsonPatches:
-    - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network/envoy-internal/https
-      operation: &operation
-        op: add
-        jsonPath: ..filters[*].typed_config.http_filters[?(@.name=="envoy.filters.http.compressor.zstd")].typed_config
-        value:
-          "@type": type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
-          choose_first: true
-          compressor_library:
-            name: envoy.compression.zstd.compressor
-            typed_config:
-              "@type": type.googleapis.com/envoy.extensions.compression.zstd.compressor.v3.Zstd
-          response_direction_config:
-            remove_accept_encoding_header: true
-    - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network/envoy-internal/https-quic
-      operation: *operation
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: BackendTrafficPolicy
@@ -302,15 +211,10 @@ spec:
     - type: Brotli
     - type: Gzip
     - type: Zstd
-  connection:
-    bufferLimit: 8Mi
   targetSelectors:
     - group: gateway.networking.k8s.io
       kind: Gateway
   tcpKeepalive: {}
-  timeout:
-    http:
-      requestTimeout: 0s
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -320,13 +224,9 @@ metadata:
 spec:
   clientIPDetection:
     xForwardedFor:
-      numTrustedHops: 1
-  connection:
-    bufferLimit: 8Mi
-    maxAcceptPerSocketEvent: 0
+      trustedCIDRs:
+        - 10.42.0.0/16
   http2:
-    initialStreamWindowSize: 2Mi
-    initialConnectionWindowSize: 32Mi
     onInvalidMessage: TerminateStream
   http3: {}
   targetRefs:
@@ -337,9 +237,6 @@ spec:
       kind: Gateway
       name: envoy-internal
   tcpKeepalive: {}
-  timeout:
-    http:
-      requestReceivedTimeout: 0s
   tls:
     minVersion: "1.2"
     alpnProtocols:
@@ -355,12 +252,7 @@ spec:
   clientIPDetection:
     customHeader:
       name: "CF-Connecting-IP"
-  connection:
-    bufferLimit: 8Mi
-    maxAcceptPerSocketEvent: 0
   http2:
-    initialStreamWindowSize: 2Mi
-    initialConnectionWindowSize: 32Mi
     onInvalidMessage: TerminateStream
   http3: {}
   targetRefs:
@@ -368,9 +260,6 @@ spec:
       kind: Gateway
       name: envoy-cloudflare
   tcpKeepalive: {}
-  timeout:
-    http:
-      requestReceivedTimeout: 0s
   tls:
     minVersion: "1.2"
     alpnProtocols:
