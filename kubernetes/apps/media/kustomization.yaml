@@ -7,7 +7,6 @@ components:
   - ../../components/alerts
 resources:
   - ./bazarr/ks.yaml
-  - ./cross-seed/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./immich/ks.yaml
   - ./seerr/ks.yaml
@@ -24,5 +23,4 @@ resources:
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./tdarr/ks.yaml
-  - ./tqm/ks.yaml
   - ./unpackerr/ks.yaml
