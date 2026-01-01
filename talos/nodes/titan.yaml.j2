@@ -3,6 +3,8 @@ machine:
   install:
     diskSelector:
       wwid: eui.0025385301b0a063 # Samsung SSD 970 EVO Plus 500GB
-  network:
-    hostname: titan
   type: controlplane
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: titan

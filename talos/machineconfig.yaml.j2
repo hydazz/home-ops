@@ -26,7 +26,6 @@ machine:
       enabled: true
     {% endif %}
     rbac: true
-    stableHostname: true
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
@@ -46,7 +45,7 @@ machine:
         nconnect=16
         noatime=True
   install:
-    image: factory.talos.dev/metal-installer-secureboot/18502a9e7989409acfc6d180476e8d09a58ceb7af4a6449f25d0914ab6da4565:v1.12.0-rc.0
+    image: factory.talos.dev/metal-installer-secureboot/18502a9e7989409acfc6d180476e8d09a58ceb7af4a6449f25d0914ab6da4565:v1.12.0
     wipe: false
   kernel:
     modules:
@@ -61,38 +60,12 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
-      featureGates:
-        ImageVolume: true
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.35.0
     nodeIP:
       validSubnets:
         - 192.168.42.0/24
         - 2403:5817:b73a:42::/64
-  network:
-    interfaces:
-      - interface: bond0
-        bond:
-          deviceSelectors:
-            - pciID: 15B3:1003 # MT27500 Family [ConnectX-3]
-              driver: mlx4_core
-            - pciID: 10EC:812* # RTL8125/6 2.5/5GbE Controller
-              driver: r8169
-          miimon: 100
-          mode: active-backup
-          primary: enp5s0 # MT27500 Family [ConnectX-3]
-          primaryReselect: better
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: true
-        vlans:
-          - # IoT
-            vlanId: 2
-            dhcp: false
-          - # VPN
-            vlanId: 50
-            dhcp: false
   nodeLabels:
     node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: kubernetes
@@ -213,6 +186,47 @@ cluster:
   serviceAccount:
     key: op://K8s/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: mlx4
+selector:
+  match: link.driver == "mlx4_core"
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: r8169
+selector:
+  match: link.driver == "r8169"
+---
+apiVersion: v1alpha1
+kind: BondConfig
+name: bond0
+links:
+  - mlx4
+  - r8169
+bondMode: active-backup
+primaryReselect: better
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: bond0
+---
+apiVersion: v1alpha1
+kind: DHCPv6Config
+name: bond0
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: bond0.2
+vlanID: 2
+parent: bond0
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: bond0.50
+vlanID: 50
+parent: bond0
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
