@@ -10,5 +10,5 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 25.10.3
+    tag: 25.10.4
   url: oci://ghcr.io/hydazz/charts-mirror/mariadb-operator
