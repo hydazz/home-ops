@@ -64,6 +64,14 @@ spec:
       tls:
         enabled: true
     backupContentType: Physical
+    stagingStorage:
+      persistentVolumeClaim:
+        resources:
+          requests:
+            storage: 4Gi
+        accessModes:
+          - ReadWriteMany
+        storageClassName: ceph-filesystem
   metrics:
     enabled: true
   updateStrategy:
