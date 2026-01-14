@@ -6,6 +6,7 @@ namespace: media
 components:
   - ../../components/alerts
 resources:
+  - ./agregarr/ks.yaml
   - ./bazarr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./immich/ks.yaml
