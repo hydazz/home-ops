@@ -2,15 +2,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/kometa-team/kometa/nightly/json-schema/config-schema.json
 libraries:
   Movies:
-    collection_files:
-      - default: basic
     remove_overlays: false
     overlay_files:
       - default: resolution
       - default: audio_codec
   TV Shows:
-    collection_files:
-      - default: basic
     remove_overlays: false
     overlay_files:
       - default: resolution
