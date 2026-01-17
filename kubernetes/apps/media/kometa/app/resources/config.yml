@@ -16,9 +16,6 @@ libraries:
       - default: resolution
       - default: audio_codec
 
-playlist_files:
-  - file: config/playlists.yml
-
 settings:
   cache: true
   cache_expiration: 60
