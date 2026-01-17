@@ -58,7 +58,5 @@ spec:
         globalMounts:
           - path: /config/config.yml
             subPath: config.yml
-          - path: /config/playlists.yml
-            subPath: playlists.yml
       tmp:
         type: emptyDir
