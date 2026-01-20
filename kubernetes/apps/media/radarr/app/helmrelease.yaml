@@ -81,7 +81,5 @@ spec:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Slow/Media
-        globalMounts:
-          - path: /data
       tmp:
         type: emptyDir

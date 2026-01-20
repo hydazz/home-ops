@@ -103,11 +103,6 @@ spec:
       media:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/Slow/Media/Plex Media
-      tmpfs:
+        path: /mnt/Slow/Media
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /transcode
-            subPath: transcode
-          - path: /tmp
-            subPath: tmp
