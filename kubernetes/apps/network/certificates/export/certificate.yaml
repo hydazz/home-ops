@@ -142,15 +142,15 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ${D_AHFYBC//./-}
+  name: ${D_BBPC//./-}
 spec:
   dnsNames:
-    - ${D_AHFYBC}
-    - "*.${D_AHFYBC}"
+    - ${D_BBPC}
+    - "*.${D_BBPC}"
   duration: 160h
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-production
-  secretName: ${D_AHFYBC//./-}-tls
+  secretName: ${D_BBPC//./-}-tls
   usages:
     - digital signature
