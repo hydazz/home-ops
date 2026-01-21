@@ -74,3 +74,16 @@ spec:
           port: 80
         - protocol: TCP
           port: 443
+    - to:
+        - ipBlock:
+            cidr: ::/0
+            except:
+              - fc00::/7
+              - fe80::/10
+              - ff00::/8
+              - 2403:5817:b73a::/48
+      ports:
+        - protocol: TCP
+          port: 80
+        - protocol: TCP
+          port: 443
