@@ -7,6 +7,7 @@ metadata:
 spec:
   mariaDbRef:
     name: mariadb
+  target: Replica
   schedule:
     cron: 0 2 * * *
   storage:
@@ -29,6 +30,7 @@ spec:
       resources:
         requests:
           storage: 4Gi
+      # used by replica.bootstrapFrom (cross nodes)
       accessModes:
-        - ReadWriteOnce
-      storageClassName: openebs-hostpath
+        - ReadWriteMany
+      storageClassName: ceph-filesystem
