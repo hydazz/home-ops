@@ -54,7 +54,7 @@ upgrade-k8s version:
 
 [doc('Upgrade Talos version on a node')]
 upgrade-node node *args:
-    talosctl -n "{{ node }}" upgrade -i "$(just talos machine-image)" -m powercycle --timeout=10m {{ args }}
+    talosctl -n "{{ node }}" upgrade -i "$(just talos machine-image {{ node }})" -m powercycle --timeout=10m {{ args }}
 
 [private]
 machine-controller node:
@@ -65,5 +65,14 @@ machine-nvidia node:
     just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2" | yq -e '(.machine.nodeLabels["nvidia.com/gpu.present"] == "true") // ""'
 
 [private]
-machine-image:
-    just template "{{ talos_dir }}/machineconfig.yaml.j2" | yq -e 'select(.machine) | .machine.install.image'
+machine-image-default:
+    just template "{{ talos_dir }}/machineconfig.yaml.j2" | yq -re 'select(.machine) | .machine.install.image'
+
+[private]
+machine-image node:
+    node_image="$(just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2" | yq -re '.machine.install.image // ""')"; \
+    if [[ -n "${node_image}" ]]; then \
+        echo "${node_image}"; \
+    else \
+        just talos machine-image-default; \
+    fi
