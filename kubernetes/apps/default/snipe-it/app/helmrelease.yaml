@@ -1,0 +1,92 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: snipe-it
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: snipe-it
+  interval: 1h
+  values:
+    controllers:
+      snipe-it:
+        containers:
+          app:
+            image:
+              repository: docker.io/snipe/snipe-it
+              tag: v8.3.7-alpine@sha256:b0d27e5f97d4d3796e5fe7c276d9703efb4877482a76882bbbd5ae4ef066fe62
+            env:
+              ALLOW_BACKUP_DELETE: "false"
+              ALLOW_DATA_PURGE: "true"
+              ALLOW_IFRAMING: "false"
+              API_THROTTLE_PER_MINUTE: "1000"
+              APP_ENV: production
+              APP_TIMEZONE: Australia/Melbourne
+              APP_TRUSTED_PROXIES: 10.42.0.0/16,10.10.69.0/24
+              APP_PORT: &port 80
+              APP_URL: https://snipe-it.hyde.services
+              MAX_RESULTS: "1000"
+              PRIVATE_FILESYSTEM_DISK: local
+              PUBLIC_FILESYSTEM_DISK: local_public
+              REFERRER_POLICY: same-origin
+              SECURE_COOKIES: "false"
+              # Mail
+              MAIL_AUTO_EMBED_METHOD: 'attachment'
+              MAIL_FROM_ADDR: you@example.com
+              MAIL_FROM_NAME: 'Snipe-IT'
+              MAIL_HOST: mailhog
+              MAIL_MAILER: smtp
+              MAIL_PASSWORD: "null"
+              MAIL_PORT: 1025
+              MAIL_REPLYTO_ADDR: you@example.com
+              MAIL_REPLYTO_NAME: 'Snipe-IT'
+              MAIL_TLS_VERIFY_PEER: "true"
+              MAIL_USERNAME: "null"
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - snipe-it.hyde.services
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/lib/snipeit
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/www/logs/
+            subPath: www-logs
+          - path: /var/www/html/storage/logs
+            subPath: storage-logs
+          - path: /tmp
+            subPath: tmp
