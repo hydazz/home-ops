@@ -60,7 +60,7 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
+        runAsUser: 100
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
@@ -81,12 +81,3 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /var/lib/snipeit
-      tmpfs:
-        type: emptyDir
-        globalMounts:
-          - path: /var/www/logs/
-            subPath: www-logs
-          - path: /var/www/html/storage/logs
-            subPath: storage-logs
-          - path: /tmp
-            subPath: tmp
