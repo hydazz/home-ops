@@ -45,7 +45,7 @@ spec:
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXChat-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXProtect-2.21.2.jar
                 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsXSpawn-2.21.2.jar
-                https://github.com/Multiverse/Multiverse-Core/releases/download/5.2.1/multiverse-core-5.2.1.jar
+                https://github.com/Multiverse/Multiverse-Core/releases/download/5.5.2/multiverse-core-5.5.2.jar
                 https://github.com/aerulion/VoidWorld/releases/download/v1.0.0/VoidWorld-1.0.0.jar
               # Server
               MEMORY: ""

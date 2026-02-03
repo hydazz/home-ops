@@ -20,9 +20,9 @@ spec:
             env:
               MINECRAFT_VERSION: 1.21.8
               PLUGINS: |-
-                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.5.0/PAPER/ViaBackwards-5.5.0.jar
-                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaRewind/versions/4.0.9/PAPER/ViaRewind-4.0.9.jar
-                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.5.0/PAPER/ViaVersion-5.5.0.jar
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.7.1/PAPER/ViaBackwards-5.7.1.jar
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaRewind/versions/4.0.14/PAPER/ViaRewind-4.0.14.jar
+                https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.7.1/PAPER/ViaVersion-5.7.1.jar
               TYPE: VELOCITY
               TZ: Australia/Melbourne
               VERSION: 3.4.0-SNAPSHOT
