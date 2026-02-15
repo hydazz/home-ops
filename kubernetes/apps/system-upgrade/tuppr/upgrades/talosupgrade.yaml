@@ -19,3 +19,11 @@ spec:
       kind: CephCluster
       expr: |-
         status.ceph.health in ['HEALTH_OK']
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      expr: |-
+        status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+    - apiVersion: k8s.mariadb.com/v1alpha1
+      kind: MariaDB
+      expr: |-
+        status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
