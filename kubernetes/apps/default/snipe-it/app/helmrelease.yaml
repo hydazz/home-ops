@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: docker.io/snipe/snipe-it
-              tag: v8.3.7-alpine@sha256:b0d27e5f97d4d3796e5fe7c276d9703efb4877482a76882bbbd5ae4ef066fe62
+              tag: v8.4.0-alpine@sha256:888f5d6913a223854172f2558274e5cec3e114c6bf13805ec72964e6683d04a1
             env:
               ALLOW_BACKUP_DELETE: "false"
               ALLOW_DATA_PURGE: "true"
