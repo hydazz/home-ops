@@ -40,7 +40,6 @@ spec:
                       name: RetryOnFailure
                   rollback:
                     cleanupOnFail: true
-                    recreate: true
                   upgrade:
                     cleanupOnFail: true
                     crds: CreateReplace
@@ -97,7 +96,6 @@ spec:
                       name: RetryOnFailure
                   rollback:
                     cleanupOnFail: true
-                    recreate: true
                   upgrade:
                     cleanupOnFail: true
                     crds: CreateReplace
