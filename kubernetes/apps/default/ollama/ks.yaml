@@ -11,10 +11,10 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/ai/ollama/app
+  path: ./kubernetes/apps/default/ollama/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: default
