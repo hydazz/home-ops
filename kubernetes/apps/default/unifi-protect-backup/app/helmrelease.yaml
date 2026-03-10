@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hydazz/unifi-protect-backup
-              tag: 0.14.1@sha256:784baba4d15cbf21c7d1c687c2f8e989aa27f3efb6d1e2922b8ccaed0ff79b29
+              tag: 0.14.2@sha256:0297a7ca1dee957661c0afa2a4b1e902848c230ed26426952bff26696060b076
             env:
               DETECTION_TYPES: person,vehicle,ring
               DOWNLOAD_BUFFER_SIZE: 512MiB
