@@ -18,12 +18,12 @@ machine:
       port: 7445
     {% if ENV.IS_CONTROLLER %}
     kubernetesTalosAPIAccess:
+      enabled: true
       allowedKubernetesNamespaces:
         - actions-runner-system
         - system-upgrade
       allowedRoles:
         - os:admin
-      enabled: true
     {% endif %}
     rbac: true
   files:
@@ -42,10 +42,12 @@ machine:
         [ NFSMount_Global_Options ]
         nfsvers=4.2
         hard=True
-        nconnect=16
+        nconnect=8
         noatime=True
+        rsize=1048576
+        wsize=1048576
   install:
-    image: factory.talos.dev/metal-installer-secureboot/2dbb3de5da27e42d328b3ac685afe729ecb26d93bdce0dd62552fda536476813:v1.12.5
+    image: factory.talos.dev/metal-installer-secureboot/f9b40180bdbb321239ac30588938161a8749fb95d590c78c2674b07228503096:v1.12.5
     wipe: false
   kernel:
     modules:
@@ -141,7 +143,7 @@ cluster:
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+      feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
     image: registry.k8s.io/kube-apiserver:v1.35.2
   controllerManager:
@@ -236,4 +238,4 @@ volumeType: directory
 apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
-timeout: 5m
+timeout: 10m
