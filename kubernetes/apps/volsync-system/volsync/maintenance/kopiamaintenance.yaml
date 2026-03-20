@@ -8,5 +8,11 @@ spec:
   enabled: true
   trigger:
     schedule: 30 3,15 * * *
+  moverVolumes:
+    - mountPath: repository
+      volumeSource:
+        nfs:
+          path: /mnt/Backup/Kopia/Volsync
+          server: 192.168.42.20
   repository:
     repository: volsync-maintenance-secret
