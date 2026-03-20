@@ -19,7 +19,6 @@ spec:
   postBuild:
     substitute:
       APP: open-webui
-      VOLSYNC_CAPACITY: 128Mi
   prune: true
   sourceRef:
     kind: GitRepository

@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: tasmoadmin
-      VOLSYNC_CAPACITY: 64Mi
   prune: true
   sourceRef:
     kind: GitRepository

@@ -20,7 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: paperless
-      VOLSYNC_CAPACITY: 128Mi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -44,7 +43,6 @@ spec:
   postBuild:
     substitute:
       APP: paperless-ai
-      VOLSYNC_CAPACITY: 128Mi
   prune: true
   sourceRef:
     kind: GitRepository

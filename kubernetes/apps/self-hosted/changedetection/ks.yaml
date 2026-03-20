@@ -12,7 +12,6 @@ spec:
   postBuild:
     substitute:
       APP: changedetection
-      VOLSYNC_CAPACITY: 128Mi
   prune: true
   sourceRef:
     kind: GitRepository

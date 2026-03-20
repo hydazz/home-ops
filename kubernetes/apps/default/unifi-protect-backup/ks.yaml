@@ -12,7 +12,6 @@ spec:
   postBuild:
     substitute:
       APP: unifi-protect-backup
-      VOLSYNC_CAPACITY: 256Mi
   prune: true
   sourceRef:
     kind: GitRepository

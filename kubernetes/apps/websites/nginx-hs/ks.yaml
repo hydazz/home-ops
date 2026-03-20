@@ -15,7 +15,6 @@ spec:
   postBuild:
     substitute:
       APP: nginx-hs
-      VOLSYNC_CAPACITY: 256Mi
   prune: true
   sourceRef:
     kind: GitRepository

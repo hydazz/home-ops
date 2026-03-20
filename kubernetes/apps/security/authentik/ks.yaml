@@ -18,7 +18,6 @@ spec:
     substitute:
       APP: authentik
       VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_CAPACITY: 128Mi
       VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
       VOLSYNC_STORAGECLASS: ceph-filesystem
   prune: true

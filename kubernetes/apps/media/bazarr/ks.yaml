@@ -16,7 +16,6 @@ spec:
   postBuild:
     substitute:
       APP: bazarr
-      VOLSYNC_CAPACITY: 128Mi
   prune: true
   sourceRef:
     kind: GitRepository

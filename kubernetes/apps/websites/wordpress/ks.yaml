@@ -20,7 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: wordpress-bbpc
-      VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
@@ -52,7 +51,6 @@ spec:
   postBuild:
     substitute:
       APP: wordpress-hca
-      VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
@@ -84,7 +82,6 @@ spec:
   postBuild:
     substitute:
       APP: staging-hca
-      VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
@@ -116,7 +113,6 @@ spec:
   postBuild:
     substitute:
       APP: wordpress-lmvca
-      VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets

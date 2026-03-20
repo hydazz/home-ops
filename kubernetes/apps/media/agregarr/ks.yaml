@@ -16,7 +16,6 @@ spec:
   postBuild:
     substitute:
       APP: agregarr
-      VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository

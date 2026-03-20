@@ -15,7 +15,6 @@ spec:
   postBuild:
     substitute:
       APP: hymc-velocity
-      VOLSYNC_CAPACITY: 512Mi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -39,7 +38,6 @@ spec:
   postBuild:
     substitute:
       APP: hymc-lobby
-      VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -63,7 +61,6 @@ spec:
   postBuild:
     substitute:
       APP: hymc-pvp
-      VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository

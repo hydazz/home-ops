@@ -20,7 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: nextcloud
-      VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -49,7 +48,6 @@ spec:
   postBuild:
     substitute:
       APP: nextcloud-business
-      VOLSYNC_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets

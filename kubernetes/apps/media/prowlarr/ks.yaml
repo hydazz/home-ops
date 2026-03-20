@@ -16,7 +16,6 @@ spec:
   postBuild:
     substitute:
       APP: prowlarr
-      VOLSYNC_CAPACITY: 256Mi
   prune: true
   sourceRef:
     kind: GitRepository
