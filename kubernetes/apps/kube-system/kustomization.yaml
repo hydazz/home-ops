@@ -14,7 +14,7 @@ resources:
   - ./metrics-server/ks.yaml
   - ./multus/ks.yaml
   - ./namespace.yaml
-  - ./nvidia-gpu-resource-driver/ks.yaml
+  - ./nvidia-device-plugin/ks.yaml
   - ./reflector/ks.yaml
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
