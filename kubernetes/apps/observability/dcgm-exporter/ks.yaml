@@ -6,7 +6,7 @@ metadata:
   name: dcgm-exporter
 spec:
   dependsOn:
-    - name: nvidia-device-plugin
+    - name: nvidia-gpu-resource-driver
       namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/observability/dcgm-exporter/app
