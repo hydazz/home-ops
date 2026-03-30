@@ -30,10 +30,7 @@ machine:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
       content: |
-        [plugins."io.containerd.cri.v1.images"]
-          discard_unpacked_layers = false
         [plugins."io.containerd.cri.v1.runtime"]
-          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
           device_ownership_from_security_context = true
     - op: overwrite
       path: /etc/nfsmount.conf
@@ -47,7 +44,7 @@ machine:
         rsize=1048576
         wsize=1048576
   install:
-    image: factory.talos.dev/metal-installer-secureboot/f9b40180bdbb321239ac30588938161a8749fb95d590c78c2674b07228503096:v1.13.0-beta.1
+    image: factory.talos.dev/metal-installer-secureboot/18502a9e7989409acfc6d180476e8d09a58ceb7af4a6449f25d0914ab6da4565:v1.13.0-beta.1
     wipe: false
   kernel:
     modules:

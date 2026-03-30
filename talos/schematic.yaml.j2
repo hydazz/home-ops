@@ -4,8 +4,6 @@ customization:
     - i915.enable_guc=3 # Meteor Lake CPU & Intel iGPU
     - intel_iommu=on # PCI Passthrough
     - iommu=pt # PCI Passthrough
-    - pcie_aspm=off # Disable PCIe ASPM
-    - pcie_port_pm=off # Disable PCIe Port PM
     - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU & Intel iGPU
     - -lockdown # Secure Boot / BPF
     - lockdown=integrity # Secure Boot / BPF
