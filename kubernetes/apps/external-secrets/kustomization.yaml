@@ -8,4 +8,4 @@ components:
 resources:
   - ./external-secrets/ks.yaml
   - ./namespace.yaml
-  - ./onepassword/ks.yaml
+  - ./onepassword-connect/ks.yaml
