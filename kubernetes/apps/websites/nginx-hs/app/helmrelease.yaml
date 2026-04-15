@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: docker.io/library/nginx
-              tag: 1.29.8-alpine@sha256:582c496ccf79d8aa6f8203a79d32aaf7ffd8b13362c60a701a2f9ac64886c93d
+              tag: 1.30.0-alpine@sha256:2e665dfdd34c48b5a4dec0cf06496743f922a27ca1339273464a3badf916c0ae
             env:
               TZ: Australia/Melbourne
             probes:
