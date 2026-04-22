@@ -27,8 +27,8 @@ spec:
             - matchExpressions:
                 - key: nvidia.com/gpu.present
                   operator: Exists
-    runtimeClassName: nvidia
+    kubernetesDRA:
+      enabled: true
     resources:
       limits:
         memory: 1Gi # This does indeed use this much RAM doing nothing
-        nvidia.com/gpu: 1

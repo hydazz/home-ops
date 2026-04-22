@@ -6,7 +6,7 @@ metadata:
   name: ollama
 spec:
   dependsOn:
-    - name: nvidia-device-plugin
+    - name: nvidia-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
