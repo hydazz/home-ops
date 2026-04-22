@@ -10,6 +10,8 @@ spec:
     name: nvidia-gpu-resource-driver
   interval: 1h
   values:
+    featureGates:
+      TimeSlicingSettings: true
     gpuResourcesEnabledOverride: true
     nvidiaDriverRoot: /usr/local
     kubeletPlugin:
