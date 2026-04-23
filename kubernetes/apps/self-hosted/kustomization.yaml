@@ -11,5 +11,5 @@ resources:
   - ./jenkins/ks.yaml
   - ./maddy/ks.yaml
   - ./namespace.yaml
-  - ./open-webui/ks.yaml
+  #  - ./open-webui/ks.yaml # PermissionError: [Errno 13] Permission denied: '/root/.postgresql/postgresql.key'
   - ./paperless/ks.yaml
