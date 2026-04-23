@@ -3,7 +3,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: envoy-gateway
+  name: unifi-pdu
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -12,13 +12,13 @@ spec:
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
-  url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-gateway-global.json
+  url: https://grafana.com/api/dashboards/23027/revisions/1/download
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: envoy-proxy
+  name: unifi-insights
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -27,13 +27,13 @@ spec:
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
-  url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-proxy-global.json
+  url: https://grafana.com/api/dashboards/11315/revisions/9/download
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: envoy-overview
+  name: unifi-network-sites
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -42,13 +42,13 @@ spec:
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
-  url: https://grafana.com/api/dashboards/24459/revisions/3/download
+  url: https://grafana.com/api/dashboards/11311/revisions/5/download
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: envoy-upstream
+  name: unifi-uap
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -57,13 +57,13 @@ spec:
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
-  url: https://grafana.com/api/dashboards/24457/revisions/4/download
+  url: https://grafana.com/api/dashboards/11314/revisions/10/download
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: envoy-downstream
+  name: unifi-usw
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -72,4 +72,4 @@ spec:
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
-  url: https://grafana.com/api/dashboards/24458/revisions/3/download
+  url: https://grafana.com/api/dashboards/11312/revisions/9/download
