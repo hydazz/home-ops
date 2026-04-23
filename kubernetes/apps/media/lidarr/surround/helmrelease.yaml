@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: lidarr-surround
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: lidarr-surround
+  interval: 1h
+  values:
+    controllers:
+      lidarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/lidarr
+              tag: 3.1.2.4938@sha256:9df1e14c8e09745f23a36c0cc6adcf69665b379aae60e5a7cb9bda27961ef4e7
+            env:
+              LIDARR__APP__INSTANCENAME: Lidarr Surround Sound
+              LIDARR__APP__THEME: dark
+              LIDARR__AUTH__METHOD: External
+              LIDARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              LIDARR__LOG__DBENABLED: "False"
+              LIDARR__LOG__LEVEL: info
+              LIDARR__SERVER__PORT: &port 80
+              LIDARR__UPDATE__BRANCH: develop
+              TZ: Australia/Melbourne
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 20m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.hyde.services"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+      media:
+        type: nfs
+        server: 192.168.42.20
+        path: /mnt/Slow/Media
+      tmp:
+        type: emptyDir
