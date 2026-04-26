@@ -12,8 +12,6 @@ spec:
   values:
     controllers:
       unpoller:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -47,7 +45,7 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 20m
+                cpu: 10m
               limits:
                 memory: 128Mi
     defaultPodOptions:
