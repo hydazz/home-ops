@@ -128,11 +128,13 @@ spec:
       vmScrape:
         spec:
           metricRelabelConfigs:
-            - action: drop
+            - # Drop high cardinality labels
+              action: drop
               sourceLabels:
                 - __name__
               regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-            - action: drop
+            - # Drop high cardinality labels
+              action: drop
               sourceLabels:
                 - __name__
               regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
@@ -168,26 +170,32 @@ spec:
       vmScrape:
         spec:
           metricRelabelConfigs:
-            - action: labeldrop
+            - # Drop high-cardinality labels
+              action: labeldrop
               regex: (uid|id|name)
-            - action: drop
+            - # Drop high-cardinality labels
+              action: drop
               sourceLabels:
                 - __name__
               regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
-            - action: drop
+            - # Drop cgroup metrics with no pod
+              action: drop
               sourceLabels:
                 - id
                 - pod
               regex: .+;
-            - action: drop
+            - # Drop less useful container blkio metrics
+              action: drop
               sourceLabels:
                 - __name__
               regex: container_blkio_device_usage_total
-            - action: drop
+            - # Drop less useful container filesystem io metrics
+              action: drop
               sourceLabels:
                 - __name__
               regex: "container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)"
-            - action: drop
+            - # Drop less useful container process metrics
+              action: drop
               sourceLabels:
                 - __name__
               regex: container_(tasks_state|threads_max)
