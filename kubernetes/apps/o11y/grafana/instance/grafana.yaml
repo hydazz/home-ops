@@ -64,16 +64,12 @@ spec:
       parentRefs:
         - name: envoy-internal
           namespace: network
-      rules:
-        - backendRefs:
-            - name: grafana-service
-              port: 3000
   persistentVolumeClaim:
     spec:
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 10Gi
+          storage: 5Gi
       storageClassName: ceph-block
   disableDefaultSecurityContext: All

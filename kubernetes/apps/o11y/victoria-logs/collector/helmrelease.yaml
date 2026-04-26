@@ -3,24 +3,18 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: victoria-metrics
+  name: victoria-logs-collector
 spec:
+  interval: 30m
   chartRef:
     kind: OCIRepository
-    name: victoria-metrics
-  interval: 1h
+    name: victoria-logs-collector
   values:
-    fullnameOverride: victoria-metrics
+    fullnameOverride: victoria-logs-collector
     global:
       image:
         registry: quay.io
-    crds:
+    podMonitor:
       enabled: true
-    admissionWebhooks:
-      enabled: true
-      certManager:
-        enabled: true
-    operator:
-      enable_converter_ownership: true
-    serviceMonitor:
-      enabled: true
+    remoteWrite:
+      - url: http://victoria-logs.o11y.svc.cluster.local:9428
