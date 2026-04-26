@@ -37,7 +37,8 @@ spec:
     #    licenseKey: GEOIP_LICENSE_KEY
     prometheus:
       rules:
-        enabled: true
+        # Chart rules are wrong for the metrics authentik actually emits
+        enabled: false
     server:
       metrics:
         enabled: true
