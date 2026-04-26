@@ -10,7 +10,7 @@ spec:
     matchLabels:
       dashboards: grafana
   datasources:
-    - datasourceName: prometheus
+    - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
   url: https://grafana.com/api/dashboards/7362/revisions/5/download
 ---
@@ -25,7 +25,7 @@ spec:
     matchLabels:
       dashboards: grafana
   datasources:
-    - datasourceName: prometheus
+    - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
   url: https://grafana.com/api/dashboards/13106/revisions/3/download
 ---
@@ -40,6 +40,6 @@ spec:
     matchLabels:
       dashboards: grafana
   datasources:
-    - datasourceName: prometheus
+    - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
   url: https://grafana.com/api/dashboards/14057/revisions/1/download
