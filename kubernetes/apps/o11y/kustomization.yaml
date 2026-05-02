@@ -11,7 +11,9 @@ resources:
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
+  - ./kube-state-metrics/ks.yaml
   - ./namespace.yaml
+  - ./node-exporter/ks.yaml
   - ./nut-exporter/ks.yaml
   - ./prometheus-adapter/ks.yaml
   - ./prometheus-operator-crds/ks.yaml
@@ -19,4 +21,4 @@ resources:
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria-logs/ks.yaml
-#  - ./victoria-metrics/ks.yaml
+  - ./victoria-metrics/ks.yaml
