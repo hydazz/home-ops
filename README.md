@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Kubernetes_logo_without_workmark.svg/1234px-Kubernetes_logo_without_workmark.svg.png" align="center" width="175px" height="175px"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Kubernetes_logo_without_workmark.svg/3840px-Kubernetes_logo_without_workmark.svg.png" align="center" width="175px" height="175px"/>
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" alt="🚀" width="16" height="16"> My Home Operations Repository <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f6a7/512.gif" alt="🚧" width="16" height="16">
 
@@ -19,9 +19,9 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 <div align="center">
 
-[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fspoodermon.hyde.services%2Fapi%2Fv1%2Fendpoints%2F_ping%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://gatus.hyde.services)&nbsp;&nbsp;
-[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fspoodermon.hyde.services%2Fapi%2Fv1%2Fendpoints%2F_status-page%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://gatus.hyde.services)&nbsp;&nbsp;
-[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fspoodermon.hyde.services%2Fapi%2Fv1%2Fendpoints%2F_heartbeat%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://gatus.hyde.services)
+[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.hyde.services%2Fapi%2Fv1%2Fendpoints%2Fbuddy_ping%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://status.hyde.services)&nbsp;&nbsp;
+[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.hyde.services%2Fapi%2Fv1%2Fendpoints%2Fbuddy_status-page%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.hyde.services)&nbsp;&nbsp;
+[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.hyde.services%2Fapi%2Fv1%2Fendpoints%2Fbuddy_heartbeat%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.hyde.services)
 
 </div>
 
