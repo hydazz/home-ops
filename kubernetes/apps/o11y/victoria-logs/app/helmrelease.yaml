@@ -27,7 +27,7 @@ spec:
       route:
         enabled: true
         hostnames:
-          - vlogs.turbo.ac
+          - vlogs.hyde.services
         parentRefs:
           - name: envoy-internal
             namespace: network
