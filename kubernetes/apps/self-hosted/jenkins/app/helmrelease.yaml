@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: docker.io/jenkins/jenkins
-              tag: 2.562-jdk21@sha256:a53ed5321ad17b723bdb43766d8cd7b37a65d8dec2745828aff9a07cac16f213
+              tag: 2.563-jdk21@sha256:902b934559b20cac57f58333c3df58738ce2fedd89fb12bd572a7826e38864a1
             args:
               - --httpPort=80
             env:
