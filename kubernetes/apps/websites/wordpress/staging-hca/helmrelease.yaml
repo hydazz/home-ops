@@ -18,7 +18,7 @@ spec:
           wordpress-init:
             image: &image
               repository: ghcr.io/hydazz/wordpress
-              tag: 6.9.4@sha256:2e303102737de8570543db7ef6443b57e9881e9cbbf5735bd578d282c65c58d8
+              tag: 6.9.4@sha256:606dcdff0e42e2908bf3f2aa33eb74a84f1f04b6752fa21f8737831ce8a0b30a
             command:
               - sh
               - -c
