@@ -7,7 +7,6 @@ components:
   - ../../components/alerts
 resources:
   - ./blackbox-exporter/ks.yaml
-  - ./dcgm-exporter/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml

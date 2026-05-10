@@ -8,5 +8,4 @@ components:
 resources:
   - ./atuin/ks.yaml
   - ./namespace.yaml
-  - ./ollama/ks.yaml
   - ./unifi-protect-backup/ks.yaml
