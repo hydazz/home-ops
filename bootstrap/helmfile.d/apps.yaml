@@ -3,6 +3,7 @@
 
 helmDefaults:
   args:
+    - --server-side=true
     - --force-conflicts
   cleanupOnFail: true
   wait: true
