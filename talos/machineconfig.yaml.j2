@@ -3,7 +3,7 @@ version: v1alpha1
 machine:
   ca:
     crt: op://K8s/talos/MACHINE_CA_CRT
-    {% if ENV.IS_CONTROLLER %}
+    {% if ENV.CONTROLPLANE %}
     key: op://K8s/talos/MACHINE_CA_KEY
     {% endif %}
   features:
@@ -16,7 +16,7 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    {% if ENV.IS_CONTROLLER %}
+    {% if ENV.CONTROLPLANE %}
     kubernetesTalosAPIAccess:
       enabled: true
       allowedKubernetesNamespaces:
@@ -30,6 +30,8 @@ machine:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
       content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
         [plugins."io.containerd.cri.v1.runtime"]
           device_ownership_from_security_context = true
     - op: overwrite
@@ -44,7 +46,7 @@ machine:
         rsize=1048576
         wsize=1048576
   install:
-    image: factory.talos.dev/metal-installer-secureboot/18502a9e7989409acfc6d180476e8d09a58ceb7af4a6449f25d0914ab6da4565:v1.13.0
+    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.13.2
     wipe: false
   kernel:
     modules:
@@ -89,7 +91,7 @@ machine:
 cluster:
   ca:
     crt: op://K8s/talos/CLUSTER_CA_CRT
-    {% if ENV.IS_CONTROLLER %}
+    {% if ENV.CONTROLPLANE %}
     key: op://K8s/talos/CLUSTER_CA_KEY
     {% endif %}
   clusterName: kubernetes
@@ -115,7 +117,7 @@ cluster:
       - fd43::/112
   secret: op://K8s/talos/CLUSTER_SECRET
   token: op://K8s/talos/CLUSTER_TOKEN
-  {% if ENV.IS_CONTROLLER %}
+  {% if ENV.CONTROLPLANE %}
   aggregatorCA:
     crt: op://K8s/talos/CLUSTER_AGGREGATORCA_CRT
     key: op://K8s/talos/CLUSTER_AGGREGATORCA_KEY
@@ -136,6 +138,7 @@ cluster:
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
+      feature-gates: HPAScaleToZero=true
     image: registry.k8s.io/kube-controller-manager:v1.36.1
   coreDNS:
     disabled: true
@@ -225,4 +228,4 @@ volumeType: directory
 apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
-timeout: 10m
+timeout: 5m

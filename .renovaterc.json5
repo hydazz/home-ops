@@ -12,19 +12,18 @@
     "github>hydazz/home-ops//.renovate/labels.json5",
     "github>hydazz/home-ops//.renovate/overrides.json5",
     "github>hydazz/home-ops//.renovate/semanticCommits.json5",
+    "github>hydazz/home-ops//.renovate/talosFactory.json5",
     ":automergeBranch",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
     ":timezone(Australia/Melbourne)",
   ],
+  registryAliases: {
+    "mirror.gcr.io": "docker.io",
+  },
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
-  suppressNotifications: [
-    "prEditedNotification",
-    "prIgnoreNotification",
-  ],
   ignorePaths: [
-    "**/*.sops.*",
     "**/resources/**",
   ],
   flux: {
