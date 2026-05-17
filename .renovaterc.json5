@@ -24,6 +24,7 @@
   },
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   ignorePaths: [
+    "**/*.sops.*",
     "**/resources/**",
   ],
   flux: {
