@@ -67,7 +67,7 @@ spec:
               SCREEN_WIDTH: 1920
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              #readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
@@ -106,3 +106,5 @@ spec:
           changedetection:
             browserless:
               - path: /cache
+      tmp:
+        type: emptyDir
