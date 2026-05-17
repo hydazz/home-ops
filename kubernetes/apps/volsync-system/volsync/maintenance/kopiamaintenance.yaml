@@ -12,7 +12,7 @@ spec:
     - mountPath: repository
       volumeSource:
         nfs:
-          path: /mnt/Backup/Kopia/Volsync
+          path: /mnt/Fast/Volsync
           server: 192.168.42.20
   repository:
     repository: volsync-maintenance-secret
