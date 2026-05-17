@@ -20,15 +20,31 @@ spec:
               tag: 0.55.3@sha256:2d0030e12494be9ebf6a6ebbbad46afe5763f498bbfefe9ebb7f0bf6be3ca5dc
             env:
               BASE_URL: "{{ .Release.Name }}.hyde.services"
-              PLAYWRIGHT_DRIVER_URL: ws://localhost:3000/chrome?stealth=1&--disable-web-security=true&--user-data-dir=~/browserless-cache-123
+              PLAYWRIGHT_DRIVER_URL: ws://localhost:3000/chrome?--disable-web-security=true&--user-data-dir=/cache
               PORT: &port 80
               TZ: Australia/Melbourne
               USE_X_SETTINGS: 1
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-              runAsNonRoot: true
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
@@ -42,7 +58,6 @@ spec:
             env:
               CHROME_REFRESH_TIME: 600000
               CONNECTION_TIMEOUT: 300000
-              DEFAULT_BLOCK_ADS: true
               DEFAULT_STEALTH: true
               ENABLE_DEBUGGER: false
               MAX_CONCURRENT_SESSIONS: 10
@@ -52,6 +67,8 @@ spec:
               SCREEN_WIDTH: 1920
             securityContext:
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
@@ -59,6 +76,9 @@ spec:
                 memory: 1Gi
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
@@ -80,3 +100,9 @@ spec:
           changedetection:
             app:
               - path: /datastore
+      cache:
+        existingClaim: "{{ .Release.Name }}-cache"
+        advancedMounts:
+          changedetection:
+            browserless:
+              - path: /cache
