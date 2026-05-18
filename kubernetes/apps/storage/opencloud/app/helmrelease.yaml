@@ -42,6 +42,7 @@ spec:
               PROXY_AUTOPROVISION_CLAIM_EMAIL: email
               PROXY_AUTOPROVISION_CLAIM_GROUPS: groups
               PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
+              PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yaml
               PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
               PROXY_OIDC_ISSUER: https://auth.hyde.services
               PROXY_OIDC_REWRITE_WELLKNOWN: true
@@ -126,6 +127,47 @@ spec:
                   add:
                     - name: Strict-Transport-Security
                       value: "max-age=31536000; includeSubDomains; preload"
+    configMaps:
+      csp:
+        data:
+          csp.yaml: |
+            directives:
+              child-src:
+                - "'self'"
+              connect-src:
+                - "'self'"
+                - "blob:"
+                - "https://raw.githubusercontent.com/opencloud-eu/awesome-apps/"
+                - "https://update.opencloud.eu/"
+                - "https://auth.hyde.services/"
+              default-src:
+                - "'none'"
+              font-src:
+                - "'self'"
+              frame-ancestors:
+                - "'self'"
+              frame-src:
+                - "'self'"
+                - "blob:"
+                - "https://auth.hyde.services/"
+              img-src:
+                - "'self'"
+                - "data:"
+                - "blob:"
+              manifest-src:
+                - "'self'"
+              media-src:
+                - "'self'"
+              object-src:
+                - "'self'"
+                - "blob:"
+              script-src:
+                - "'self'"
+                - "'unsafe-inline'"
+                - "https://auth.hyde.services/"
+              style-src:
+                - "'self'"
+                - "'unsafe-inline'"
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
@@ -134,6 +176,12 @@ spec:
             subPath: config
           - path: /var/lib/opencloud
             subPath: system
+      csp:
+        type: configMap
+        identifier: csp
+        globalMounts:
+          - path: /etc/opencloud/csp.yaml
+            subPath: csp.yaml
       data:
         type: nfs
         server: 192.168.42.20
