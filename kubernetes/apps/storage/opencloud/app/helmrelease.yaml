@@ -1,0 +1,158 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opencloud
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: opencloud
+  interval: 1h
+  values:
+    controllers:
+      opencloud:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init:
+            image: &image
+              repository: docker.io/opencloudeu/opencloud-rolling
+              tag: 6.2.0@sha256:77bd4ebc5c5d27bd6da8a5b077e3b3b18f07dc538a25597b6ed0bcc76198ecbe
+            command:
+              - sh
+              - -c
+              - test -f /etc/opencloud/opencloud.yaml || opencloud init --insecure false
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+        containers:
+          app:
+            image: *image
+            command:
+              - opencloud
+            args:
+              - server
+            env:
+              GATEWAY_GRPC_ADDR: 0.0.0.0:9142
+              GRAPH_ASSIGN_DEFAULT_USER_ROLE: false
+              GRAPH_USERNAME_MATCH: none
+              IDM_CREATE_DEMO_USERS: false
+              OC_ENABLE_OCM: false
+              OC_EXCLUDE_RUN_SERVICES: idp
+              OC_INSECURE: false
+              OC_LOG_COLOR: false
+              OC_LOG_LEVEL: info
+              OC_LOG_PRETTY: false
+              OC_OIDC_ISSUER: https://auth.hyde.services
+              OC_OIDC_REWRITE_WELLKNOWN: true
+              OC_URL: https://cloud.hyde.services
+              PROXY_AUTOPROVISION_ACCOUNTS: true
+              PROXY_AUTOPROVISION_CLAIM_DISPLAYNAME: name
+              PROXY_AUTOPROVISION_CLAIM_EMAIL: email
+              PROXY_AUTOPROVISION_CLAIM_GROUPS: groups
+              PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
+              PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
+              PROXY_OIDC_ISSUER: https://auth.hyde.services
+              PROXY_OIDC_REWRITE_WELLKNOWN: true
+              PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
+              PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: groups
+              PROXY_TLS: false
+              PROXY_USER_CS3_CLAIM: username
+              PROXY_USER_OIDC_CLAIM: preferred_username
+              SETTINGS_SETUP_DEFAULT_ASSIGNMENTS: false
+              STORAGE_SYSTEM_DRIVER: decomposed
+              STORAGE_USERS_DRIVER: posix
+              STORAGE_USERS_ID_CACHE_STORE: nats-js-kv
+              STORAGE_USERS_POSIX_ROOT: /var/lib/opencloud/storage/users
+              STORAGE_USERS_POSIX_WATCH_FS: false
+              WEB_OIDC_AUTHORITY: https://auth.hyde.services
+              WEB_OIDC_METADATA_URL: https://auth.hyde.services/application/o/opencloud/.well-known/openid-configuration
+              WEB_OIDC_RESPONSE_TYPE: code
+              WEB_OIDC_SCOPE: openid profile email groups
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 9200
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+        hostnames:
+          - cloud.hyde.services
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+            filters:
+              - type: ResponseHeaderModifier
+                responseHeaderModifier:
+                  add:
+                    - name: Strict-Transport-Security
+                      value: "max-age=31536000; includeSubDomains; preload"
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /etc/opencloud
+            subPath: config
+          - path: /var/lib/opencloud
+            subPath: system
+      data:
+        type: nfs
+        server: 192.168.42.20
+        path: /mnt/Fast/OpenCloud
+        globalMounts:
+          - path: /var/lib/opencloud/storage/users
+      tmp:
+        type: emptyDir
