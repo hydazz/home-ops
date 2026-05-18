@@ -34,7 +34,7 @@ spec:
               OC_LOG_COLOR: false
               OC_LOG_LEVEL: info
               OC_LOG_PRETTY: false
-              OC_OIDC_ISSUER: https://auth.hyde.services
+              OC_OIDC_ISSUER: https://auth.hyde.services/application/o/open-cloud/
               OC_OIDC_REWRITE_WELLKNOWN: true
               OC_URL: https://cloud.hyde.services
               PROXY_AUTOPROVISION_ACCOUNTS: true
@@ -44,7 +44,7 @@ spec:
               PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
               PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yaml
               PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
-              PROXY_OIDC_ISSUER: https://auth.hyde.services
+              PROXY_OIDC_ISSUER: https://auth.hyde.services/application/o/open-cloud/
               PROXY_OIDC_REWRITE_WELLKNOWN: true
               PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
               PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: groups
@@ -57,8 +57,8 @@ spec:
               STORAGE_USERS_ID_CACHE_STORE: nats-js-kv
               STORAGE_USERS_POSIX_ROOT: /data
               STORAGE_USERS_POSIX_WATCH_FS: false
-              WEB_OIDC_AUTHORITY: https://auth.hyde.services
-              WEB_OIDC_METADATA_URL: https://auth.hyde.services/application/o/opencloud/.well-known/openid-configuration
+              WEB_OIDC_AUTHORITY: https://auth.hyde.services/application/o/open-cloud
+              WEB_OIDC_METADATA_URL: https://auth.hyde.services/application/o/open-cloud/.well-known/openid-configuration
               WEB_OIDC_RESPONSE_TYPE: code
               WEB_OIDC_SCOPE: openid profile email groups
             envFrom:
