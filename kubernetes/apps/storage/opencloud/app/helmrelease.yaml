@@ -18,7 +18,7 @@ spec:
           init:
             image: &image
               repository: docker.io/opencloudeu/opencloud-rolling
-              tag: 6.2.0@sha256:77bd4ebc5c5d27bd6da8a5b077e3b3b18f07dc538a25597b6ed0bcc76198ecbe
+              tag: 7.0.0@sha256:ecc240e0df7802e6e6517762009890a3aa36e566d9e6309b80ee2f3dd040e235
             command:
               - sh
               - -c
@@ -48,7 +48,7 @@ spec:
               OC_LOG_COLOR: false
               OC_LOG_LEVEL: info
               OC_LOG_PRETTY: false
-              OC_OIDC_ISSUER: https://auth.hyde.services
+              OC_OIDC_ISSUER: https://auth.hyde.services/application/o/open-cloud/
               OC_OIDC_REWRITE_WELLKNOWN: true
               OC_URL: https://cloud.hyde.services
               PROXY_AUTOPROVISION_ACCOUNTS: true
@@ -56,8 +56,9 @@ spec:
               PROXY_AUTOPROVISION_CLAIM_EMAIL: email
               PROXY_AUTOPROVISION_CLAIM_GROUPS: groups
               PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
+              PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yaml
               PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
-              PROXY_OIDC_ISSUER: https://auth.hyde.services
+              PROXY_OIDC_ISSUER: https://auth.hyde.services/application/o/open-cloud/
               PROXY_OIDC_REWRITE_WELLKNOWN: true
               PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
               PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: groups
@@ -68,10 +69,10 @@ spec:
               STORAGE_SYSTEM_DRIVER: decomposed
               STORAGE_USERS_DRIVER: posix
               STORAGE_USERS_ID_CACHE_STORE: nats-js-kv
-              STORAGE_USERS_POSIX_ROOT: /var/lib/opencloud/storage/users
+              STORAGE_USERS_POSIX_ROOT: /data
               STORAGE_USERS_POSIX_WATCH_FS: false
-              WEB_OIDC_AUTHORITY: https://auth.hyde.services
-              WEB_OIDC_METADATA_URL: https://auth.hyde.services/application/o/opencloud/.well-known/openid-configuration
+              WEB_OIDC_AUTHORITY: https://auth.hyde.services/application/o/open-cloud
+              WEB_OIDC_METADATA_URL: https://auth.hyde.services/application/o/open-cloud/.well-known/openid-configuration
               WEB_OIDC_RESPONSE_TYPE: code
               WEB_OIDC_SCOPE: openid profile email groups
             envFrom:
@@ -108,6 +109,7 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -115,11 +117,13 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+
     service:
       app:
         ports:
           http:
             port: *port
+
     route:
       app:
         annotations:
@@ -140,6 +144,49 @@ spec:
                   add:
                     - name: Strict-Transport-Security
                       value: "max-age=31536000; includeSubDomains; preload"
+
+    configMaps:
+      csp:
+        data:
+          csp.yaml: |
+            directives:
+              child-src:
+                - "'self'"
+              connect-src:
+                - "'self'"
+                - "blob:"
+                - "https://raw.githubusercontent.com/opencloud-eu/awesome-apps/"
+                - "https://update.opencloud.eu/"
+                - "https://auth.hyde.services/"
+              default-src:
+                - "'none'"
+              font-src:
+                - "'self'"
+              frame-ancestors:
+                - "'self'"
+              frame-src:
+                - "'self'"
+                - "blob:"
+                - "https://auth.hyde.services/"
+              img-src:
+                - "'self'"
+                - "data:"
+                - "blob:"
+              manifest-src:
+                - "'self'"
+              media-src:
+                - "'self'"
+              object-src:
+                - "'self'"
+                - "blob:"
+              script-src:
+                - "'self'"
+                - "'unsafe-inline'"
+                - "https://auth.hyde.services/"
+              style-src:
+                - "'self'"
+                - "'unsafe-inline'"
+
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
@@ -148,11 +195,20 @@ spec:
             subPath: config
           - path: /var/lib/opencloud
             subPath: system
+
+      csp:
+        type: configMap
+        identifier: csp
+        globalMounts:
+          - path: /etc/opencloud/csp.yaml
+            subPath: csp.yaml
+
       data:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Fast/OpenCloud
         globalMounts:
-          - path: /var/lib/opencloud/storage/users
+          - path: /data
+
       tmp:
         type: emptyDir
