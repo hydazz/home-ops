@@ -14,29 +14,15 @@ spec:
       opencloud:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init:
-            image: &image
+        containers:
+          app:
+            image:
               repository: docker.io/opencloudeu/opencloud-rolling
               tag: 7.0.0@sha256:ecc240e0df7802e6e6517762009890a3aa36e566d9e6309b80ee2f3dd040e235
             command:
-              - sh
+              - /bin/sh
               - -c
-              - test -f /etc/opencloud/opencloud.yaml || opencloud init --insecure false
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
-        containers:
-          app:
-            image: *image
-            command:
-              - opencloud
-            args:
-              - server
+              - opencloud init --force-overwrite || true; opencloud server
             env:
               GATEWAY_GRPC_ADDR: 0.0.0.0:9142
               GRAPH_ASSIGN_DEFAULT_USER_ROLE: false
@@ -109,7 +95,6 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -117,13 +102,11 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-
     service:
       app:
         ports:
           http:
             port: *port
-
     route:
       app:
         annotations:
@@ -144,7 +127,6 @@ spec:
                   add:
                     - name: Strict-Transport-Security
                       value: "max-age=31536000; includeSubDomains; preload"
-
     configMaps:
       csp:
         data:
@@ -186,7 +168,6 @@ spec:
               style-src:
                 - "'self'"
                 - "'unsafe-inline'"
-
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
@@ -195,20 +176,15 @@ spec:
             subPath: config
           - path: /var/lib/opencloud
             subPath: system
-
       csp:
         type: configMap
         identifier: csp
         globalMounts:
           - path: /etc/opencloud/csp.yaml
             subPath: csp.yaml
-
       data:
         type: nfs
         server: 192.168.42.20
         path: /mnt/Fast/OpenCloud
-        globalMounts:
-          - path: /data
-
       tmp:
         type: emptyDir
