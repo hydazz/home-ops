@@ -11,7 +11,7 @@ spec:
   interval: 1h
   values:
     controllers:
-      main:
+      kopia:
         type: cronjob
         cronjob: &cronJobSpec
           schedule: "@daily"
@@ -112,19 +112,22 @@ spec:
         globalMounts:
           - path: /config/repository.config
             subPath: repository.config
-      repository:
+      repository-kopia:
         type: nfs
         server: 192.168.42.20
-        path: /mnt/Backup/Kopia
+        path: /mnt/Slow/Kopia
         advancedMounts:
-          main:
+          kopia:
             app:
               - path: /repository
-                subPath: Main
+      repository-volsync:
+        type: nfs
+        server: 192.168.42.20
+        path: /mnt/Fast/Volsync
+        advancedMounts:
           volsync:
             app:
               - path: /repository
-                subPath: Volsync
       tmpfs:
         type: emptyDir
         globalMounts:
