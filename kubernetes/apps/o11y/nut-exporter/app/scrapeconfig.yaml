@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
@@ -16,3 +16,5 @@ spec:
       - 192.168.3.2
     ups:
       - ups
+    variables:
+      - "battery.capacity,battery.charge,battery.charge.low,battery.charger.status,battery.runtime,battery.runtime.low,battery.type,input.current,input.frequency,input.transfer.high,input.transfer.low,input.voltage,input.voltage.nominal,outlet.1.current,outlet.1.power,outlet.1.realpower,outlet.1.status,outlet.2.current,outlet.2.power,outlet.2.realpower,outlet.2.status,outlet.current,outlet.power,outlet.realpower,output.current,output.frequency,output.powerfactor,output.voltage,output.voltage.nominal,ups.efficiency,ups.load,ups.load.high,ups.power,ups.power.nominal,ups.realpower,ups.realpower.nominal,ups.status,ups.test.result"

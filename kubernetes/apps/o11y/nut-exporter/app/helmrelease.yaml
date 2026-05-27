@@ -19,8 +19,6 @@ spec:
               tag: 3.3.0@sha256:276460d141c732772f8b1fcd785a7de272473e6d39fd85c32b163efc2999cb9a
             env:
               TZ: Australia/Melbourne
-            args:
-              - --nut.vars_enable="battery.capacity,battery.charge,battery.charge.low,battery.charger.status,battery.runtime,battery.runtime.low,battery.type,input.current,input.frequency,input.transfer.high,input.transfer.low,input.voltage,input.voltage.nominal,outlet.1.current,outlet.1.power,outlet.1.realpower,outlet.1.status,outlet.2.current,outlet.2.power,outlet.2.realpower,outlet.2.status,outlet.current,outlet.power,outlet.realpower,output.current,output.frequency,output.powerfactor,output.voltage,output.voltage.nominal,ups.efficiency,ups.load,ups.load.high,ups.power,ups.power.nominal,ups.realpower,ups.realpower.nominal,ups.status,ups.test.result"
             probes:
               liveness:
                 enabled: true
