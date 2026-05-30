@@ -6,7 +6,7 @@ metadata:
   name: mariadb
 spec:
   # renovate: datasource=docker depName=docker.io/library/mariadb
-  image: docker.io/library/mariadb:11.8.7@sha256:78185355dd49b54dd6909072531ce8d7e06aa0eccd7aa5b23c93ebb7e34c5aaa
+  image: docker.io/library/mariadb:11.8.8@sha256:890084c6bc9645c1c8154a12c726ae4df785e29f5fbdff362042881f826a7956
   replicas: 3
   replication:
     enabled: true
