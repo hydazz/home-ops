@@ -12,6 +12,8 @@ spec:
   values:
     controllers:
       plex:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -38,6 +40,11 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -46,10 +53,9 @@ spec:
               claims:
                 - name: gpu
               requests:
-                cpu: 50m
-                memory: 4Gi
+                cpu: 100m
               limits:
-                memory: 12Gi
+                memory: 16Gi
     defaultPodOptions:
       resourceClaims:
         - name: gpu
@@ -72,16 +78,16 @@ spec:
     route:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 401"]
+            path: /identity
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:
           - name: envoy-external
             namespace: network
         rules:
-          - backendRefs:
+          - # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
+            backendRefs:
               - identifier: app
                 port: *port
             filters:
