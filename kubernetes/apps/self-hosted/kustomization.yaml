@@ -8,7 +8,6 @@ components:
   - ../../components/cluster-secrets
 resources:
   - ./changedetection/ks.yaml
-  - ./jenkins/ks.yaml
   - ./maddy/ks.yaml
   - ./namespace.yaml
   - ./paperless/ks.yaml

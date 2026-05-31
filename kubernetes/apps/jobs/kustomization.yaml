@@ -6,5 +6,5 @@ namespace: jobs
 components:
   - ../../components/alerts
 resources:
-  - ./b2-kopia-sync/ks.yaml
+  #  - ./b2-kopia-sync/ks.yaml
   - ./namespace.yaml
