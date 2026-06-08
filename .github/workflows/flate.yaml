@@ -47,7 +47,7 @@ jobs:
       - name: Run flate
         id: flate
         run: |
-          flate diff all -p ./kubernetes/flux/cluster -o html > diff.html
+          flate diff all -p ./kubernetes/flux/cluster --allow-missing-secrets -o html > diff.html
           if [ -s diff.html ]; then
             echo "diff=true" >> "$GITHUB_OUTPUT"
           else
