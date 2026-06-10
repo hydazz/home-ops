@@ -14,7 +14,7 @@ spec:
       fluxcd.controlplane.io/reconcileArtifactEvery: 24h
     instance:
       distribution:
-        artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.49.0
+        artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.52.0
       cluster:
         networkPolicy: false
       components:
