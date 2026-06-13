@@ -11,6 +11,9 @@ spec:
   values:
     config:
       repo: github://hydazz/home-ops
+      statusChecks: true
+      prComments: true
+      publicUrl: https://{{ .Release.Name }}.hyde.services
     secret:
       existingSecret: konflate-webhook-token-secret
     httpRoute:
