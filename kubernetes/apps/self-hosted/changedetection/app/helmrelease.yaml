@@ -54,7 +54,7 @@ spec:
           browserless:
             image:
               repository: ghcr.io/browserless/chrome
-              tag: v2.52.1@sha256:4f23fcc7c05c36479a31a73d190700a19514a33d042574ca0af9d23e1e756ea7
+              tag: v2.54.0@sha256:b0963e5932afb1392342f825bd2392a8515b2ec7dddf4420c581b9c7782f70f5
             env:
               CHROME_REFRESH_TIME: 600000
               CONNECTION_TIMEOUT: 300000
