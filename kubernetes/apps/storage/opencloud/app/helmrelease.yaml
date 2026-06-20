@@ -30,6 +30,7 @@ spec:
               IDM_CREATE_DEMO_USERS: false
               OC_ENABLE_OCM: false
               OC_EXCLUDE_RUN_SERVICES: idp
+              OC_INSECURE: false
               OC_OIDC_ISSUER: https://auth.hyde.services/application/o/open-cloud/
               OC_OIDC_REWRITE_WELLKNOWN: true
               OC_URL: https://cloud.hyde.services
