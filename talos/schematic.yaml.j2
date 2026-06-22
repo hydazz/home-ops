@@ -1,7 +1,8 @@
 ---
 customization:
   extraKernelArgs:
-    - i915.enable_guc=3 # Meteor Lake CPU & Intel iGPU
+    - i915.force_probe=!7d67 # Intel iGPU (disable i915)
+    - xe.force_probe=7d67 # Intel iGPU (enable xe)
     - intel_iommu=on # PCI Passthrough
     - iommu=pt # PCI Passthrough
     - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU & Intel iGPU
@@ -12,3 +13,4 @@ customization:
       - siderolabs/i915 # Intel iGPU
       - siderolabs/intel-ucode # Intel iGPU
       - siderolabs/mei # Intel iGPU
+      - siderolabs/xe # Intel iGPU

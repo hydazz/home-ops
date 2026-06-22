@@ -44,15 +44,14 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 ### 🖥️ Compute
 
-| Node             | CPU       | Memory | Storage                                        | GPU              | OS      | Case                 | Function                       |
-| ---------------- | --------- | ------ | ---------------------------------------------- | ---------------- | ------- | -------------------- | ------------------------------ |
-| picard           | i7-12700K | 64GB   | 2x1TB Mirror (Boot+Data)                       |                  | Proxmox | SilverStone RM21-308 | Hypervisor                     |
-| └─ data          | 4 vCPUs   | 16GB   | 64GB Boot 4x4TB+1TB (Array) + 2x2TB SSD (Data) |                  | TrueNAS |                      | Media/file storage and backups |
-| └─ x86-builder-1 | 8 vCPUs   | 8GB    | 64GB Boot                                      |                  | Debian  |                      | Docker builds                  |
-| -                |           |        |                                                |                  |         |                      |                                |
-| discovery        | i7-14700K | 64GB   | 1TB Boot + 1TB Ceph                            | RTX 4060 Ti 16GB | Talos   | SilverStone RM400    | GPU Accelerated Tasks          |
-| voyager          | i7-13700K | 64GB   | 500GB Boot + 1TB Ceph                          |                  | Talos   | SilverStone RM23-502 |                                |
-| titan            | i7-12700K | 64GB   | 500GB Boot + 1TB Ceph                          |                  | Talos   | SilverStone RM23-502 |                                |
+| Node      | CPU        | Memory | Storage                                        | OS      | Case                 | Function                       |
+| --------- | ---------- | ------ | ---------------------------------------------- | ------- | -------------------- | ------------------------------ |
+| picard    | i7-12700K  | 64GB   | 2x1TB Mirror (Boot+Data)                       | Proxmox | SilverStone RM21-308 | Hypervisor                     |
+| └─ data   | 4 vCPUs    | 16GB   | 64GB Boot 4x4TB+1TB (Array) + 2x2TB SSD (Data) | TrueNAS |                      | Media/file storage and backups |
+| -         |            |        |                                                |         |                      |                                |
+| discovery | Ultra 245k | 64GB   | 1TB Boot + 1TB Ceph                            | Talos   | SilverStone RM23-502 |                                |
+| voyager   | Ultra 250k | 64GB   | 500GB Boot + 1TB Ceph                          | Talos   | SilverStone RM23-502 |                                |
+| titan     | Ultra 250k | 64GB   | 500GB Boot + 1TB Ceph                          | Talos   | SilverStone RM23-502 |                                |
 
 ### 🌐 Networking
 
