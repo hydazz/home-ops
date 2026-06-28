@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -38,8 +38,7 @@
         margin: 0;
         background-color: var(--bg);
         color: var(--text);
-        font-family: "Segoe UI", "Segoe UI Symbol", "Calibri", Roboto, Arial,
-          Helvetica, sans-serif;
+        font-family: "Segoe UI", "Segoe UI Symbol", "Calibri", Roboto, Arial, Helvetica, sans-serif;
         line-height: 1.4;
         overflow-x: hidden;
       }
@@ -102,8 +101,11 @@
         padding: clamp(16px, 4vw, 24px) clamp(18px, 4vw, 28px);
         box-shadow: var(--elev-1);
         border: 1px solid var(--outline);
-        transition: transform 0.18s ease, box-shadow 0.18s ease,
-          border-color 0.18s ease, background-color 0.18s ease;
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease,
+          border-color 0.18s ease,
+          background-color 0.18s ease;
         will-change: transform, box-shadow;
         overflow: clip;
       }
@@ -147,8 +149,9 @@
         display: grid;
         grid-template-columns: clamp(0px, 16vw, 110px) 1fr;
         gap: clamp(6px, 2vw, 10px) clamp(12px, 3vw, 18px);
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
         font-size: clamp(13px, 3vw, 15px);
         color: var(--text);
         word-break: break-word;
@@ -182,8 +185,12 @@
         font-size: clamp(14px, 3.5vw, 16px);
         min-height: 44px;
         min-width: 44px;
-        transition: transform 0.08s ease, box-shadow 0.18s ease, filter 0.18s ease,
-          border-color 0.18s ease, background-color 0.18s ease;
+        transition:
+          transform 0.08s ease,
+          box-shadow 0.18s ease,
+          filter 0.18s ease,
+          border-color 0.18s ease,
+          background-color 0.18s ease;
         box-shadow: var(--elev-1);
         text-decoration: none;
         display: inline-flex;
@@ -264,8 +271,9 @@
         padding: 2px 6px;
         border-radius: 4px;
         font-size: 0.9em;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
       }
 
       ::selection {
@@ -279,17 +287,29 @@
       <div>
         <div class="emoji" aria-hidden="true">:(</div>
         <h1 id="page-title" class="blink">Request Rejected</h1>
-        <p class="lede">This request was blocked by an automated security policy. If you think this is a false positive, share the diagnostics below.</p>
+        <p class="lede">
+          This request was blocked by an automated security policy. If you think this is a false
+          positive, share the diagnostics below.
+        </p>
       </div>
 
       <div class="layout">
         <section class="card" aria-labelledby="summary-title">
           <h2 id="summary-title">Summary</h2>
           <div class="kv" id="summary-kv">
-            {{ with .Action }}{{ if ne . "ban" }}<div class="k">Action</div><div class="v">{{ . }}</div>{{ end }}{{ end }}
-            {{ with .Reason }}{{ if ne . "ban" }}<div class="k">Reason</div><div class="v">{{ . }}</div>{{ end }}{{ end }}
-            {{ with .IP }}<div class="k">Client IP</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Timestamp }}<div class="k">Timestamp</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Action }}{{ if ne . "ban" }}
+            <div class="k">Action</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}{{ end }} {{ with .Reason }}{{ if ne . "ban" }}
+            <div class="k">Reason</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}{{ end }} {{ with .IP }}
+            <div class="k">Client IP</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Timestamp }}
+            <div class="k">Timestamp</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}
           </div>
           <div class="actions">
             <button id="retryBtn" class="btn" type="button">Retry</button>
@@ -301,26 +321,50 @@
         <section class="card" aria-labelledby="decision-title">
           <h2 id="decision-title">Decision</h2>
           <div class="kv" id="decision-kv">
-            {{ with .Scenario }}<div class="k">Scenario</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Origin }}<div class="k">Origin</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Scope }}<div class="k">Scope</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Value }}<div class="k">Value</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Duration }}<div class="k">Duration</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Until }}<div class="k">Until</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Scenario }}
+            <div class="k">Scenario</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Origin }}
+            <div class="k">Origin</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Scope }}
+            <div class="k">Scope</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Value }}
+            <div class="k">Value</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Duration }}
+            <div class="k">Duration</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Until }}
+            <div class="k">Until</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}
           </div>
         </section>
-        {{ end }}
-
-        {{ with .Request }}
+        {{ end }} {{ with .Request }}
         <section class="card" aria-labelledby="request-title">
           <h2 id="request-title">Request</h2>
           <div class="kv" id="request-kv">
-            {{ with .Method }}<div class="k">Method</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .URL }}<div class="k">URL</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Scheme }}<div class="k">Scheme</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Host }}<div class="k">Host</div><div class="v">{{ . }}</div>{{ end }}
-            {{ with .Path }}<div class="k">Path</div><div class="v">{{ . }}</div>{{ end }}
-        {{ with .Protocol }}<div class="k">Protocol</div><div class="v">{{ . }}</div>{{ end }}
+            {{ with .Method }}
+            <div class="k">Method</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .URL }}
+            <div class="k">URL</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Scheme }}
+            <div class="k">Scheme</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Host }}
+            <div class="k">Host</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Path }}
+            <div class="k">Path</div>
+            <div class="v">{{ . }}</div>
+            {{ end }} {{ with .Protocol }}
+            <div class="k">Protocol</div>
+            <div class="v">{{ . }}</div>
+            {{ end }}
           </div>
         </section>
         {{ end }}
@@ -329,10 +373,19 @@
           <h2 id="help-title">What can I do?</h2>
           <ul class="help-list">
             <li>Stop trying to hack things. Seriously. We see you.</li>
-            <li>If you're legitimately browsing (unlikely, but possible), wait a bit and try again slower.</li>
+            <li>
+              If you're legitimately browsing (unlikely, but possible), wait a bit and try again
+              slower.
+            </li>
             <li>Turn off that sketchy VPN/Tor exit node you're using to "browse anonymously."</li>
-            <li>Read <code>/robots.txt</code> like a civilised internet citizen instead of carpet-bombing endpoints.</li>
-            <li>If you're actually innocent (doubt it), check if you accidentally triggered our security rules and try a different approach.</li>
+            <li>
+              Read <code>/robots.txt</code> like a civilised internet citizen instead of
+              carpet-bombing endpoints.
+            </li>
+            <li>
+              If you're actually innocent (doubt it), check if you accidentally triggered our
+              security rules and try a different approach.
+            </li>
           </ul>
         </section>
       </div>
@@ -394,7 +447,7 @@
           const body = buildBody();
           const to = "security@hyde.services";
           const href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(
-            subj
+            subj,
           )}&body=${encodeURIComponent(body)}`;
           emailBtn.href = href;
         }

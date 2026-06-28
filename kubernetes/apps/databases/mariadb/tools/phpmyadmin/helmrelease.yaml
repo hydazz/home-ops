@@ -40,7 +40,7 @@ spec:
               allowPrivilegeEscalation: false
               # cannot access /etc/phpmyadmin/ ...
               readOnlyRootFilesystem: false
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m

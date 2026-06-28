@@ -29,7 +29,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image: *image
@@ -63,7 +63,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 15m
@@ -197,4 +197,3 @@ spec:
             subPath: cache
           - path: /var/run
             subPath: run
-
