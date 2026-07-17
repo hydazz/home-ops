@@ -6,4 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./pvc.yaml
   - ./replicationdestination.yaml
-  - ./replicationsource.yaml
+  # Kopiur owns new snapshots during migration; retain the destination and PVC
+  # until Kopiur has produced verified recovery points.
+  # - ./replicationsource.yaml

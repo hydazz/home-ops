@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   interval: 1h
   path: ./kubernetes/apps/default/unifi-protect-backup/app
   postBuild:
@@ -18,3 +19,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: default
+  wait: false

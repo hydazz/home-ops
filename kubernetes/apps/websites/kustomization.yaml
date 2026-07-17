@@ -6,6 +6,7 @@ namespace: websites
 components:
   - ../../components/alerts
   - ../../components/cluster-secrets
+  - ../../components/kopiur/secret
 resources:
   - ./namespace.yaml
   - ./nginx-hs/ks.yaml

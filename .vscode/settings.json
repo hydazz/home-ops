@@ -48,7 +48,7 @@
     "self-hosted": "server",
     "storage": "archive",
     "system-upgrade": "update",
-    "volsync-system": "aws"
+    "kopiur-system": "aws"
   },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {

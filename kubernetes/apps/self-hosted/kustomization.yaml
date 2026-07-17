@@ -6,6 +6,7 @@ namespace: self-hosted
 components:
   - ../../components/alerts
   - ../../components/cluster-secrets
+  - ../../components/kopiur/secret
 resources:
   - ./changedetection/ks.yaml
   - ./maddy/ks.yaml

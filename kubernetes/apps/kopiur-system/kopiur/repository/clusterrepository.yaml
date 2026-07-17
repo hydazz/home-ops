@@ -3,38 +3,25 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
-  name: nas
+  name: data
 spec:
   allowedNamespaces:
     all: true
   backend:
-    filesystem:
-      path: /repo
-      volume:
-        nfs:
-          server: expanse.internal
-          path: /mnt/ceres/Kopiur
-  create:
-    enabled: true
-  credentialProjection:
-    allowed: true
+    s3:
+      auth:
+        secretRef:
+          name: kopiur-repository-secret
+          namespace: kopiur-system
+      bucket: kopiur
+      endpoint: 192.168.3.3:9000
+      region: ap-southeast-2
+      tls:
+        disableTls: true
   encryption:
     passwordSecretRef:
-      name: kopiur-nas-secret
+      name: kopiur-repository-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
-  identityDefaults:
-    hostnameExpr: namespace
-    usernameExpr: namespace + '-' + policyName
-  moverDefaults:
-    cache:
-      capacity: 1Mi
-      mode: Ephemeral
-      storageClassName: openebs-hostpath
-    podSecurityContext:
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
-    securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-    ttlSecondsAfterFinished: 300
+  scheduleDefaults:
+    timezone: Australia/Melbourne

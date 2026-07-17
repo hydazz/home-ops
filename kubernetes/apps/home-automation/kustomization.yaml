@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: home-automation
 components:
   - ../../components/alerts
+  - ../../components/kopiur/secret
 resources:
   - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
