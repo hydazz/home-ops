@@ -6,7 +6,6 @@ metadata:
   name: tasmoadmin
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: multus-networks

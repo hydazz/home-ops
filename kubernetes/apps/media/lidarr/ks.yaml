@@ -6,7 +6,6 @@ metadata:
   name: lidarr
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:
@@ -32,7 +31,6 @@ metadata:
   name: lidarr-surround
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:

@@ -6,7 +6,6 @@ metadata:
   name: unifi-protect-backup
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/kopiur/backup
   interval: 1h
   path: ./kubernetes/apps/default/unifi-protect-backup/app

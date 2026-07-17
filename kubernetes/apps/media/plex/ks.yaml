@@ -6,7 +6,6 @@ metadata:
   name: plex
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:
@@ -20,7 +19,6 @@ spec:
     substitute:
       APP: plex
       KOPIUR_CAPACITY: 16Gi
-      VOLSYNC_CAPACITY: 16Gi
   prune: true
   sourceRef:
     kind: GitRepository

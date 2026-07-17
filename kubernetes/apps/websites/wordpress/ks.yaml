@@ -6,7 +6,6 @@ metadata:
   name: wordpress-bbpc
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/isolate
     - ../../../../components/kopiur/backup
   dependsOn:
@@ -39,7 +38,6 @@ metadata:
   name: wordpress-hca
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/isolate
     - ../../../../components/kopiur/backup
   dependsOn:
@@ -72,7 +70,6 @@ metadata:
   name: staging-hca
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/isolate
     - ../../../../components/kopiur/backup
   dependsOn:
@@ -105,7 +102,6 @@ metadata:
   name: wordpress-lmvca
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/isolate
     - ../../../../components/kopiur/backup
   dependsOn:

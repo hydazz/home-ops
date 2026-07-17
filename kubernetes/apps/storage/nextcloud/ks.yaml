@@ -6,7 +6,6 @@ metadata:
   name: nextcloud
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:
@@ -36,7 +35,6 @@ metadata:
   name: nextcloud-business
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:

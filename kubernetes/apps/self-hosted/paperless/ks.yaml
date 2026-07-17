@@ -6,7 +6,6 @@ metadata:
   name: paperless
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:

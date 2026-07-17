@@ -5,7 +5,5 @@ kind: Component
 resources:
   - ./snapshotpolicy.yaml
   - ./snapshotschedule.yaml
-  # Enabled only after the initial Kopiur snapshots have completed. Existing
-  # bound PVCs still carry VolSync's immutable dataSourceRef during phase one.
-  # - ./pvc.yaml
-  # - ./restore.yaml
+  - ./pvc.yaml
+  - ./restore.yaml

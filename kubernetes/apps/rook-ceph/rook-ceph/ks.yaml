@@ -23,8 +23,8 @@ metadata:
 spec:
   dependsOn:
     - name: rook-ceph
-    - name: volsync
-      namespace: volsync-system
+    - name: kopiur
+      namespace: kopiur-system
   healthCheckExprs:
     - apiVersion: ceph.rook.io/v1
       current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']

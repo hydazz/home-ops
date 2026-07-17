@@ -6,7 +6,6 @@ metadata:
   name: radarr
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:
@@ -32,7 +31,6 @@ metadata:
   name: radarr-3d
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
   dependsOn:
