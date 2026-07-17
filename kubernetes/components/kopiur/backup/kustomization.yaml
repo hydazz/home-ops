@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+resources:
+  - ./snapshotpolicy.yaml
+  - ./snapshotschedule.yaml
+  # Enabled only after the initial Kopiur snapshots have completed. Existing
+  # bound PVCs still carry VolSync's immutable dataSourceRef during phase one.
+  # - ./pvc.yaml
+  # - ./restore.yaml

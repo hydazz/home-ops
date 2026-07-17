@@ -6,8 +6,9 @@ metadata:
   name: nextcloud
 spec:
   components:
-    - ../../../../components/zeroscaler
     - ../../../../components/volsync
+    - ../../../../components/zeroscaler
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: databases
@@ -26,6 +27,7 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: storage
+  wait: false
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -34,8 +36,9 @@ metadata:
   name: nextcloud-business
 spec:
   components:
-    - ../../../../components/zeroscaler
     - ../../../../components/volsync
+    - ../../../../components/zeroscaler
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: databases
@@ -57,3 +60,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: storage
+  wait: false
