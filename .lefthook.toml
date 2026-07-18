@@ -1,4 +1,4 @@
 [[remotes]]
-git_url = "https://github.com/home-operations/.github"
+git_url = "https://github.com/hydazz/.github"
 ref = "main"
 configs = ["lefthook.common.toml"]
