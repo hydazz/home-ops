@@ -46,6 +46,7 @@ spec:
     bind-address=*
     default_storage_engine=InnoDB
     binlog_format=row
+    binlog_expire_logs_seconds=1209600
     innodb_autoinc_lock_mode=2
     innodb_buffer_pool_size=1600MB
     max_allowed_packet=1GB
