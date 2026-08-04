@@ -1,10 +1,4 @@
 ---
-machine:
-  install:
-    diskSelector:
-      wwid: eui.0025385931b03c1a # Samsung SSD 970 EVO Plus 1TB
-  type: controlplane
----
 apiVersion: v1alpha1
 kind: HostnameConfig
 hostname: discovery
@@ -13,3 +7,9 @@ apiVersion: v1alpha1
 kind: BondConfig
 name: bond0
 hardwareAddr: f4:52:14:80:7f:a0
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.wwid == "eui.0025385931b03c1a"
