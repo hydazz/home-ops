@@ -42,6 +42,9 @@ kind: CiliumBGPPeerConfig
 metadata:
   name: l3-bgp-peer-config
 spec:
+  timers:
+    holdTimeSeconds: 9
+    keepAliveTimeSeconds: 3
   families:
     - afi: ipv4
       safi: unicast
@@ -55,6 +58,9 @@ kind: CiliumBGPPeerConfig
 metadata:
   name: l3-bgp-peer-config-v6
 spec:
+  timers:
+    holdTimeSeconds: 9
+    keepAliveTimeSeconds: 3
   families:
     - afi: ipv6
       safi: unicast
