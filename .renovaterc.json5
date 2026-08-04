@@ -1,6 +1,12 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>home-operations/renovate-presets#4.0.0", ":timezone(Australia/Melbourne)"],
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["before 3am on the first day of the month"],
+    commitMessageExtra: "({{manager}})",
+    additionalBranchPrefix: "{{manager}}-",
+  },
   packageRules: [
     // Auto-merge rules
     {
@@ -95,6 +101,12 @@
       minimumGroupSize: 5,
     },
     {
+      description: "Mise Tools Group",
+      matchManagers: ["mise"],
+      groupName: "mise tools",
+      groupSlug: "mise-tools",
+    },
+    {
       description: "Rook-Ceph Group",
       groupName: "rook-ceph",
       matchDatasources: ["docker"],
@@ -105,9 +117,26 @@
       minimumGroupSize: 2,
     },
     {
+      // After the mise tools catch-all so Talos wins its own group; unites the
+      // mise pin, the factory installer image, and the Tuppr upgrade version
+      description: "Talos Group",
+      groupName: "talos",
+      matchPackageNames: ["siderolabs/talos"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
       description: "Hold Rook-Ceph at v1.19.x",
       matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
       allowedVersions: "<1.20.0",
+    },
+    {
+      description: "1Password CLI is not resolvable on GitHub, bump manually",
+      matchManagers: ["mise"],
+      matchDepNames: ["1password-cli"],
+      enabled: false,
     },
     // Labeling rules
     {
