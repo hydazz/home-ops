@@ -5,14 +5,20 @@ kind: Kustomization
 metadata:
   name: mosquitto
 spec:
+  components:
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/home-automation/mosquitto/app
+  postBuild:
+    substitute:
+      APP: mosquitto
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: home-automation
+  wait: false
