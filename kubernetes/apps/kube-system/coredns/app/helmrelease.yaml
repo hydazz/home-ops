@@ -14,6 +14,7 @@ spec:
     image:
       repository: mirror.gcr.io/coredns/coredns
     replicaCount: 2
+    priorityClassName: system-cluster-critical
     k8sAppLabelOverride: kube-dns
     serviceAccount:
       create: true
@@ -45,6 +46,7 @@ spec:
             configBlock: |-
               prefetch 20
               serve_stale
+              servfail 0
           - name: loop
           - name: reload
           - name: loadbalance
