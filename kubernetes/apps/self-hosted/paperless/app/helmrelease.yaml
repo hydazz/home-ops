@@ -109,7 +109,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-cloudflare
             namespace: network
         rules:
           - backendRefs:
