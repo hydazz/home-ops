@@ -8,9 +8,6 @@ spec:
   components:
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur/backup
-  dependsOn:
-    - name: intel-gpu-resource-driver
-      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/media/plex/app
   postBuild:
