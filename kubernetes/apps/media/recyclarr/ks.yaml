@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: recyclarr
 spec:
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media/recyclarr/app
   prune: true

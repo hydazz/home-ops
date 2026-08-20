@@ -10,8 +10,6 @@ spec:
   dependsOn:
     - name: multus-networks
       namespace: kube-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/home-automation/home-assistant/app
   postBuild:
@@ -33,9 +31,6 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur/backup
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/home-automation/home-assistant/mcp
   postBuild:

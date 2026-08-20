@@ -23,8 +23,6 @@ metadata:
 spec:
   dependsOn:
     - name: mariadb-operator
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   healthCheckExprs:
     - apiVersion: k8s.mariadb.com/v1alpha1
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')

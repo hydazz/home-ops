@@ -8,8 +8,6 @@ spec:
   components:
     - ../../../../components/kopiur/backup
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
     - name: cloudnative-pg-cluster
       namespace: databases
   interval: 1h

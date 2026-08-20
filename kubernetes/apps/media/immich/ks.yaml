@@ -12,8 +12,6 @@ spec:
       namespace: databases
     - name: dragonfly-cluster
       namespace: databases
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media/immich/app
   postBuild:

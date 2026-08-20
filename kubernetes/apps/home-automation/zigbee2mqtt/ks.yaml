@@ -9,8 +9,6 @@ spec:
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: mosquitto
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
     - name: generic-device-plugin
       namespace: kube-system
   interval: 1h
