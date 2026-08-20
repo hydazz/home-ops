@@ -38,6 +38,11 @@ spec:
         osd:
           limits:
             memory: 8Gi # Required for bootstrap
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
       storage:
         devicePathFilter: /dev/disk/by-id/nvme-(SAMSUNG_MZVLW1T0HMLH-000H1_.*|Samsung_SSD_970_EVO_Plus_1TB_.*)_.*
         useAllDevices: false
