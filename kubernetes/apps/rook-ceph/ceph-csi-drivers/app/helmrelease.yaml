@@ -79,6 +79,7 @@ spec:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com
         grpcTimeout: 150
+        snapshotPolicy: volumeGroupSnapshot
         log:
           rotation:
             enabled: false
