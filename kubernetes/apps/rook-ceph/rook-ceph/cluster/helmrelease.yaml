@@ -9,18 +9,20 @@ spec:
     kind: OCIRepository
     name: rook-ceph-cluster
   interval: 1h
+  timeout: 10m
   values:
     cephClusterSpec:
-      cephConfig:
-        mon:
-          mon_cluster_log_level: info
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
         disable: false
       csi:
+        cephfs:
+          kernelMountOptions: ms_mode=prefer-crc
         readAffinity:
-          enabled: false # https://github.com/ceph/ceph-csi/issues/5772
+          enabled: true
+          crushLocationLabels:
+            - kubernetes.io/hostname
       dashboard:
         enabled: true
         urlPrefix: /
@@ -53,6 +55,8 @@ spec:
           daemon:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
+          csi:
+            keyType: aes # aes256k requires kernel 7.0+
       storage:
         devicePathFilter: /dev/disk/by-id/nvme-(SAMSUNG_MZVLW1T0HMLH-000H1_.*|Samsung_SSD_970_EVO_Plus_1TB_.*)_.*
         useAllDevices: false
@@ -65,12 +69,12 @@ spec:
     route:
       dashboard:
         host:
-          name: rook.hyde.services
+          name: rook.k13.dev
           path: /
           pathType: PathPrefix
         parentRefs:
           - name: envoy-internal
-            namespace: network
+            namespace: networking
     cephBlockPools:
       - name: ceph-blockpool
         spec:
