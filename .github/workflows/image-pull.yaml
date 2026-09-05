@@ -35,7 +35,7 @@ jobs:
       }}
     needs: filter
     name: Image Pull - Extract Images
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.repository.name }}-runner
     outputs:
       images: ${{ steps.extract.outputs.images }}
     steps:
@@ -49,15 +49,16 @@ jobs:
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
           cache: false
-          tool_versions: |
-            github:home-operations/flate 0.4.9
+          install_args: github:home-operations/flate
 
       - name: Extract Images
         id: extract
         run: |
-          echo 'images<<EOF' >> $GITHUB_OUTPUT
-          flate diff images -p ./kubernetes/flux/cluster --allow-missing-secrets -o json >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          {
+            echo 'images<<EOF'
+            flate diff images -p ./kubernetes/flux/cluster --allow-missing-secrets -o json
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
   pull:
     if: >-
@@ -88,7 +89,7 @@ jobs:
 
   success:
     if: ${{ !cancelled() }}
-    needs: pull
+    needs: [filter, extract, pull]
     name: Image Pull - Success
     runs-on: ubuntu-latest
     steps:
