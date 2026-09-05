@@ -11,6 +11,11 @@ The cluster machine configuration is composed from multi-document patches:
 resolves its `op://` references with `op inject`, and merges the documents with
 `talosctl machineconfig patch`.
 
+The recipe restores the explicit empty DNS-search list after merging because
+Talos drops it when re-encoding. Apply the complete rendered config; `patch mc`
+or `edit mc` can lose the override again. Existing pods need recreation to pick
+up the changed search list. Hugepages remain reserved for PostgreSQL.
+
 All current nodes are control planes. Adding a worker requires a
 `workers.yaml.j2` role patch and a node file under `nodes/workers/`.
 

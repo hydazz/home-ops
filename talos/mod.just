@@ -31,7 +31,8 @@ render-config node:
     fi
     talosctl machineconfig patch <(just template "{{ source_directory() }}/cluster.yaml.j2" -D "schematic=${schematic}") \
         -p @<(just template "{{ source_directory() }}/${role}.yaml.j2") \
-        -p @<(just template "{{ source_directory() }}/nodes/${role}/{{ node }}.yaml.j2")
+        -p @<(just template "{{ source_directory() }}/nodes/${role}/{{ node }}.yaml.j2") | \
+        yq 'with(select(.kind == "ResolverConfig"); .searchDomains.domains = [])'
 
 [confirm('Reset node ' + node + ' [y|N] ?')]
 [doc('Reset a node')]
