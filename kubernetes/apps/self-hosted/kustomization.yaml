@@ -8,7 +8,6 @@ components:
   - ../../components/cluster-secrets
   - ../../components/kopiur/secret
 resources:
-  - ./changedetection/ks.yaml
   - ./maddy/ks.yaml
   - ./namespace.yaml
   - ./paperless/ks.yaml
