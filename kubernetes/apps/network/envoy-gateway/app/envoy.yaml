@@ -54,6 +54,7 @@ metadata:
     type: cloudflare-dns
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname cloudflare.hyde.services
+    external-dns.kubernetes.io/target: *hostname
     gatus.home-operations.com/endpoint: |-
       client:
         dns-resolver: tcp://1.1.1.1:53
@@ -63,6 +64,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 2403:5817:b73a:42::140 # exposed over IPv6 as the external gateway is using my 1 and only IPv4 address
   listeners:
     - name: http
@@ -107,6 +109,7 @@ metadata:
     type: cloudflare-dns
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname external.hyde.services
+    external-dns.kubernetes.io/target: *hostname
     gatus.home-operations.com/endpoint: |-
       client:
         dns-resolver: tcp://1.1.1.1:53
@@ -116,6 +119,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 192.168.42.130
   listeners:
     - name: http
@@ -158,6 +162,7 @@ metadata:
   name: envoy-internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.hyde.services
+    external-dns.kubernetes.io/target: *hostname
     gatus.home-operations.com/endpoint: |-
       group: internal
       guarded: true
@@ -169,6 +174,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 192.168.42.120
   listeners:
     - name: http
@@ -285,6 +291,7 @@ metadata:
   name: https-redirect
   annotations:
     external-dns.alpha.kubernetes.io/controller: none
+    external-dns.kubernetes.io/controller: none
 spec:
   parentRefs:
     - name: envoy-external
