@@ -49,7 +49,6 @@ spec:
       app:
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: mosquitto.hyde.services
           external-dns.kubernetes.io/hostname: mosquitto.hyde.services
           gatus.home-operations.com/endpoint: |-
             group: services
