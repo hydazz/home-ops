@@ -23,7 +23,7 @@ spec:
               LIDARR__APP__INSTANCENAME: Lidarr Surround Sound
               LIDARR__APP__THEME: dark
               LIDARR__AUTH__METHOD: External
-              LIDARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              LIDARR__AUTH__REQUIRED: Enabled
               LIDARR__LOG__DBENABLED: "False"
               LIDARR__LOG__LEVEL: info
               LIDARR__SERVER__PORT: &port 80
