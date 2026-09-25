@@ -13,7 +13,9 @@ spec:
     crds:
       create: true
     monitoring:
-      podMonitorEnabled: false
-      grafanaDashboard:
-        # build in dashboard is old, wait for cloudnative-pg/grafana-dashboards to be synced
-        create: false
+      podMonitorEnabled: true
+    resources:
+      requests:
+        cpu: 10m
+      limits:
+        memory: 512Mi
