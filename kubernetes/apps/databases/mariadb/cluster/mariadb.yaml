@@ -77,3 +77,4 @@ spec:
     enabled: true
   updateStrategy:
     autoUpdateDataPlane: true
+    mariadbAutoUpgradeEnabled: true
