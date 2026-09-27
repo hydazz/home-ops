@@ -21,7 +21,7 @@ spec:
           copy-config:
             image: &image
               repository: docker.io/library/nextcloud
-              tag: 35.0.1@sha256:9f82c7286cb1eba4d7d8a714499db591cf84923bb9cbbb9f35d13548a61af3eb
+              tag: 35.0.1@sha256:276547e033df451770dbf9c0065929e5ea179a613b1884bd3fa807ba1c2703e7
             command:
               - sh
               - -c
