@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mariadb
+spec:
+  groups:
+    - name: mariadb.rules
+      rules:
+        - alert: MariaDBDown
+          annotations:
+            description: The exporter has not reached {{ $labels.instance }} for 15 minutes.
+            summary: A MariaDB instance is down.
+          expr: |-
+            mysql_up != 1
+          for: 15m
+          labels:
+            severity: warning
+
+        - alert: MariaDBReplicationNotRunning
+          annotations:
+            description: The IO or SQL thread on {{ $labels.instance }} has been stopped for 15 minutes, so replica recovery has not fixed it.
+            summary: Replication is stopped on a MariaDB replica.
+          expr: |-
+            mysql_slave_status_slave_io_running == 0 or mysql_slave_status_slave_sql_running == 0
+          for: 15m
+          labels:
+            severity: warning
+
+        - alert: MariaDBReplicationLag
+          annotations:
+            description: "{{ $labels.instance }} is {{ $value }} seconds behind its primary."
+            summary: A MariaDB replica is lagging.
+          expr: |-
+            mysql_slave_status_seconds_behind_master > 30
+          for: 5m
+          labels:
+            severity: warning
+
+        - alert: MariaDBReplicaWrongPrimary
+          annotations:
+            description: Replicas follow {{ $value }} different primaries. A failover left one on a previous primary, which blocks the next switchover. Compare Master_Host on each replica with status.currentPrimary.
+            summary: MariaDB replicas disagree on their primary.
+          expr: |-
+            count(count_values("master", mysql_slave_status_master_server_id)) > 1
+          for: 10m
+          labels:
+            severity: warning
+
+        - alert: MariaDBPrimaryReadOnly
+          annotations:
+            description: "{{ $labels.instance }} has no replication source and has been read-only for 5 minutes, so writes are blocked. A switchover is usually waiting on a replica that cannot catch up."
+            summary: The MariaDB primary is read-only.
+          expr: |-
+            mysql_global_variables_read_only == 1 unless on (instance) mysql_slave_status_master_server_id
+          for: 5m
+          labels:
+            severity: critical
