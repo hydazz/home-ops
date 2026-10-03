@@ -46,13 +46,22 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: b2
-          serverName: postgres
+          serverName: postgres18
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: b2
+        serverName: postgres18
   postgresql:
+    extensions:
+      - name: vchord
+        image:
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.1.1@sha256:bdea43bed2a414e21bbf71767bf6f0739747ac480b267b51772dc214ac28dcb3
+        dynamic_library_path:
+          - /usr/lib/postgresql/18/lib/
+        extension_control_path:
+          - /usr/share/postgresql/18/
     parameters:
       max_connections: "200"
       shared_buffers: 1GB
