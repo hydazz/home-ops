@@ -34,7 +34,7 @@ spec:
         - "{{ .Release.Name }}.hyde.services"
         - status.hyde.services
       parentRefs:
-        - name: envoy-external
+        - name: envoy-cloudflare
           namespace: network
     monitoring:
       serviceMonitor:

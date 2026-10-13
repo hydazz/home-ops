@@ -103,7 +103,7 @@ spec:
         gatus.home-operations.com/endpoint: |-
           conditions: ["[STATUS] == 200"]
       parentRefs:
-        - name: envoy-external
+        - name: envoy-cloudflare
           namespace: network
       hostnames:
         - "{{ .Release.Name }}.hyde.services"
