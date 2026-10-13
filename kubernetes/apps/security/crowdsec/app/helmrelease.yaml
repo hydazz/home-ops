@@ -9,6 +9,11 @@ spec:
     kind: OCIRepository
     name: crowdsec
   interval: 1h
+  # The chart's values schema does not list the kubernetes datasource used in agent.additionalAcquisition
+  install:
+    disableSchemaValidation: true
+  upgrade:
+    disableSchemaValidation: true
   values:
     container_runtime: containerd
     secrets:
@@ -18,49 +23,6 @@ spec:
         registrationTokenKey: REGISTRATION_TOKEN
     config:
       parsers:
-        s01-parse:
-          envoy-logs.yaml: |-
-            filter: "evt.Parsed.program startsWith 'envoy' && evt.Parsed.message contains ':authority'"
-            onsuccess: next_stage
-            name: hydaz/envoy-logs
-            description: "Parse Envoy access logs to match nginx parser outputs"
-            statics:
-              - parsed: json
-                expression: UnmarshalJSON(evt.Parsed.message, evt.Unmarshaled, "envoy")
-              - parsed: time_local
-                expression: evt.Unmarshaled.envoy["start_time"]
-              - parsed: remote_addr
-                expression: Split(evt.Unmarshaled.envoy["x-forwarded-for"], ",")[0]
-              - parsed: verb
-                expression: evt.Unmarshaled.envoy["method"]
-              - parsed: request
-                expression: evt.Unmarshaled.envoy["x-envoy-origin-path"]
-              - parsed: http_version
-                expression: TrimPrefix(evt.Unmarshaled.envoy["protocol"], "HTTP/")
-              - parsed: status
-                expression: Sprintf('%.0f', evt.Unmarshaled.envoy["response_code"])
-              - parsed: body_bytes_sent
-                expression: Sprintf('%.0f', evt.Unmarshaled.envoy["bytes_sent"])
-              - parsed: http_user_agent
-                expression: evt.Unmarshaled.envoy["user-agent"]
-              - parsed: target_fqdn
-                expression: evt.Unmarshaled.envoy[":authority"]
-              - meta: service
-                value: http
-              - meta: log_type
-                value: http_access-log
-              - meta: source_ip
-                expression: evt.Parsed.remote_addr
-              - meta: http_status
-                expression: evt.Parsed.status
-              - meta: http_path
-                expression: evt.Parsed.request
-              - meta: http_verb
-                expression: evt.Parsed.verb
-              - meta: http_user_agent
-                expression: evt.Parsed.http_user_agent
-              - meta: target_fqdn
-                expression: evt.Parsed.target_fqdn
         s02-enrich:
           envoy-418-whitelist.yaml: |-
             name: hydaz/envoy-418-whitelist
@@ -93,17 +55,18 @@ spec:
           db_name: ${DB_NAME}
           host: ${DB_HOST}
           port: 5432
-      agent_config.yaml.local: |-
-        api:
-          client:
-            unregister_on_exit: true
-      appsec_config.yaml.local: |-
-        api:
-          client:
-            unregister_on_exit: true
+          flush:
+            agents_autodelete:
+              login_password: 168h
+            bouncers_autodelete:
+              api_key: 168h
+      console.yaml: |-
+        share_manual_decisions: false
+        share_custom: false
+        share_tainted: false
+        share_context: false
       profiles.yaml: |-
         name: default_ip_remediation
-        debug: false
         filters:
           - Alert.Remediation == true && Alert.GetScope() == "Ip"
         decisions:
@@ -113,11 +76,10 @@ spec:
     lapi:
       strategy:
         type: RollingUpdate
+      storeLAPICscliCredentialsInSecret: true
       env:
         - name: TZ
           value: Australia/Melbourne
-        - name: ENROLL_INSTANCE_NAME
-          value: home-ops
       envFrom:
         - secretRef:
             name: crowdsec-secret
@@ -126,36 +88,63 @@ spec:
           enabled: false
         config:
           enabled: false
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          cpu: null # the chart defaults to a 500m limit
+          memory: 512Mi
       metrics:
-        enabled: true
         serviceMonitor:
           enabled: true
     agent:
-      acquisition:
-        - namespace: network
-          podName: envoy-*
-          program: envoy
-          poll_without_inotify: true
+      isDeployment: true
+      strategy:
+        type: RollingUpdate
+      serviceAccountName: crowdsec-agent
+      hostVarLog: false
+      additionalAcquisition:
+        - source: kubernetes
+          namespace: network
+          selector: gateway.envoyproxy.io/owning-gateway-name in (envoy-cloudflare,envoy-external)
+          labels:
+            type: envoy
       env:
         - name: COLLECTIONS
           value: >-
-            crowdsecurity/base-http-scenarios
+            yanis-kouidri/envoy
             crowdsecurity/http-cve
             crowdsecurity/wordpress
         - name: SCENARIOS
           value: crowdsecurity/http-bf-wordpress_bf_xmlrpc
-        - name: PARSERS
-          value: crowdsecurity/cri-logs
         - name: TZ
           value: Australia/Melbourne
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          cpu: null
+          memory: 512Mi
       metrics:
-        enabled: true
         serviceMonitor:
           enabled: true
     appsec:
       enabled: true
+      replicas: 2
       strategy:
         type: RollingUpdate
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    k8s-app: crowdsec
+                    type: appsec
       acquisitions:
         - source: appsec
           listen_addr: "0.0.0.0:7422"
@@ -173,7 +162,13 @@ spec:
             crowdsecurity/appsec-wordpress
         - name: TZ
           value: Australia/Melbourne
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          cpu: null
+          memory: 256Mi
       metrics:
-        enabled: true
         serviceMonitor:
           enabled: true
