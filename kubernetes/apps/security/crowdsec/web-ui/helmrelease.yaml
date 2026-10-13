@@ -1,0 +1,112 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crowdsec-web-ui
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: crowdsec-web-ui
+  interval: 1h
+  values:
+    controllers:
+      crowdsec-web-ui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          # Registers this pod as a LAPI machine the same way the agents do. LAPI refuses to
+          # re-register an existing name, so the credentials file is kept for the pod's lifetime.
+          register:
+            image:
+              repository: docker.io/crowdsecurity/crowdsec
+              tag: v1.8.1@sha256:0f2523fa61ef507f15d953045cface490cc880670c62f2755ced17524107f71a
+            command:
+              - sh
+              - -ec
+              - |-
+                [ -s /credentials/lapi.yaml ] || cscli -c /staging/etc/crowdsec/config.yaml lapi register \
+                  --machine "$POD_NAME" --url "$LAPI_URL" --token "$REGISTRATION_TOKEN" --file /credentials/lapi.yaml
+                yq -r .password /credentials/lapi.yaml > /credentials/password
+            env:
+              LAPI_URL: &lapi http://crowdsec-service.security.svc.cluster.local:8080
+              POD_NAME: &podName
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+              REGISTRATION_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: crowdsec-secret
+                    key: REGISTRATION_TOKEN
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        containers:
+          app:
+            image:
+              repository: ghcr.io/theduffman85/crowdsec-web-ui
+              tag: 2026.10.5@sha256:54d048dcab5082c0e394f0d00caacaf292f8f042ee449b974f9a28d1a192e3b7
+            env:
+              CONFIG_AUTH_ENABLED: "false"
+              CONFIG_INSTANCE_LAPI_AUTH_PASSWORD_FILE: /credentials/password
+              CONFIG_INSTANCE_LAPI_AUTH_USERNAME: *podName
+              CONFIG_INSTANCE_LAPI_URL: *lapi
+              CONFIG_INSTANCE_METRICS_0_NAME: LAPI
+              CONFIG_INSTANCE_METRICS_0_URL: http://crowdsec-service.security.svc.cluster.local:6060/metrics
+              CONFIG_INSTANCE_METRICS_1_NAME: Agent
+              CONFIG_INSTANCE_METRICS_1_URL: http://crowdsec-agent-service.security.svc.cluster.local:6060/metrics
+              CONFIG_SERVER_PORT: &port 3000
+              CONFIG_UPDATES_ENABLED: "false"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - crowdsec.hyde.services
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/data
+      credentials:
+        type: emptyDir
+      # cscli needs a writable data dir
+      cscli:
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/crowdsec/data
