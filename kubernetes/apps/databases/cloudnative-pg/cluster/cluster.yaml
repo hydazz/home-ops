@@ -7,7 +7,7 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.6-standard-bookworm@sha256:a0080e77dc18d1d12aafef100643871a884e1db75a990a6e9e5dd456b35610f6
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.6-standard-bookworm@sha256:a8042813b0d1abe564bebb129479f9a865fb9d78a322edc36c204ac1ea9e5ddd
   instances: 3
   storage:
     size: 16Gi
