@@ -54,7 +54,6 @@ spec:
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
       kind: Cluster
   interval: 1h
   path: ./kubernetes/apps/databases/cloudnative-pg/cluster
