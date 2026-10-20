@@ -17,8 +17,6 @@ spec:
     replicaCount: 2
     priorityClassName: system-cluster-critical
     k8sAppLabelOverride: kube-dns
-    serviceAccount:
-      create: true
     service:
       name: kube-dns
       clusterIP: 10.43.0.10
