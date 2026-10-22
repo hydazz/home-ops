@@ -62,7 +62,7 @@
       ignoreTests: true,
     },
     {
-      description: "Auto-merge Renovate Presents",
+      description: "Auto-merge Renovate Presets",
       matchManagers: ["renovate-config"],
       matchUpdateTypes: ["minor", "patch"],
       automerge: true,
