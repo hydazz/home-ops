@@ -68,6 +68,9 @@ spec:
     - name: https
       protocol: HTTPS
       port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
       tls:
         certificateRefs:
           - name: hydaz-com-tls
@@ -106,6 +109,9 @@ spec:
     - name: https
       protocol: HTTPS
       port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
       tls:
         certificateRefs:
           - name: hydaz-com-tls
