@@ -328,6 +328,7 @@ spec:
       kind: Gateway
       name: envoy-external
   extAuth:
+    failOpen: true
     grpc:
       backendRefs:
         - group: ""
