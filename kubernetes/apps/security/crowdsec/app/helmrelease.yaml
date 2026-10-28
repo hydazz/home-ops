@@ -115,6 +115,7 @@ spec:
           value: >-
             yanis-kouidri/envoy
             crowdsecurity/http-cve
+            crowdsecurity/plex
             crowdsecurity/wordpress
         - name: SCENARIOS
           value: crowdsecurity/http-bf-wordpress_bf_xmlrpc
