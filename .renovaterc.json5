@@ -13,6 +13,8 @@
     commitMessageExtra: "({{manager}})",
     additionalBranchPrefix: "{{manager}}-",
   },
+  // "auto" would rebase every automerge PR each time main moves
+  rebaseWhen: "conflicted",
   packageRules: [
     // Auto-merge rules
     {
