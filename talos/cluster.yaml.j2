@@ -131,6 +131,14 @@ params:
 ---
 apiVersion: v1alpha1
 kind: EtcFileConfig
+name: nfs.conf
+mode: 0o644
+contents: |
+  [nfsrahead]
+  nfs4=16384
+---
+apiVersion: v1alpha1
+kind: EtcFileConfig
 name: nfsmount.conf
 mode: 0o644
 contents: |
