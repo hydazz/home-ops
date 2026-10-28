@@ -18,8 +18,7 @@ spec:
             matchLabels:
               app.kubernetes.io/name: mariadb
       ports:
-        - protocol: TCP
-          port: 3306
+        - port: 3306
     - to:
         - namespaceSelector:
             matchLabels:
@@ -28,8 +27,7 @@ spec:
             matchLabels:
               app.kubernetes.io/name: postgres
       ports:
-        - protocol: TCP
-          port: 5432
+        - port: 5432
     - to:
         - namespaceSelector:
             matchLabels:
@@ -38,8 +36,7 @@ spec:
             matchLabels:
               app.kubernetes.io/name: dragonfly
       ports:
-        - protocol: TCP
-          port: 6379
+        - port: 6379
     - to:
         - namespaceSelector:
             matchLabels:
@@ -48,8 +45,7 @@ spec:
             matchLabels:
               app.kubernetes.io/name: maddy
       ports:
-        - protocol: TCP
-          port: 587
+        - port: 587
     - to:
         - namespaceSelector:
             matchLabels:
@@ -60,8 +56,7 @@ spec:
       ports:
         - protocol: UDP
           port: 53
-        - protocol: TCP
-          port: 53
+        - port: 53
     - to:
         - ipBlock:
             cidr: 0.0.0.0/0
@@ -70,10 +65,8 @@ spec:
               - 172.16.0.0/12
               - 192.168.0.0/16
       ports:
-        - protocol: TCP
-          port: 80
-        - protocol: TCP
-          port: 443
+        - port: 80
+        - port: 443
     - to:
         - ipBlock:
             cidr: ::/0
@@ -83,7 +76,5 @@ spec:
               - ff00::/8
               - 2403:5817:b73a::/48
       ports:
-        - protocol: TCP
-          port: 80
-        - protocol: TCP
-          port: 443
+        - port: 80
+        - port: 443

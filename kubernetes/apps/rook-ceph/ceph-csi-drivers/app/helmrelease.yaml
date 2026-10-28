@@ -76,7 +76,6 @@ spec:
                 memory: 128Mi
     drivers:
       rbd:
-        enabled: true
         name: rook-ceph.rbd.csi.ceph.com
         grpcTimeout: 150
         snapshotPolicy: volumeGroupSnapshot
@@ -86,7 +85,6 @@ spec:
         controllerPlugin:
           replicas: 2
       cephfs:
-        enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
         grpcTimeout: 150
         snapshotPolicy: volumeGroupSnapshot

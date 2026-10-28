@@ -35,10 +35,6 @@ spec:
     #    secretName: authentik-secret
     #    accountId: GEOIP_ACCOUNT_ID
     #    licenseKey: GEOIP_LICENSE_KEY
-    prometheus:
-      rules:
-        # Chart rules are wrong for the metrics authentik actually emits
-        enabled: false
     server:
       metrics:
         enabled: true

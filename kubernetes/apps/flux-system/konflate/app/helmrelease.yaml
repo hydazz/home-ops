@@ -19,9 +19,6 @@ spec:
       existingSecret: konflate-webhook-token-secret
     httpRoute:
       enabled: true
-      annotations:
-        gatus.home-operations.com/endpoint: |-
-          conditions: ["[STATUS] == 200"]
       parentRefs:
         - name: envoy-cloudflare
           namespace: network
@@ -30,8 +27,3 @@ spec:
     monitoring:
       serviceMonitor:
         enabled: true
-    resources:
-      requests:
-        cpu: 50m
-      limits:
-        memory: 1Gi

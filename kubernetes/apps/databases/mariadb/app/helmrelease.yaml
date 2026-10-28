@@ -14,10 +14,6 @@ spec:
       enabled: true
     metrics:
       enabled: true
-      serviceMonitor:
-        enabled: true
     webhook:
       certificate:
         certManager: true
-      serviceMonitor:
-        enabled: true

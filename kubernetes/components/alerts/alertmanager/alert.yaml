@@ -25,4 +25,3 @@ spec:
     - dial.*tcp.*timeout
     - dial.*tcp.*unreachable
     - waiting.*socket
-  suspend: false

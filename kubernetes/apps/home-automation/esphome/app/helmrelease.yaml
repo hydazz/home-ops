@@ -91,7 +91,6 @@ spec:
         rules:
           - matches:
               - path:
-                  type: PathPrefix
                   value: /code/
             filters:
               - type: URLRewrite

@@ -10,10 +10,8 @@ spec:
         - 192.168.10.8:9100 # pikvm
         - 192.168.3.2:9100 # nebula
         - 192.168.42.20:9100 # data
-  metricsPath: /metrics
   relabelings:
-    - action: replace
-      targetLabel: job
+    - targetLabel: job
       replacement: node-exporter
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
@@ -27,12 +25,9 @@ spec:
         - 192.168.42.20:9633 # data
       labels:
         hostname: data
-  metricsPath: /metrics
   relabelings:
-    - action: replace
-      targetLabel: job
+    - targetLabel: job
       replacement: smartctl-exporter
-    - action: replace
-      sourceLabels:
+    - sourceLabels:
         - hostname
       targetLabel: instance

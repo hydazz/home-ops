@@ -20,8 +20,6 @@ spec:
               cpu: 100m
             limits:
               memory: 2Gi
-      envoyService:
-        externalTrafficPolicy: Local
   ipFamily: DualStack
   shutdown:
     drainTimeout: 180s
@@ -67,35 +65,20 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
-      allowedRoutes:
-        namespaces:
-          from: Same
     - name: https
       protocol: HTTPS
       port: 443
-      allowedRoutes:
-        namespaces:
-          from: All
       tls:
         certificateRefs:
-          - kind: Secret
-            name: hydaz-com-tls
-          - kind: Secret
-            name: hyde-services-tls
-          - kind: Secret
-            name: ${D_HCA//./-}-tls
-          - kind: Secret
-            name: imagegenius-io-tls
-          - kind: Secret
-            name: ${D_SN//./-}-tls
-          - kind: Secret
-            name: ${D_TACA//./-}-tls
-          - kind: Secret
-            name: ${D_TAN//./-}-tls
-          - kind: Secret
-            name: ${D_LMVCA//./-}-tls
-          - kind: Secret
-            name: ${D_BBPC//./-}-tls
+          - name: hydaz-com-tls
+          - name: hyde-services-tls
+          - name: ${D_HCA//./-}-tls
+          - name: imagegenius-io-tls
+          - name: ${D_SN//./-}-tls
+          - name: ${D_TACA//./-}-tls
+          - name: ${D_TAN//./-}-tls
+          - name: ${D_LMVCA//./-}-tls
+          - name: ${D_BBPC//./-}-tls
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
@@ -120,35 +103,20 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
-      allowedRoutes:
-        namespaces:
-          from: Same
     - name: https
       protocol: HTTPS
       port: 443
-      allowedRoutes:
-        namespaces:
-          from: All
       tls:
         certificateRefs:
-          - kind: Secret
-            name: hydaz-com-tls
-          - kind: Secret
-            name: hyde-services-tls
-          - kind: Secret
-            name: ${D_HCA//./-}-tls
-          - kind: Secret
-            name: imagegenius-io-tls
-          - kind: Secret
-            name: ${D_SN//./-}-tls
-          - kind: Secret
-            name: ${D_TACA//./-}-tls
-          - kind: Secret
-            name: ${D_TAN//./-}-tls
-          - kind: Secret
-            name: ${D_LMVCA//./-}-tls
-          - kind: Secret
-            name: ${D_BBPC//./-}-tls
+          - name: hydaz-com-tls
+          - name: hyde-services-tls
+          - name: ${D_HCA//./-}-tls
+          - name: imagegenius-io-tls
+          - name: ${D_SN//./-}-tls
+          - name: ${D_TACA//./-}-tls
+          - name: ${D_TAN//./-}-tls
+          - name: ${D_LMVCA//./-}-tls
+          - name: ${D_BBPC//./-}-tls
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
@@ -173,9 +141,6 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
-      allowedRoutes:
-        namespaces:
-          from: Same
     - name: https
       protocol: HTTPS
       port: 443
@@ -184,22 +149,14 @@ spec:
           from: All
       tls:
         certificateRefs:
-          - kind: Secret
-            name: hydaz-com-tls
-          - kind: Secret
-            name: hyde-services-tls
-          - kind: Secret
-            name: ${D_HCA//./-}-tls
-          - kind: Secret
-            name: imagegenius-io-tls
-          - kind: Secret
-            name: ${D_SN//./-}-tls
-          - kind: Secret
-            name: ${D_TACA//./-}-tls
-          - kind: Secret
-            name: ${D_TAN//./-}-tls
-          - kind: Secret
-            name: ${D_LMVCA//./-}-tls
+          - name: hydaz-com-tls
+          - name: hyde-services-tls
+          - name: ${D_HCA//./-}-tls
+          - name: imagegenius-io-tls
+          - name: ${D_SN//./-}-tls
+          - name: ${D_TACA//./-}-tls
+          - name: ${D_TAN//./-}-tls
+          - name: ${D_LMVCA//./-}-tls
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -215,13 +172,11 @@ spec:
     - type: Gzip
       gzip: {}
   retry:
-    numRetries: 2
     retryOn:
       triggers:
         - reset-before-request
   targetSelectors:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
+    - kind: Gateway
   tcpKeepalive:
     idleTime: 60s
     interval: 10s
@@ -259,11 +214,6 @@ spec:
   timeout:
     http:
       idleTimeout: 600s
-  tls:
-    minVersion: "1.2"
-    alpnProtocols:
-      - h2
-      - http/1.1
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -286,11 +236,6 @@ spec:
     interval: 10s
     probes: 3
   # No idleTimeout: the 1h default stays above Cloudflare's 900s origin keep-alive, so Cloudflare closes first
-  tls:
-    minVersion: "1.2"
-    alpnProtocols:
-      - h2
-      - http/1.1
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
@@ -302,10 +247,8 @@ metadata:
 spec:
   parentRefs:
     - name: envoy-external
-      namespace: network
       sectionName: http
     - name: envoy-internal
-      namespace: network
       sectionName: http
   rules:
     - filters:
@@ -331,8 +274,6 @@ spec:
     failOpen: true
     grpc:
       backendRefs:
-        - group: ""
-          kind: Service
-          name: crowdsec-envoy-bouncer
+        - name: crowdsec-envoy-bouncer
           namespace: security
           port: 8080

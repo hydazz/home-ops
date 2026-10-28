@@ -16,4 +16,3 @@ spec:
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
-      action: replace

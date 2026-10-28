@@ -88,4 +88,3 @@ spec:
       - vchord.so
   monitoring:
     enablePodMonitor: true
-  primaryUpdateStrategy: unsupervised

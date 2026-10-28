@@ -15,8 +15,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: hydaz-com-tls
   usages:
     - digital signature
@@ -42,8 +40,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: hyde-services-tls
   usages:
     - digital signature
@@ -63,8 +59,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: ${D_HCA//./-}-tls
   usages:
     - digital signature
@@ -84,8 +78,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: imagegenius-io-tls
   usages:
     - digital signature
@@ -105,8 +97,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: ${D_SN//./-}-tls
   usages:
     - digital signature
@@ -126,8 +116,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: ${D_TACA//./-}-tls
   usages:
     - digital signature
@@ -147,8 +135,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: ${D_TAN//./-}-tls
   usages:
     - digital signature
@@ -169,8 +155,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: ${D_LMVCA//./-}-tls
   usages:
     - digital signature
@@ -190,8 +174,6 @@ spec:
     name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
   secretName: ${D_BBPC//./-}-tls
   usages:
     - digital signature

@@ -31,10 +31,6 @@ spec:
                   httpGet:
                     path: /healthz
                     port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
@@ -61,11 +57,7 @@ spec:
           - port: http
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.hyde.services"
         parentRefs:
           - name: envoy-cloudflare
-            namespace: network
