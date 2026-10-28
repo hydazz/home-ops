@@ -16,6 +16,8 @@ spec:
     disableSchemaValidation: true
   values:
     container_runtime: containerd
+    image:
+      repository: mirror.gcr.io/crowdsecurity/crowdsec
     secrets:
       externalSecret:
         name: crowdsec-secret
