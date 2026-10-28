@@ -52,6 +52,7 @@ spec:
     loadBalancer:
       algorithm: maglev
       mode: dsr
+      serviceTopology: true # spegel-registry relies on trafficDistribution: PreferSameNode
     localRedirectPolicies:
       enabled: true
     operator:
