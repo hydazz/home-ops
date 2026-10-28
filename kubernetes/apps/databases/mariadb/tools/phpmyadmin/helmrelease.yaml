@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: docker.io/library/phpmyadmin
-              tag: 5.2.3@sha256:4de49392e023fa330f49ecc72a79384359783856ade762272112ed347ab32706
+              tag: 5.2.3@sha256:414db3b5c801a6c9b9f4a6dbd06a9e426dfc7f0a09d02140ae0e483eface5fdd
             env:
               PMA_ABSOLUTE_URI: https://phpmyadmin.hyde.services
               PMA_HOST: mariadb-primary.databases.svc.cluster.local
