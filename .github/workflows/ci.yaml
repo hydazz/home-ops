@@ -22,7 +22,7 @@ env:
   # renovate: datasource=custom.talos-factory depName=siderolabs/talos
   TALOS_VERSION: v1.14.5
   # renovate: datasource=github-releases depName=jdx/jactionlint
-  JACTIONLINT_VERSION: v2.3.0
+  JACTIONLINT_VERSION: v2.4.0
 
 jobs:
   image-pull-extract:
