@@ -105,7 +105,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           MISE_GITHUB_TOKEN: ${{ github.token }}
-        run: mise exec "aqua:jdx/jactionlint@${JACTIONLINT_VERSION}" -- jactionlint --online --shellcheck= --format github
+        run: mise exec "jactionlint@${JACTIONLINT_VERSION}" -- jactionlint --online --shellcheck= --format github
 
   status:
     if: ${{ !cancelled() }}
