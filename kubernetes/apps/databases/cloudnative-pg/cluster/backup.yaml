@@ -16,7 +16,7 @@ spec:
         name: cloudnative-pg-secret
         key: B2_SECRET_ACCESS_KEY
     data:
-      compression: bzip2
+      compression: zstd
     wal:
       compression: zstd
       maxParallel: 8
