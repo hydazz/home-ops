@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/theduffman85/crowdsec-web-ui
-              tag: 2026.11.7@sha256:fd41bee026dcf544e0a3150ce262de2b17f8ff2ec344040bc2c2383f88f12351
+              tag: 2026.11.8@sha256:c531d36780cfb072023aa273849ea081e2a6dc18df15326dde6af7dcc6cda160
             env:
               CONFIG_AUTH_ENABLED: "false"
               CONFIG_INSTANCE_LAPI_AUTH_PASSWORD_FILE: /credentials/password
