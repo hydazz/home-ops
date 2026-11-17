@@ -45,6 +45,10 @@ spec:
                   httpGet:
                     path: /
                     port: *port
+                    # PAPERLESS_URL limits ALLOWED_HOSTS to its hostname and localhost
+                    httpHeaders:
+                      - name: Host
+                        value: localhost
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
