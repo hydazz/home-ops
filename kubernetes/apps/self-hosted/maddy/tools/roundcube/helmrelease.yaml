@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: docker.io/roundcube/roundcubemail
-              tag: 1.7.6-apache-nonroot@sha256:8466ea7db6ec1a34f434d227d7e7e8c480f32a8bc9b7245b75920c59ddacfbe3
+              tag: 1.7.6-apache-nonroot@sha256:9e5c13055511b390688006533619f5709f11396b4598f90badcdc2b1be4a2a02
             env:
               ROUNDCUBEMAIL_DB_TYPE: sqlite
               ROUNDCUBEMAIL_DEFAULT_HOST: ssl://mail.hyde.services
